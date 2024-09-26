@@ -7,7 +7,6 @@
     <title>Register</title>
 </head>
 <body>
-
-
+    <p> alipa dan regi</p>
 </body>
 </html>
