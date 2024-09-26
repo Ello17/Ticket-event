@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// ini route buat auth
+// ini route buat auth bisi gabisa pake yang ini berarti pake yang []
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 
