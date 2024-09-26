@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     //
-<<<<<<< HEAD
-    function home(){
-        return view('customer.homeCustomer');
-=======
 
+    function home(){
+        $data=event::all();
+        return view('customer.homeCustomer', compact('data'));
+
+    }
     public function login(){
         return view('template.login');
     }
@@ -37,6 +39,6 @@ class AuthController extends Controller
         } else {
             return redirect()->route('postLogin')->with('notifikasi', 'Username atau password salah');
         }
->>>>>>> 53d2e0d2b01d8c9eab901e1f3b1133cce3ff6e59
+
     }
 }
