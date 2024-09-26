@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', [AuthController::class, 'home'])->name('home');
+
 // ini route buat auth
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 
 
-// Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
+// ini buat customer
+Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
 
 Route::middleware('auth')->group(function () {
 //ini buat admin
