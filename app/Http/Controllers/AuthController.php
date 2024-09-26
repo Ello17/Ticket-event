@@ -7,4 +7,7 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     //
+    function home(){
+        return view('customer.homeCustomer');
+    }
 }
