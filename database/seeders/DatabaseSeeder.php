@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
 
         Event::create([
             'nama_penyelenggara' => 'alipa',
-            'cover_event' => 's2.jpg',
+            'cover_event' => 'components/asset/s5.jpeg',
             'nama_event' => 'event alipa',
             'tanggal_event' => '2022-02-25',
             'waktu_event' => '10:00',
@@ -48,10 +48,10 @@ class DatabaseSeeder extends Seeder
             'deskripsi_event' => 'ini adalah sebuah event contoh',
             'user_id'=> '2'
         ]);
-       
+
         Event::create([
             'nama_penyelenggara' => 'ajelo',
-            'cover_event' => 's3.jpg',
+            'cover_event' => 'components/asset/s2.jpeg',
             'nama_event' => 'event ajelo',
             'tanggal_event' => '2022-02-25',
             'waktu_event' => '10:00',
@@ -59,10 +59,10 @@ class DatabaseSeeder extends Seeder
             'deskripsi_event' => 'ini adalah sebuah event contoh',
             'user_id'=> '2'
         ]);
-       
+
         Event::create([
             'nama_penyelenggara' => 'nae',
-            'cover_event' => 's4.jpg',
+            'cover_event' => 'components/asset/s3.jpeg',
             'nama_event' => 'event nae',
             'tanggal_event' => '2022-02-25',
             'waktu_event' => '10:00',
@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Event::create([
             'nama_penyelenggara' => 'cumi',
-            'cover_event' => 's5.jpg',
+            'cover_event' => 'components/asset/s4.jpeg',
             'nama_event' => 'event cumi',
             'tanggal_event' => '2022-02-25',
             'waktu_event' => '10:00',
@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
             'deskripsi_event' => 'ini adalah sebuah event contoh',
             'user_id'=> '2'
         ]);
-       
+
         Tiket::create([
            'kategori_tiket' =>'online',
            'harga_tiket' =>'200000',

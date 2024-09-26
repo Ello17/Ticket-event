@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -7,17 +8,20 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can register web routes for  your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
 */
 
 
+Route::get('/', [AuthController::class, 'home'])->name('home');
 // ini route buat auth
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 
+<<<<<<< HEAD
+=======
 //ini buat customer
 // Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
 
@@ -29,3 +33,4 @@ Route::middleware('auth')->group(function () {
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 
 });
+>>>>>>> 862298b6434cfdc541f7feef23e7f91f63c0fe2b
