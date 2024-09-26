@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +23,7 @@ Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 
 
 // ini buat customer
-Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
+Route::get('/', [CustomerController::class, 'home'])->name('home');
 
 Route::middleware('auth')->group(function () {
 //ini buat admin
