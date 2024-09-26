@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+// ini route buat auth
+Route::get('/login', 'AuthController@login')->name('login');
+Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
