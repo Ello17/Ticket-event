@@ -22,7 +22,7 @@ Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 
 
 //ini buat customer
-Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
+// Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
 
 // Route::middleware('auth')->group(function () {
 //ini buat admin
