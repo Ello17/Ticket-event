@@ -20,10 +20,10 @@ Route::get('/', [AuthController::class, 'home'])->name('home');
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 
-<<<<<<< HEAD
-=======
+
+
 //ini buat customer
-// Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
+Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
 
 Route::middleware('auth')->group(function () {
 //ini buat admin
@@ -33,4 +33,4 @@ Route::middleware('auth')->group(function () {
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 
 });
->>>>>>> 862298b6434cfdc541f7feef23e7f91f63c0fe2b
+
