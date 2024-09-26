@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,18 +18,28 @@ use Illuminate\Support\Facades\Route;
 
 
 // ini route buat auth
-git
+
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
+
 
 //ini buat customer
 Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
 
 
 // Route::middleware('auth')->group(function () {
+
+
+// ini buat customer
+Route::get('/', [CustomerController::class, 'home'])->name('home');
+
+Route::middleware('auth')->group(function () {
+
 //ini buat admin
 // Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 
 //ini buat creator
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
+
+});
 
 
