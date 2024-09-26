@@ -20,6 +20,7 @@ Route::get('/', [AuthController::class, 'home'])->name('home');
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 
+
 //ini buat customer
 // Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
 
@@ -30,4 +31,3 @@ Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 //ini buat creator
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 
-// });
