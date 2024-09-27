@@ -10,11 +10,7 @@ class AuthController extends Controller
 {
     //
 
-    function home(){
-        $data=event::all();
-        return view('customer.homeCustomer', compact('data'));
-
-    }
+  
     public function login(){
         return view('template.login');
     }
