@@ -27,7 +27,7 @@ class AuthController extends Controller
             if ($user->role === 'admin'){
                 return redirect()->route('admin.homeAdmin');
             } else if ($user->role === 'customer'){
-                return redirect()->route('customer.homeCustomer');
+                return redirect()->route('customer.home');
             } else if ($user->role === 'creator'){
                 return redirect()->route('creator.homeCreator');
             }
