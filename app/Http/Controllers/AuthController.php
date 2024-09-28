@@ -15,26 +15,47 @@ class AuthController extends Controller
         return view('template.login');
     }
 
-    public function postLogin(Request $request){
-        $data = $request->validate([
-            'username' => ['required'],
-            'password' => ['required']
-        ]);
+    public function postlogin(Request $request){
 
-        if (Auth::attempt($data)){
-            $user = Auth::user();
+            // Validasi input login
+    $credentials = $request->only('email', 'password');
 
-            if ($user->role === 'admin'){
-                return redirect()->route('admin.homeAdmin');
-            } else if ($user->role === 'customer'){
-                return redirect()->route('customer.homeCustomer');
-            } else if ($user->role === 'creator'){
-                return redirect()->route('creator.homeCreator');
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        $role = $user->role;
+
+        // Redirect berdasarkan role
+        switch ($role) {
+            case 'admin':
+                return redirect()->route('homeAdmin')->with('notifikasi', 'SELAMAT DATANG (Admin) ' .$user->name);
+            case 'customer':
+                return redirect()->route('home')->with('notifikasi', 'SELAMAT DATANG ' .$user->name);
+            default:
+                return redirect('/');
             }
-
-        } else {
-            return redirect()->route('postLogin')->with('notifikasi', 'Username atau password salah');
         }
-
+        // Jika login gagal
+        return back()->withErrors(['notifikasi' => 'Invalid email or password',]);
     }
+        // $data = $request->validate([
+        //     'username' => ['required'],
+        //     'password' => ['required']
+        // ]);
+
+        // if (Auth::attempt($data)){
+        //     $user = Auth::user();
+
+        //     if ($user->role === 'admin'){
+        //         return redirect()->route('admin.homeAdmin');
+        //     } else if ($user->role === 'customer'){
+        //         return redirect()->route('customer.homeCustomer');
+        //     } else if ($user->role === 'creator'){
+        //         return redirect()->route('creator.homeCreator');
+        //     }
+
+        // } else {
+        //     return redirect()->route('postlogin')->with('notifikasi', 'Username atau password salah');
+        // }
+
 }
+

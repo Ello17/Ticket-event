@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Route;
 
 // ini route buat auth
 
-Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
+Route::post('/postlogin', [AuthController::class, 'postlogin'])->name('postlogin');
 
 
 //ini buat customer
-Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
+Route::get('/homeCustomer', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 
 // register
 
