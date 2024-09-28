@@ -19,7 +19,7 @@
                <i class="ri-search-line nav__search" id="search-btn"></i>
 
                <!-- Login button -->
-               <i class="ri-user-line nav__login" id="login-btn"></i>
+               <i class="ri-user-line nav__login" href="{{ route('login') }}" id="login-btn"></i>
 
                <!-- Toggle button -->
                <div class="nav__toggle" id="nav-toggle">
@@ -41,7 +41,7 @@
 
       <!--==================== LOGIN ====================-->
       <div class="login" id="login">
-         <form action="" class="login__form">
+         <form action="{{route ('postLogin')}}" class="login__form" >
             <h2 class="login__title">Log In</h2>
 
             <div class="login__group">
