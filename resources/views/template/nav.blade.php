@@ -41,18 +41,14 @@
 
       <!--==================== LOGIN ====================-->
       <div class="login" id="login">
-<<<<<<< HEAD
-         <form action="{{ Route('postlogin')}}" class="login__form" method="POST">
+         <form action="{{ Route('postLogin')}}" class="login__form" method="POST">
             @csrf
-=======
-         <form action="{{route ('postLogin')}}" class="login__form" method="POST">
->>>>>>> d1864ca211dfbab785e61beb2c7b6238126165e6
             <h2 class="login__title">Log In</h2>
 
             <div class="login__group">
                <div>
-                  <label for="email" class="login__label">Email</label>
-                  <input type="email" name="email" placeholder="Write your email" id="email" class="login__input">
+                  <label for="username" class="login__label">Username</label>
+                  <input type="text" name="username" placeholder="Write your username" id="username" class="login__input">
                </div>
 
                <div>
@@ -63,7 +59,7 @@
 
             <div>
                <p class="login__signup">
-                  You do not have an account? <a href="#">Sign up</a>
+                  You do not have an account? <a href="{{ Route('register')}}">Sign up</a>
                </p>
 
                <a href="#" class="login__forgot">

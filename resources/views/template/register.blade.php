@@ -10,7 +10,7 @@
             <img src="#" alt="">
         </div>
         <div class="box-form">
-            <form action="">
+            <form action="{{Route('postRegister')}}" enctype="multipart/form-data">
                 <h2>Register</h2>
                 <div class="register-group">
                     <div>
@@ -25,6 +25,7 @@
                         <label for="password" class="register_label">Password</label>
                         <input type="password" placeholder="Enter Your Password" class="register_input">
                     </div>
+                    <input type="text" style="display: none;" name="role" value="customer">
                 </div>
                 <div>
                     <p class="signup_login">

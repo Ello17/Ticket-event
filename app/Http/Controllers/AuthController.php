@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -17,45 +20,61 @@ class AuthController extends Controller
 
     public function postlogin(Request $request){
 
-            // Validasi input login
-    $credentials = $request->only('email', 'password');
+        $data = $request->validate([
+            'username' => ['required'],
+            'password' => ['required']
+        ]);
 
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
-        $role = $user->role;
+        if (Auth::attempt($data)){
+            $user = Auth::user();
 
-        // Redirect berdasarkan role
-        switch ($role) {
-            case 'admin':
-                return redirect()->route('homeAdmin')->with('notifikasi', 'SELAMAT DATANG (Admin) ' .$user->name);
-            case 'customer':
-                return redirect()->route('home')->with('notifikasi', 'SELAMAT DATANG ' .$user->name);
-            default:
-                return redirect('/');
+            if ($user->role === 'admin'){
+                return redirect()->route('admin.homeAdmin');
+            } else if ($user->role === 'customer'){
+                return redirect()->route('customer.homeCustomer');
+            } else if ($user->role === 'creator'){
+                return redirect()->route('creator.homeCreator');
             }
+
+        } else {
+            return redirect()->route('login')->with('notifikasi', 'Username atau password salah');
         }
-        // Jika login gagal
-        return back()->withErrors(['notifikasi' => 'Invalid email or password',]);
     }
-        // $data = $request->validate([
-        //     'username' => ['required'],
-        //     'password' => ['required']
-        // ]);
 
-        // if (Auth::attempt($data)){
-        //     $user = Auth::user();
 
-        //     if ($user->role === 'admin'){
-        //         return redirect()->route('admin.homeAdmin');
-        //     } else if ($user->role === 'customer'){
-        //         return redirect()->route('customer.homeCustomer');
-        //     } else if ($user->role === 'creator'){
-        //         return redirect()->route('creator.homeCreator');
-        //     }
+    public function register() {
+        return view('template.register');
+    }
 
-        // } else {
-        //     return redirect()->route('postlogin')->with('notifikasi', 'Username atau password salah');
-        // }
-
+    public function postRegister(Request $request)
+    {
+        // Validasi inputan
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|min:3|confirmed',
+            'role' => 'required|string',
+        ]);
+    
+        // Jika validasi gagal, kembali ke form dengan error
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+    
+        // Jika validasi berhasil, buat user baru
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'username' => $request->input('username'),
+            'password' => Hash::make($request->input('password')),
+            'role' => $request->input('role'),
+        ]);
+    
+        Auth::login($user);
+    
+        return redirect()->route('homeCustomer')->with('notifikasi', 'Akun sukses dibuat');
+    }
 }
 
