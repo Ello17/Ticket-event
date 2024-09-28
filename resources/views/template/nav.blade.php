@@ -19,7 +19,7 @@
                <i class="ri-search-line nav__search" id="search-btn"></i>
 
                <!-- Login button -->
-               <i class="ri-user-line nav__login" id="login-btn"></i>
+               <i class="ri-user-line nav__login" href="{{ route('login') }}" id="login-btn"></i>
 
                <!-- Toggle button -->
                <div class="nav__toggle" id="nav-toggle">
@@ -41,8 +41,12 @@
 
       <!--==================== LOGIN ====================-->
       <div class="login" id="login">
+<<<<<<< HEAD
          <form action="{{ Route('postlogin')}}" class="login__form" method="POST">
             @csrf
+=======
+         <form action="{{route ('postLogin')}}" class="login__form" method="POST">
+>>>>>>> d1864ca211dfbab785e61beb2c7b6238126165e6
             <h2 class="login__title">Log In</h2>
 
             <div class="login__group">
