@@ -25,6 +25,9 @@ Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 //ini buat customer
 Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
 
+// register
+
+
 
 // Route::middleware('auth')->group(function () {
 
