@@ -28,7 +28,7 @@
                 <div class="carousel-images d-flex justify-content-center">
                     <img src="{{ asset('components/asset/b4.jpeg') }}" alt="Slide 1" class="img-fluid" style="max-width: 400px;">
                     <img src="{{ asset('components/asset/b5.jpeg') }}" alt="Slide 2" class="img-fluid" style="max-width: 400px;">
-                    <img src="{{ asset('components/asset/b6.jpeg') }}" alt="Slide 3" class="img-fluid" style="max-width: 400px;">
+                    <img src="{{ asset('components/asset/b1.jpeg') }}" alt="Slide 3" class="img-fluid" style="max-width: 400px;">
                 </div>
                 <button class="btn btn-primary mt-2" onclick="prevSlide(2)">Previous</button>
                 <button class="btn btn-primary mt-2" onclick="nextSlide(2)">Next</button>
