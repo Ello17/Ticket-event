@@ -17,15 +17,26 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// ini route buat auth bisi gabisa pake yang ini berarti pake yang []
+// ini route buat auth
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
+
+
+//ini buat customer
+Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
+
+// register
+
+
+
+// Route::middleware('auth')->group(function () {
 
 
 // ini buat customer
 Route::get('/', [CustomerController::class, 'home'])->name('home');
 
 Route::middleware('auth')->group(function () {
+
 //ini buat admin
 // Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 
@@ -33,4 +44,5 @@ Route::middleware('auth')->group(function () {
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 
 });
+
 
