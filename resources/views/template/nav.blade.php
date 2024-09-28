@@ -41,7 +41,7 @@
 
       <!--==================== LOGIN ====================-->
       <div class="login" id="login">
-         <form action="{{route ('postLogin')}}" class="login__form" >
+         <form action="{{route ('postLogin')}}" class="login__form" method="POST">
             <h2 class="login__title">Log In</h2>
 
             <div class="login__group">
