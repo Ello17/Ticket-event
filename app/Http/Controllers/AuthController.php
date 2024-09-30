@@ -21,7 +21,7 @@ class AuthController extends Controller
     public function postlogin(Request $request){
 
         $data = $request->validate([
-            'username' => ['required'],
+            'email' => ['required'],
             'password' => ['required']
         ]);
 
@@ -50,7 +50,6 @@ class AuthController extends Controller
     {
         // Validasi inputan
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:3|confirmed',
@@ -62,19 +61,18 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-    
         // Jika validasi berhasil, buat user baru
         $user = User::create([
-            'name' => $request->input('name'),
             'email' => $request->input('email'),
             'username' => $request->input('username'),
             'password' => Hash::make($request->input('password')),
             'role' => $request->input('role'),
         ]);
     
-        Auth::login($user);
+        // Auth::login($user); // Jika ingin langsung login setelah register
     
-        return redirect()->route('homeCustomer')->with('notifikasi', 'Akun sukses dibuat');
+        return redirect()->route('home')->with('notifikasi', 'Akun sukses dibuat');
     }
+    
 }
 
