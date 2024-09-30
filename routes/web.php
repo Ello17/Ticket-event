@@ -25,6 +25,7 @@ Route::post('/postLogin', 'AuthController@postLogin')->name('postLogin');
 
 // ini buat customer
 Route::get('/', [CustomerController::class, 'home'])->name('home');
+Route::get('/detailEvent', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 
 Route::middleware('auth')->group(function () {
 

@@ -12,7 +12,7 @@
 @push('js')
 @endpush
 
-{{-- <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -61,6 +61,7 @@
                     <p>{{ $item->tanggal_event }}</p>
                     <p>{{ $item->lokasi_event }}</p>
                     <p>{{ $item->waktu_event }}</p>
+                    {{-- <a href="{{ route('detailEvent', $item->id) }}" class="btn btn-primary">Detail</a> --}}
                 </div>
             </div>
         </div>
@@ -115,5 +116,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
-</html> --}}
+</html> 
 
