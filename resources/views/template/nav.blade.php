@@ -41,12 +41,8 @@
 
       <!--==================== LOGIN ====================-->
       <div class="login" id="login">
-<<<<<<< HEAD
-         <form action="{{route ('postLogin')}}" class="login__form" >
-=======
          <form action="{{ Route('postLogin')}}" class="login__form" method="POST">
             @csrf
->>>>>>> a8f1a407d4bd626e929957a2757516c1dd884903
             <h2 class="login__title">Log In</h2>
 
             <div class="login__group">
