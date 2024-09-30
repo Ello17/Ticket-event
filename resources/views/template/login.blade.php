@@ -7,6 +7,9 @@
     <title>Login</title>
 </head>
 <body>
+
+
+
   <!--==================== LOGIN ====================-->
   <div class="login" id="login">
     <form action="{{route ('postLogin')}}" class="login__form" >
@@ -39,5 +42,8 @@
 
     <i class="ri-close-line login__close" id="login-close"></i>
  </div>
+
+
+ 
 </body>
 </html>

@@ -19,7 +19,9 @@
                <i class="ri-search-line nav__search" id="search-btn"></i>
 
                <!-- Login button -->
-               <i class="ri-user-line nav__login" href="{{ route('login') }}" id="login-btn"></i>
+               <a href="{{ route('login') }}">
+                  <i class="ri-user-line nav__login" id="login-btn"></i>
+              </a>
 
                <!-- Toggle button -->
                <div class="nav__toggle" id="nav-toggle">
