@@ -41,24 +41,29 @@
 
       <!--==================== LOGIN ====================-->
       <div class="login" id="login">
+<<<<<<< HEAD
          <form action="{{route ('postLogin')}}" class="login__form" >
+=======
+         <form action="{{ Route('postLogin')}}" class="login__form" method="POST">
+            @csrf
+>>>>>>> a8f1a407d4bd626e929957a2757516c1dd884903
             <h2 class="login__title">Log In</h2>
 
             <div class="login__group">
                <div>
-                  <label for="email" class="login__label">Email</label>
-                  <input type="email" placeholder="Write your email" id="email" class="login__input">
+                  <label for="username" class="login__label">Username</label>
+                  <input type="text" name="username" placeholder="Write your username" id="username" class="login__input">
                </div>
 
                <div>
                   <label for="password" class="login__label">Password</label>
-                  <input type="password" placeholder="Enter your password" id="password" class="login__input">
+                  <input type="password" name="password" placeholder="Enter your password" id="password" class="login__input">
                </div>
             </div>
 
             <div>
                <p class="login__signup">
-                  You do not have an account? <a href="#">Sign up</a>
+                  You do not have an account? <a href="{{ Route('register')}}">Sign up</a>
                </p>
 
                <a href="#" class="login__forgot">
