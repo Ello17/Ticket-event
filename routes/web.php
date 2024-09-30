@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,14 +17,18 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// ini route buat auth
+// ini route buat auth bisi gabisa pake yang ini berarti pake yang []
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
 
 //ini buat customer
 Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
 
-// Route::middleware('auth')->group(function () {
+// ini buat customer
+Route::get('/', [CustomerController::class, 'home'])->name('home');
+
+
+Route::middleware('auth')->group(function () {
 //ini buat admin
 // Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 
@@ -31,4 +36,6 @@ Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustom
 
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
+
+});
 
