@@ -67,6 +67,8 @@
         </div>
         @endforeach
     </div>
+    <a href="{{route('listEvent')}}">See All Event</a>
+
 </div>
 
 <script>

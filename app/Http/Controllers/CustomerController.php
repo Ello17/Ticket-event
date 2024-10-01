@@ -16,9 +16,19 @@ class CustomerController extends Controller
 
     }
 
-    public function detailEvent(Event $event)
+    public function detailEvent($id)
     {
-        $tikets = Tiket::where('event_id', $event->id)->get();
-        return view('customer.detailEvent', compact('event', 'tikets'));
+        $event = Event::find($id); 
+        $tiket = Tiket::where('event_id', $id)->get();
+        return view('customer.detailEvent', compact('event', 'tiket'));
     }
+
+    public function listEvents()
+{
+   
+    $events = Event::all();
+    return view('customer.listEvent', compact('events'));
+}
+
+    
 }
