@@ -61,7 +61,7 @@
                     <p>{{ $item->tanggal_event }}</p>
                     <p>{{ $item->lokasi_event }}</p>
                     <p>{{ $item->waktu_event }}</p>
-                    {{-- <a href="{{ route('detailEvent', $item->id) }}" class="btn btn-primary">Detail</a> --}}
+                    <a href="{{ route('detailEvent', $item->id) }}" class="btn btn-primary">Detail</a>
                 </div>
             </div>
         </div>

@@ -1,4 +1,3 @@
-{{-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +10,7 @@
 </head>
 <body >
 
-    @include('template.nav')
+ 
 
     <div class="container mt-5 mx-auto mb-4">
     <h2 class="text-center text-white mb-4">{{ $event->nama_event }}</h2>
@@ -73,9 +72,9 @@
                 </div>
             </form>
             @endforeach --}}
-        {{-- </div>
+        </div>
     </div>
 </div>
 <script src="{{asset('components/js/nav.js')}}"></script>
 </body>
-</html> --}} 
+</html> 
