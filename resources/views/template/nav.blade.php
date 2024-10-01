@@ -43,12 +43,10 @@
 
       <!--==================== LOGIN ====================-->
       <div class="login" id="login">
-<<<<<<<<< Temporary merge branch 1
-         <form action="{{route ('postLogin')}}" class="login__form" >
-=========
+
          <form action="{{ Route('postLogin')}}" class="login__form" method="POST">
             @csrf
->>>>>>>>> Temporary merge branch 2
+
             <h2 class="login__title">Log In</h2>
 
             <div class="login__group">

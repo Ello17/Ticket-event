@@ -17,13 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
-<<<<<<<<< Temporary merge branch 1
+
 // ini route buat auth
 
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
-=========
->>>>>>>>> Temporary merge branch 2
+
 
 //ini buat customer
 Route::get('/homeCustomer', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
