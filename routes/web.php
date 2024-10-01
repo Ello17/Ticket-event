@@ -17,10 +17,24 @@ use Illuminate\Support\Facades\Route;
 
 
 
+<<<<<<<<< Temporary merge branch 1
 // ini route buat auth
-Route::get('/login', 'AuthController@login')->name('login');
-Route::post('/postLogin', 'AuthController@postLogin')->name('postLogin');
 
+Route::get('/login', 'AuthController@login')->name('login');
+Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
+=========
+>>>>>>>>> Temporary merge branch 2
+
+//ini buat customer
+Route::get('/homeCustomer', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
+// Register
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/postRegister', [AuthController::class, 'postRegister'])->name('postRegister');
+// Login
+Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+
+// Route::middleware('auth')->group(function () {
 
 
 // ini buat customer
