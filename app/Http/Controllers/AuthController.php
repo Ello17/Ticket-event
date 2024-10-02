@@ -18,27 +18,37 @@ class AuthController extends Controller
         return view('template.login');
     }
 
-    public function postlogin(Request $request){
 
-        $data = $request->validate([
-            'email' => ['required'],
-            'password' => ['required']
-        ]);
-
-        if (Auth::attempt($data)){
-            $user = Auth::user();
-
-            if ($user->role === 'admin'){
-                return redirect()->route('admin.homeAdmin');
-            } else if ($user->role === 'customer'){
-                return redirect()->route('customer.home');
-            } else if ($user->role === 'creator'){
-                return redirect()->route('creator.homeCreator');
+    public function postLogin(Request $request)
+    {
+    
+            $data = $request->validate([
+                'email' => ['required'],
+                'password' => ['required'],
+            ]);
+    
+    
+            if (Auth::attempt($data)) {
+                $user = Auth::user();
+    
+                if ($user->role === 'admin') {
+                    return redirect()->route('homeAdmin');
+                } else if ($user->role === 'customer') {
+                    return redirect()->intended(route('home'));
+                    if (session()->has('.intenurlded')) {
+                        $intendedUrl = session('url.intended');
+                        session()->forget('url.intended');
+                        return redirect($intendedUrl);
+                    }
+                    return redirect()->route('home');
+                } else if ($user->role === 'creator'){
+                    return redirect()->route('creator.homeCreator');
+                }
+    
+            } else {
+                return redirect()->route('login')->with('notifikasi', 'Username atau password salah');
             }
-
-        } else {
-            return redirect()->route('login')->with('notifikasi', 'Username atau password salah');
-        }
+    
     }
 
 

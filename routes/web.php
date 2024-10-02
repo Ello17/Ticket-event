@@ -16,13 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-<<<<<<< HEAD
+
 
 
 //ini buat customer
 Route::get('/homeCustomer', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
-=======
->>>>>>> e19bb815aa017baaacac24188c51ae9e4ccdb3ae
+
 // Register
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/postRegister', [AuthController::class, 'postRegister'])->name('postRegister');
