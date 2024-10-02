@@ -28,9 +28,10 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 
 // ini buat customer
-Route::get('/homeCustomer', 'CustomerController@homeCustomer')->name('homeCustomer');
+Route::get('/', 'CustomerController@homeCustomer')->name('homeCustomer');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
+Route::get('/hapusUser',[AdminController::class, 'hapusUser'])->name('hapusUser');
 
 
 Route::middleware('auth')->group(function () {

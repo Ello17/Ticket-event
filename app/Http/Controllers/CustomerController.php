@@ -10,7 +10,7 @@ class CustomerController extends Controller
 {
     //
 
-    function home(){
+    function homeCustomer(){
         $data= Event::all();
         return view('customer.homeCustomer', compact('data'));
 
@@ -18,17 +18,17 @@ class CustomerController extends Controller
 
     public function detailEvent($id)
     {
-        $event = Event::find($id); 
+        $event = Event::find($id);
         $tiket = Tiket::where('event_id', $id)->get();
         return view('customer.detailEvent', compact('event', 'tiket'));
     }
 
     public function listEvents()
 {
-   
+
     $events = Event::all();
     return view('customer.listEvent', compact('events'));
 }
 
-    
+
 }
