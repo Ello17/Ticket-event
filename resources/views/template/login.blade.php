@@ -1,6 +1,7 @@
 @extends('layouts.app2')
 @push('css')
 <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endpush
     @section('title', 'Sign Up')
     @section('content')
