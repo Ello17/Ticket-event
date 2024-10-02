@@ -37,7 +37,7 @@
                 </div>
             </form>
             <p class="signup_login">
-                Have an account? <a href="#">Sign up</a>
+                Have an account? <a href="{{route('login')}}">Sign in</a>
             </p>
         </div>
     </div>
