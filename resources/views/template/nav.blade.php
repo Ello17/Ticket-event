@@ -28,6 +28,12 @@
 
           <!-- Login button -->
 
+<<<<<<< HEAD
+         <i class="ri-close-line search__close" id="search-close"></i>
+      </div>
+  <!--==================== LOGIN ====================-->
+      <div class="login" id="login">
+=======
           <!-- Toggle button -->
        </div> --}}
     </nav>
@@ -39,6 +45,7 @@
        <i class="ri-search-line search__icon"></i>
        <input type="search" placeholder="What are you looking for?" class="search__input">
     </form>
+>>>>>>> eb0529d6f1d9567b7e9604b4dfafc47192f9e30b
 
     <i class="ri-close-line search__close" id="search-close"></i>
  </div>

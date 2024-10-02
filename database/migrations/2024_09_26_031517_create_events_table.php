@@ -21,7 +21,7 @@ class CreateEventsTable extends Migration
             $table->string('tanggal_event');
             $table->string('waktu_event');
             $table->string('lokasi_event');
-            $table->string('deskripsi_event');
+            $table->text('deskripsi_event');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

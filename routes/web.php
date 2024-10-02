@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
+
+
+//ini buat customer
+Route::get('/homeCustomer', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
+
 // Register
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/postRegister', [AuthController::class, 'postRegister'])->name('postRegister');
