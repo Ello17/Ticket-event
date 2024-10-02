@@ -38,14 +38,18 @@
                         @csrf
                         <label for="nama_event">Nama Event</label>
                         <input type="text" required name="nama_event" class="form-control">
-                        {{-- <label for="nama_event">Nama Penyelengg</label>
-                        <input type="text" required name="nama_event" class="form-control"> --}}
+                        <label for="nama_event">Nama Penyelenggara</label>
+                        <input type="text" required name="nama_penyelenggara" class="form-control">
+                        <label for="nama_event">Tanggal Event</label>
+                        <input type="date" required name="tanggal_event" class="form-control">
+                        <label for="nama_event">Waktu Event</label>
+                        <input type="time" required name="waktu_event" class="form-control">
                         <label for="location">Lokasi</label>
-                        <input type="text" required name="location" class="form-control">
+                        <input type="text" required name="lokasi_event" class="form-control">
                         <label for="description">Deskripsi</label>
-                        <input type="text" required name="description" class="form-control">
-                        <label for="image">Gambar Hotel</label>
-                        <input type="file" accept="image/*" name="image" class="form-control">
+                        <input type="text" required name="deskripsi_event" class="form-control">
+                        <label for="image">Poster Event</label>
+                        <input type="file" accept="image/*" name="cover_event" class="form-control">
                         
                         <button class="btn btn-success mt-3" > Tambah</button>
                        

@@ -54,6 +54,10 @@
             <div class="card border-0 mt-4 p-3 shadow">
                 <h4>Tabel Event</h4>
                 <hr>
+                <h4><a href="{{ route('tambahEvent') }}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Tambah Event
+                </a> Tambah Event</h4>
+                <hr>
                 @if (session('notifikasi'))
                     <div class="alert alert-success">
                         {{ session('notifikasi') }}
@@ -82,7 +86,10 @@
                             <td>{{ $item->tanggal_event }}</td>
                             <td>{{ $item->waktu_event }}</td>
                             <td>{{ $item->deskripsi_event }}</td>
-                            <td><a href="#">Delete</a></td>
+                            <td><a href="#">Delete</a>
+                                <a href="{{route('editEvent')}}">Edit</a>
+                            </td>
+                            
                         </tr>
                         @endforeach
                     </tbody>
