@@ -69,7 +69,7 @@ class AuthController extends Controller
             'role' => $request->input('role'),
         ]);
     
-        Auth::login($user); 
+        // Auth::login($user); // Jika ingin langsung login setelah register
     
         return redirect()->route('home')->with('notifikasi', 'Akun sukses dibuat');
     }

@@ -17,5 +17,6 @@
 @yield('content')
 </body>
 <script src="{{asset('js/app.js')}}"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 @stack('js')
 </html>
