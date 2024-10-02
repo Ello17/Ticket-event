@@ -6,7 +6,7 @@
     @section('title', 'Tiket Mudah hanya di Tiket Mudah')
     @section('content')
 
-    {{-- <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+<div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img src="{{asset('components/asset/b1.jpeg')}}" class="d-block w-70" alt="Slide 1">
@@ -59,7 +59,7 @@
             @endforeach
         </div>
         <a href="{{route('listEvent')}}">See All Event</a>
-    </div> --}}
+    </div>
 
     @endsection
 @push('js')

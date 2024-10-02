@@ -79,10 +79,10 @@
                 <h5 class="card-title mb-0">Tabel List Event</h5>
             </div>
             @if(Session::has('notifikasi'))
-        <div class="alert alert-success">
-        {{ Session::get('notifikasi') }}
-    </div>
-@endif
+            <div class="alert alert-success">
+            {{ Session::get('notifikasi') }}
+             </div>
+            @endif
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <table class="table table-striped table-bordered">

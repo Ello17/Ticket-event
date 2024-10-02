@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
+
+//ini buat customer
+Route::get('/homeCustomer', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
+
+
 // ini route buat auth bisi gabisa pake yang ini berarti pake yang []
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postLogin', 'AuthController@postLogin')->name('postlogin');
@@ -48,6 +54,7 @@ Route::get('/kelolaUser', 'AdminController@kelolaUser')->name('kelolaUser');
 Route::get('/admin/edit-list/{id}', [App\Http\Controllers\AdminController::class, 'editList'])->name('admin.editList');
 Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
 Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
+// Route::get('/detailList/{id}', [AdminController::class, 'detailList'])->name('detailList');
 // Route::middleware('auth')->group(function () {
 
 
