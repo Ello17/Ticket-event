@@ -28,13 +28,13 @@
                     </button>
                     <div class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <div class="py-1" role="none">
-                            <a href="{{ Route('homeProfile')}}" class="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-purple-100 flex items-center" role="menuitem">
+                            <a href="" class="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-purple-100 flex items-center" role="menuitem">
                                 <img class="w-12 sm:w-10 mr-3 rounded-full" src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="User Image"><span>{{ Auth::user()->name }}</span></a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100" role="menuitem"><i class="fa-solid fa-gear"></i> Settings</a>
                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-purple-100" role="menuitem" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
-                            <form id="logout-form" action="{{ Route('logout') }}" method="POST" style="display: none;">
+                            <form id="logout-form" action="" method="POST" style="display: none;">
                                 @csrf
                             </form>
                         </div>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             @auth
-            <a href="{{Route('homeProfile')}}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Your Profile</a>
+            <a href="" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Your Profile</a>
             <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Settings</a>
             <a href="" class="block px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-gray-100" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
             @else
