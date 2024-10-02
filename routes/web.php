@@ -42,9 +42,8 @@ Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('lis
 
 
 
-Route::middleware('auth')->group(function () {
-=======
->>>>>>> e19bb815aa017baaacac24188c51ae9e4ccdb3ae
+// Route::middleware('auth')->group(function () {
+
 //ini buat admin
 // Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 
