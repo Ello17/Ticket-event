@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,14 +31,14 @@ Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('lis
 
 
 
-// Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {
 
 //ini buat admin
 // Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 
-//ini buat creator
-// Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
+// ini buat creator
+Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])->name('homeCreator');
 
-// });
+});
 
 
