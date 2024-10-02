@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,7 @@ Route::post('/postRegister', [AuthController::class, 'postRegister'])->name('pos
 Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 
+
 // ini buat customer
 Route::get('/', [CustomerController::class, 'home'])->name('home');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
@@ -31,13 +33,24 @@ Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('lis
 
 
 
+//ROUTE ADMIN SAMA KREATOR ITU SIMPENNYA DI DALAM MIDDLEWARE
 Route::middleware('auth')->group(function () {
 
-//ini buat admin
-// Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 
-// ini buat creator
-Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])->name('homeCreator');
+//admin
+Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
+//list
+Route::get('/admin/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
+Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
+Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
+Route::get('/kelolaUser', 'AdminController@kelolaUser')->name('kelolaUser');
+
+//ini buat creator
+Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
+Route::get('/tambahEvent', 'CreatorController@tambahEvent')->name('tambahEvent');
+Route::post('/postTambahEvent', 'CreatorController@postTambahEvent')->name('postTambahEvent');
+Route::get('/editEvent', 'CreatorController@editEvent')->name('editEvent');
+Route::post('/postEditEvent', 'CreatorController@postEditEvent')->name('postEditEvent');
 
 });
 
