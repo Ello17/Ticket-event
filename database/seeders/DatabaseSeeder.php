@@ -26,8 +26,20 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
         User::create([
-            'username' => 'Creator',
-            'email' => 'creator@gmail.com',
+            'username' => 'Creator1',
+            'email' => 'creator1@gmail.com',
+            'password' => bcrypt('321'),
+            'role' => 'creator',
+        ]);
+        User::create([
+            'username' => 'Creator2',
+            'email' => 'creator2@gmail.com',
+            'password' => bcrypt('321'),
+            'role' => 'creator',
+        ]);
+        User::create([
+            'username' => 'Creator3',
+            'email' => 'creator3@gmail.com',
             'password' => bcrypt('321'),
             'role' => 'creator',
         ]);
@@ -68,7 +80,7 @@ class DatabaseSeeder extends Seeder
             'waktu_event' => '10:00',
             'lokasi_event' => 'jalan kemiri',
             'deskripsi_event' => 'ini adalah sebuah event contoh',
-            'user_id'=> '2'
+            'user_id'=> '3'
         ]);
         Event::create([
             'nama_penyelenggara' => 'cumi',
@@ -78,7 +90,7 @@ class DatabaseSeeder extends Seeder
             'waktu_event' => '10:00',
             'lokasi_event' => 'jalan kemiri',
             'deskripsi_event' => 'ini adalah sebuah event contoh',
-            'user_id'=> '2'
+            'user_id'=> '3'
         ]);
 
         Tiket::create([

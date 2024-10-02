@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
@@ -51,16 +52,14 @@ Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapu
 
 
 
-// Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {
 
 //ini buat admin
 // Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 
 //ini buat creator
-
-// Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 
-// });
+});
 
 
