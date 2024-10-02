@@ -19,9 +19,9 @@
                <i class="ri-search-line nav__search" id="search-btn"></i>
 
                <!-- Login button -->
-               <a href="{{ route('login') }}">
+               {{-- <a href="{{ route('login') }}"> --}}
                   <i class="ri-user-line nav__login" id="login-btn"></i>
-              </a>
+              {{-- </a> --}}
 
                <!-- Toggle button -->
                <div class="nav__toggle" id="nav-toggle">
@@ -42,28 +42,33 @@
       </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> e19bb815aa017baaacac24188c51ae9e4ccdb3ae
       <!--==================== LOGIN ====================-->
       <div class="login" id="login">
+
          <form action="{{ Route('postLogin')}}" class="login__form" method="POST">
             @csrf
+
             <h2 class="login__title">Log In</h2>
 
             <div class="login__group">
                <div>
-                  <label for="username" class="login__label">Username</label>
-                  <input type="text" name="username" placeholder="Write your username" id="username" class="login__input">
+                  <label for="email" class="login__label">Email</label>
+                  <input type="email" placeholder="Write your email" id="email" class="login__input">
                </div>
 
                <div>
                   <label for="password" class="login__label">Password</label>
-                  <input type="password" name="password" placeholder="Enter your password" id="password" class="login__input">
+                  <input type="password" placeholder="Enter your password" id="password" class="login__input">
                </div>
             </div>
 
             <div>
                <p class="login__signup">
-                  You do not have an account? <a href="{{ Route('register')}}">Sign up</a>
+                  You do not have an account? <a href="#">Sign up</a>
                </p>
 
                <a href="#" class="login__forgot">
@@ -77,5 +82,8 @@
          <i class="ri-close-line login__close" id="login-close"></i>
       </div>
 
+<<<<<<< HEAD
 >>>>>>> a8f1a407d4bd626e929957a2757516c1dd884903
+=======
+>>>>>>> e19bb815aa017baaacac24188c51ae9e4ccdb3ae
 <script src="{{asset('components/js/nav.js')}}"></script>

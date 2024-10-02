@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+<<<<<<< HEAD
 
 
 //ini buat customer
 Route::get('/homeCustomer', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
+=======
+>>>>>>> e19bb815aa017baaacac24188c51ae9e4ccdb3ae
 // Register
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/postRegister', [AuthController::class, 'postRegister'])->name('postRegister');
@@ -27,13 +30,14 @@ Route::post('/postRegister', [AuthController::class, 'postRegister'])->name('pos
 Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 
-// Route::middleware('auth')->group(function () {
-
-
 // ini buat customer
 Route::get('/', [CustomerController::class, 'home'])->name('home');
+Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
+Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
 
-Route::middleware('auth')->group(function () {
+
+
+// Route::middleware('auth')->group(function () {
 
 //ini buat admin
 // Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
@@ -41,6 +45,6 @@ Route::middleware('auth')->group(function () {
 //ini buat creator
 // Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 
-});
+// });
 
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,8 @@
 
   <!--==================== LOGIN ====================-->
   <div class="login" id="login">
-    <form action="{{route ('postLogin')}}" class="login__form" >
+    <form action="{{route ('postLogin')}}" class="login__form" method="POST">
+        @csrf
        <h2 class="login__title">Log In</h2>
 
        <div class="login__group">
@@ -46,4 +47,4 @@
 
  
 </body>
-</html>
+</html> --}}
