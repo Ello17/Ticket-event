@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,8 +37,16 @@ Route::get('/', [CustomerController::class, 'home'])->name('home');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
 
+//admin
+Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 
+//kelolauser
+Route::get('/kelolaUser', 'AdminController@kelolaUser')->name('kelolaUser');
 
+//list
+Route::get('/admin/edit-list/{id}', [App\Http\Controllers\AdminController::class, 'editList'])->name('admin.editList');
+Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
+Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
 // Route::middleware('auth')->group(function () {
 
 
