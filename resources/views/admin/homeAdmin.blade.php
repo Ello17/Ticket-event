@@ -18,6 +18,8 @@
             color: #fff;
             padding-top: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; /* Sidebar bisa di-scroll vertikal */
+            z-index: 1000; /* Pastikan sidebar selalu di atas elemen lain */
         }
 
         .sidebar h4 {
@@ -42,6 +44,7 @@
         .content {
             margin-left: 270px; /* Ensures content clears the sidebar */
             padding: 20px;
+            overflow-x: hidden; /* Mencegah konten overflow secara horizontal */
         }
 
         .card {
@@ -50,8 +53,9 @@
 
         /* Ensuring table covers full width */
         .table-responsive {
-            max-width: 100%;
-            overflow-x: auto;
+            max-width: 100%; /* Menjaga tabel dalam lebar container */
+            overflow-x: auto; /* Tabel bisa di-scroll horizontal */
+            white-space: nowrap; /* Agar tabel tidak terpotong */
         }
     </style>
 </head>
@@ -80,44 +84,62 @@
             </div>
             @if(Session::has('notifikasi'))
             <div class="alert alert-success">
-            {{ Session::get('notifikasi') }}
-             </div>
+                {{ Session::get('notifikasi') }}
+            </div>
             @endif
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Cover</th>
-                            <th>Nama Penyelenggara</th>
-                            <th>Nama Event</th>
-                            <th>Tanggal Event</th>
-                            <th>Waktu Event</th>
-                            <th>Lokasi Event</th>
-                            <th>Deskripsi Event</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($events as $event)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td><img src="{{ asset($event->cover_event) }}" alt="Cover" class="card-img-top" style="width: 100px;"></td>
-                                <td>{{ $event->nama_penyelenggara }}</td>
-                                <td>{{ $event->nama_event }}</td>
-                                <td>{{ $event->tanggal_event }}</td>
-                                <td>{{ $event->waktu_event }}</td>
-                                <td>{{ $event->lokasi_event }}</td>
-                                <td>{{ $event->deskripsi_event }}</td>
-                                <td class="actions">
-                                    <a href="{{ route('admin.editList', $event->id) }}" class="btn btn-outline-primary">Edit</a>
-                                    <a href="{{ route('hapusList', $event->id) }}" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Hapus</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>                
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Cover</th>
+                                    <th>Nama Penyelenggara</th>
+                                    <th>Nama Event</th>
+                                    <th>Tanggal Event</th>
+                                    <th>Waktu Event</th>
+                                    <th>Lokasi Event</th>
+                                    <th>Deskripsi Event</th>
+                                    <th>Harga</th>
+                                    <th>Kategori</th>
+                                    <th>Jumlah Tiket</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($events as $e)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td><img src="{{ asset($e->cover_event) }}" alt="Cover" class="card-img-top" style="width: 100px;"></td>
+                                    <td>{{ $e->nama_penyelenggara }}</td>
+                                    <td>{{ $e->nama_event }}</td>
+                                    <td>{{ $e->tanggal_event }}</td>
+                                    <td>{{ $e->waktu_event }}</td>
+                                    <td>{{ $e->lokasi_event }}</td>
+                                    <td>{{ $e->deskripsi_event }}</td>
+
+                                    <!-- Cek apakah event memiliki tiket -->
+                                    @if($e->tiket->isNotEmpty())
+                                        @foreach($e->tiket as $tiket)
+                                            <td>{{ $tiket->harga_tiket }}</td>
+                                            <td>{{ $tiket->kategori_tiket }}</td>
+                                            <td>{{ $tiket->jumlah_tiket }}</td>
+                                        @endforeach
+                                    @else
+                                        <td colspan="3">Tidak ada tiket</td> <!-- Jika tidak ada tiket -->
+                                    @endif
+
+                                    <td class="actions">
+                                        <a href="" class="btn btn-outline-primary">Edit</a>
+                                        <a href="" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Hapus</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

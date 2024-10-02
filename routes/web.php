@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
 //ini buat customer
 Route::get('/homeCustomer', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 
@@ -46,14 +47,12 @@ Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('lis
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
-
-//kelolauser
-Route::get('/kelolaUser', 'AdminController@kelolaUser')->name('kelolaUser');
-
 //list
-Route::get('/admin/edit-list/{id}', [App\Http\Controllers\AdminController::class, 'editList'])->name('admin.editList');
-Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
-Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
+// Route::get('/admin/edit-list/{id}', [App\Http\Controllers\AdminController::class, 'editList'])->name('admin.editList');
+// Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
+// Route::get('/hapusList/{event}', [AdminController::class, 'hapusList'])->name('hapusList');
+Route::get('/kelolaUser',[AdminController::class, 'kelolaUser'])->name('kelolaUser');
+Route::get('/hapusUser/{user}', [AdminController::class, 'hapusUser'])->name('hapusUser');
 // Route::get('/detailList/{id}', [AdminController::class, 'detailList'])->name('detailList');
 // Route::middleware('auth')->group(function () {
 
