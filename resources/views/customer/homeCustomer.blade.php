@@ -1,11 +1,25 @@
-<!DOCTYPE html>
+@extends('layouts.app')
+@push('css')
+<link rel="stylesheet" href="{{asset('components/css/homeCustomer.css')}}">
+@endpush
+    @section('title', 'Tiket Mudah hanya di Tiket Mudah')
+    @section('content')
+    <section>
+        
+    </section>
+
+    @endsection
+@push('js')
+@endpush
+
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Home Customer</title>
+    <title></title>
 </head>
 <body>
 
@@ -28,7 +42,7 @@
                 <div class="carousel-images d-flex justify-content-center">
                     <img src="{{ asset('components/asset/b4.jpeg') }}" alt="Slide 1" class="img-fluid" style="max-width: 400px;">
                     <img src="{{ asset('components/asset/b5.jpeg') }}" alt="Slide 2" class="img-fluid" style="max-width: 400px;">
-                    <img src="{{ asset('components/asset/b6.jpeg') }}" alt="Slide 3" class="img-fluid" style="max-width: 400px;">
+                    <img src="{{ asset('components/asset/b1.jpeg') }}" alt="Slide 3" class="img-fluid" style="max-width: 400px;">
                 </div>
                 <button class="btn btn-primary mt-2" onclick="prevSlide(2)">Previous</button>
                 <button class="btn btn-primary mt-2" onclick="nextSlide(2)">Next</button>
@@ -47,11 +61,14 @@
                     <p>{{ $item->tanggal_event }}</p>
                     <p>{{ $item->lokasi_event }}</p>
                     <p>{{ $item->waktu_event }}</p>
+                    <a href="{{ route('detailEvent', $item->id) }}" class="btn btn-primary">Detail</a>
                 </div>
             </div>
         </div>
         @endforeach
     </div>
+    <a href="{{route('listEvent')}}">See All Event</a>
+
 </div>
 
 <script>
@@ -101,4 +118,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
-</html>
+</html> 
+
