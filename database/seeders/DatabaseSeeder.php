@@ -93,17 +93,7 @@ class DatabaseSeeder extends Seeder
             'deskripsi_event' => 'Feel the Beat of the Sounds tahun ini mengambil tema Gandrung Alunan Nada dalam Senandung Relungan Jiwa yang siap untuk memberikan kesan menyentuh hati dan kebahagiaan menyambut akhir tahun 2024. Selain ngonser, ada lomba-lomba seputar seni dan budaya yang tak kalah serunya. Persiapkan dirimu untuk mengikuti serangkaian acara FBS FEST 2024 di Lapangan FBS Universitas Negeri Surabaya, Lidah Wetan.',
             'user_id'=> '2'
         ]);
-        Event::create([
-            'nama_penyelenggara' => 'cumi',
-            'cover_event' => 'components/asset/s4.jpeg',
-            'nama_event' => 'event cumi',
-            'tanggal_event' => '2022-02-25',
-            'waktu_event' => '10:00',
-            'lokasi_event' => 'jalan kemiri',
-            'deskripsi_event' => 'ini adalah sebuah event contoh',
-            'user_id'=> '3'
 
-        ]);
         Event::create([
             'nama_penyelenggara' => 'Weekfest',
             'cover_event' => 'components/asset/offline5.jpg',
