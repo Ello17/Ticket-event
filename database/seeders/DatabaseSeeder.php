@@ -73,7 +73,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Event::create([
-<<<<<<<<< Temporary merge branch 1
             'nama_penyelenggara' => 'jtc festival',
             'cover_event' => 'components/asset/offline3.jpg',
             'nama_event' => 'JFEST Vol.8 20204',
@@ -92,7 +91,9 @@ class DatabaseSeeder extends Seeder
             'lokasi_event' => 'Lapangan FBS UNESA Lidah Wetan, Surabaya',
             'deskripsi_event' => 'Feel the Beat of the Sounds tahun ini mengambil tema Gandrung Alunan Nada dalam Senandung Relungan Jiwa yang siap untuk memberikan kesan menyentuh hati dan kebahagiaan menyambut akhir tahun 2024. Selain ngonser, ada lomba-lomba seputar seni dan budaya yang tak kalah serunya. Persiapkan dirimu untuk mengikuti serangkaian acara FBS FEST 2024 di Lapangan FBS Universitas Negeri Surabaya, Lidah Wetan.',
             'user_id'=> '2'
-=========
+        ]);
+
+            Event::create([
             'nama_penyelenggara' => 'nae',
             'cover_event' => 'components/asset/s3.jpeg',
             'nama_event' => 'event nae',
@@ -111,7 +112,7 @@ class DatabaseSeeder extends Seeder
             'lokasi_event' => 'jalan kemiri',
             'deskripsi_event' => 'ini adalah sebuah event contoh',
             'user_id'=> '3'
->>>>>>>>> Temporary merge branch 2
+
         ]);
         Event::create([
             'nama_penyelenggara' => 'Weekfest',

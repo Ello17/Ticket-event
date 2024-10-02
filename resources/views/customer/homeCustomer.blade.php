@@ -5,13 +5,8 @@
 @endpush
     @section('title', 'Tiket Mudah hanya di Tiket Mudah')
     @section('content')
-<<<<<<< HEAD
-    <section>
 
-    </section>
-=======
-
-    {{-- <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+     <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img src="{{asset('components/asset/b1.jpeg')}}" class="d-block w-70" alt="Slide 1">
@@ -64,8 +59,7 @@
             @endforeach
         </div>
         <a href="{{route('listEvent')}}">See All Event</a>
-    </div> --}}
->>>>>>> eb0529d6f1d9567b7e9604b4dfafc47192f9e30b
+    </div>
 
     @endsection
 @push('js')

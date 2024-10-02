@@ -82,7 +82,7 @@
                             <td>{{ $item->tanggal_event }}</td>
                             <td>{{ $item->waktu_event }}</td>
                             <td>{{ $item->deskripsi_event }}</td>
-                            <td><a href="{{route('detailEvent', $item->id)}}">Detail</a></td>
+                            <td><a href="#">Delete</a></td>
                         </tr>
                         @endforeach
                     </tbody>
