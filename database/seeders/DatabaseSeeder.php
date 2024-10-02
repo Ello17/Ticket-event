@@ -73,7 +73,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Event::create([
-
             'nama_penyelenggara' => 'jtc festival',
             'cover_event' => 'components/asset/offline3.jpg',
             'nama_event' => 'JFEST Vol.8 20204',
@@ -94,6 +93,27 @@ class DatabaseSeeder extends Seeder
             'user_id'=> '2'
         ]);
 
+            Event::create([
+            'nama_penyelenggara' => 'nae',
+            'cover_event' => 'components/asset/s3.jpeg',
+            'nama_event' => 'event nae',
+            'tanggal_event' => '2022-02-25',
+            'waktu_event' => '10:00',
+            'lokasi_event' => 'jalan kemiri',
+            'deskripsi_event' => 'ini adalah sebuah event contoh',
+            'user_id'=> '3'
+        ]);
+        Event::create([
+            'nama_penyelenggara' => 'cumi',
+            'cover_event' => 'components/asset/s4.jpeg',
+            'nama_event' => 'event cumi',
+            'tanggal_event' => '2022-02-25',
+            'waktu_event' => '10:00',
+            'lokasi_event' => 'jalan kemiri',
+            'deskripsi_event' => 'ini adalah sebuah event contoh',
+            'user_id'=> '3'
+
+        ]);
         Event::create([
             'nama_penyelenggara' => 'Weekfest',
             'cover_event' => 'components/asset/offline5.jpg',
@@ -159,62 +179,62 @@ class DatabaseSeeder extends Seeder
 
         Tiket::create([
            'kategori_tiket' =>'offline',
-           'harga_tiket' =>'35000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>35000,
+           'jumlah_tiket' =>100,
            'event_id' => '1'
         ]);
         Tiket::create([
            'kategori_tiket' =>'offline',
-           'harga_tiket' =>'200000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>200000,
+           'jumlah_tiket' =>100,
            'event_id' => '2'
         ]);
         Tiket::create([
            'kategori_tiket' =>'offline',
-           'harga_tiket' =>'75000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>75000,
+           'jumlah_tiket' =>100,
            'event_id' => '3'
         ]);
         Tiket::create([
            'kategori_tiket' =>'offline',
-           'harga_tiket' =>'10000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>10000,
+           'jumlah_tiket' =>100,
            'event_id' => '4'
         ]);
         Tiket::create([
            'kategori_tiket' =>'offline',
-           'harga_tiket' =>'55000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>55000,
+           'jumlah_tiket' =>100,
            'event_id' => '5'
         ]);
         Tiket::create([
            'kategori_tiket' =>'online',
-           'harga_tiket' =>'50000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>50000,
+           'jumlah_tiket' =>100,
            'event_id' => '6'
         ]);
         Tiket::create([
            'kategori_tiket' =>'online',
-           'harga_tiket' =>'30000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>30000,
+           'jumlah_tiket' =>100,
            'event_id' => '7'
         ]);
         Tiket::create([
            'kategori_tiket' =>'online',
-           'harga_tiket' =>'37000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>37000,
+           'jumlah_tiket' =>100,
            'event_id' => '8'
         ]);
         Tiket::create([
            'kategori_tiket' =>'online',
-           'harga_tiket' =>'22000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>22000,
+           'jumlah_tiket' =>100,
            'event_id' => '9'
         ]);
         Tiket::create([
            'kategori_tiket' =>'online',
-           'harga_tiket' =>'25000',
-           'jumlah_tiket' =>'100',
+           'harga_tiket' =>25000,
+           'jumlah_tiket' =>100,
            'event_id' => '10'
         ]);
 
