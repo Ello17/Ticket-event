@@ -1,6 +1,6 @@
 <header class="header" id="header">
     <nav class="nav container">
-        <a href="{{route('home')}}" class="nav__logo"><img src="{{asset('components/asset/logo/512.png')}}"></a>
+    <img src="{{asset('components/asset/logo/512.png')}}" class="image">
 
         <div class="nav__menu" id="nav-menu">
           <ul class="nav__list">

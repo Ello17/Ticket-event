@@ -18,28 +18,29 @@ class AuthController extends Controller
         return view('template.login');
     }
 
-    public function postlogin(Request $request){
 
-        $data = $request->validate([
-            'email' => ['required'],
-            'password' => ['required']
-        ]);
+    public function postLogin(Request $request)
+    {
+    $data = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
-        if (Auth::attempt($data)){
-            $user = Auth::user();
+    if (Auth::attempt($data)) {
+        $user = Auth::user();
 
-            if ($user->role === 'admin'){
-                return redirect()->route('admin.homeAdmin');
-            } else if ($user->role === 'customer'){
-                return redirect()->route('customer.home');
-            } else if ($user->role === 'creator'){
-                return redirect()->route('creator.homeCreator');
-            }
-
-        } else {
-            return redirect()->route('login')->with('notifikasi', 'Username atau password salah');
+        if ($user->role === 'admin') {
+            return redirect()->route('homeAdmin');
+        } else if ($user->role === 'customer') {
+            return redirect()->intended(route('home')); 
+        } else if ($user->role === 'creator') {
+            return redirect()->route('creator.homeCreator');
         }
+    } else {
+        return redirect()->route('login')->with('notifikasi', 'Email atau password salah');
     }
+    }
+
 
 
     public function register() {
@@ -48,7 +49,7 @@ class AuthController extends Controller
 
     public function postRegister(Request $request)
     {
-        // Validasi inputan
+       
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users',
             'username' => 'required|string|max:255|unique:users',
@@ -56,12 +57,11 @@ class AuthController extends Controller
             'role' => 'required|string',
         ]);
     
-        // Jika validasi gagal, kembali ke form dengan error
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-        // Jika validasi berhasil, buat user baru
         $user = User::create([
             'email' => $request->input('email'),
             'username' => $request->input('username'),
