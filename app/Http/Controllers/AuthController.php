@@ -34,7 +34,7 @@ class AuthController extends Controller
         } else if ($user->role === 'customer') {
             return redirect()->intended(route('home')); 
         } else if ($user->role === 'creator') {
-            return redirect()->route('creator.homeCreator');
+            return redirect()->route('homeCreator');
         }
     } else {
         return redirect()->route('login')->with('notifikasi', 'Email atau password salah');
@@ -69,7 +69,7 @@ class AuthController extends Controller
             'role' => $request->input('role'),
         ]);
     
-        Auth::login($user); // Jika ingin langsung login setelah register
+        // Auth::login($user); // Jika ingin langsung login setelah register
     
         return redirect()->route('home')->with('notifikasi', 'Akun sukses dibuat');
     }
