@@ -21,35 +21,26 @@ class AuthController extends Controller
 
     public function postLogin(Request $request)
     {
-    
-            $data = $request->validate([
-                'email' => ['required'],
-                'password' => ['required'],
-            ]);
-    
-    
-            if (Auth::attempt($data)) {
-                $user = Auth::user();
-    
-                if ($user->role === 'admin') {
-                    return redirect()->route('homeAdmin');
-                } else if ($user->role === 'customer') {
-                    return redirect()->intended(route('home'));
-                    if (session()->has('.intenurlded')) {
-                        $intendedUrl = session('url.intended');
-                        session()->forget('url.intended');
-                        return redirect($intendedUrl);
-                    }
-                    return redirect()->route('home');
-                } else if ($user->role === 'creator'){
-                    return redirect()->route('creator.homeCreator');
-                }
-    
-            } else {
-                return redirect()->route('login')->with('notifikasi', 'Username atau password salah');
-            }
-    
+    $data = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
+
+    if (Auth::attempt($data)) {
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            return redirect()->route('homeAdmin');
+        } else if ($user->role === 'customer') {
+            return redirect()->intended(route('home')); 
+        } else if ($user->role === 'creator') {
+            return redirect()->route('homeCreator');
+        }
+    } else {
+        return redirect()->route('login')->with('notifikasi', 'Email atau password salah');
     }
+    }
+
 
 
     public function register() {
@@ -58,7 +49,7 @@ class AuthController extends Controller
 
     public function postRegister(Request $request)
     {
-        // Validasi inputan
+       
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users',
             'username' => 'required|string|max:255|unique:users',
@@ -66,12 +57,11 @@ class AuthController extends Controller
             'role' => 'required|string',
         ]);
     
-        // Jika validasi gagal, kembali ke form dengan error
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-        // Jika validasi berhasil, buat user baru
         $user = User::create([
             'email' => $request->input('email'),
             'username' => $request->input('username'),
@@ -79,7 +69,7 @@ class AuthController extends Controller
             'role' => $request->input('role'),
         ]);
     
-        // Auth::login($user); // Jika ingin langsung login setelah register
+        Auth::login($user); 
     
         return redirect()->route('home')->with('notifikasi', 'Akun sukses dibuat');
     }
