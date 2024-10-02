@@ -1,13 +1,16 @@
 @extends('layouts.app2')
 @push('css')
 <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endpush
     @section('title', 'Sign Up')
     @section('content')
 
     <div class="container">
         <div class="box-image">
+            <a href="{{route('home')}}">
             <img src="{{asset('components/asset/logo/512.png')}}" alt="">
+            </a>
         </div>
         <div class="box-form">
             <h2>Login</h2>
