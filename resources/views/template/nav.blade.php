@@ -40,13 +40,7 @@
 
          <i class="ri-close-line search__close" id="search-close"></i>
       </div>
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> e19bb815aa017baaacac24188c51ae9e4ccdb3ae
-      <!--==================== LOGIN ====================-->
+  <!--==================== LOGIN ====================-->
       <div class="login" id="login">
 
          <form action="{{ Route('postLogin')}}" class="login__form" method="POST">
@@ -82,8 +76,4 @@
          <i class="ri-close-line login__close" id="login-close"></i>
       </div>
 
-<<<<<<< HEAD
->>>>>>> a8f1a407d4bd626e929957a2757516c1dd884903
-=======
->>>>>>> e19bb815aa017baaacac24188c51ae9e4ccdb3ae
 <script src="{{asset('components/js/nav.js')}}"></script>
