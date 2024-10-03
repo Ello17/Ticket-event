@@ -8,7 +8,7 @@
 
     <div class="container">
         <div class="box-image">
-            <a href="{{route('home')}}">
+            <a href="{{route('homeCustomer')}}">
             <img src="{{asset('components/asset/logo/512.png')}}" alt="">
             </a>
         </div>
@@ -27,12 +27,12 @@
                     </div>
                 </div>
                 <div>
-                    @if (Session::has('notifikasi'))
-                    <p class="error-message">{{ Session::get('notifikasi') }}</p>
-                @endif
 
-                <button type="submit" class="login_button">Log In</button>
+                    <button type="submit" class="login_button">Log In</button>
                 </div>
+                @if (Session::has('notifikasi'))
+                <p class="error-message">{{ Session::get('notifikasi') }}</p>
+            @endif
             </form>
             <p class="signup_login">
                        You do not have an account? <a href="{{ route('register') }}">Sign up</a>
