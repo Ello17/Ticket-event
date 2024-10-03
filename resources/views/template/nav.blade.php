@@ -28,7 +28,7 @@
                     </button>
                     <div class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <div class="py-1" role="none">
-                            <a href="" class="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-purple-100 flex items-center" role="menuitem">
+                            <a href="" class=" px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-purple-100 flex items-center" role="menuitem">
                                 <img class="w-12 sm:w-10 mr-3 rounded-full" src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="User Image"><span>{{ Auth::user()->name }}</span></a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100" role="menuitem"><i class="fa-solid fa-gear"></i> Settings</a>
                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-purple-100" role="menuitem" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -46,7 +46,7 @@
                         <a href="{{ Route('login')}}" class="block p-2 font-medium text-gray-900 hover:scale-105 hover:text-purple-800">Login</a>
                     </div>
                     <div class="flow-root">
-                        <a href="{{ Route('register')}}" class="block p-2 border border-purple-800 rounded-lg font-medium text-purple-800 hover:text-white hover:shadow-lg hover:bg-purple-800 hover:shadow-lg">Daftar</a>
+                        <a href="{{ Route('register')}}" class="block p-2 border border-purple-800 rounded-lg font-medium text-purple-800 hover:text-white hover:bg-purple-800 hover:shadow-lg">Daftar</a>
                     </div>
                 </div>
                 @endauth
