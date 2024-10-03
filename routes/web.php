@@ -48,8 +48,9 @@ Route::get('/kelolaUser', 'AdminController@kelolaUser')->name('kelolaUser');
 Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
 Route::get('/tambahEvent', 'CreatorController@tambahEvent')->name('tambahEvent');
 Route::post('/postTambahEvent', 'CreatorController@postTambahEvent')->name('postTambahEvent');
-Route::get('/editEvent', 'CreatorController@editEvent')->name('editEvent');
-Route::post('/postEditEvent', 'CreatorController@postEditEvent')->name('postEditEvent');
+Route::get('/editEvent{event}', 'CreatorController@editEvent')->name('editEvent');
+Route::post('/postEditEvent{event}', 'CreatorController@postEditEvent')->name('postEditEvent');
+Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEvent');
 
 });
 

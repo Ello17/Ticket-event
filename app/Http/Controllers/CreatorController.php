@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CreatorController extends Controller
 {
@@ -51,24 +52,35 @@ class CreatorController extends Controller
         return redirect()->route('homeCreator')->with('notifikasi','Event Berhasil Ditambahkan');
     }
 
-  public function editEvent(){
-    return view('creator.editEvent');
+  public function editEvent(Event $event){
+    return view('creator.editEvent', compact('event'));
   }
 
   public function postEditEvent(Event $event, Request $request){
     $data = $request->validate([
-        'nama_event' => 'required',
+           'nama_event' => 'required',
            'nama_penyelenggara' => 'required',
            'lokasi_event' => 'required',
            'tanggal_event' => 'required',
            'waktu_event' => 'required',
            'deskripsi_event' => 'required',
-           'cover_event' =>'required|image|mimes:jpeg,png,jpg|max:2048',
         
     ]);
-    $data['image']=$request->image->store('image');
+    if ($request->hasFile('cover_event')) {
+      if ($event->cover_event) {
+          Storage::delete($event->cover_event);
+      }
+      $data['cover_event'] = $request->file('cover_event')->store('images');
+  }
     $event->update($data);
     return redirect()->route('homeCreator')->with('notifikasi','Event Berhasil Diubah!!');
 
   }
+
+  public function hapusEvent(Event $event)
+  {
+    $event->delete();
+    return redirect()->route('homeCreator')->with('notifikasi','Event Berhasil Dihapus!!');
+  }
+
 }

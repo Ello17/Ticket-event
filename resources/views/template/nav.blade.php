@@ -9,7 +9,7 @@
             <a href="#"><i class="ri-calendar-event-fill"></i> Event</a>
         </li>
         <li>
-            <a href="{{route('login')}}"><i class="ri-user-line"></i></a>
+            <a href="{{route('login')}}"><i class="ri-user-line"></i>login</a>
         </li>
     </ul>
 </div>
