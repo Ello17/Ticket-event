@@ -27,7 +27,7 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 
 // ini buat customer
-Route::get('/', [CustomerController::class, 'homeCustomer'])->name('home');
+Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
 
