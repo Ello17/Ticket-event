@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app2')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Home Admin</title>
+@push('css')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
     <style>
         .sidebar {
             height: 100%;
@@ -18,8 +15,10 @@
             color: #fff;
             padding-top: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* Sidebar bisa di-scroll vertikal */
-            z-index: 1000; /* Pastikan sidebar selalu di atas elemen lain */
+            overflow-y: auto;
+            /* Sidebar bisa di-scroll vertikal */
+            z-index: 1000;
+            /* Pastikan sidebar selalu di atas elemen lain */
         }
 
         .sidebar h4 {
@@ -42,9 +41,11 @@
         }
 
         .content {
-            margin-left: 270px; /* Ensures content clears the sidebar */
+            margin-left: 270px;
+            /* Ensures content clears the sidebar */
             padding: 20px;
-            overflow-x: hidden; /* Mencegah konten overflow secara horizontal */
+            overflow-x: hidden;
+            /* Mencegah konten overflow secara horizontal */
         }
 
         .card {
@@ -53,14 +54,19 @@
 
         /* Ensuring table covers full width */
         .table-responsive {
-            max-width: 100%; /* Menjaga tabel dalam lebar container */
-            overflow-x: auto; /* Tabel bisa di-scroll horizontal */
-            white-space: nowrap; /* Agar tabel tidak terpotong */
+            max-width: 100%;
+            /* Menjaga tabel dalam lebar container */
+            overflow-x: auto;
+            /* Tabel bisa di-scroll horizontal */
+            white-space: nowrap;
+            /* Agar tabel tidak terpotong */
         }
     </style>
-</head>
+@endpush
 
-<body>
+@section('title', 'Admin')
+
+@section('content')
     <div class="sidebar">
         <h4 class="text-center">Sidebar</h4>
         <hr>
@@ -82,10 +88,10 @@
             <div class="card-header">
                 <h5 class="card-title mb-0">Tabel List Event</h5>
             </div>
-            @if(Session::has('notifikasi'))
-            <div class="alert alert-success">
-                {{ Session::get('notifikasi') }}
-            </div>
+            @if (Session::has('notifikasi'))
+                <div class="alert alert-success">
+                    {{ Session::get('notifikasi') }}
+                </div>
             @endif
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -109,32 +115,34 @@
                             </thead>
                             <tbody>
                                 @foreach ($events as $e)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td><img src="{{ asset($e->cover_event) }}" alt="Cover" class="card-img-top" style="width: 100px;"></td>
-                                    <td>{{ $e->nama_penyelenggara }}</td>
-                                    <td>{{ $e->nama_event }}</td>
-                                    <td>{{ $e->tanggal_event }}</td>
-                                    <td>{{ $e->waktu_event }}</td>
-                                    <td>{{ $e->lokasi_event }}</td>
-                                    <td>{{ $e->deskripsi_event }}</td>
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td><img src="{{ asset($e->cover_event) }}" alt="Cover" class="card-img-top"
+                                                style="width: 100px;"></td>
+                                        <td>{{ $e->nama_penyelenggara }}</td>
+                                        <td>{{ $e->nama_event }}</td>
+                                        <td>{{ $e->tanggal_event }}</td>
+                                        <td>{{ $e->waktu_event }}</td>
+                                        <td>{{ $e->lokasi_event }}</td>
+                                        <td>{{ $e->deskripsi_event }}</td>
 
-                                    <!-- Cek apakah event memiliki tiket -->
-                                    @if($e->tiket->isNotEmpty())
-                                        @foreach($e->tiket as $tiket)
-                                            <td>{{ $tiket->harga_tiket }}</td>
-                                            <td>{{ $tiket->kategori_tiket }}</td>
-                                            <td>{{ $tiket->jumlah_tiket }}</td>
-                                        @endforeach
-                                    @else
-                                        <td colspan="3">Tidak ada tiket</td> <!-- Jika tidak ada tiket -->
-                                    @endif
+                                        <!-- Cek apakah event memiliki tiket -->
+                                        @if ($e->tiket->isNotEmpty())
+                                            @foreach ($e->tiket as $tiket)
+                                                <td>{{ $tiket->harga_tiket }}</td>
+                                                <td>{{ $tiket->kategori_tiket }}</td>
+                                                <td>{{ $tiket->jumlah_tiket }}</td>
+                                            @endforeach
+                                        @else
+                                            <td colspan="3">Tidak ada tiket</td> <!-- Jika tidak ada tiket -->
+                                        @endif
 
-                                    <td class="actions">
-                                        <a href="" class="btn btn-outline-primary">Edit</a>
-                                        <a href="" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Hapus</a>
-                                    </td>
-                                </tr>
+                                        <td class="actions ">
+                                            <a href="" class="btn btn-outline-primary">Edit</a>
+                                            <a href="" class="btn btn-outline-danger"
+                                                onclick="return confirm('Are you sure?')">Hapus</a>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -144,7 +152,16 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
+@endsection
 
-</html>
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
+    <script>
+        new DataTable('#example');
+    </script>
+@endpush
