@@ -6,67 +6,101 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Kelola User</title>
+    <style>
+        body {
+            display: flex;
+        }
+        .content {
+            margin-left: 260px; /* Mengatur margin sesuai sidebar */
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* Styling sidebar */
+        .sidebar {
+            height: 100%;
+            width: 260px; /* Lebih lebar untuk ruang konten */
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h4 {
+            color: #00aaff;
+            text-align: center;
+        }
+
+        .sidebar .nav-link {
+            color: #adb5bd;
+            font-size: 16px;
+            padding: 12px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #fff;
+            background-color: #495057;
+        }
+
+        .sidebar .nav-link.active {
+            color: #fff;
+            background-color: #007bff;
+        }
+
+        .sidebar .collapse {
+            background-color: #6c757d;
+            padding-left: 20px;
+        }
+
+        .sidebar .collapse .nav-link {
+            padding: 8px 25px;
+            font-size: 14px;
+        }
+
+        .sidebar .nav-item {
+            margin-bottom: 15px; /* Menambah jarak antar item menu */
+        }
+
+        .sidebar .nav-item i {
+            margin-right: 10px; /* Jarak antara ikon dan teks */
+        }
+    </style>
 </head>
-<style>
-    body {
-        display: flex;
-    }
-    .sidebar {
-        height: 100vh;
-        width: 250px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #343a40;
-        color: #fff;
-        padding-top: 20px;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
 
-    .sidebar h4 {
-        color: #007bff;
-        text-align: center;
-    }
-
-    .sidebar .nav-link {
-        color: #adb5bd;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    .sidebar .nav-link:hover {
-        color: #fff;
-        background-color: #495057;
-    }
-
-    .sidebar .nav-link.active {
-        color: #fff;
-        background-color: #007bff;
-    }
-
-    .content {
-        margin-left: 250px;
-        padding: 20px;
-        width: 100%;
-    }
-</style>
 <body>
     <div class="sidebar">
-        <h4>Sidebar</h4>
+        <h4>Admin Menu</h4>
         <hr>
         <ul class="nav flex-column">
-            <li class="nav-item mb-2">
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('homeAdmin') }}">
-                    <i class="bi bi-house-door-fill"></i> Home Admin
+                    <i class="ri-home-4-fill"></i> Home Admin
                 </a>
             </li>
-            <li class="nav-item mb-2">
-                <a class="nav-link active" href="{{ route('kelolaUser') }}">
-                    <i class="bi bi-people-fill"></i> Kelola User
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#userSubmenu" role="button" aria-expanded="false" aria-controls="userSubmenu">
+                    <i class="ri-user-3-fill"></i> Kelola User
+                    <i class="ri-arrow-down-s-line float-end"></i>
                 </a>
+                <div class="collapse" id="userSubmenu">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ route('kelolaUser') }}">Customer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Creator</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
     </div>
-
     <div class="content">
         <div class="card">
             <div class="card-header">

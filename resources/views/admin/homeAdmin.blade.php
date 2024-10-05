@@ -8,9 +8,35 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Home Admin</title>
     <style>
+        .content {
+            margin-left: 260px; /* Menyesuaikan jarak dengan lebar sidebar */
+            padding: 20px;
+            overflow-x: hidden; /* Mencegah konten overflow secara horizontal */
+        }
+
+        .card {
+            margin-top: 20px;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto; /* Menambahkan scroll jika tabel terlalu lebar */
+        }
+
+        .actions {
+            white-space: nowrap; /* Mencegah tombol terpotong */
+        }
+
+        .actions a {
+            display: inline-block; /* Membuat tombol tetap berbaris */
+            margin-right: 5px; /* Memberikan jarak antar tombol */
+        }
+
+        /* Styling sidebar */
         .sidebar {
             height: 100%;
-            width: 250px;
+            width: 260px; /* Lebih lebar untuk ruang konten */
             position: fixed;
             top: 0;
             left: 0;
@@ -18,16 +44,19 @@
             color: #fff;
             padding-top: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* Sidebar bisa di-scroll vertikal */
-            z-index: 1000; /* Pastikan sidebar selalu di atas elemen lain */
+            overflow-y: auto;
         }
 
         .sidebar h4 {
-            color: #007bff;
+            color: #00aaff;
+            text-align: center;
         }
 
         .sidebar .nav-link {
             color: #adb5bd;
+            font-size: 16px;
+            padding: 12px 20px;
+            border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -41,42 +70,55 @@
             background-color: #007bff;
         }
 
-        .content {
-            margin-left: 270px; /* Ensures content clears the sidebar */
-            padding: 20px;
-            overflow-x: hidden; /* Mencegah konten overflow secara horizontal */
+        .sidebar .collapse {
+            background-color: #6c757d;
+            padding-left: 20px;
         }
 
-        .card {
-            margin-top: 20px;
+        .sidebar .collapse .nav-link {
+            padding: 8px 25px;
+            font-size: 14px;
         }
 
-        /* Ensuring table covers full width */
-        .table-responsive {
-            max-width: 100%; /* Menjaga tabel dalam lebar container */
-            overflow-x: auto; /* Tabel bisa di-scroll horizontal */
-            white-space: nowrap; /* Agar tabel tidak terpotong */
+        .sidebar .nav-item {
+            margin-bottom: 15px; /* Menambah jarak antar item menu */
+        }
+
+        .sidebar .nav-item i {
+            margin-right: 10px; /* Jarak antara ikon dan teks */
         }
     </style>
 </head>
 
 <body>
     <div class="sidebar">
-        <h4 class="text-center">Sidebar</h4>
+        <h4>Admin Menu</h4>
         <hr>
         <ul class="nav flex-column">
-            <li class="nav-item mb-2">
+            <li class="nav-item">
                 <a class="nav-link active" href="{{ route('homeAdmin') }}">
-                    <i class="bi bi-house-door-fill"></i> Home Admin
+                    <i class="ri-home-4-fill"></i> Home Admin
                 </a>
             </li>
-            <li class="nav-item mb-2">
-                <a class="nav-link" href="{{ route('kelolaUser') }}">
-                    <i class="bi bi-people-fill"></i> Kelola User
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#userSubmenu" role="button" aria-expanded="false" aria-controls="userSubmenu">
+                    <i class="ri-user-3-fill"></i> Kelola User
+                    <i class="ri-arrow-down-s-line float-end"></i>
                 </a>
+                <div class="collapse" id="userSubmenu">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('kelolaUser') }}">Customer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Creator</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
     </div>
+
     <div class="content">
         <div class="card">
             <div class="card-header">
@@ -111,7 +153,7 @@
                                 @foreach ($events as $e)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td><img src="{{ asset($e->cover_event) }}" alt="Cover" class="card-img-top" style="width: 100px;"></td>
+                                    <td><img src="{{ asset($e->cover_event) }}" alt="Cover Event" style="width: 100px;"></td>
                                     <td>{{ $e->nama_penyelenggara }}</td>
                                     <td>{{ $e->nama_event }}</td>
                                     <td>{{ $e->tanggal_event }}</td>
@@ -119,20 +161,17 @@
                                     <td>{{ $e->lokasi_event }}</td>
                                     <td>{{ $e->deskripsi_event }}</td>
 
-                                    <!-- Cek apakah event memiliki tiket -->
                                     @if($e->tiket->isNotEmpty())
-                                        @foreach($e->tiket as $tiket)
-                                            <td>{{ $tiket->harga_tiket }}</td>
-                                            <td>{{ $tiket->kategori_tiket }}</td>
-                                            <td>{{ $tiket->jumlah_tiket }}</td>
-                                        @endforeach
+                                        <td>{{ $e->tiket->first()->harga_tiket }}</td>
+                                        <td>{{ $e->tiket->first()->kategori_tiket }}</td>
+                                        <td>{{ $e->tiket->first()->jumlah_tiket }}</td>
                                     @else
-                                        <td colspan="3">Tidak ada tiket</td> <!-- Jika tidak ada tiket -->
+                                        <td colspan="3">Tidak ada tiket</td>
                                     @endif
 
                                     <td class="actions">
-                                        <a href="" class="btn btn-outline-primary">Edit</a>
-                                        <a href="" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Hapus</a>
+                                        <a href="{{ route('admin.editList', $e->id) }}" class="btn btn-outline-primary">Edit</a>
+                                        <a href="{{ route('hapusList', $e->id) }}" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Hapus</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -144,7 +183,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
