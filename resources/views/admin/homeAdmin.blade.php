@@ -75,6 +75,11 @@
                     <i class="bi bi-people-fill"></i> Kelola User
                 </a>
             </li>
+            {{-- <li class="nav-item mb-2">
+                <a class="nav-link" href="{{ route('pending.users') }}">
+                    <i class="bi bi-people-fill"></i>approve
+                </a>
+            </li> --}}
         </ul>
     </div>
     <div class="content">
