@@ -45,7 +45,7 @@
 </div>
 
 <!-- Event Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ">
     @foreach ($data as $item)
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <img src="{{ asset($item->cover_event) }}" alt="Event Image" class="w-full h-48 object-cover">
