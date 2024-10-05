@@ -49,27 +49,39 @@ class AuthController extends Controller
 
     public function postLoginCreator(Request $request)
     {
-    $data = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
-
-    if (Auth::attempt($data)) {
-        $user = Auth::user();
-
-        if ($user->role === 'admin') {
-            return redirect()->route('homeAdmin');
-        } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'));
-        } else if ($user->role === 'creator') {
-            return redirect()->route('homeCreator');
+        // Validasi input email dan password
+        $data = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+    
+        // Coba untuk login
+        if (Auth::attempt($data)) {
+            $user = Auth::user(); // Mengambil user yang sedang login
+    
+            // Debugging: Cek apakah kolom is_approved bernilai benar
+            if ($user->role === 'creator') {
+                if ($user->is_approved == false) { // Pastikan kondisi benar
+                    // Logout jika creator belum disetujui
+                    Auth::logout();
+                    return redirect()->route('loginCreator')->with('notifikasi', 'Akun Anda belum diverifikasi oleh admin.');
+                }
+            }
+    
+            // Redireksi berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect()->route('homeAdmin');
+            } else if ($user->role === 'customer') {
+                return redirect()->intended(route('homeCustomer'));
+            } else if ($user->role === 'creator') {
+                return redirect()->route('homeCreator');
+            }
+        } else {
+            // Jika email atau password salah
+            return redirect()->route('loginCreator')->with('notifikasi', 'Email atau password salah.');
         }
-    } else {
-        return redirect()->route('loginCreator')->with('notifikasi', 'Email atau password salah');
     }
-    }
-
-
+    
 
 
     public function registerCustomer() {
@@ -80,13 +92,13 @@ class AuthController extends Controller
     {
     
         $this->validate($request, [
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'username' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'customer', // Set role sebagai customer
@@ -131,25 +143,27 @@ class AuthController extends Controller
     }
 
     public function postRegisterCreator(Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+{
+    // Perbaikan: validasi dengan username dan email yang unik
+    $this->validate($request, [
+        'username' => 'required|string|max:255|unique:users',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:3',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'creator', // Set role sebagai creator
-            'is_approved' => false, // Creator perlu persetujuan admin
-        ]);
+    // Membuat user baru
+    $user = User::create([
+        'username' => $request->username, // Menyimpan username
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => 'creator', // Set role sebagai creator
+        'is_approved' => false, // Creator perlu persetujuan admin
+    ]);
 
-        return redirect()->route('loginCreator')->with('status', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
-    }
+    // Redirect ke halaman login creator dengan pesan sukses
+    return redirect()->route('loginCreator')->with('status', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
+}
 
-   
 
     protected function create(array $data)
     {
@@ -165,7 +179,7 @@ class AuthController extends Controller
     {
     if (auth()->check() && !auth()->user()->is_approved) {
         auth()->logout();
-        return redirect()->route('login')->withErrors([
+        return redirect()->route('loginCreator')->withErrors([
             'approval' => 'Akun Anda belum disetujui oleh admin.',
         ]);
     }
@@ -174,7 +188,7 @@ class AuthController extends Controller
     public function showPendingUsers()
 {
     $pendingUsers = User::where('is_approved', false)->get();
-    return view('admin.pending-users', compact('pendingUsers'));
+    return view('admin.approveCreator', compact('pendingUsers'));
 }
 
 public function approveUser($id)
