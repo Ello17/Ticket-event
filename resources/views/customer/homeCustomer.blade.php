@@ -1,69 +1,80 @@
 @extends('layouts.app')
+
 @push('css')
-<link rel="stylesheet" href="{{asset('components/css/homeCustomer.css')}}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ asset('components/css/homeCustomer.css') }}">
+<link rel="stylesheet" href="{{asset('components/css/slider.css')}}">
 @endpush
-    @section('title', 'Tiket Mudah hanya di Tiket Mudah')
-    @section('content')
 
-     <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="{{asset('components/asset/b1.jpeg')}}" class="d-block w-70" alt="Slide 1">
-          </div>
-          <div class="carousel-item">
-            <img src="{{asset('components/asset/b2.jpeg')}}" class="d-block w-70" alt="Slide 2">
-          </div>
-          <div class="carousel-item">
-            <img src="{{asset('components/asset/b3.jpeg')}}" class="d-block w-70" alt="Slide 3">
-          </div>
+@section('title', 'Tiket Mudah hanya di Tiket Mudah')
+
+@section('content')
+<div class="slider">
+    <div class="list">
+        <div class="item">
+            <img src="{{ asset('components/asset/b1.jpeg') }}" alt="">
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+        <div class="item">
+            <img src="{{ asset('components/asset/b2.jpeg') }}" alt="">
+        </div>
+        <div class="item">
+            <img src="{{ asset('components/asset/b3.jpeg') }}" alt="">
+        </div>
     </div>
-
-                <!-- Slider 2 -->
-                <div class="carousel mb-4" id="carousel2">
-                    <div class="carousel-images d-flex justify-content-center">
-                        <img src="{{ asset('components/asset/b4.jpeg') }}" alt="Slide 1" class="img-fluid" style="max-width: 400px;">
-                        <img src="{{ asset('components/asset/b5.jpeg') }}" alt="Slide 2" class="img-fluid" style="max-width: 400px;">
-                        <img src="{{ asset('components/asset/b1.jpeg') }}" alt="Slide 3" class="img-fluid" style="max-width: 400px;">
-                    </div>
-                    <button class="btn btn-primary mt-2" onclick="prevSlide(2)">Previous</button>
-                    <button class="btn btn-primary mt-2" onclick="nextSlide(2)">Next</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cards -->
-        <div class="row justify-content-center">
-            @foreach ($data as $item)
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <div class="card shadow-lg">
-                    <img src="{{ asset($item->cover_event) }}" alt="Card Image" class="card-img-top" style="width: 100%; height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title text-dark">{{ $item->nama_event }}</h5>
-                        <p>{{ $item->tanggal_event }}</p>
-                        <p>{{ $item->lokasi_event }}</p>
-                        <p>{{ $item->waktu_event }}</p>
-                        <a href="{{ route('detailEvent', $item->id) }}" class="btn btn-primary">Detail</a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        <a href="{{route('listEvent')}}">See All Event</a>
+    <div class="buttons">
+        <button id="prev"><</button>
+        <button id="next">></button>
     </div>
+    <ul class="dots">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<div class="slidertwo">
+    <div class="listtwo">
+        <div class="itemtwo">
+            <img src="{{ asset('components/asset/promo.png') }}" alt="">
+        </div>
+        <div class="itemtwo">
+            <img src="{{ asset('components/asset/promo1.png') }}" alt="">
+        </div>
+        <div class="itemtwo">
+            <img src="{{ asset('components/asset/promo2.png') }}" alt="">
+        </div>
+    </div>
+    <div class="buttonstwo">
+        <button id="prevtwo"><</button>
+        <button id="nexttwo">></button>
+    </div>
+    <ul class="dotstwo">
+        <li class="activetwo"></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
 
-    @endsection
+<!-- Event Cards -->
+{{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 px-5">
+    @foreach ($data as $item)
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <img src="{{ asset($item->cover_event) }}" alt="Event Image" class="w-full h-48 object-cover">
+        <div class="p-4">
+            <h5 class="text-xl font-semibold">{{ $item->nama_event }}</h5>
+            <p class="text-gray-600">{{ $item->tanggal_event }}</p>
+            <p class="text-gray-600">{{ $item->lokasi_event }}</p>
+            <p class="text-gray-600">{{ $item->waktu_event }}</p>
+            <a href="{{ route('detailEvent', $item->id) }}" class="inline-block bg-blue-500 text-white py-2 px-4 rounded mt-4">Detail</a>
+        </div>
+    </div>
+    @endforeach
+</div> --}}
+
+<div class="text-center mt-8">
+    <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>
+</div>
+
+@endsection
+
 @push('js')
-<script src="{{asset('components/js/slider.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="{{ asset('components/js/slider.js') }}"></script>
 @endpush
-

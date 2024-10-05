@@ -1,48 +1,29 @@
-<header class="header" id="header">
-    <nav class="nav container">
-    <img src="{{asset('components/asset/logo/512.png')}}" class="image">
-
-        <div class="nav__menu" id="nav-menu">
-          <ul class="nav__list">
-             <li class="nav__item">
-               <a href="#" class="nav__link"><i class="ri-calendar-event-fill"></i> Buat Event</a>
-             </li>
-             <li class="gap_item">
-                <i class="ri-search-line nav__search" id="search-btn"></i>
-               <a href="{{ route('login') }}" style="text-decoration: none">
-                  <i class="ri-user-line nav__login" id="login-btn"></i>
-              </a>
-             </li>
-           </ul>
-           <div class="nav__toggle" id="nav-toggle">
-              <i class="ri-menu-line"></i>
-           </div>
-
-           <!-- Close button -->
-           {{-- <div class="nav__close" id="nav-close">
-               <i class="ri-close-line"></i>
-           </div>
-       </div>
-       <div class="nav__actions">
-          <!-- Search button -->
-
-          <!-- Login button -->
-
-          <!-- Toggle button -->
-       </div> --}}
+<header class="bg-[#f5eded]">
+    <nav class="flex justify-between items-center w-[92%] mx-auto">
+        <div>
+            <img class="w-16" src="{{asset('components/asset/logo/512.png')}}" alt="">
+        </div>
+        <div class="nav-links duration-500 md:static absolute bg-[#f5eded] md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">
+            <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
+                <li>
+                    <input type="text" name="" id="" class="input-nav" placeholder="Search">
+                </li>
+                <li>
+                    <a href="{{route('login')}}" class="hover:bg-[#6482ad] a-navbar">Event</a>
+                </li>
+            </ul>
+        </div>
+        <div class="flex items-center gap-6">
+           <button class="bg-[#7fa1c3] text-white px-5 py-2 rounded-full hover:bg-[#6482ad]"><a href="{{route('login')}}">Sign In</a></button>
+           <ion-icon name="menu" class="text-3xl cursor-pointer md:hidden" onclick="onToggleMenu(this)"></ion-icon>
+        </div>
     </nav>
- </header>
+</header>
 
- <!--==================== SEARCH ====================-->
- <div class="search" id="search">
-    <form action="" class="search__form">
-       <i class="ri-search-line search__icon"></i>
-       <input type="search" placeholder="What are you looking for?" class="search__input">
-    </form>
-
-    <i class="ri-close-line search__close" id="search-close"></i>
- </div>
-
- <!--==================== LOGIN ====================-->
-
-<script src="{{asset('components/js/nav-backup.js')}}"></script>
+<script>
+    const navLinks = document.querySelector(".nav-links")
+    function onToggleMenu(e){
+        e.name = e.name === 'menu' ? 'close' : 'menu'
+        navLinks.classList.toggle('top-[8%]')
+     }
+</script>
