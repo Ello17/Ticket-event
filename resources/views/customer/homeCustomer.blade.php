@@ -33,13 +33,13 @@
 <div class="slidertwo">
     <div class="listtwo">
         <div class="itemtwo">
-            <img src="{{ asset('components/asset/b4.jpeg') }}" alt="">
+            <img src="{{ asset('components/asset/promo.png') }}" alt="">
         </div>
         <div class="itemtwo">
-            <img src="{{ asset('components/asset/b5.jpeg') }}" alt="">
+            <img src="{{ asset('components/asset/promo1.png') }}" alt="">
         </div>
         <div class="itemtwo">
-            <img src="{{ asset('components/asset/b3.jpeg') }}" alt="">
+            <img src="{{ asset('components/asset/promo2.png') }}" alt="">
         </div>
     </div>
     <div class="buttonstwo">
@@ -54,7 +54,7 @@
 </div>
 
 <!-- Event Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+{{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 px-5">
     @foreach ($data as $item)
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <img src="{{ asset($item->cover_event) }}" alt="Event Image" class="w-full h-48 object-cover">
@@ -67,7 +67,7 @@
         </div>
     </div>
     @endforeach
-</div>
+</div> --}}
 
 <div class="text-center mt-8">
     <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>
