@@ -49,9 +49,11 @@ function kelolaUser(){
     $user= User::all();
     return view('admin.kelolaUser', compact('user'));
 }
-public function hapusUser(user $user, Request $request){
+public function hapusUser($id)
+{
+    $user = User::findOrFail($id);
     $user->delete();
 
-    return redirect()->route('kelolaUser')->with('notifikasi','Data Berhasil Dihapus');
+    return redirect()->route('kelolaUser')->with('success', 'Owner deleted successfully.');
 }
 }
