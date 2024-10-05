@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
     <title>Home Admin</title>
     <style>
         .content {
-            margin-left: 260px; /* Menyesuaikan jarak dengan lebar sidebar */
+            margin-left: 260px;
             padding: 20px;
-            overflow-x: hidden; /* Mencegah konten overflow secara horizontal */
+            overflow-x: hidden;
         }
 
         .card {
@@ -21,22 +23,21 @@
         .table-responsive {
             display: block;
             width: 100%;
-            overflow-x: auto; /* Menambahkan scroll jika tabel terlalu lebar */
+            overflow-x: auto;
         }
 
         .actions {
-            white-space: nowrap; /* Mencegah tombol terpotong */
+            white-space: nowrap;
         }
 
         .actions a {
-            display: inline-block; /* Membuat tombol tetap berbaris */
-            margin-right: 5px; /* Memberikan jarak antar tombol */
+            display: inline-block;
+            margin-right: 5px;
         }
 
-        /* Styling sidebar */
         .sidebar {
             height: 100%;
-            width: 260px; /* Lebih lebar untuk ruang konten */
+            width: 260px;
             position: fixed;
             top: 0;
             left: 0;
@@ -81,11 +82,11 @@
         }
 
         .sidebar .nav-item {
-            margin-bottom: 15px; /* Menambah jarak antar item menu */
+            margin-bottom: 15px;
         }
 
         .sidebar .nav-item i {
-            margin-right: 10px; /* Jarak antara ikon dan teks */
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -101,7 +102,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#userSubmenu" role="button" aria-expanded="false" aria-controls="userSubmenu">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#userSubmenu" role="button"
+                    aria-expanded="false" aria-controls="userSubmenu">
                     <i class="ri-user-3-fill"></i> Kelola User
                     <i class="ri-arrow-down-s-line float-end"></i>
                 </a>
@@ -132,7 +134,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered" id="example">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -153,7 +155,8 @@
                                 @foreach ($events as $e)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td><img src="{{ asset($e->cover_event) }}" alt="Cover Event" style="width: 100px;"></td>
+                                    <td><img src="{{ asset($e->cover_event) }}" alt="Cover Event"
+                                            style="width: 100px;"></td>
                                     <td>{{ $e->nama_penyelenggara }}</td>
                                     <td>{{ $e->nama_event }}</td>
                                     <td>{{ $e->tanggal_event }}</td>
@@ -162,16 +165,19 @@
                                     <td>{{ $e->deskripsi_event }}</td>
 
                                     @if($e->tiket->isNotEmpty())
-                                        <td>{{ $e->tiket->first()->harga_tiket }}</td>
-                                        <td>{{ $e->tiket->first()->kategori_tiket }}</td>
-                                        <td>{{ $e->tiket->first()->jumlah_tiket }}</td>
+                                    <td>{{ $e->tiket->first()->harga_tiket }}</td>
+                                    <td>{{ $e->tiket->first()->kategori_tiket }}</td>
+                                    <td>{{ $e->tiket->first()->jumlah_tiket }}</td>
                                     @else
-                                        <td colspan="3">Tidak ada tiket</td>
+                                    <td colspan="3">Tidak ada tiket</td>
                                     @endif
 
                                     <td class="actions">
-                                        <a href="{{ route('admin.editList', $e->id) }}" class="btn btn-outline-primary">Edit</a>
-                                        <a href="{{ route('hapusList', $e->id) }}" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Hapus</a>
+                                        <a href="{{ route('admin.editList', $e->id) }}"
+                                            class="btn btn-outline-primary">Edit</a>
+                                        <a href="{{ route('hapusList', $e->id) }}"
+                                            class="btn btn-outline-danger"
+                                            onclick="return confirm('Are you sure?')">Hapus</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -183,7 +189,14 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
+    <script>
+        new DataTable('#example');
+    </script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
 </body>
 
 </html>

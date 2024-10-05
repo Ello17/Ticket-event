@@ -50,7 +50,7 @@
 }
 
 .register_form {
-    height: 420px;
+    height: 480px;
     width: 280px;
     background-color: #6482ad;
     padding: 2rem 1.5rem 2.5rem;
@@ -61,7 +61,7 @@
     transform: translateY(-1rem);
 }
 .login_form {
-    height: 250px;
+    height: 280px;
     width: 280px;
     background-color: #6482ad;
     padding: 2rem 1.5rem 2.5rem;
@@ -152,11 +152,11 @@
         gap: 100px;
     }
     .register_form{
-        height: 420px;
+        height: 480px;
         width: 380px;
     }
     .login_form{
-        height: 250px;
+        height: 290px;
         width: 380px;
     }
     .box-form h2{
