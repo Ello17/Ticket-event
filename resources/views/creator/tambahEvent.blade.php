@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tambah Event</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .card {
+            margin: 0 auto;
+            max-width: 500px;
+            padding: 20px;
+            background-color: #b9e2f4;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+
+        .btn-success {
+            width: 100%;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="card">
+                <h2 class="text-center mt-3">Tambah Event</h2>
+                <form action="{{ route('postTambahEvent') }}" method="POST" class="form-group" enctype="multipart/form-data">
+                    @csrf
+                    <label for="nama_event">Nama Event</label>
+                    <input type="text" required name="nama_event" class="form-control" placeholder="Masukkan nama event">
+
+                    <label for="nama_penyelenggara">Nama Penyelenggara</label>
+                    <input type="text" required name="nama_penyelenggara" class="form-control" placeholder="Masukkan nama penyelenggara">
+
+                    <label for="tanggal_event">Tanggal Event</label>
+                    <input type="date" required name="tanggal_event" class="form-control">
+
+                    <label for="waktu_event">Waktu Event</label>
+                    <input type="time" required name="waktu_event" class="form-control">
+
+                    <label for="lokasi_event">Lokasi</label>
+                    <input type="text" required name="lokasi_event" class="form-control" placeholder="Masukkan lokasi event">
+
+                    <label for="deskripsi_event">Deskripsi</label>
+                    <textarea required name="deskripsi_event" class="form-control" rows="3" placeholder="Masukkan deskripsi event"></textarea>
+
+                    <label for="cover_event">Poster Event</label>
+                    <input type="file" accept="image/*" name="cover_event" class="form-control">
+
+                    <button type="submit" class="btn btn-success mt-3">Tambah</button>
+                </form>
+
+                @if ($errors->any())
+                    <div class="alert alert-danger mt-3" role="alert">
+                        @foreach ($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+</body>
+
+</html>
