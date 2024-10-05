@@ -13,7 +13,7 @@
         </div>
         <div class="box-form">
             <h2>Register</h2>
-            <form action="{{ route('postRegister') }}" enctype="multipart/form-data" method="POST" class="register_form">
+            <form action="{{ route('postRegisterCustomer') }}" enctype="multipart/form-data" method="POST" class="register_form">
                 @csrf
                 <div class="register-group">
                     <div>
