@@ -1,37 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Register Creator</title>
-</head>
-<body>
-    <form method="POST" action="{{ route('postRegisterCreator') }}">
-        @csrf
-        <div class="form-group">
-            <label for="name">Nama</label>
-            <input id="name" type="text" class="form-control" name="name" required>
-        </div>
-    
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" type="email" class="form-control" name="email" required>
-        </div>
-    
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" type="password" class="form-control" name="password" required>
-        </div>
-    
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Daftar sebagai Creator</button>
-        </div>
+@extends('layouts.app2')
+@push('css')
+<link rel="stylesheet" href="{{asset('components/css/register.css')}}">
+@endpush
+    @section('title', 'Sign Up')
+    @section('content')
 
-        <p class="signup_login">
-            Have an account? <a href="{{route('loginCreator')}}">Sign in</a>
-        </p>
-    </form>
-    
-</body>
-</html>
+    <div class="container">
+        <div class="box-image">
+            <a href="{{route('homeCustomer')}}">
+                <img src="{{asset('components/asset/logo/512.png')}}" alt="">
+                </a>
+        </div>
+        <div class="box-form">
+            <h2>Register</h2>
+            <form action="{{ route('postRegisterCreator') }}" enctype="multipart/form-data" method="POST" class="register_form">
+                @csrf
+                <div class="register-group">
+                    <div>
+                        <label for="username" class="register_label">Username</label>
+                        <input type="text" name="username" placeholder="Enter Your Username" class="register_input" required value="{{ old('username') }}">
+                    </div>
+                    <div>
+                        <label for="email" class="register_label">Email</label>
+                        <input type="email" name="email" placeholder="Enter Your Email" class="register_input" required value="{{ old('email') }}">
+                    </div>
+                    <div>
+                        <label for="password" class="register_label">Password</label>
+                        <input type="password" name="password" placeholder="Enter Your Password" class="register_input" required>
+                    </div>
+                    <div>
+                        <label for="password_confirmation" class="register_label">Confirm Password</label>
+                        <input type="password" name="password_confirmation" placeholder="Confirm Your Password" class="register_input" required>
+                    </div>
+                    <input type="hidden" name="role" value="customer">
+                </div>
+                <div>
+                    <button type="submit" class="register_button">Register</button>
+                </div>
+            </form>
+
+            <p class="signup_login">
+                Have an account? <a href="{{route('loginCreator')}}">Sign in</a>
+            </p>
+        </div>
+    </div>
+
+
+    @endsection
+@push('js')
+@endpush
