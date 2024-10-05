@@ -19,12 +19,15 @@ use Illuminate\Support\Facades\Route;
 
 
 // Register
-Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/postRegister', [AuthController::class, 'postRegister'])->name('postRegister');
+Route::get('/registerCustomer', [AuthController::class, 'registerCustomer'])->name('registerCustomer');
+Route::post('/postRegisterCustomer', [AuthController::class, 'postRegisterCustomer'])->name('postRegisterCustomer');
+Route::get('/register', [AuthController::class, 'registerCreator'])->name('registerCreator');
+Route::post('/postRegister', [AuthController::class, 'postRegisterCreator'])->name('postRegisterCreator');
 // Login
 Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
-
+Route::get('/loginCreator', [AuthController::class, 'loginCreator'])->name('loginCreator');
+Route::post('/postLoginCreator', [AuthController::class, 'postLoginCreator'])->name('postLoginCreator');
 
 // ini buat customer
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
@@ -43,6 +46,8 @@ Route::get('/admin/edit-list/{id}', [AdminController::class, 'editList'])->name(
 Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
 Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
 Route::get('/kelolaUser', 'AdminController@kelolaUser')->name('kelolaUser');
+Route::get('/users/pending', [AdminController::class, 'showPendingUsers'])->name('pending.users');
+Route::post('/users/approve/{id}', [AdminController::class, 'approveUser'])->name('approve.user');
 
 //ini buat creator
 Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
