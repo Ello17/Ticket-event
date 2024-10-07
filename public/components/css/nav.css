@@ -4,13 +4,47 @@
      font-size: 1.1em;
      padding: 0 10px;
      line-height: 37px;
+     transition: all .1s ease-in-out;
+}
+.input-nav:focus{
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+}
+.img-nav{
+    height: 64px;
 }
 .a-navbar{
     background-color: #7da1c3;
     border-radius: 10px;
     padding: 10px 20px;
     color: white;
+    transition: all .2s ease-in-out;
+}
+.a-navbar:hover{
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+}
+.b-navbar{
+    background-color: #7da1c3;
+    color: white;
+    transition: all .2s ease-in-out;
+}
+.b-navbar:hover{
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
 }
 header{
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+.nav-links
+{
+    z-index: 9999999;
+}
+
+@media (min-width: 768px) {
+    .input{
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .input-nav{
+    }
 }
