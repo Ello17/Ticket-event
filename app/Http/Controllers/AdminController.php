@@ -47,11 +47,52 @@ class AdminController extends Controller
 //     return redirect()->route('homeAdmin')->with('notifikasi','Data Berhasil Dihapus');
 // }
 
-    function kelolaUser(){
-    $user= User::all();
-    return view('admin.kelolaUser', compact('user'));
-    }
-    public function hapusUser(user $user, Request $request){
+protected function create(array $data)
+{
+return User::create([
+'name' => $data['name'],
+'email' => $data['email'],
+'password' => Hash::make($data['password']),
+'is_approved' => false, // Set defaultnya ke false
+]);
+}
+
+public function handle($request, Closure $next)
+{
+if (auth()->check() && !auth()->user()->is_approved) {
+auth()->logout();
+return redirect()->route('loginCreator')->withErrors([
+    'approval' => 'Akun Anda belum disetujui oleh admin.',
+]);
+}
+
+return $next($request);
+}
+
+public function showPendingUsers()
+{
+$pendingUsers = User::where('is_approved', false)->get();
+return view('admin.approveCreator', compact('pendingUsers'));
+}
+
+    public function approveUser($id)
+{
+$user = User::find($id);
+$user->is_approved = true;
+$user->save();
+
+return redirect()->route('pending.users')->with('success', 'Pengguna berhasil disetujui.');
+}
+
+function kelolaCustomer(){
+    $user= User::where('role','customer')->get();
+    return view('admin.kelolaCustomer', compact('user'));
+}
+function kelolaKreator(){
+    $user= User::where('role','creator')->get();
+    return view('admin.kelolaKreator', compact('user'));
+}
+public function hapusUser(user $user, Request $request){
     $user->delete();
 
     return redirect()->route('kelolaUser')->with('notifikasi','Data Berhasil Dihapus');
