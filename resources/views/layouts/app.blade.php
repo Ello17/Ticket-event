@@ -17,6 +17,7 @@
 
 <body>
     @include('template.nav')
+    @include('template.notifikasi')
     @yield('content')
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
