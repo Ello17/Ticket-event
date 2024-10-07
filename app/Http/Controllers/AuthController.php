@@ -32,14 +32,14 @@ class AuthController extends Controller
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            return redirect()->route('homeAdmin');
+            return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'));
+            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'creator') {
-            return redirect()->route('homeCreator');
+            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         }
     } else {
-        return redirect()->route('login')->with('notifikasi', 'Email atau password salah');
+        return redirect()->route('login')->with('pesan-gagal', 'Email atau password salah');
     }
     }
 
@@ -49,40 +49,6 @@ class AuthController extends Controller
 
 
     public function postLoginCreator(Request $request)
-    {
-        // Validasi input email dan password
-        $data = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        // Coba untuk login
-        if (Auth::attempt($data)) {
-            $user = Auth::user(); // Mengambil user yang sedang login
-
-            // Debugging: Cek apakah kolom is_approved bernilai benar
-            if ($user->role === 'creator') {
-                if ($user->is_approved == false) { // Pastikan kondisi benar
-                    // Logout jika creator belum disetujui
-                    Auth::logout();
-                    return redirect()->route('loginCreator')->with('notifikasi', 'Akun Anda belum diverifikasi oleh admin.');
-                }
-            }
-
-            // Redireksi berdasarkan role
-            if ($user->role === 'admin') {
-                return redirect()->route('homeAdmin');
-            } else if ($user->role === 'customer') {
-                return redirect()->intended(route('homeCustomer'));
-            } else if ($user->role === 'creator') {
-                return redirect()->route('homeCreator');
-            }
-        } else {
-            // Jika email atau password salah
-            return redirect()->route('loginCreator')->with('notifikasi', 'Email atau password salah.');
-        }
-    }
-
 {
     $data = $request->validate([
         'email' => ['required', 'email'],
@@ -97,20 +63,20 @@ class AuthController extends Controller
         if ($user->role === 'creator' && $user->is_approved == false) {
             Log::info('User belum diapprove, logout.');
             Auth::logout();
-            return redirect()->route('loginCreator')->with('notifikasi', 'Akun Anda belum diverifikasi oleh admin.');
+            return redirect()->route('loginCreator')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
         }
 
         // Redirect berdasarkan role
         if ($user->role === 'admin') {
-            return redirect()->route('homeAdmin');
+            return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'));
+            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'creator') {
-            return redirect()->route('homeCreator');
+            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         }
     } else {
         // Jika login gagal
-        return redirect()->route('loginCreator')->with('notifikasi', 'Email atau password salah.');
+        return redirect()->route('loginCreator')->with('pesan-gagal', 'Email atau password salah.');
     }
 }
 
@@ -168,7 +134,7 @@ class AuthController extends Controller
 
     //     Auth::login($user); // Jika ingin langsung login setelah register
 
-    //     return redirect()->route('home')->with('notifikasi', 'Akun sukses dibuat');
+    //     return redirect()->route('home')->with('pesan-berhasil', 'Akun sukses dibuat');
     // }
 
     public function registerCreator() {
@@ -194,13 +160,17 @@ class AuthController extends Controller
     ]);
 
     // Redirect ke halaman login dengan notifikasi
-    return redirect()->route('loginCreator')->with('status', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
+    return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
+}
+
+public function logout()
+{
+Auth::logout();
+session()->flush(); // Menghapus semua session termasuk role
+return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Silahkan Login Kembali');
 }
 
 
 
 
-
-
 }
-
