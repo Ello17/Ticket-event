@@ -108,7 +108,7 @@ integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEw
              <ul class="dropdown-menu">
              <li><a class="dropdown-item" href="{{ route('kelolaCustomer') }}">Customer</a></li>
              <li><a class="dropdown-item" href="{{route('kelolaKreator') }}">Creator</a></li>
-             <li><a class="dropdown-item" href="">Approve Creator</a></li>
+             <li><a href="{{ route('pending.users')}}">Approve Creator</a></li>
   </ul>
 </div>
         </li>
