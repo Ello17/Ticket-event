@@ -67,7 +67,7 @@
         </div>
     </div>
     @endforeach
-</div> --}}
+</div>
 
 <div class="text-center mt-8">
     <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>

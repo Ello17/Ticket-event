@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Tiket;
 use App\Models\User;
+use Closure;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event as FacadesEvent;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -45,9 +47,14 @@ class AdminController extends Controller
 //     return redirect()->route('homeAdmin')->with('notifikasi','Data Berhasil Dihapus');
 // }
 
-function kelolaUser(){
-    $user= User::all();
-    return view('admin.kelolaUser', compact('user'));
+
+function kelolaCustomer(){
+    $user= User::where('role','customer')->get();
+    return view('admin.kelolaCustomer', compact('user'));
+}
+function kelolaKreator(){
+    $user= User::where('role','creator')->get();
+    return view('admin.kelolaKreator', compact('user'));
 }
 public function hapusUser(user $user, Request $request){
     $user->delete();
