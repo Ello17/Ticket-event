@@ -79,7 +79,7 @@
 </head>
 
 <body>
-    
+
 
     <div class="container mt-5 py-5">
         <div class="profile-container">
@@ -87,7 +87,7 @@
                 <img src="{{ asset($user->gambar) }}" alt="Foto Profil">
                 <div>
                     <h1>Hello {{ $user->username }}</h1>
-                    <a href="{{ route('editProfilAdmin', $user->id) }}" class="btn btn-sm">Edit Profil</a>
+                    <a href="{{ route('editProfileCust', $user->id) }}" class="btn btn-sm">Edit Profil</a>
                 </div>
             </div>
 
