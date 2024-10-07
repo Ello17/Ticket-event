@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
     <title>Login Creator</title>
 </head>
 <body>
@@ -16,6 +15,11 @@
             <img src="{{asset('components/asset/logo/512.png')}}" alt="">
             </a>
         </div>
+        @if(Session::has('notifikasi'))
+        <div class="alert alert-danger">
+            {{ Session::get('notifikasi') }}
+        </div>
+    @endif    
         <div class="box-form">
             <h2>Login</h2>
             <form action="{{ route('postLogin') }}" class="login_form" method="POST">
