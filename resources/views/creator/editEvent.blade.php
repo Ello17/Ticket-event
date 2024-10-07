@@ -81,9 +81,9 @@
                     </div>
                 @endif
 
-                @if (session('notifikasi'))
+                @if (session('pesan-berhasil'))
                     <div class="alert alert-success mt-3">
-                        {{ session('notifikasi') }}
+                        {{ session('pesan-berhasil') }}
                     </div>
                 @endif
             </div>

@@ -28,6 +28,8 @@ Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/loginCreator', [AuthController::class, 'loginCreator'])->name('loginCreator');
 Route::post('/postLoginCreator', [AuthController::class, 'postLoginCreator'])->name('postLoginCreator');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 // ini buat customer
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
