@@ -54,11 +54,11 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-    
+
         // Coba untuk login
         if (Auth::attempt($data)) {
             $user = Auth::user(); // Mengambil user yang sedang login
-    
+
             // Debugging: Cek apakah kolom is_approved bernilai benar
             if ($user->role === 'creator') {
                 if ($user->is_approved == false) { // Pastikan kondisi benar
@@ -67,7 +67,7 @@ class AuthController extends Controller
                     return redirect()->route('loginCreator')->with('notifikasi', 'Akun Anda belum diverifikasi oleh admin.');
                 }
             }
-    
+
             // Redireksi berdasarkan role
             if ($user->role === 'admin') {
                 return redirect()->route('homeAdmin');
@@ -81,7 +81,7 @@ class AuthController extends Controller
             return redirect()->route('loginCreator')->with('notifikasi', 'Email atau password salah.');
         }
     }
-    
+
 
 
     public function registerCustomer() {
@@ -90,7 +90,7 @@ class AuthController extends Controller
 
     public function postRegisterCustomer(Request $request)
     {
-    
+
         $this->validate($request, [
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -199,7 +199,16 @@ public function approveUser($id)
 
     return redirect()->route('pending.users')->with('success', 'Pengguna berhasil disetujui.');
 }
+    public function logout(Request $request)
+{
+    Auth::logout();
 
+    // Menghapus session dan mengalihkan pengguna ke halaman login
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('login')->with('message', 'You have been logged out successfully!');
+}
 
 
 

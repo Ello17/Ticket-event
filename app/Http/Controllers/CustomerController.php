@@ -36,7 +36,6 @@ class CustomerController extends Controller
 
     public function profil($id)
 {
-
     // Mengambil data pengguna yang sedang login
         $user = User::findOrFail($id);
         return view('customer.profil', compact('user'));

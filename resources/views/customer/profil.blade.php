@@ -17,7 +17,7 @@
             max-width: 800px;
             margin: 2rem auto;
             padding: 2rem;
-            background: #fff;
+            background: #6b7699;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -28,6 +28,7 @@
             border-bottom: 1px solid #ddd;
             padding-bottom: 1rem;
             margin-bottom: 1rem;
+            flex-wrap: wrap;
         }
 
         .profile-header img {
@@ -35,26 +36,28 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #85603F;
+            border: 3px solid #c6cee7;
             margin-right: 1.5rem;
+            max-width: 100%;
         }
 
         .profile-header h1 {
             margin: 0;
             font-size: 2rem;
-            color: #333;
+            color: #f3f0f0;
         }
 
         .profile-header .btn {
-            background-color: #85603F;
-            color: #fff;
+            background-color: #b5bcd1;
+            color: #232324;
             border: none;
             font-size: 0.875rem;
             margin-top: 0.5rem;
+            margin-right: 0.5rem;
         }
 
         .profile-header .btn:hover {
-            background-color: #705b42;
+            background-color: #c6cee7;
         }
 
         .profile-info {
@@ -69,25 +72,46 @@
 
         .profile-info .col-md-4 {
             font-weight: bold;
-            color: #555;
+            color: #f9f7f7;
         }
 
         .profile-info .col-md-8 {
-            color: #333;
+            color: #f4f1f1;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 576px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-header img {
+                margin: 0 0 1rem 0;
+            }
+
+            .profile-header h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 
 <body>
 
-
     <div class="container mt-5 py-5">
         <div class="profile-container">
             <div class="profile-header">
-                <img src="{{ asset($user->gambar) }}" alt="Foto Profil">
+                <img src="{{ asset($user->profil) }}" alt="Foto Profil {{ $user->username }}">
                 <div>
-                    <h1>Hello {{ $user->username }}</h1>
+                    <h1>Hello, {{ $user->username }}</h1>
                     <a href="{{ route('editProfileCust', $user->id) }}" class="btn btn-sm">Edit Profil</a>
+
+                    <!-- Tambahkan tombol logout -->
+                    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-sm">Logout</button>
+                    </form>
                 </div>
             </div>
 
@@ -99,10 +123,6 @@
                 <div class="row">
                     <div class="col-md-4">Email: </div>
                     <div class="col-md-8">{{ $user->email }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">Password: </div>
-                    <div class="col-md-8">{{ $user->password }}</div>
                 </div>
             </div>
         </div>
