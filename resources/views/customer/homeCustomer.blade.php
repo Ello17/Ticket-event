@@ -54,7 +54,11 @@
 </div>
 
 <!-- Event Cards -->
+<<<<<<< HEAD
 {{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 px-5">
+=======
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+>>>>>>> 302512421c3f944e57e6124b5e229b4730c93146
     @foreach ($data as $item)
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <img src="{{ asset($item->cover_event) }}" alt="Event Image" class="w-full h-48 object-cover">
@@ -67,7 +71,7 @@
         </div>
     </div>
     @endforeach
-</div> --}}
+</div>
 
 <div class="text-center mt-8">
     <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>

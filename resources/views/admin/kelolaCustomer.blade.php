@@ -6,14 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Kelola User</title>
-</head>
-<style>
-    body {
-        display: flex;
-    }
-    .sidebar {
-        height: 100vh;
-        width: 250px;
+    <style>
+        body {
+            display: flex;
+        }
+        .content {
+            margin-left: 260px; /* Mengatur margin sesuai sidebar */
+            padding: 20px;
+            width: 100%;
+        }
+
+        .sidebar {
+        height: 100%;
+        width: 260px;
         position: fixed;
         top: 0;
         left: 0;
@@ -21,15 +26,20 @@
         color: #fff;
         padding-top: 20px;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        z-index: 99999;
     }
 
     .sidebar h4 {
-        color: #007bff;
+        color: #00aaff;
         text-align: center;
     }
 
     .sidebar .nav-link {
         color: #adb5bd;
+        font-size: 16px;
+        padding: 12px 20px;
+        border-radius: 5px;
         transition: background-color 0.3s, color 0.3s;
     }
 
@@ -43,30 +53,49 @@
         background-color: #007bff;
     }
 
-    .content {
-        margin-left: 250px;
-        padding: 20px;
-        width: 100%;
+    .sidebar .collapse {
+        background-color: #6c757d;
+        padding-left: 20px;
     }
-</style>
+
+    .sidebar .collapse .nav-link {
+        padding: 8px 25px;
+        font-size: 14px;
+    }
+
+    .sidebar .nav-item {
+        margin-bottom: 15px;
+    }
+
+    .sidebar .nav-item i {
+        margin-right: 10px;
+    }
+    </style>
+</head>
+
 <body>
     <div class="sidebar">
-        <h4>Sidebar</h4>
+        <h4>Admin Menu</h4>
         <hr>
         <ul class="nav flex-column">
-            <li class="nav-item mb-2">
-                <a class="nav-link" href="{{ route('homeAdmin') }}">
-                    <i class="bi bi-house-door-fill"></i> Home Admin
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ route('homeAdmin') }}">
+                    <i class="ri-home-4-fill"></i> Home Admin
                 </a>
             </li>
-            <li class="nav-item mb-2">
-                <a class="nav-link active" href="{{ route('kelolaUser') }}">
-                    <i class="bi bi-people-fill"></i> Kelola User
-                </a>
+               <div class="dropdown">
+                <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Kelola User
+                </button>
+                 <ul class="dropdown-menu">
+                 <li><a class="dropdown-item" href="{{ route('kelolaCustomer') }}">Customer</a></li>
+                 <li><a class="dropdown-item" href="{{route('kelolaKreator') }}">Creator</a></li>
+                 <li><a class="dropdown-item" href="">Approve Creator</a></li>
+      </ul>
+    </div>
             </li>
         </ul>
     </div>
-
     <div class="content">
         <div class="card">
             <div class="card-header">
@@ -97,7 +126,7 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->role }}</td>
                                     <td class="actions">
-                                        <a href="{{ route('hapusUser', $user->id) }}" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Hapus</a>
+                                        <a href="" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Hapus</a>
                                     </td>
                                 </tr>
                             @endforeach
