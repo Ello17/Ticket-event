@@ -59,7 +59,7 @@ function kelolaKreator(){
 public function hapusUser(user $user, Request $request){
     $user->delete();
 
-    return redirect()->route('kelolaUser')->with('notifikasi','Data Berhasil Dihapus');
+    return redirect()->route('kelolaUser')->with('pesan-berhasil','Data Berhasil Dihapus');
     }
 
     protected function create(array $data)
@@ -96,7 +96,7 @@ public function hapusUser(user $user, Request $request){
     $user->is_approved = true;
     $user->save();
 
-    return redirect()->route('pending.users')->with('success', 'Pengguna berhasil disetujui.');
+    return redirect()->route('pending.users')->with('pesan-berhasil', 'Pengguna berhasil disetujui.');
     }
 
 
