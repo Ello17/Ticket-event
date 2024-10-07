@@ -10,7 +10,7 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .card{
-    background: white;
+    background: #1f2937;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     /* box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px; */
     height: 420px;
@@ -20,14 +20,14 @@
 }
 .card-section{
     width: 100%;
-    height: 100%;
     display: flex;
-    justify-content: center;
     padding: 30px;
+    justify-content: center;
+    margin-bottom: 30px;
 }
 .img-card img{
     object-fit: cover;
-    max-height: 250px;
+    max-height: 185px;
     width: 100%;
     border-radius: 5px 5px 0px 0px;
 }
@@ -41,5 +41,7 @@
 .text-card-detail .text-card{
     box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
     padding: 5px;
+}
+.text-card-detail h2{
     font-weight: 600;
 }

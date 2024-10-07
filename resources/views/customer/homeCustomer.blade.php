@@ -61,16 +61,20 @@
                 <img src="{{asset($item->cover_event)}}" alt="Event Image">
             </div>
             <div class="text-card-detail">
-                <h4 class="text-card">{{ $item->nama_event}}</h4>
-                <p class="text-gray-600 text-card">{{ $item->tanggal_event }}</p>
-                <p class="text-gray-600 text-card">{{ $item->lokasi_event }}</p>
-                <p class="text-gray-600 text-card">{{ $item->waktu_event }}</p>
+                <h2 class="text-card text-white">{{ $item->nama_event}}</h4>
+                <p class="text-white text-card">{{ $item->tanggal_event }}</p>
+                <p class="text-white text-card">{{ $item->lokasi_event }}</p>
+                <p class="text-white text-card">{{ $item->waktu_event }}</p>
             </div>
         </div>
     </a>
     @endforeach
 </div>
 </section>
+<div class="text-center mt-8">
+    <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>
+</div>
+
 <!-- Event Cards -->
 {{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 px-5">
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -84,10 +88,6 @@
         </div>
     </div>
 </div> --}}
-
-<div class="text-center mt-8">
-    <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>
-</div>
 
 @endsection
 
