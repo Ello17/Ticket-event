@@ -63,7 +63,7 @@
             <div class="text-card-detail">
                 <h2 class="text-card text-white">{{ $item->nama_event}}</h4>
                 <p class="text-white text-card">{{ $item->tanggal_event }}</p>
-                <p class="text-white text-card">{{ $item->lokasi_event }}</p>
+                <p class="text-white text-card">{{ \Illuminate\Support\Str::limit($item->lokasi_event, 40) }}</p>
                 <p class="text-white text-card">{{ $item->waktu_event }}</p>
             </div>
         </div>
