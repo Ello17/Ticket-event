@@ -4,3 +4,9 @@
 .carousel-item img {
     object-fit: cover;
 }
+.card{
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    height: 200px;
+    width: 150px;
+}
