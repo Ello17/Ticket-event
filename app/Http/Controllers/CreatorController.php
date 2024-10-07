@@ -49,7 +49,7 @@ class CreatorController extends Controller
            
         ]);
 
-        return redirect()->route('homeCreator')->with('notifikasi','Event Berhasil Ditambahkan');
+        return redirect()->route('homeCreator')->with('pesan-berhasil','Event Berhasil Ditambahkan');
     }
 
   public function editEvent(Event $event){
@@ -73,14 +73,14 @@ class CreatorController extends Controller
       $data['cover_event'] = $request->file('cover_event')->store('images');
   }
     $event->update($data);
-    return redirect()->route('homeCreator')->with('notifikasi','Event Berhasil Diubah!!');
+    return redirect()->route('homeCreator')->with('pesan-berhasil','Event Berhasil Diubah!!');
 
   }
 
   public function hapusEvent(Event $event)
   {
     $event->delete();
-    return redirect()->route('homeCreator')->with('notifikasi','Event Berhasil Dihapus!!');
+    return redirect()->route('homeCreator')->with('pesan-berhasil','Event Berhasil Dihapus!!');
   }
 
 }

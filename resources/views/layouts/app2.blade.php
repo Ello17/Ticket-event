@@ -11,6 +11,7 @@
     @stack('css')
 </head>
 <body>
+    @include('template.notifikasi')
 @yield('content')
 </body>
 <script src="https://cdn.tailwindcss.com"></script>

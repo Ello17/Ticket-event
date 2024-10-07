@@ -39,7 +39,7 @@ class AuthController extends Controller
             return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         }
     } else {
-        return redirect()->route('login')->with('pesan-gagal', 'Email atau password salah');
+        return redirect()->route('login')->with('pesan-berhasil', 'Email atau password salah');
     }
     }
 
@@ -174,3 +174,4 @@ return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Sila
 
 
 }
+
