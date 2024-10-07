@@ -13,7 +13,7 @@
         </div>
         <div class="box-form">
             <h2>Register</h2>
-            <form action="{{ route('postRegisterCustomer') }}" enctype="multipart/form-data" method="POST" class="register_form">
+            <form action="{{ route('postRegisterCreator') }}" enctype="multipart/form-data" method="POST" class="register_form">
                 @csrf
                 <div class="register-group">
                     <div>
@@ -40,7 +40,7 @@
             </form>
 
             <p class="signup_login">
-                Have an account? <a href="{{route('login')}}">Sign in</a>
+                Have an account? <a href="{{route('loginCreator')}}">Sign in</a>
             </p>
         </div>
     </div>

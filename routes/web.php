@@ -18,30 +18,46 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
 // Register
-Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/postRegister', [AuthController::class, 'postRegister'])->name('postRegister');
+Route::get('/registerCustomer', [AuthController::class, 'registerCustomer'])->name('registerCustomer');
+Route::post('/postRegisterCustomer', [AuthController::class, 'postRegisterCustomer'])->name('postRegisterCustomer');
+Route::get('/registerCreator', [AuthController::class, 'registerCreator'])->name('registerCreator');
+Route::post('/postRegisterCreator', [AuthController::class, 'postRegisterCreator'])->name('postRegisterCreator');
 // Login
 Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
-
+Route::get('/loginCreator', [AuthController::class, 'loginCreator'])->name('loginCreator');
+Route::post('/postLoginCreator', [AuthController::class, 'postLoginCreator'])->name('postLoginCreator');
 
 // ini buat customer
-Route::get('/', 'CustomerController@homeCustomer')->name('homeCustomer');
+Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
-Route::get('/hapusUser',[AdminController::class, 'hapusUser'])->name('hapusUser');
 
 
+
+//ROUTE ADMIN SAMA KREATOR ITU SIMPENNYA DI DALAM MIDDLEWARE
 Route::middleware('auth')->group(function () {
-    Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
-    Route::get('/kelolaUser', 'AdminController@kelolaUser')->name('kelolaUser');
-    Route::get('/admin/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
-    Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
-    Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
 
 
+//admin
+Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
+Route::get('/admin/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
+Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
+Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
+Route::get('/kelolaCustomer', 'AdminController@kelolaCustomer')->name('kelolaCustomer');
+Route::get('/kelolaKreator', 'AdminController@kelolaKreator')->name('kelolaKreator');
+Route::get('/users/pending', [AdminController::class, 'showPendingUsers'])->name('pending.users');
+Route::post('/users/approve/{id}', [AdminController::class, 'approveUser'])->name('approve.user');
+
+//ini buat creator
+Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
+Route::get('/tambahEvent', 'CreatorController@tambahEvent')->name('tambahEvent');
+Route::post('/postTambahEvent', 'CreatorController@postTambahEvent')->name('postTambahEvent');
+Route::get('/editEvent{event}', 'CreatorController@editEvent')->name('editEvent');
+Route::post('/postEditEvent{event}', 'CreatorController@postEditEvent')->name('postEditEvent');
+Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEvent');
 
 });
+
 

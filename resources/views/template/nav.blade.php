@@ -9,7 +9,7 @@
                     <input type="text" name="" id="" class="input-nav" placeholder="Search">
                 </li>
                 <li>
-                    <a href="{{route('login')}}" class="a-navbar">Event</a>
+                    <a href="{{route('registerCreator')}}" class="a-navbar">Event</a>
                 </li>
             </ul>
         </div>

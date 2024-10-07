@@ -1,17 +1,25 @@
-@extends('layouts.app2')
-@push('css')
-<link rel="stylesheet" href="{{asset('components/css/register.css')}}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <script src="https://cdn.tailwindcss.com"></script>
-@endpush
-    @section('title', 'Sign Up')
-    @section('content')
+    <title>Login Creator</title>
+</head>
+<body>
 
     <div class="container">
         <div class="box-image">
-            <a href="{{route('homeCustomer')}}">
+            <a href="{{route('homeCreator')}}">
             <img src="{{asset('components/asset/logo/512.png')}}" alt="">
             </a>
         </div>
+        @if(Session::has('notifikasi'))
+        <div class="alert alert-danger">
+            {{ Session::get('notifikasi') }}
+        </div>
+    @endif    
         <div class="box-form">
             <h2>Login</h2>
             <form action="{{ route('postLogin') }}" class="login_form" method="POST">
@@ -35,7 +43,7 @@
             @endif
             </form>
             <p class="signup_login">
-                       You do not have an account? <a href="{{ route('registerCustomer') }}">Sign up</a>
+                       You do not have an account? <a href="{{ route('registerCreator') }}">Sign up</a>
             </p>
         </div>
     </div>
@@ -44,3 +52,6 @@
     @endsection
 @push('js')
 @endpush
+
+</body>
+</html>
