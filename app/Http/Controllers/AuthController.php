@@ -32,14 +32,14 @@ class AuthController extends Controller
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            return redirect()->route('homeAdmin');
+            return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'));
+            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'creator') {
-            return redirect()->route('homeCreator');
+            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         }
     } else {
-        return redirect()->route('login')->with('pesan-berhasil', 'Email atau password salah');
+        return redirect()->route('login')->with('pesan-gagal', 'Email atau password salah');
     }
     }
 
