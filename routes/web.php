@@ -62,4 +62,8 @@ Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEve
 
 });
 
+Route::get('/profil/{user}', [CustomerController::class, 'profil'])->name('profil');
+Route::get('/editProfileCust/{id}',[CustomerController::class,'editProfileCust'])->name('editProfileCust');
+Route::post('postEditProfileCust{id}',[CustomerController::class,'postEditProfileCust'])->name('postEditProfileCust');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

@@ -24,35 +24,40 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('321'),
             'role' => 'admin',
+            'profil'=>'components/asset/profil/pp.jpg'
         ]);
         User::create([
             'username' => 'Creator1',
             'email' => 'creator1@gmail.com',
             'password' => bcrypt('321'),
             'role' => 'creator',
+            'profil'=>'components/asset/profil/pp2.jpg'
         ]);
         User::create([
             'username' => 'Creator2',
             'email' => 'creator2@gmail.com',
             'password' => bcrypt('321'),
             'role' => 'creator',
+            'profil'=>'components/asset/profil/pp3.jpg'
         ]);
         User::create([
             'username' => 'Creator3',
             'email' => 'creator3@gmail.com',
             'password' => bcrypt('321'),
             'role' => 'creator',
+            'profil'=>'components/asset/profil/pp4.jpg'
         ]);
         User::create([
             'username' => 'Customer',
             'email' => 'customer@gmail.com',
             'password' => bcrypt('321'),
             'role' => 'customer',
+            'profil'=>'components/asset/profil/pp5.jpg'
         ]);
 
         Event::create([
             'nama_penyelenggara' => 'CroudSound',
-            'cover_event' => 'components/asset/offline1.jpg',
+            'cover_event' => 'components/asset/offline1.jpeg',
             'nama_event' => 'Croud Sound',
             'tanggal_event' => '22 Februari 2025',
             'waktu_event' => '15.00 WIB',
