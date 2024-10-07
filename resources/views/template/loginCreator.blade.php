@@ -34,8 +34,8 @@
 
                     <button type="submit" class="login_button">Log In</button>
                 </div>
-                @if (Session::has('notifikasi'))
-                <p class="error-message">{{ Session::get('notifikasi') }}</p>
+                @if (Session::has('pesan-berhasil'))
+                <p class="error-message">{{ Session::get('pesan-berhasil') }}</p>
             @endif
             </form>
             <p class="signup_login">

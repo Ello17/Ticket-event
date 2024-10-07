@@ -37,12 +37,12 @@ class AdminController extends Controller
 //     $events = Event::findOrFail($id);
 //     $events->update($request->all());
 
-//     return redirect()->route('homeAdmin')->with('notifikasi', 'Data Berhasil Diedit');
+//     return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Data Berhasil Diedit');
 // }
 
 // public function hapusList(Event $event, Request $request)
 // {
-//     return redirect()->route('homeAdmin')->with('notifikasi','Data Berhasil Dihapus');
+//     return redirect()->route('homeAdmin')->with('pesan-berhasil','Data Berhasil Dihapus');
 // }
 
 function kelolaUser(){

@@ -38,7 +38,7 @@ class AuthController extends Controller
             return redirect()->route('homeCreator');
         }
     } else {
-        return redirect()->route('login')->with('notifikasi', 'Email atau password salah');
+        return redirect()->route('login')->with('pesan-berhasil', 'Email atau password salah');
     }
     }
 
@@ -64,7 +64,7 @@ class AuthController extends Controller
                 if ($user->is_approved == false) { // Pastikan kondisi benar
                     // Logout jika creator belum disetujui
                     Auth::logout();
-                    return redirect()->route('loginCreator')->with('notifikasi', 'Akun Anda belum diverifikasi oleh admin.');
+                    return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda belum diverifikasi oleh admin.');
                 }
             }
     
@@ -78,7 +78,7 @@ class AuthController extends Controller
             }
         } else {
             // Jika email atau password salah
-            return redirect()->route('loginCreator')->with('notifikasi', 'Email atau password salah.');
+            return redirect()->route('loginCreator')->with('pesan-berhasil', 'Email atau password salah.');
         }
     }
     
@@ -135,7 +135,7 @@ class AuthController extends Controller
 
     //     Auth::login($user); // Jika ingin langsung login setelah register
 
-    //     return redirect()->route('home')->with('notifikasi', 'Akun sukses dibuat');
+    //     return redirect()->route('home')->with('pesan-berhasil', 'Akun sukses dibuat');
     // }
 
     public function registerCreator() {

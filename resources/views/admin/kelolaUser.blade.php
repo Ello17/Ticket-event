@@ -72,9 +72,9 @@
             <div class="card-header">
                 <h5 class="card-title mb-0">Kelola User</h5>
             </div>
-            @if(Session::has('notifikasi'))
+            @if(Session::has('pesan-berhasil'))
             <div class="alert alert-success">
-                {{ Session::get('notifikasi') }}
+                {{ Session::get('pesan-berhasil') }}
             </div>
             @endif
             <div class="card-body">

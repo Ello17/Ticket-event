@@ -54,9 +54,9 @@
             </h4>
             <hr>
 
-            @if (session('notifikasi'))
+            @if (session('pesan-berhasil'))
                 <div class="alert alert-success">
-                    {{ session('notifikasi') }}
+                    {{ session('pesan-berhasil') }}
                 </div>
             @endif
 
