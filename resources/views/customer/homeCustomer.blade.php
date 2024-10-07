@@ -71,9 +71,11 @@
     @endforeach
 </div>
 </section>
-<div class="text-center mt-8">
-    <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>
-</div>
+<section>
+    <div class="see-all">
+        <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>
+    </div>
+</section>
 
 <!-- Event Cards -->
 {{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 px-5">
