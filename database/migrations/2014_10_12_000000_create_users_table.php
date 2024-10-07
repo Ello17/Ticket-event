@@ -33,8 +33,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users', function (Blueprint $table){
-        $table->dropColumn('is_approved');
-    });
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('is_approved');
+        });
     }
 }
