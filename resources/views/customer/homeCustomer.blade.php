@@ -52,18 +52,25 @@
         <li></li>
     </ul>
 </div>
+<section class="card-section">
 <div class="grid-card">
     @foreach ($data as $item)
+    <a href="{{ route('detailEvent', $item->id) }}">
         <div class="card">
             <div class="img-card">
                 <img src="{{asset($item->cover_event)}}" alt="Event Image">
             </div>
             <div class="text-card-detail">
-                <h4>{{ $item->nama_event}}</h4>
+                <h4 class="text-card">{{ $item->nama_event}}</h4>
+                <p class="text-gray-600 text-card">{{ $item->tanggal_event }}</p>
+                <p class="text-gray-600 text-card">{{ $item->lokasi_event }}</p>
+                <p class="text-gray-600 text-card">{{ $item->waktu_event }}</p>
             </div>
         </div>
+    </a>
     @endforeach
 </div>
+</section>
 <!-- Event Cards -->
 {{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 px-5">
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
