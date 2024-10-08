@@ -39,7 +39,7 @@ class AuthController extends Controller
             return redirect()->route('homeCreator');
         }
     } else {
-        return redirect()->route('login')->with('pesan-berhasil', 'Email atau password salah');
+        return redirect()->route('login')->with('pesan-gagal', 'Email atau password salah');
     }
     }
 
@@ -80,7 +80,7 @@ class AuthController extends Controller
     }
 }
 
-    
+
 
 
     public function registerCustomer() {
@@ -89,7 +89,7 @@ class AuthController extends Controller
 
     public function postRegisterCustomer(Request $request)
     {
-    
+
         $this->validate($request, [
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -170,7 +170,7 @@ session()->flush(); // Menghapus semua session termasuk role
 return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Silahkan Login Kembali');
 }
 
-   
+
 
 
 }

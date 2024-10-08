@@ -18,12 +18,12 @@
             </a>
         </div>
         <div class="box-form">
-            <h2>Login</h2>
+            <h2>Login-Creator</h2>
             <form action="{{ route('postLogin') }}" class="login_form" method="POST">
                 @csrf
                 <div class="register-group">
                     <div>
-                        <label for="email" class="login_label">Email</label>
+                        <label for="email" class="login_label">Emaail</label>
                         <input type="email" name="email" placeholder="Write your email" id="email"
                             class="login_input">
                     </div>
