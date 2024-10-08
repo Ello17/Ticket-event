@@ -53,7 +53,10 @@ Route::get('/users/pending', [AdminController::class, 'showPendingUsers'])->name
 Route::post('/users/approve/{id}', [AdminController::class, 'approveUser'])->name('approve.user');
 
 //ini buat creator
-Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
+Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
+     ->middleware('auth', 'check.approval')
+     ->name('homeCreator');
+
 Route::get('/tambahEvent', 'CreatorController@tambahEvent')->name('tambahEvent');
 Route::post('/postTambahEvent', 'CreatorController@postTambahEvent')->name('postTambahEvent');
 Route::get('/editEvent{event}', 'CreatorController@editEvent')->name('editEvent');

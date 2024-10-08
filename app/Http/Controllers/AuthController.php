@@ -163,12 +163,12 @@ class AuthController extends Controller
     return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
 }
 
-public function logout()
-{
-Auth::logout();
-session()->flush(); // Menghapus semua session termasuk role
-return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Silahkan Login Kembali');
-}
+    public function logout()
+    {
+    Auth::logout();
+    session()->flush(); // Menghapus semua session termasuk role
+    return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Silahkan Login Kembali');
+    }
 
 
 

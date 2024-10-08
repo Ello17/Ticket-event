@@ -62,27 +62,27 @@ public function hapusUser(user $user, Request $request){
     return redirect()->route('kelolaUser')->with('pesan-berhasil','Data Berhasil Dihapus');
     }
 
-    protected function create(array $data)
-    {
-    return User::create([
-    'name' => $data['name'],
-    'email' => $data['email'],
-    'password' => Hash::make($data['password']),
-    'is_approved' => false, // Set defaultnya ke false
-    ]);
-    }
+    // protected function create(array $data)
+    // {
+    // return User::create([
+    // 'name' => $data['name'],
+    // 'email' => $data['email'],
+    // 'password' => Hash::make($data['password']),
+    // 'is_approved' => false, // Set defaultnya ke false
+    // ]);
+    // }
 
-    public function handle($request, Closure $next)
-    {
-    if (auth()->check() && !auth()->user()->is_approved) {
-    auth()->logout();
-    return redirect()->route('loginCreator')->withErrors([
-        'approval' => 'Akun Anda belum disetujui oleh admin.',
-    ]);
-    }
+    // public function handle($request, Closure $next)
+    // {
+    // if (auth()->check() && !auth()->user()->is_approved) {
+    // auth()->logout();
+    // return redirect()->route('loginCreator')->withErrors([
+    //     'approval' => 'Akun Anda belum disetujui oleh admin.',
+    // ]);
+    // }
 
-    return $next($request);
-    }
+    // return $next($request);
+    // }
 
     public function showPendingUsers()
     {
