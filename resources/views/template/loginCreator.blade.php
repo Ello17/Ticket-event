@@ -41,8 +41,6 @@
             </p>
         </div>
     </div>
-
-
-@endsection
+    @endsection
 @push('js')
 @endpush

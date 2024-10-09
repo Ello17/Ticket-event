@@ -32,7 +32,7 @@
                         <label for="password_confirmation" class="register_label">Confirm Password</label>
                         <input type="password" name="password_confirmation" placeholder="Confirm Your Password" class="register_input" required>
                     </div>
-                    <input type="hidden" name="role" value="customer">
+                    <input type="hidden" name="role" value="creator">
                 </div>
                 <div>
                     <button type="submit" class="register_button">Register</button>
