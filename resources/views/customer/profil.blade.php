@@ -34,41 +34,10 @@
                     <div class="email-info">{{ $user->email }}</div>
                 </div>
             </div>
-
-            <div class="card-body p-4">
-                <div class="overflow-x-auto">
-                    <table id="example">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th>No</th>
-                                <th>Tiket Dibeli</th>
-                                <th>Tanggal Transaksi</th>
-                                <th>Jumlah Tiket</th>
-                                <th>Total Transaksi</th>
-                                <th>Nama Lengkap</th>
-                                <th>No KTP</th>
-                                <th>No Telepon</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="btn-history">
+                <a href="{{route('history')}}" class="btn">History</a>
             </div>
-        </div>
-    </div>
+
 
 @endsection
 @push('js')

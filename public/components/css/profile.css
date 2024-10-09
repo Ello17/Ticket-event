@@ -38,7 +38,7 @@ body {
     color: #f3f0f0;
 }
 
-.profile-header .btn {
+.container .btn {
     background-color: #b5bcd1;
     color: #232324;
     border: none;
@@ -47,7 +47,7 @@ body {
     margin-right: 0.5rem;
 }
 
-.profile-header .btn:hover {
+.container .btn:hover {
     background-color: #c6cee7;
 }
 .profile-info{
@@ -74,4 +74,14 @@ body {
     .profile-header h1 {
         font-size: 1.5rem;
     }
+}
+.btn-history{
+    margin-top: 10px;
+}
+.btn-history .btn{
+    background-color: #b5bcd1;
+    color: #232324;
+    border: none;
+    font-size: 0.875rem;
+    padding: 10px;
 }
