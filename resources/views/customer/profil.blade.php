@@ -26,24 +26,24 @@
 
             <div class="profile-info">
                 <div class="row">
-                    <div class="username">Username: </div>
+                    <div class="username"><i class="ri-user-fill"></i> Username: </div>
                     <div class="username-info">{{ $user->username }}</div>
                 </div>
                 <div class="row">
-                    <div class="email">Email: </div>
+                    <div class="email"><i class="ri-mail-fill"></i> Email: </div>
                     <div class="email-info">{{ $user->email }}</div>
                 </div>
                 <div class="row">
                     <a href="{{ route('ChangePass') }}">
                     <div class="col-md-4">
                         <i class="fas fa-lock"></i> <!-- Icon kunci dari Font Awesome -->
-                        <span class="text-white">Ubah Password</span>
+                        <span class="text-white"><i class="ri-lock-password-fill"></i> Ubah Password</span>
                     </div>
                     </a>
                 </div>
             </div>
             <div class="btn-history">
-                <a href="{{route('history')}}" class="btn">History</a>
+                <a href="{{route('history')}}" class="btn"><i class="ri-history-line"></i> History</a>
             </div>
 
 
