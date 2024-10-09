@@ -12,7 +12,7 @@
     <div class="container mt-5 py-5">
         <div class="profile-container">
             <div class="profile-header">
-                <img src="{{ asset($user->profil) }}" alt="Foto Profil {{ $user->username }}">
+                <img src="{{ asset($user->profil ?? 'components/asset/logo/user.png') }}" alt="Foto Profil {{ $user->username }}">
                 <div>
                     <h1>Hello, {{ $user->username }}</h1>
                     <a href="{{ route('editProfileCust', $user->id) }}" class="btn btn-sm">Edit Profil</a>
@@ -20,7 +20,7 @@
                         @csrf
                         <button type="submit" class="btn btn-sm">Logout</button>
                     </form>
-                    <a href="{{ route('homeCustomer') }}" class="btn btn-sm" id="backButton">Back</a> <!-- Tombol Back ditambahkan di sini -->
+                    <a href="{{ route('homeCustomer') }}" class="btn btn-sm">Back</a>
                 </div>
             </div>
 
@@ -33,42 +33,19 @@
                     <div class="email">Email: </div>
                     <div class="email-info">{{ $user->email }}</div>
                 </div>
-            </div>
-
-            <div class="card-body p-4">
-                <div class="overflow-x-auto">
-                    <table id="example">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th>No</th>
-                                <th>Tiket Dibeli</th>
-                                <th>Tanggal Transaksi</th>
-                                <th>Jumlah Tiket</th>
-                                <th>Total Transaksi</th>
-                                <th>Nama Lengkap</th>
-                                <th>No KTP</th>
-                                <th>No Telepon</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                                <td class="text-white">1</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <a href="{{ route('ChangePass') }}">
+                    <div class="col-md-4">
+                        <i class="fas fa-lock"></i> <!-- Icon kunci dari Font Awesome -->
+                        <span class="text-white">Ubah Password</span>
+                    </div>
+                    </a>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="btn-history">
+                <a href="{{route('history')}}" class="btn">History</a>
+            </div>
+
 
 @endsection
 @push('js')

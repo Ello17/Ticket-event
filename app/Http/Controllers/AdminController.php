@@ -86,9 +86,12 @@ public function hapusUser(user $user, Request $request){
 
     public function showPendingUsers()
     {
-    $pendingUsers = User::where('is_approved', false)->get();
-    return view('admin.approveCreator', compact('pendingUsers'));
+        $pendingUsers = User::where('is_approved', false)
+                            ->where('role', 'creator')
+                            ->get();
+        return view('admin.approveCreator', compact('pendingUsers'));
     }
+    
 
     public function approveUser($id)
     {

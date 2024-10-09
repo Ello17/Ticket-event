@@ -35,6 +35,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
+Route::get('/history', [CustomerController::class, 'history'])->name('history');
 
 
 
@@ -64,9 +65,12 @@ Route::post('/postEditEvent{event}', 'CreatorController@postEditEvent')->name('p
 Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEvent');
 
 
-Route::get('/profil/{user}', [CustomerController::class, 'profil'])->name('profil');
+Route::get('/profil', [CustomerController::class, 'profil'])->name('profil');
+
 Route::get('/editProfileCust/{id}',[CustomerController::class,'editProfileCust'])->name('editProfileCust');
 Route::post('postEditProfileCust{id}',[CustomerController::class,'postEditProfileCust'])->name('postEditProfileCust');
+Route::get('/ChangePass',[CustomerController::class, 'ChangePass'])->name('ChangePass');
+Route::post('/change-password', [CustomerController::class, 'postChangePass'])->middleware('auth')->name('postChangePass');;
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 });

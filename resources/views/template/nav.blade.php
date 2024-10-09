@@ -28,7 +28,8 @@
                 <button class="px-5 py-2 rounded-full">
                     <a href="{{ route('profil', ['user' => Auth::user()->id]) }}">
                         <!-- Tampilkan gambar profil atau gambar default jika tidak ada -->
-                        <img src="{{ Auth::user()->profil ? asset(Auth::user()->profil) : asset('components/asset/default-profile.png') }}" alt="Profile" class="profile-nav">
+                        {{-- <img src="{{ asset($user->profil ?? 'components/asset/logo/user.png') }}" alt="Foto Profil {{ $user->username }}" class="profile-nav"> --}}
+                        <img src="{{ Auth::user()->profil ? asset(Auth::user()->profil) : asset('components/asset/logo/user.png') }}" alt="Profile" class="profile-nav">
                     </a>
                 </button>
             @endauth
