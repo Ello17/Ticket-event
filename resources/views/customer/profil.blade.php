@@ -94,6 +94,30 @@
                 font-size: 1.5rem;
             }
         }
+
+        table {
+            width: 100%;
+            margin-top: 1rem;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            color: #333; /* Ensure text color is dark for readability */
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Class for white text */
+        .text-white {
+            color: white;
+        }
     </style>
 </head>
 
@@ -106,23 +130,55 @@
                 <div>
                     <h1>Hello, {{ $user->username }}</h1>
                     <a href="{{ route('editProfileCust', $user->id) }}" class="btn btn-sm">Edit Profil</a>
-
-                    <!-- Tambahkan tombol logout -->
                     <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                         @csrf
                         <button type="submit" class="btn btn-sm">Logout</button>
                     </form>
+                    <a href="{{ route('homeCustomer') }}" class="btn btn-sm">Back</a> <!-- Tombol Back ditambahkan di sini -->
                 </div>
             </div>
 
             <div class="profile-info">
                 <div class="row">
-                    <div class="col-md-4">Username: </div>
+                    <div class="col-md-4">Username:</div>
                     <div class="col-md-8">{{ $user->username }}</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">Email: </div>
+                    <div class="col-md-4">Email:</div>
                     <div class="col-md-8">{{ $user->email }}</div>
+                </div>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="overflow-x-auto">
+                    <table id="example">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th>No</th>
+                                <th>Tiket Dibeli</th>
+                                <th>Tanggal Transaksi</th>
+                                <th>Jumlah Tiket</th>
+                                <th>Total Transaksi</th>
+                                <th>Nama Lengkap</th>
+                                <th>No KTP</th>
+                                <th>No Telepon</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-white">1</td>
+                                <td class="text-white">1</td>
+                                <td class="text-white">1</td>
+                                <td class="text-white">1</td>
+                                <td class="text-white">1</td>
+                                <td class="text-white">1</td>
+                                <td class="text-white">1</td>
+                                <td class="text-white">1</td>
+                                <td class="text-white">1</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
