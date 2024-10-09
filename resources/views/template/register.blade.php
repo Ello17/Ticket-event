@@ -2,7 +2,7 @@
 @push('css')
 <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
 @endpush
-    @section('title', 'Sign Up')
+    @section('title', 'Sign-Up')
     @section('content')
 
     <div class="container">
@@ -32,15 +32,16 @@
                         <label for="password_confirmation" class="register_label">Confirm Password</label>
                         <input type="password" name="password_confirmation" placeholder="Confirm Your Password" class="register_input" required>
                     </div>
-                    <input type="hidden" name="role" value="customer">
                 </div>
                 <div>
                     <button type="submit" class="register_button">Register</button>
                 </div>
             </form>
+            
+
 
             <p class="signup_login">
-                Have an account? <a href="{{route('login')}}">Sign in</a>
+                Have an account? <a href="{{route('login')}}" class="a-lg">Sign in</a>
             </p>
         </div>
     </div>

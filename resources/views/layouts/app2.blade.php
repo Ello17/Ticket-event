@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
     @stack('css')
 </head>
-<body>
+<body style="background-color: #111827;">
     @include('template.notifikasi')
 @yield('content')
 </body>

@@ -13,31 +13,35 @@
         </div>
         <div class="p-4">
             <div class="overflow-x-auto">
-                <table class="min-w-full table-auto border-collapse border border-gray-200">
-                    <thead class="bg-gray-800 text-white">
-                        <tr>
-                            <th class="border border-gray-200 px-4 py-2">Nama</th>
-                            <th class="border border-gray-200 px-4 py-2">Email</th>
-                            <th class="border border-gray-200 px-4 py-2">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($pendingUsers as $user)
-                            <tr class="bg-white hover:bg-gray-100">
-                                <td class="border border-gray-200 px-4 py-2">{{ $user->username }}</td>
-                                <td class="border border-gray-200 px-4 py-2">{{ $user->email }}</td>
-                                <td class="border border-gray-200 px-4 py-2">
-                                    <form action="{{ route('approve.user', $user->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm">
-                                            Setujui
-                                        </button>
-                                    </form>
-                                </td>
+                @if ($pendingUsers->isEmpty())
+                    <p class="text-center text-gray-500">Tidak ada creator yang perlu disetujui.</p>
+                @else
+                    <table class="min-w-full table-auto border-collapse border border-gray-200">
+                        <thead class="bg-gray-800 text-white">
+                            <tr>
+                                <th class="border border-gray-200 px-4 py-2">Nama</th>
+                                <th class="border border-gray-200 px-4 py-2">Email</th>
+                                <th class="border border-gray-200 px-4 py-2">Aksi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($pendingUsers as $user)
+                                <tr class="bg-white hover:bg-gray-100">
+                                    <td class="border border-gray-200 px-4 py-2">{{ $user->username }}</td>
+                                    <td class="border border-gray-200 px-4 py-2">{{ $user->email }}</td>
+                                    <td class="border border-gray-200 px-4 py-2">
+                                        <form action="{{ route('approve.user', $user->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm">
+                                                Setujui
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
             </div>
         </div>
     </div>
