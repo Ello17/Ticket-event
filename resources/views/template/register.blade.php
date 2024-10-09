@@ -2,7 +2,7 @@
 @push('css')
 <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
 @endpush
-    @section('title', 'Sign Up')
+    @section('title', 'Sign-Up')
     @section('content')
 
     <div class="container">
@@ -40,7 +40,7 @@
             </form>
 
             <p class="signup_login">
-                Have an account? <a href="{{route('login')}}">Sign in</a>
+                Have an account? <a href="{{route('login')}}" class="a-lg">Sign in</a>
             </p>
         </div>
     </div>

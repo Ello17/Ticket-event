@@ -15,10 +15,10 @@
     @stack('css')
 </head>
 
-<body>
+<body style="background-color: #111827;">
     @include('template.nav')
-    @include('template.notifikasi')
     @yield('content')
+    @include('template.notifikasi')
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
 @stack('js')

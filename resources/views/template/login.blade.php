@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
 <script src="https://cdn.tailwindcss.com"></script>
 @endpush
-    @section('title', 'Sign Up')
+    @section('title', 'Sign-In')
     @section('content')
 
     <div class="container">
@@ -30,12 +30,9 @@
 
                     <button type="submit" class="login_button">Log In</button>
                 </div>
-                @if (Session::has('pesan-berhasil'))
-                <p class="error-message">{{ Session::get('pesan-berhasil') }}</p>
-            @endif
             </form>
             <p class="signup_login">
-                       You do not have an account? <a href="{{ route('registerCustomer') }}">Sign up</a>
+                You do not have an account? <a href="{{ route('registerCustomer') }}" class="a-lg">Sign up</a>
             </p>
         </div>
     </div>

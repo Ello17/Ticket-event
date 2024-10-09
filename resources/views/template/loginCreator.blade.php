@@ -3,8 +3,9 @@
 <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
 <script src="https://cdn.tailwindcss.com"></script>
 @endpush
-    @section('title', 'Sign Up')
-    @section('content')
+@section('title', 'Sign-In Creator')
+@section('content')
+@include('template.notifikasi')
     <div class="container">
         <div class="box-image">
             <a href="{{ route('homeCreator') }}">
@@ -12,8 +13,8 @@
             </a>
         </div>
         <div class="box-form">
-            <h2>Login</h2>
-            <form action="{{ route('postLoginCreator') }}" class="login_form" method="POST">
+            <h2>Login-Creator</h2>
+            <form action="{{ route('postLogin') }}" class="login_form" method="POST">
                 @csrf
                 <div class="register-group">
                     <div>
