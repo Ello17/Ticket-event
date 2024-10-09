@@ -48,3 +48,10 @@ header{
     .input-nav{
     }
 }
+
+.profile-nav{
+    height: 48px;
+    width: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+}
