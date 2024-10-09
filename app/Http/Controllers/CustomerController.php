@@ -22,6 +22,9 @@ class CustomerController extends Controller
 
     }
 
+    function history() {
+        return view('customer.history');
+    }
     public function detailEvent($id)
     {
         $event = Event::find($id);

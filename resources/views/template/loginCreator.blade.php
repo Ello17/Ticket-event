@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Login Creator</title>
-</head>
-
-<body>
+@extends('layouts.app2')
+@push('css')
+<link rel="stylesheet" href="{{asset('components/css/register.css')}}">
+<script src="https://cdn.tailwindcss.com"></script>
+@endpush
+@section('title', 'Sign-In Creator')
+@section('content')
 @include('template.notifikasi')
     <div class="container">
         <div class="box-image">
@@ -18,7 +13,7 @@
             </a>
         </div>
         <div class="box-form">
-            <h2>Login</h2>
+            <h2>Login-Creator</h2>
             <form action="{{ route('postLogin') }}" class="login_form" method="POST">
                 @csrf
                 <div class="register-group">
@@ -51,7 +46,3 @@
 @endsection
 @push('js')
 @endpush
-
-</body>
-
-</html>

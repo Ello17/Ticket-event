@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
+<<<<<<< HEAD
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,16 +14,16 @@
             background-color: #f4f4f4;
             font-family: Arial, sans-serif;
         }
+=======
+@push('css')
+<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{asset('components/css/profile.css')}}">
+@endpush
+>>>>>>> dad18348525172e27bd36b9ba5b6062f02971094
 
-        .profile-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: #6b7699;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+@section('title', 'Profile')
 
+<<<<<<< HEAD
         .profile-header {
             display: flex;
             align-items: center;
@@ -108,6 +108,9 @@
 </head>
 
 <body>
+=======
+@section('content')
+>>>>>>> dad18348525172e27bd36b9ba5b6062f02971094
 
     <div class="container mt-5 py-5">
         <div class="profile-container">
@@ -126,12 +129,12 @@
 
             <div class="profile-info">
                 <div class="row">
-                    <div class="col-md-4">Username:</div>
-                    <div class="col-md-8">{{ $user->username }}</div>
+                    <div class="username">Username: </div>
+                    <div class="username-info">{{ $user->username }}</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">Email:</div>
-                    <div class="col-md-8">{{ $user->email }}</div>
+                    <div class="email">Email: </div>
+                    <div class="email-info">{{ $user->email }}</div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
@@ -140,6 +143,7 @@
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
 
 
 
@@ -174,11 +178,14 @@
                         </tbody>
                     </table>
                 </div>
+=======
+            <div class="btn-history">
+                <a href="{{route('history')}}" class="btn">History</a>
+>>>>>>> dad18348525172e27bd36b9ba5b6062f02971094
             </div>
-        </div>
-    </div>
 
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-</body>
 
-</html>
+@endsection
+@push('js')
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+@endpush
