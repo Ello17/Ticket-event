@@ -134,7 +134,7 @@
                         @csrf
                         <button type="submit" class="btn btn-sm">Logout</button>
                     </form>
-                    <a href="{{ route('homeCustomer') }}" class="btn btn-sm">Back</a> <!-- Tombol Back ditambahkan di sini -->
+                    <a href="{{ route('homeCustomer') }}" class="btn btn-sm" id="backButton">Back</a> <!-- Tombol Back ditambahkan di sini -->
                 </div>
             </div>
 
