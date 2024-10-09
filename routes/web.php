@@ -63,10 +63,10 @@ Route::get('/editEvent{event}', 'CreatorController@editEvent')->name('editEvent'
 Route::post('/postEditEvent{event}', 'CreatorController@postEditEvent')->name('postEditEvent');
 Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEvent');
 
-});
 
 Route::get('/profil/{user}', [CustomerController::class, 'profil'])->name('profil');
 Route::get('/editProfileCust/{id}',[CustomerController::class,'editProfileCust'])->name('editProfileCust');
 Route::post('postEditProfileCust{id}',[CustomerController::class,'postEditProfileCust'])->name('postEditProfileCust');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+});
