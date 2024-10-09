@@ -12,7 +12,7 @@
     <div class="container mt-5 py-5">
         <div class="profile-container">
             <div class="profile-header">
-                <img src="{{ asset($user->profil) }}" alt="Foto Profil {{ $user->username }}">
+                <img src="{{ asset($user->profil ?? 'components/asset/logo/user.png') }}" alt="Foto Profil {{ $user->username }}">
                 <div>
                     <h1>Hello, {{ $user->username }}</h1>
                     <a href="{{ route('editProfileCust', $user->id) }}" class="btn btn-sm">Edit Profil</a>
@@ -34,10 +34,12 @@
                     <div class="email-info">{{ $user->email }}</div>
                 </div>
                 <div class="row">
+                    <a href="{{ route('ChangePass') }}">
                     <div class="col-md-4">
                         <i class="fas fa-lock"></i> <!-- Icon kunci dari Font Awesome -->
-                        <a href="{{ route('ChangePass') }}" class="text-white">Ubah Password</a>
+                        <span class="text-white">Ubah Password</span>
                     </div>
+                    </a>
                 </div>
             </div>
             <div class="btn-history">

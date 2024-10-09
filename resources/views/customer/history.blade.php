@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="title py-3">
-    <h1>History</h1>
+    <h1>HISTORY</h1>
 </div>
 <div class="container py-2">
     <div class="row">
