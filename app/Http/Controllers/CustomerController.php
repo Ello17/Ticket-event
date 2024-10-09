@@ -51,7 +51,7 @@ class CustomerController extends Controller
             'username' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'gambar' => 'nullable|image', // Hanya wajib jika ada gambar yang di-upload
+            'profil' => 'nullable|image', // Hanya wajib jika ada profil yang di-upload
         ]);
 
         // Temukan pengguna yang akan diedit
@@ -62,9 +62,9 @@ class CustomerController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password); // Mengenkripsi password
 
-        // Jika ada gambar yang di-upload, simpan gambar baru
-        if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
+        // Jika ada profil yang di-upload, simpan profil baru
+        if ($request->hasFile('profil')) {
+            $file = $request->file('profil');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $filePath = 'img/' . $fileName;
 
@@ -72,15 +72,15 @@ class CustomerController extends Controller
             Log::info('File upload: ' . $fileName);
             Log::info('File path: ' . $filePath);
 
-            // Hapus gambar lama jika ada
-            if ($user->gambar && File::exists(public_path($user->gambar))) {
-                Log::info('Deleting old file: ' . public_path($user->gambar));
-                File::delete(public_path($user->gambar));
+            // Hapus profil lama jika ada
+            if ($user->profil && File::exists(public_path($user->profil))) {
+                Log::info('Deleting old file: ' . public_path($user->profil));
+                File::delete(public_path($user->profil));
             }
 
-            // Simpan gambar baru
+            // Simpan profil baru
             $file->move(public_path('img'), $fileName);
-            $user->gambar = $filePath;
+            $user->profil = $filePath;
         }
 
         // Simpan perubahan ke database
