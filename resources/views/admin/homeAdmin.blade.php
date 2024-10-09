@@ -1,4 +1,5 @@
-@extends('layouts.app2')
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -88,11 +89,9 @@
             margin-right: 10px;
         }
     </style>
-{{-- @endpush --}}
+</head>
 
-{{-- @section('title', 'Admin')
-
-@section('content') --}}
+<body>
     <div class="sidebar">
         <h4>Admin Menu</h4>
         <hr>
@@ -106,7 +105,7 @@
                 <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#userSubmenu" role="button"
                     aria-expanded="false" aria-controls="userSubmenu">
                     <i class="ri-user-3-fill"></i> Kelola User
-           
+                    <i class="ri-arrow-down-s-line float-end"></i>
                 </a>
                 <div class="collapse" id="userSubmenu">
                     <ul class="nav flex-column">
@@ -127,10 +126,10 @@
             <div class="card-header">
                 <h5 class="card-title mb-0">Tabel List Event</h5>
             </div>
-            @if (Session::has('notifikasi'))
-                <div class="alert alert-success">
-                    {{ Session::get('notifikasi') }}
-                </div>
+            @if(Session::has('notifikasi'))
+            <div class="alert alert-success">
+                {{ Session::get('notifikasi') }}
+            </div>
             @endif
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -165,49 +164,39 @@
                                     <td>{{ $e->lokasi_event }}</td>
                                     <td>{{ $e->deskripsi_event }}</td>
 
-                                    @if($e->tiket->isNotEmpty())
-                                    <td>{{ $e->tiket->first()->harga_tiket }}</td>
-                                    <td>{{ $e->tiket->first()->kategori_tiket }}</td>
-                                    <td>{{ $e->tiket->first()->jumlah_tiket }}</td>
-                                    @else
-                                    <td colspan="3">Tidak ada tiket</td>
-                                    @endif
+                            @if($e->tiket->isNotEmpty())
+                            <td class="border p-4">{{ $e->tiket->first()->harga_tiket }}</td>
+                            <td class="border p-4">{{ $e->tiket->first()->kategori_tiket }}</td>
+                            <td class="border p-4">{{ $e->tiket->first()->jumlah_tiket }}</td>
+                            @else
+                            <td class="border p-4" colspan="3">Tidak ada tiket</td>
+                            @endif
 
-                                    <td class="actions">
-                                        <a href="{{ route('admin.editList', $e->id) }}"
-                                            class="btn btn-outline-primary">Edit</a>
-                                        <a href="{{ route('hapusList', $e->id) }}"
-                                            class="btn btn-outline-danger"
-                                            onclick="return confirm('Are you sure?')">Hapus</a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            <td class="border p-4 space-y-2">
+                                <a href="{{ route('admin.editList', $e->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                                <a href="{{ route('hapusList', $e->id) }}" class="text-red-600 hover:underline" onclick="return confirm('Are you sure?')">Hapus</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
+@endsection
 
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
-    <script>
-        new DataTable('#example');
-    </script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
-</body>
+@push('js')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
 
-{{-- @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
-    <script>
-        new DataTable('#example');
-    </script>
-@endpush --}}
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+@endpush
+
+</html>

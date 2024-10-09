@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'creator', 'customer'])->default('customer');
             $table->boolean('is_approved')->default(false);
+            $table->string('profil');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,8 +33,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users', function (Blueprint $table){
-        $table->dropColumn('is_approved');
-    });
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('is_approved');
+        });
     }
 }

@@ -28,6 +28,8 @@ Route::post('/postLogin', [AuthController::class, 'postLogin'])->name('postLogin
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/loginCreator', [AuthController::class, 'loginCreator'])->name('loginCreator');
 Route::post('/postLoginCreator', [AuthController::class, 'postLoginCreator'])->name('postLoginCreator');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 // ini buat customer
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
@@ -45,12 +47,16 @@ Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 Route::get('/admin/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
 Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
 Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
-Route::get('/kelolaUser', 'AdminController@kelolaUser')->name('kelolaUser');
+Route::get('/kelolaCustomer', 'AdminController@kelolaCustomer')->name('kelolaCustomer');
+Route::get('/kelolaKreator', 'AdminController@kelolaKreator')->name('kelolaKreator');
 Route::get('/users/pending', [AdminController::class, 'showPendingUsers'])->name('pending.users');
 Route::post('/users/approve/{id}', [AdminController::class, 'approveUser'])->name('approve.user');
 
 //ini buat creator
-Route::get('/homeCreator', 'CreatorController@homeCreator')->name('homeCreator');
+Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
+     ->middleware('auth', 'check.approval')
+     ->name('homeCreator');
+
 Route::get('/tambahEvent', 'CreatorController@tambahEvent')->name('tambahEvent');
 Route::post('/postTambahEvent', 'CreatorController@postTambahEvent')->name('postTambahEvent');
 Route::get('/editEvent{event}', 'CreatorController@editEvent')->name('editEvent');
@@ -59,4 +65,8 @@ Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEve
 
 });
 
+Route::get('/profil/{user}', [CustomerController::class, 'profil'])->name('profil');
+Route::get('/editProfileCust/{id}',[CustomerController::class,'editProfileCust'])->name('editProfileCust');
+Route::post('postEditProfileCust{id}',[CustomerController::class,'postEditProfileCust'])->name('postEditProfileCust');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
