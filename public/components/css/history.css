@@ -1,0 +1,56 @@
+th,td{
+    border: 1px solid white;
+}
+.table{
+    margin-top: 10px;
+}
+.card-body{
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+.title{
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+.title h1{
+    padding: 15px 30px;
+    background: #1f2937;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+}
+.table-fixed tbody {
+    min-height: 300px;
+    color: white;
+    overflow-y: auto;
+    width: 100%;
+}
+.col-1{
+    align-items: center;
+}
+
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+    color: white;
+}
+
+.table-fixed tbody td,
+.table-fixed tbody th,
+.table-fixed thead > tr > th {
+    float: left;
+    position: relative;
+
+    &::after {
+        content: '';
+        clear: both;
+        display: block;
+    }
+}
+
+.table-fixed{
+    white-space: nowrap;
+}
