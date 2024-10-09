@@ -82,7 +82,7 @@
                         <td>{{ $item->lokasi_event }}</td>
                         <td>{{ $item->tanggal_event }}</td>
                         <td>{{ $item->waktu_event }}</td>
-                        <td>{{ $item->deskripsi_event }}</td>
+                        <td class="border p-4" title="{{ $item->deskripsi_event }}">{{ \Illuminate\Support\Str::limit($item->deskripsi_event, 50) }}</td>
                         <td>
                             <a href="{{route('hapusEvent', $item->id)}}">Delete</a>
                             <a href="{{ route('editEvent', $item->id) }}">Edit</a>

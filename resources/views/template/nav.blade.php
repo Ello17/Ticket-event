@@ -16,10 +16,26 @@
             </ul>
         </div>
         <div class="flex items-center gap-6">
-           <button class="px-5 py-2 rounded-full b-navbar"><a href="{{route('login')}}">Sign In</a></button>
-           {{-- <button class="px-5 py-2 rounded-full"><a href="{{route('login')}}"><img src="{{asset('components/asset/logo/nadhif.jpg')}}" alt="" class="h-10 rounded-full"></a></button> --}}
-           <ion-icon name="menu" class="text-3xl cursor-pointer md:hidden text-white" onclick="onToggleMenu(this)"></ion-icon>
+            @guest
+                <!-- Tombol Sign In hanya muncul jika belum login -->
+                <button class="px-5 py-2 rounded-full b-navbar">
+                    <a href="{{ route('login') }}">Sign In</a>
+                </button>
+            @endguest
+
+            @auth
+                <!-- Tombol Profil hanya muncul jika sudah login -->
+                <button class="px-5 py-2 rounded-full">
+                    <a href="{{ route('profil', ['user' => Auth::user()->id]) }}">
+                        <!-- Tampilkan gambar profil atau gambar default jika tidak ada -->
+                        <img src="{{ Auth::user()->profil ? asset(Auth::user()->profil) : asset('components/asset/default-profile.png') }}" alt="Profile" class="h-10 rounded-full">
+                    </a>
+                </button>
+            @endauth
+            <!-- Tombol menu -->
+            <ion-icon name="menu" class="text-3xl cursor-pointer md:hidden text-white" onclick="onToggleMenu(this)"></ion-icon>
         </div>
+
     </nav>
 </header>
 

@@ -32,11 +32,11 @@ class AuthController extends Controller
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            return redirect()->route('homeAdmin');
+            return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'));
+            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'creator') {
-            return redirect()->route('homeCreator');
+            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         }
     } else {
         return redirect()->route('login')->with('pesan-gagal', 'Email atau password salah');
@@ -163,12 +163,12 @@ class AuthController extends Controller
     return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
 }
 
-public function logout()
-{
-Auth::logout();
-session()->flush(); // Menghapus semua session termasuk role
-return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Silahkan Login Kembali');
-}
+    public function logout()
+    {
+    Auth::logout();
+    session()->flush(); // Menghapus semua session termasuk role
+    return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Silahkan Login Kembali');
+    }
 
 
 

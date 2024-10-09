@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'creator', 'customer'])->default('customer');
             $table->boolean('is_approved')->default(false);
+            $table->string('profil');
             $table->rememberToken();
             $table->timestamps();
         });
