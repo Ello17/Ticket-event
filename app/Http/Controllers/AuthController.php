@@ -44,7 +44,7 @@ class AuthController extends Controller
     }
 
     public function loginCreator(){
-        return view('template.login');
+        return view('template.loginCreator');
     }
 
 
