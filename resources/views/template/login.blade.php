@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
 <script src="https://cdn.tailwindcss.com"></script>
 @endpush
-    @section('title', 'Sign Up')
+    @section('title', 'Sign-In')
     @section('content')
 
     <div class="container">
