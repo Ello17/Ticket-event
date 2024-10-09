@@ -87,55 +87,55 @@ class AuthController extends Controller
         return view('template.register');
     }
 
-    public function postRegisterCustomer(Request $request)
-    {
-
-        $this->validate($request, [
-            'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $user = User::create([
-            'username' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'customer', // Set role sebagai customer
-            'is_approved' => true, // Customer tidak perlu persetujuan
-        ]);
-
-        Auth::login($user);
-
-        return redirect()->route('homeCustomer'); // Redirect setelah login
-    }
-
-
-    // public function postRegister(Request $request)
+    // public function postRegisterCustomer(Request $request)
     // {
 
-    //     $validator = Validator::make($request->all(), [
+    //     $this->validate($request, [
+    //         'username' => 'required|string|max:255',
     //         'email' => 'required|string|email|max:255|unique:users',
-    //         'username' => 'required|string|max:255|unique:users',
-    //         'password' => 'required|string|min:3|confirmed',
-    //         'role' => 'required|string',
+    //         'password' => 'required|string|min:8|confirmed',
     //     ]);
-
-
-    //     if ($validator->fails()) {
-    //         return redirect()->back()->withErrors($validator)->withInput();
-    //     }
 
     //     $user = User::create([
-    //         'email' => $request->input('email'),
-    //         'username' => $request->input('username'),
-    //         'password' => Hash::make($request->input('password')),
-    //         'role' => $request->input('role'),
+    //         'username' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //         'role' => 'customer', // Set role sebagai customer
+    //         'profil' => $request->profil,
+    //         'is_approved' => true, // Customer tidak perlu persetujuan
     //     ]);
 
-    //     Auth::login($user); // Jika ingin langsung login setelah register
+    //     Auth::login($user);
 
-    //     return redirect()->route('home')->with('pesan-berhasil', 'Akun sukses dibuat');
+    //     return redirect()->route('homeCustomer'); // Redirect setelah login
     // }
+
+
+    public function postRegisterCustomer(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|string|email|max:255|unique:users',
+        'username' => 'required|string|max:255|unique:users',
+        'password' => 'required|string|min:3|confirmed',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    
+    $user = User::create([
+        'email' => $request->input('email'),
+        'username' => $request->input('username'),
+        'password' => Hash::make($request->input('password')),
+        'role' => 'customer', 
+        'profile' => 'default_profile',
+    ]);
+
+    Auth::login($user); 
+
+    return redirect()->route('homeCustomer')->with('pesan-berhasil', 'Akun sukses dibuat');
+}
 
     public function registerCreator() {
         return view('template.registerCreator');
