@@ -25,10 +25,7 @@
 
                         <label for="email" class="mt-3">Email</label>
                         <input type="email" id="email" value="{{ $user->email }}" name="email" class="form-control" placeholder="Masukkan Email" required>
-
-                        <label for="password" class="mt-3">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan Password" required>
-
+                        
                         <label for="profil" class="mt-3">Foto Profil (Opsional)</label>
                         <input type="file" id="profil" name="profil" accept="image/*" class="form-control">
 

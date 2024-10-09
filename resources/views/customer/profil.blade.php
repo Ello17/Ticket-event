@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profil</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         body {
             background-color: #f4f4f4;
@@ -79,22 +81,6 @@
             color: #f4f1f1;
         }
 
-        /* Responsiveness */
-        @media (max-width: 576px) {
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .profile-header img {
-                margin: 0 0 1rem 0;
-            }
-
-            .profile-header h1 {
-                font-size: 1.5rem;
-            }
-        }
-
         table {
             width: 100%;
             margin-top: 1rem;
@@ -134,7 +120,7 @@
                         @csrf
                         <button type="submit" class="btn btn-sm">Logout</button>
                     </form>
-                    <a href="{{ route('homeCustomer') }}" class="btn btn-sm" id="backButton">Back</a> <!-- Tombol Back ditambahkan di sini -->
+                    <a href="{{ route('homeCustomer') }}" class="btn btn-sm">Back</a>
                 </div>
             </div>
 
@@ -147,7 +133,15 @@
                     <div class="col-md-4">Email:</div>
                     <div class="col-md-8">{{ $user->email }}</div>
                 </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <i class="fas fa-lock"></i> <!-- Icon kunci dari Font Awesome -->
+                        <a href="{{ route('ChangePass') }}" class="text-white">Ubah Password</a>
+                    </div>
+                </div>
             </div>
+
+
 
             <div class="card-body p-4">
                 <div class="overflow-x-auto">
