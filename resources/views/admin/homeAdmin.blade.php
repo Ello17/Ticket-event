@@ -110,7 +110,7 @@
                 <div class="collapse" id="userSubmenu">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('kelolaUser') }}">Customer</a>
+                            <a class="nav-link" href="">Customer</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Creator</a>
