@@ -23,7 +23,7 @@ class AdminController extends Controller
         return view('admin.homeAdmin', compact('jumlahCustomer', 'jumlahCreator', 'jumlahEvent'));
     }
 
-    function listEvent(){
+    function listEventAdm(){
         $events= Event::with('tiket')->get();
         return view('admin.kelolaEvent', compact('events'));
     }
@@ -63,7 +63,7 @@ public function posteditlist(Request $request, $id)
         // Perbarui semua data kecuali 'cover' jika tidak ada yang diupload
         $events->update($request->except('cover_event'));
 
-        return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Data Berhasil Diedit');
+        return redirect()->route('listEvent')->with('pesan-berhasil', 'Data Berhasil Diedit');
     } catch (\Exception $e) {
         return back()->withErrors(['upload_error' => 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage()]);
     }
@@ -75,7 +75,7 @@ public function hapusList(Event $event, Request $request)
 
     $event->delete();
 
-    return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+    return redirect()->route('listEventAdm')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
 }
 
 public function hapusCustomer( User $user, Request $request)
