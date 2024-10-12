@@ -25,12 +25,11 @@
 
                         <label for="email" class="mt-3">Email</label>
                         <input type="email" id="email" value="{{ $user->email }}" name="email" class="form-control" placeholder="Masukkan Email" required>
-                        
+
                         <label for="profil" class="mt-3">Foto Profil (Opsional)</label>
                         <input type="file" id="profil" name="profil" accept="image/*" class="form-control">
 
                         <button type="submit" class="btn btn-login w-100 mt-3">Submit <i class="bi bi-box-arrow-in-right"></i></button>
-                        <!-- Route 'profil' harus menyertakan user.id sebagai parameter -->
                         <a href="{{ route('profil', ['user' => $user->id]) }}" class="btn btn-outline-secondary w-100 mt-2">Back <i class="bi bi-box-arrow-in-right"></i></a>
                     </form>
                 </div>
