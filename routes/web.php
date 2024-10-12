@@ -45,7 +45,8 @@ Route::middleware('auth')->group(function () {
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
-Route::get('/admin/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
+Route::get('/listEvent', [AdminController::class, 'listEvent'])->name('listEvent');
+Route::get('/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
 Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
 Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
 Route::get('/kelolaCustomer', 'AdminController@kelolaCustomer')->name('kelolaCustomer');

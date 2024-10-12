@@ -15,9 +15,16 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     function homeAdmin(){
-        $events= Event::with('tiket')->get();
-        return view('admin.homeAdmin', compact('events'));
+        $jumlahEvent = Event::count();
+        $jumlahCreator = User::where('role', 'creator')->count();
+        $jumlahCustomer = User::where('role', 'customer')->count();
 
+        return view('admin.homeAdmin', compact('jumlahCustomer', 'jumlahCreator', 'jumlahEvent'));
+    }
+
+    function listEvent(){
+        $events= Event::with('tiket')->get();
+        return view('admin.kelolaEvent', compact('events'));
     }
 //     public function editList($id)
 // {

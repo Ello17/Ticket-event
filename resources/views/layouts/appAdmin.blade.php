@@ -23,33 +23,37 @@
         <ul class="flex flex-col">
             <!-- Home Admin Menu -->
             <li class="py-3 px-5">
-                <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('homeAdmin') ? 'bg-gray-500 text-white' : '' }}"
+                <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('homeAdmin') ? 'bg-blue-500 text-white' : '' }}"
                     href="{{ route('homeAdmin') }}">
-                    <i class="ri-home-4-fill mr-2"></i> Home Admin
+                    <i class="ri-home-4-fill mr-2"></i> Dashboard
                 </a>
             </li>
             <!-- Kelola User Dropdown Menu -->
             <div class="relative py-3 px-5">
-                <button onclick="toggleDropdown()"
-                    class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none"
-                    type="button">
+                <button onclick="toggleDropdownUser()" class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none" type="button">
                     Kelola User
                     <i class="ri-arrow-down-s-line ml-2"></i>
                 </button>
-                <ul id="dropdown-menu" class="hidden bg-gray-700 mt-1 text-white rounded-lg">
-                    <li><a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('kelolaCustomer') }}">Customer</a>
-                    </li>
-                    <li><a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('kelolaKreator') }}">Creator</a>
-                    </li>
-                    <li><a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('pending.users') }}">Approve
-                            Creator</a></li>
+                <ul id="dropdown-user-menu" class="hidden bg-gray-700 mt-1 text-white">
+                    <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('kelolaCustomer') ? 'bg-blue-500 text-white' : '' }}" href="{{route('kelolaCustomer')}}">List Customer</a></li>
+                    <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('kelolaKreator') ? 'bg-blue-500 text-white' : '' }}" href="{{route('kelolaKreator')}}">List Creator</a></li>
+                    <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('pending.users') ? 'bg-blue-500 text-white' : '' }}" href="{{route('pending.users')}}">Permintaan Creator</a></li>
+                </ul>
+            </div>
+            <!-- Kelola Event Dropdown Menu -->
+            <div class="relative py-3 px-5">
+                <button onclick="toggleDropdownEvent()" class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none" type="button">
+                    Kelola Event
+                    <i class="ri-arrow-down-s-line ml-2"></i>
+                </button>
+                <ul id="dropdown-event-menu" class="hidden bg-gray-700 mt-1 text-white">
+                    <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('listEvent') ? 'bg-blue-500 text-white' : '' }}" href="{{route('listEvent')}}">List Event</a></li>
                 </ul>
             </div>
             <div class="relative py-3 px-5">
                 <a href="#" class="w-full text-left text-red-600 hover:bg-gray-700 hover:text-red-400 rounded-lg py-2 px-4 focus:outline-none"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="ri-logout-box-r-line"></i>
-                    Logout
+                    <i class="ri-logout-box-r-line"></i> Logout
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
@@ -62,9 +66,14 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        function toggleDropdown() {
-            var dropdown = document.getElementById('dropdown-menu');
-            dropdown.classList.toggle('hidden');
+        function toggleDropdownUser() {
+            var dropdownUser = document.getElementById('dropdown-user-menu');
+            dropdownUser.classList.toggle('hidden');
+        }
+
+        function toggleDropdownEvent() {
+            var dropdownEvent = document.getElementById('dropdown-event-menu');
+            dropdownEvent.classList.toggle('hidden');
         }
     </script>
 
