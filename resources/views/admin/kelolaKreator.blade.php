@@ -28,7 +28,7 @@
                                 <td class="border px-4 py-2">{{ $user->email }}</td>
                                 <td class="border px-4 py-2">{{ $user->role }}</td>
                                 <td class="border px-4 py-2">
-                                    <a href="#" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                                    <a href="{{ route('hapusKreator', $user->id) }}" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                                        onclick="return confirm('Are you sure?')">Hapus</a>
                                 </td>
                             </tr>
