@@ -6,15 +6,17 @@
 }
 .grid-card{
     display: grid;
+    gap: 10px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .card{
     background: #1f2937;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     /* box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px; */
-    height: 350px;
+    height: 330px;
     width: 180px;
     border-radius: 10px;
+
 }
 .card-section{
     display: flex;
