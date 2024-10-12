@@ -19,33 +19,33 @@ class AdminController extends Controller
         return view('admin.homeAdmin', compact('events'));
 
     }
-//     public function editList($id)
-// {
-//     $events = Event::findOrFail($id);
-//     return view('admin.editList', compact('events'));
-// }
+    public function editList($id)
+{
+    $events = Event::findOrFail($id);
+    return view('admin.editList', compact('events'));
+}
 
-// public function posteditlist(Request $request, $id)
-// {
-//     $request->validate([
-//         'nama_penyelenggara' => 'required',
-//         'nama_event' => 'required',
-//         'tanggal_event' => 'required',
-//         'waktu_event' => 'required',
-//         'lokasi_event' => 'required',
-//         'deskripsi_event' => 'required',
-//     ]);
+public function posteditlist(Request $request, $id)
+{
+    $request->validate([
+        'nama_penyelenggara' => 'required',
+        'nama_event' => 'required',
+        'tanggal_event' => 'required',
+        'waktu_event' => 'required',
+        'lokasi_event' => 'required',
+        'deskripsi_event' => 'required',
+    ]);
 
-//     $events = Event::findOrFail($id);
-//     $events->update($request->all());
+    $events = Event::findOrFail($id);
+    $events->update($request->all());
 
-//     return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Data Berhasil Diedit');
-// }
+    return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Data Berhasil Diedit');
+}
 
-// public function hapusList(Event $event, Request $request)
-// {
-//     return redirect()->route('homeAdmin')->with('notifikasi','Data Berhasil Dihapus');
-// }
+public function hapusList(Event $event, Request $request)
+{
+    return redirect()->route('homeAdmin')->with('notifikasi','Data Berhasil Dihapus');
+}
 
 
 function kelolaCustomer(){
