@@ -20,7 +20,7 @@
                 <table class="table text-white">
                     <thead>
                         <tr>
-                            <th scope="col">No</th>
+                            <th scope="col" style="text-align: center">No</th>
                             <th scope="col">Tiket Dibeli</th>
                             <th scope="col">Tanggal Transaksi</th>
                             <th scope="col">Jumlah Tiket</th>
@@ -33,7 +33,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">1</th>
+                            <th scope="row" style="text-align: center;">1</th>
                             <td>Mark</td>
                             <td >Otto</td>
                             <td >@mdo</td>
