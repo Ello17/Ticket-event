@@ -47,7 +47,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
 Route::get('/admin/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
 Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
-Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
+Route::get('/hapusList/{event}', [AdminController::class, 'hapusList'])->name('hapusList');
+Route::get('/hapusCustomer/{user}', [AdminController::class, 'hapusCustomer'])->name('hapusCustomer');
+Route::get('/hapusKreator/{user}', [AdminController::class, 'hapusKreator'])->name('hapusKreator');
 Route::get('/kelolaCustomer', 'AdminController@kelolaCustomer')->name('kelolaCustomer');
 Route::get('/kelolaKreator', 'AdminController@kelolaKreator')->name('kelolaKreator');
 Route::get('/users/pending', [AdminController::class, 'showPendingUsers'])->name('pending.users');

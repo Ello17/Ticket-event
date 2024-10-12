@@ -77,6 +77,8 @@ body {
 }
 .btn-history{
     margin-top: 10px;
+    display: flex;
+    justify-content: end;
 }
 .btn-history .btn{
     background-color: #b5bcd1;
