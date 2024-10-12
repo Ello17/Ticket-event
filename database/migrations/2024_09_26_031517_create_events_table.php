@@ -22,7 +22,7 @@ class CreateEventsTable extends Migration
             $table->string('waktu_event');
             $table->string('lokasi_event');
             $table->text('deskripsi_event');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
