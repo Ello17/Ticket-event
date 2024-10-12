@@ -13,7 +13,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title text-center">Edit List</h5>
+                            <h5 class="card-title text-center">Edit Event</h5>
                             <form action="{{ route('posteditlist', $events->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
