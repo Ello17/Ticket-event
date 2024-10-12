@@ -77,8 +77,9 @@ class CreatorController extends Controller
 
   }
 
-  public function hapusEvent(Event $event)
+  public function hapusEvent(Event $request, $id)
   {
+    $event = $request;
     $event->delete();
     return redirect()->route('homeCreator')->with('pesan-berhasil','Event Berhasil Dihapus!!');
   }
