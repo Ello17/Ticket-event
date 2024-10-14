@@ -32,16 +32,33 @@
 
             <!-- Kelola Event Dropdown Menu -->
             <div class="relative py-3 px-5">
-                <button onclick="toggleDropdown()" class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none" type="button">
+                <button onclick="toggleDropdown('event-menu')"
+                        class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none"
+                        type="button">
                     Kelola Event
                     <i class="ri-arrow-down-s-line ml-2"></i>
                 </button>
-                <ul id="dropdown-menu" class="hidden bg-gray-700 mt-1 text-white rounded-lg">
+                <ul id="event-menu" class="hidden bg-gray-700 mt-1 text-white rounded-lg">
                     <li>
                         <a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('tambahEvent') }}">Tambah Event</a>
                     </li>
                 </ul>
             </div>
+
+                <div class="relative py-3 px-5">
+                    <button onclick="toggleDropdown('tiket-menu')"
+                            class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none"
+                            type="button">
+                        Kelola Tiket
+                        <i class="ri-arrow-down-s-line ml-2"></i>
+                    </button>
+                    <ul id="tiket-menu" class="hidden bg-gray-700 mt-1 text-white rounded-lg">
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('kelolaTiket') }}">Lihat Tiket</a>
+                        </li>
+                    </ul>
+                </div>
+
 
             <!-- Logout -->
             <div class="relative py-3 px-5">
@@ -58,17 +75,17 @@
     @yield('content')
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        function toggleDropdown() {
-            var dropdown = document.getElementById('dropdown-menu');
-            dropdown.classList.toggle('hidden');
-        }
-    </script>
+  <script>
+    function toggleDropdown(menuId) {
+    const menu = document.getElementById(menuId);
+    menu.classList.toggle('hidden');
+    }
+  </script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         $(document).ready(function () {
             $('#example').DataTable();
