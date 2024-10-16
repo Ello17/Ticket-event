@@ -19,7 +19,8 @@ class Event extends Model
         return $this->belongsTo(Transaksi::class);
     }
 
-    public function tiket(){
-        return $this->hasMany(Tiket::class);
+    public function tikets()
+    {
+        return $this->hasMany(Tiket::class, 'event_id', 'id'); // Pastikan kolom 'event_id' dan 'id' sesuai dengan struktur tabel
     }
 }
