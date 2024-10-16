@@ -1,40 +1,52 @@
 @extends('layouts.appAdmin')
-@push('css')
-@endpush
 @section('title', 'Home Admin - Tiket Mudah')
 @section('content')
-
-    <div class="content ml-64 p-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-blue-500 p-6 rounded-sm shadow-md flex justify-between items-center">
-                <div class="kiri">
-                    <h2 class="text-2xl text-white font-bold">Events</h2>
-                    <span class="text-white font-semibold py-1 text-xl">{{ $jumlahEvent }}</span>
-                </div>
-                <div class="text-4xl text-white">
-                    <i class="ri-calendar-event-fill"></i>
-                </div>
-            </div>
-            <div class="bg-blue-500 p-6 rounded-sm shadow-md flex justify-between items-center">
-                <div class="kiri">
-                    <h2 class="text-2xl text-white font-bold">Creator</h2>
-                    <span class="text-white font-semibold py-1 text-xl">{{ $jumlahCreator }}</span>
-                </div>
-                <div class="text-4xl text-white">
-                    <i class="ri-user-2-line"></i>
-                </div>
-            </div>
-            <div class="bg-blue-500 p-6 rounded-sm shadow-md flex justify-between items-center">
-                <div class="kiri">
-                    <h2 class="text-2xl text-white font-bold">Customer</h2>
-                    <span class="text-white font-semibold py-1 text-xl">{{ $jumlahCustomer }}</span>
-                </div>
-                <div class="text-4xl text-white">
-                    <i class="ri-user-line"></i>
-                </div>
-            </div>
-        </div>
+<h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+<p>
+    Ini adalah konten utama halaman admin. Sidebar bisa dibuka/ditutup
+    pada tampilan mobile.
+</p>
+<div class="grid grid-cols-1 gap-6 md:grid-cols-3 mt-6">
+    <div
+      class="bg-blue-500 p-6 rounded-md shadow-md flex justify-between items-center"
+    >
+      <div>
+        <h2 class="text-2xl text-white font-bold">Events</h2>
+        <span class="text-white text-xl font-semibold"
+          >{{ $jumlahEvent }}</span
+        >
+      </div>
+      <div class="text-4xl text-white">
+        <i class="ri-calendar-event-fill"></i>
+      </div>
     </div>
+    <div
+      class="bg-blue-500 p-6 rounded-md shadow-md flex justify-between items-center"
+    >
+      <div>
+        <h2 class="text-2xl text-white font-bold">Creator</h2>
+        <span class="text-white text-xl font-semibold"
+          >{{ $jumlahCreator }}</span
+        >
+      </div>
+      <div class="text-4xl text-white">
+        <i class="ri-user-2-line"></i>
+      </div>
+    </div>
+    <div
+      class="bg-blue-500 p-6 rounded-md shadow-md flex justify-between items-center"
+    >
+      <div>
+        <h2 class="text-2xl text-white font-bold">Customer</h2>
+        <span class="text-white text-xl font-semibold"
+          >{{ $jumlahCustomer }}</span
+        >
+      </div>
+      <div class="text-4xl text-white">
+        <i class="ri-user-line"></i>
+      </div>
+    </div>
+  </div>
     {{-- <div class="card-header p-4">
     <h5 class="text-lg font-semibold">Tabel List Event</h5>
 </div>
@@ -88,16 +100,3 @@
     </div>
 </div> --}}
 @endsection
-
-@push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-    </script>
-@endpush

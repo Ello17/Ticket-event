@@ -1,10 +1,12 @@
 @extends('layouts.appAdmin')
-@push('css')
-@endpush
-@section('title', 'Home Admin - Tiket Mudah')
+@section('title', 'Kelola Creator - Tiket Mudah')
 @section('content')
-<div class="content ml-64 p-8">
-    <div class="bg-white shadow-lg rounded-lg">
+    <h2 class="text-2xl font-bold mb-4">Creator Manage</h2>
+    <p>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi dolorum quis eveniet, odio minima esse nesciunt
+        architecto deserunt unde nemo magni, ullam repellendus debitis illum repellat facere consectetur totam et.
+    </p>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-4 border-b">
             <h5 class="text-lg font-semibold">Tabel List Event</h5>
         </div>
@@ -28,8 +30,9 @@
                                 <td class="border px-4 py-2">{{ $user->email }}</td>
                                 <td class="border px-4 py-2">{{ $user->role }}</td>
                                 <td class="border px-4 py-2">
-                                    <a href="{{ route('hapusKreator', $user->id) }}" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                                       onclick="return confirm('Are you sure?')">Hapus</a>
+                                    <a href="{{ route('hapusKreator', $user->id) }}"
+                                        class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                                        onclick="return confirm('Are you sure?')">Hapus</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -38,18 +41,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
-
-@push('js')
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
-</script>
-@endpush
