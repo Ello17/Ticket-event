@@ -67,6 +67,11 @@ Route::get('/editEvent{id}', 'CreatorController@editEvent')->name('editEvent');
 Route::post('/postEditEvent{id}', 'CreatorController@postEditEvent')->name('postEditEvent');
 Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEvent');
 Route::get('/kelolaTiket', 'CreatorController@kelolaTiket')->name('kelolaTiket');
+Route::get('/editTiket{id}', 'CreatorController@editTiket')->name('editTiket');
+Route::post('/postEditTiket{id}', 'CreatorController@postEditTiket')->name('postEditTiket');
+Route::delete('/hapus-tiket/{id}', [CreatorController::class, 'hapusTiket'])->name('hapusTiket');
+
+
 
 
 
@@ -79,7 +84,6 @@ Route::post('/change-password', [CustomerController::class, 'postChangePass'])->
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('tambahtiket');
-// Route::post('/posttambahtiket', 'CreatorController@posttambahtiket')->name('posttambahtiket');
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
 
 });
