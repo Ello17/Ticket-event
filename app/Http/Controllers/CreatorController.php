@@ -119,7 +119,7 @@ public function postEditEvent(Request $request, $id)
 
 
 
-  public function hapusEvent(Event $request, $id)
+  public function hapusEvent(Event $event, $request, $id)
   {
       $event->delete();
       return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
