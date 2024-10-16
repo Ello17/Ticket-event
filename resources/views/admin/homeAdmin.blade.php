@@ -1,202 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.appAdmin')
+@push('css')
+@endpush
+@section('title', 'Home Admin - Tiket Mudah')
+@section('content')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
-    <title>Home Admin</title>
-    <style>
-        .content {
-            margin-left: 260px;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-
-        .card {
-            margin-top: 20px;
-        }
-
-        .table-responsive {
-            display: block;
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .actions {
-            white-space: nowrap;
-        }
-
-        .actions a {
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 260px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #343a40;
-            color: #fff;
-            padding-top: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-        }
-
-        .sidebar h4 {
-            color: #00aaff;
-            text-align: center;
-        }
-
-        .sidebar .nav-link {
-            color: #adb5bd;
-            font-size: 16px;
-            padding: 12px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .sidebar .nav-link:hover {
-            color: #fff;
-            background-color: #495057;
-        }
-
-        .sidebar .nav-link.active {
-            color: #fff;
-            background-color: #007bff;
-        }
-
-        .sidebar .collapse {
-            background-color: #6c757d;
-            padding-left: 20px;
-        }
-
-        .sidebar .collapse .nav-link {
-            padding: 8px 25px;
-            font-size: 14px;
-        }
-
-        .sidebar .nav-item {
-            margin-bottom: 15px;
-        }
-
-        .sidebar .nav-item i {
-            margin-right: 10px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="sidebar">
-        <h4>Admin Menu</h4>
-        <hr>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ route('homeAdmin') }}">
-                    <i class="ri-home-4-fill"></i> Home Admin
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#userSubmenu" role="button"
-                    aria-expanded="false" aria-controls="userSubmenu">
-                    <i class="ri-user-3-fill"></i> Kelola User
-                    <i class="ri-arrow-down-s-line float-end"></i>
-                </a>
-                <div class="collapse" id="userSubmenu">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Customer</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Creator</a>
-                        </li>
-                    </ul>
+    <div class="content ml-64 p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-blue-500 p-6 rounded-sm shadow-md flex justify-between items-center">
+                <div class="kiri">
+                    <h2 class="text-2xl text-white font-bold">Events</h2>
+                    <span class="text-white font-semibold py-1 text-xl">{{ $jumlahEvent }}</span>
                 </div>
-            </li>
-        </ul>
-    </div>
-
-    <div class="content">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Tabel List Event</h5>
+                <div class="text-4xl text-white">
+                    <i class="ri-calendar-event-fill"></i>
+                </div>
             </div>
-            @if(Session::has('notifikasi'))
-            <div class="alert alert-success">
-                {{ Session::get('notifikasi') }}
+            <div class="bg-blue-500 p-6 rounded-sm shadow-md flex justify-between items-center">
+                <div class="kiri">
+                    <h2 class="text-2xl text-white font-bold">Creator</h2>
+                    <span class="text-white font-semibold py-1 text-xl">{{ $jumlahCreator }}</span>
+                </div>
+                <div class="text-4xl text-white">
+                    <i class="ri-user-2-line"></i>
+                </div>
             </div>
-            @endif
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="example">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Cover</th>
-                                    <th>Nama Penyelenggara</th>
-                                    <th>Nama Event</th>
-                                    <th>Tanggal Event</th>
-                                    <th>Waktu Event</th>
-                                    <th>Lokasi Event</th>
-                                    <th>Deskripsi Event</th>
-                                    <th>Harga</th>
-                                    <th>Kategori</th>
-                                    <th>Jumlah Tiket</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($events as $e)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td><img src="{{ asset($e->cover_event) }}" alt="Cover Event"
-                                            style="width: 100px;"></td>
-                                    <td>{{ $e->nama_penyelenggara }}</td>
-                                    <td>{{ $e->nama_event }}</td>
-                                    <td>{{ $e->tanggal_event }}</td>
-                                    <td>{{ $e->waktu_event }}</td>
-                                    <td>{{ $e->lokasi_event }}</td>
-                                    <td>{{ $e->deskripsi_event }}</td>
-
-                            @if($e->tiket->isNotEmpty())
-                            <td class="border p-4">{{ $e->tiket->first()->harga_tiket }}</td>
-                            <td class="border p-4">{{ $e->tiket->first()->kategori_tiket }}</td>
-                            <td class="border p-4">{{ $e->tiket->first()->jumlah_tiket }}</td>
-                            @else
-                            <td class="border p-4" colspan="3">Tidak ada tiket</td>
-                            @endif
-
-                            <td class="border p-4 space-y-2">
-                                <a href="{{ route('admin.editList', $e->id) }}" class="text-blue-600 hover:underline">Edit</a>
-                                <a href="{{ route('hapusList', $e->id) }}" class="text-red-600 hover:underline" onclick="return confirm('Are you sure?')">Hapus</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="bg-blue-500 p-6 rounded-sm shadow-md flex justify-between items-center">
+                <div class="kiri">
+                    <h2 class="text-2xl text-white font-bold">Customer</h2>
+                    <span class="text-white font-semibold py-1 text-xl">{{ $jumlahCustomer }}</span>
+                </div>
+                <div class="text-4xl text-white">
+                    <i class="ri-user-line"></i>
+                </div>
             </div>
         </div>
     </div>
+    {{-- <div class="card-header p-4">
+    <h5 class="text-lg font-semibold">Tabel List Event</h5>
 </div>
+<div class="card-body p-4">
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white table-auto border-collapse border border-gray-200" id="example">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border p-4">No</th>
+                    <th class="border p-4">Cover</th>
+                    <th class="border p-4">Nama Penyelenggara</th>
+                    <th class="border p-4">Nama Event</th>
+                    <th class="border p-4">Tanggal Event</th>
+                    <th class="border p-4">Waktu Event</th>
+                    <th class="border p-4">Lokasi Event</th>
+                    <th class="border p-4">Deskripsi Event</th>
+                    <th class="border p-4">Harga</th>
+                    <th class="border p-4">Kategori</th>
+                    <th class="border p-4">Jumlah Tiket</th>
+                    <th class="border p-4">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($events as $e)
+                <tr>
+                    <td class="border p-4">{{ $loop->iteration }}</td>
+                    <td class="border p-4"><img src="{{ asset($e->cover_event) }}" alt="Cover Event" class="w-24"></td>
+                    <td class="border p-4">{{ $e->nama_penyelenggara }}</td>
+                    <td class="border p-4">{{ $e->nama_event }}</td>
+                    <td class="border p-4">{{ $e->tanggal_event }}</td>
+                    <td class="border p-4">{{ $e->waktu_event }}</td>
+                    <td class="border p-4">{{ $e->lokasi_event }}</td>
+                    <td class="border p-4" title="{{ $e->deskripsi_event }}">{{ \Illuminate\Support\Str::limit($e->deskripsi_event, 50) }}</td>
 
+                    @if ($e->tiket->isNotEmpty())
+                    <td class="border p-4">{{ $e->tiket->first()->harga_tiket }}</td>
+                    <td class="border p-4">{{ $e->tiket->first()->kategori_tiket }}</td>
+                    <td class="border p-4">{{ $e->tiket->first()->jumlah_tiket }}</td>
+                    @else
+                    <td class="border p-4" colspan="3">Tidak ada tiket</td>
+                    @endif
+
+                    <td class="border p-4 space-y-2">
+                        <a href="{{ route('admin.editList', $e->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                        <a href="{{ route('hapusList', $e->id) }}" class="text-red-600 hover:underline" onclick="return confirm('Are you sure?')">Hapus</a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div> --}}
+@endsection
 
 @push('js')
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
 
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
-</script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
 @endpush
-
-</html>

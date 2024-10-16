@@ -12,7 +12,8 @@ class Tiket extends Model
 
     protected $guarded = ['id'];
 
-    public function event(){
-        return $this->belongsTo(Event::class);
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id', 'id'); // Pastikan kolom 'event_id' dan 'id' sesuai dengan struktur tabel
     }
 }
