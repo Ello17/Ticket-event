@@ -196,15 +196,11 @@ public function kirimTiket(Request $request, $eventId)
     if (!$customer) {
         return redirect()->back()->with('error', 'Customer tidak ditemukan');
     }
-
-    // Ambil tiket dari event
     $tiket = Tiket::where('event_id', $eventId)->first();
 
     if (!$tiket) {
         return redirect()->back()->with('error', 'Tiket tidak tersedia untuk event ini');
     }
-
-    // Kirim email tiket ke customer
     Mail::to($customer->email)->send(new SendTicketMail($event, $tiket, $customer));
 
     return redirect()->back()->with('success', 'Tiket telah dikirim ke email customer!');
