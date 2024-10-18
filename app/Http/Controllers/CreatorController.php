@@ -121,17 +121,18 @@ public function postEditEvent(Request $request, $id)
 }
 
 
+public function hapusEvent($id)
+{
+    $event = Event::findOrFail($id);
+    $event->delete();
 
-  public function hapusEvent(Event $event, $request, $id)
-  {
-      $event->delete();
-      return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
-  }
+    return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+}
 
   public function kelolaTiket()
   {
       // Ambil event milik creator yang login berdasarkan user_id
-      $events = Event::with('tikets')->where('user_id', Auth::id())->get();
+      $events = Event::with('tiket')->where('user_id', Auth::id())->get();
 
       // Kirim data events ke view
       return view('creator.kelolaTiket', compact('events'));
@@ -231,7 +232,7 @@ public function kirimTiket(Request $request, $eventId)
 {
     $event = Event::findOrFail($eventId);
     $customer = User::where('email', $request->input('customer_email'))->first();
-    
+
     if (!$customer) {
         return redirect()->back()->with('error', 'Customer tidak ditemukan');
     }
