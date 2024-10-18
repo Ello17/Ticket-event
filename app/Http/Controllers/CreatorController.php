@@ -183,9 +183,9 @@ public function hapusTiket($id)
 
     if ($tiket) {
         $tiket->delete();
-        return redirect()->back()->with('success', 'Tiket berhasil dihapus!');
+        return redirect()->back()->with('pesan-berhasil', 'Tiket berhasil dihapus!');
     } else {
-        return redirect()->back()->with('error', 'Tiket tidak ditemukan!');
+        return redirect()->back()->with('pesan-gagal', 'Tiket tidak ditemukan!');
     }
 }
 

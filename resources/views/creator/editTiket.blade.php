@@ -47,7 +47,6 @@
                 <h2 class="text-center mt-3">Edit Tiket</h2>
                 <form action="{{ route('postEditTiket',$tiket->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
                     @csrf
-
                     <label for="kategori_tiket">Kategori Tiket</label>
                     <input type="text" name="kategori_tiket" class="form-control" value="{{ $tiket->kategori_tiket }}" required>
 
