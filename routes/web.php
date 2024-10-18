@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use Database\Seeders\CreatorSeeder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,6 +68,9 @@ Route::get('/editEvent{id}', 'CreatorController@editEvent')->name('editEvent');
 Route::post('/postEditEvent{id}', 'CreatorController@postEditEvent')->name('postEditEvent');
 Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEvent');
 Route::get('/kelolaTiket', 'CreatorController@kelolaTiket')->name('kelolaTiket');
+Route::get('/editTiket{id}', 'CreatorController@editTiket')->name('editTiket');
+Route::post('/postEditTiket{id}', 'CreatorController@postEditTiket')->name('postEditTiket');
+Route::delete('/hapusTiket{id}', 'CreatorController@hapusTiket')->name('hapusTiket');
 Route::get('/profil', [CustomerController::class, 'profil'])->name('profil');
 Route::get('/editProfileCust/{id}',[CustomerController::class,'editProfileCust'])->name('editProfileCust');
 Route::post('postEditProfileCust{id}',[CustomerController::class,'postEditProfileCust'])->name('postEditProfileCust');
@@ -77,7 +81,11 @@ Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('ta
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
 Route::get('/kirimTiket/{eventId}', [CreatorController::class, 'kirimTiket'])->name('kirimTiket');
 
-
+Route::get('/profilCreator', [CreatorController::class, 'profilCreator'])->name('profilCreator');
+Route::get('/editProfileCreator/{id}',[CreatorController::class,'editProfileCreator'])->name('editProfileCreator');
+Route::post('postEditProfileCreator{id}',[CreatorController::class,'postEditProfileCreator'])->name('postEditProfileCreator');
+Route::get('/ubahpass',[CreatorController::class, 'ubahpass'])->name('ubahpass');
+Route::post('/postubahpass', [CreatorController::class, 'postubahpass'])->middleware('auth')->name('postubahpass');;
 });
 
 

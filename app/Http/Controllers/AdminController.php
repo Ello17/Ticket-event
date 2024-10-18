@@ -63,7 +63,7 @@ public function posteditlist(Request $request, $id)
         // Perbarui semua data kecuali 'cover' jika tidak ada yang diupload
         $events->update($request->except('cover_event'));
 
-        return redirect()->route('listEvent')->with('pesan-berhasil', 'Data Berhasil Diedit');
+        return redirect()->route('listEventAdm')->with('pesan-berhasil', 'Data Berhasil Diedit');
     } catch (\Exception $e) {
         return back()->withErrors(['upload_error' => 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage()]);
     }

@@ -26,36 +26,36 @@
                     </thead>
                     <tbody class="text-gray-700">
                         @foreach ($events as $item)
-                        <tr class="border-b" id="row-{{ $item->tikets->first()->id ?? '' }}">
+                        <tr class="border-b" id="row-{{ $item->tiket->first()->id ?? '' }}">
                             <td class="p-2">
                                 <img src="{{ asset($item->cover_event) }}" alt="Poster Event" class="w-20 h-auto">
                             </td>
                             <td class="p-2">{{ $item->nama_event }}</td>
 
                             <td class="border p-4">
-                                @if ($item->tikets && $item->tikets->isNotEmpty())
-                                    {{ $item->tikets->first()->kategori_tiket }}
+                                @if ($item->tiket && $item->tiket->isNotEmpty())
+                                    {{ $item->tiket->first()->kategori_tiket }}
                                 @else
                                     Tidak ada kategori
                                 @endif
                             </td>
                             <td class="border p-4">
-                                @if ($item->tikets && $item->tikets->isNotEmpty())
-                                    {{ $item->tikets->first()->harga_tiket }}
+                                @if ($item->tiket && $item->tiket->isNotEmpty())
+                                    {{ $item->tiket->first()->harga_tiket }}
                                 @else
                                     N/A
                                 @endif
                             </td>
                             <td class="border p-4">
-                                @if ($item->tikets && $item->tikets->isNotEmpty())
-                                    {{ $item->tikets->first()->jumlah_tiket }}
+                                @if ($item->tiket && $item->tiket->isNotEmpty())
+                                    {{ $item->tiket->first()->jumlah_tiket }}
                                 @else
                                     N/A
                                 @endif
                             </td>
 
                             <td class="p-2">
-                                @if ($item->tikets->isEmpty())
+                                @if ($item->tiket->isEmpty())
                                     <a href="{{ route('tambahtiket', ['event_id' => $item->id]) }}" class="text-blue-500 hover:underline">
                                         Tambah Tiket
                                     </a>
@@ -64,7 +64,7 @@
                                         Edit Tiket
                                     </a>
 
-                                    <form action="{{ route('hapusTiket', $item->tikets->first()->id) }}" method="POST" class="inline-block">
+                                    <form action="{{ route('hapusTiket', $item->tiket->first()->id) }}" method="POST" class="inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
