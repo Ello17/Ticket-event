@@ -57,6 +57,12 @@
                             <a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('kelolaTiket') }}">Lihat Tiket</a>
                         </li>
                     </ul>
+                    {{-- <ul id="tiket-menu" class="hidden bg-gray-700 mt-1 text-white rounded-lg">
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('kirimTiket', $eventId) }}">Kirim Tiket</a>
+
+                        </li>
+                    </ul> --}}
                 </div>
 
 
