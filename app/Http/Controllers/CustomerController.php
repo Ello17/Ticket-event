@@ -42,8 +42,6 @@ class CustomerController extends Controller
 public function profil()
 {
     $user = Auth::user();
-
-    // Memastikan hanya pengguna dengan role 'customer' yang bisa mengakses
     if ($user->role !== 'customer') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
@@ -54,8 +52,6 @@ public function profil()
 public function editProfileCust($id)
 {
     $user = Auth::user();
-
-    // Pastikan hanya customer yang bisa mengedit profil
     if ($user->role !== 'customer' || $user->id != $id) {
         return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
     }
@@ -72,8 +68,6 @@ public function postEditProfileCust(Request $request)
     ]);
 
     $user = Auth::user();
-
-    // Pastikan hanya customer yang bisa mengupdate profil
     if ($user->role !== 'customer') {
         return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
     }
@@ -106,8 +100,6 @@ public function postEditProfileCust(Request $request)
 public function ChangePass()
 {
     $user = Auth::user();
-
-    // Pastikan hanya customer yang bisa mengganti password
     if ($user->role !== 'customer') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
@@ -124,10 +116,8 @@ public function postChangePass(Request $request)
     ]);
 
     $user = Auth::user();
-
-    // Pastikan hanya customer yang bisa mengganti password
     if ($user->role !== 'customer') {
-        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        return redirect('/')->with('pesan-gagal', 'Anda tidak memiliki akses ke halaman ini.');
     }
 
     if (!Hash::check($request->password, $user->password)) {
@@ -141,7 +131,7 @@ public function postChangePass(Request $request)
         return back()->withErrors(['error' => 'Gagal memperbarui password.']);
     }
 
-    return redirect()->route('profil')->with('status', 'Password berhasil diperbarui.');
+    return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
 }
 
 
