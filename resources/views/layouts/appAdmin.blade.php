@@ -10,6 +10,7 @@
 </head>
 
 <body class="bg-gray-100 overflow-x-hidden">
+    @include('template.notifikasi')
     <!-- Mobile Navbar -->
     <div class="md:hidden bg-blue-600 text-white flex items-center justify-between px-4 py-3">
         <h1 class="text-lg font-bold">Admin Panel</h1>

@@ -7,6 +7,13 @@
         </div>
         <div class="p-4">
             <div class="overflow-x-auto">
+                <!-- Search Form -->
+                <form method="GET" action="{{ route('pending.users') }}" class="mb-4">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search by username or email" class="border rounded px-2 py-1">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded"><i
+                            class="ri-search-2-line"></i></button>
+                </form>
                 @if ($pendingUsers->isEmpty())
                     <p class="text-center text-gray-500">Tidak ada creator yang perlu disetujui.</p>
                 @else
@@ -36,6 +43,10 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <!-- Paginasi -->
+                    <div class="mt-4">
+                        {{ $pendingUsers->links() }}
+                    </div>
                 @endif
             </div>
         </div>
