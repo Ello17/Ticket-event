@@ -62,6 +62,36 @@
 </body>
 @endsection
 
+{{-- <h3 class="mb-4 text-white">Tiket</h3>
+@foreach($tiket as $tiket)
+<form action="{{ route('transaksi', $tiket->id) }}" method="GET">
+    <div class="border rounded p-3 mb-3 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+                <h6 class="mb-1 text-white">Ketersediaan Tiket : {{ $tiket->availability_text }}</h6>
+                <h5 class="mb-1 text-white">{{ $tiket->kategori_tiket }}</h5>
+                <p class="mb-0 text-white"><strong>Harga :  </strong>  <span>{{ $tiket->harga }}</span></p>
+            </div>
+                <div class="row">
+                    <div class="col-12" style="margin-left: 30rem; margin-top:35px">
+                        <input type="number" class="form-control" name="jumlah_tiket" min="1" max="{{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }}" placeholder="Masukkan jumlah tiket" style="width: 200px;">
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-12">
+                        <h5 class="mb-2 text-white">{{ $tiket->status }}</h5>
+                        <button type="submit" class="btn btn-warning w-100">Beli Tiket</button>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@endforeach
+--}}
+
+
 @push('js')
 
 @endpush
