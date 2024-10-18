@@ -7,6 +7,7 @@
     <title>@yield('title')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
+    @stack('css')
 </head>
 
 <body class="bg-gray-100 overflow-x-hidden">
@@ -67,6 +68,12 @@
                                     href="{{ route('listEventAdm') }}"><i class="ri-calendar-event-line mr-2"></i>Event</a></li>
                         </ul>
                     </div>
+                    <li class="py-3 px-5">
+                        <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('') ? 'bg-blue-500 text-white' : '' }}"
+                            href="{{ route('profileAdmin') }}">
+                            <i class="ri-account-circle-fill  mr-2"></i>Account
+                        </a>
+                    </li>
                     <div class="relative py-3 px-5">
                         <a href="#"
                             class="w-full text-left text-red-600 hover:bg-gray-700 hover:text-red-400 rounded-lg py-2 px-4 focus:outline-none"
@@ -99,7 +106,7 @@
         menuToggle.addEventListener("click", () => {
             sidebar.classList.toggle("-translate-x-full");
         });
-        
+
         function toggleDropdownUser() {
             var dropdownUser = document.getElementById('dropdown-user-menu');
             dropdownUser.classList.toggle('hidden');

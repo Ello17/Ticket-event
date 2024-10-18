@@ -133,7 +133,6 @@ public function postChangePass(Request $request)
     if (!Hash::check($request->password, $user->password)) {
         return back()->withErrors(['password' => 'Password lama tidak benar.']);
     }
-
     try {
         $user->password = Hash::make($request->new_password);
         $user->save();

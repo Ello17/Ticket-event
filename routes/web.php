@@ -55,6 +55,11 @@ Route::get('/kelolaCustomer', 'AdminController@kelolaCustomer')->name('kelolaCus
 Route::get('/kelolaKreator', 'AdminController@kelolaKreator')->name('kelolaKreator');
 Route::get('/users/pending', [AdminController::class, 'showPendingUsers'])->name('pending.users');
 Route::post('/users/approve/{id}', [AdminController::class, 'approveUser'])->name('approve.user');
+Route::get('/profileAdmin', [AdminController::class, 'profileAdmin'])->name('profileAdmin');
+Route::get('/editProfileAdmin{id}',[AdminController::class,'editProfileAdmin'])->name('editProfileAdmin');
+Route::post('postEditProfileAdmin{id}',[AdminController::class,'postEditProfileAdmin'])->name('postEditProfileAdmin');
+Route::get('/ChangePassMin',[AdminController::class, 'ChangePassMin'])->name('ChangePassMin');
+Route::post('/postChangePassMin', [AdminController::class, 'postChangePassMin'])->middleware('auth')->name('postChangePassMin');
 
 //ini buat creator
 Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
