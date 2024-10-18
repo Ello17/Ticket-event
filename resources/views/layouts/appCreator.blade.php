@@ -21,7 +21,6 @@
     <div class="sidebar bg-gray-800 text-white fixed top-0 left-0 w-64 h-full shadow-lg z-50">
         <h4 class="text-center text-blue-400 py-4">Creator Menu</h4>
         <hr class="border-gray-600">
-
         <ul class="flex flex-col">
             <!-- Home Admin Menu -->
             <li class="py-3 px-5">
@@ -29,8 +28,7 @@
                     <i class="ri-home-4-fill mr-2"></i> Home Creator
                 </a>
             </li>
-
-            <!-- Kelola Event Dropdown Menu -->
+             <!-- Kelola Event Dropdown Menu -->
             <div class="relative py-3 px-5">
                 <button onclick="toggleDropdown('event-menu')"
                         class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none"
@@ -57,27 +55,26 @@
                             <a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('kelolaTiket') }}">Lihat Tiket</a>
                         </li>
                     </ul>
+                </div>
+                <li class="py-3 px-5">
+                    <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('') ? 'bg-blue-500 text-white' : '' }}"
+                        href="{{ route('profilCreator') }}">
+                        <i class="ri-account-circle-fill  mr-2"></i>Account
+                    </a
+
                     {{-- <ul id="tiket-menu" class="hidden bg-gray-700 mt-1 text-white rounded-lg">
                         <li>
                             <a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('kirimTiket', $eventId) }}">Kirim Tiket</a>
 
                         </li>
                     </ul> --}}
-                </div>
-                <ul class="flex flex-col">
-                    <!-- Profile Creator Menu -->
-                    <li class="py-3 px-5">
-                        <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('profilCreator') ? 'bg-gray-500 text-white' : '' }}" href="{{ route('profilCreator') }}">
-                            <!-- Default Person Icon -->
-                            <div class="relative w-6 h-6">
-                                <img id="nav-profile-picture" class="w-full h-full rounded-full object-cover hidden" alt="Profile Picture">
-                                <i id="nav-profile-icon" class="ri-user-3-fill mr-2"></i>
-                            </div>
-                            Profile Creator
-                        </a>
-                    </li>
-                </ul>
-                
+                {{-- </div>
+                <li class="py-3 px-5">
+                    <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('') ? 'bg-blue-500 text-white' : '' }}"
+                        href="{{ route('profilCreator') }}">
+                        <i class="ri-account-circle-fill  mr-2"></i>Account
+                    </a
+ --}}
 
 
             <!-- Logout -->

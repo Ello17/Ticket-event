@@ -6,12 +6,16 @@ use App\Models\Event;
 use App\Models\Tiket;
 use App\Models\User;
 use Closure;
+// use Facade\FlareClient\Stacktrace\File;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event as FacadesEvent;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -126,8 +130,104 @@ public function hapusUser(user $user, Request $request){
 
     return redirect()->route('pending.users')->with('pesan-berhasil', 'Pengguna berhasil disetujui.');
     }
+    public function profileAdmin()
+{
+    $user = Auth::user();
 
+    // Memastikan hanya pengguna dengan role 'customer' yang bisa mengakses
+    if ($user->role !== 'admin') {
+        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+    }
+    return view('admin.profileAdmin', compact('user'));
+    }
+    public function editProfileAdmin($id)
+{
+    $user = Auth::user();
 
+    // Pastikan hanya customer yang bisa mengedit profil
+    if ($user->role !== 'admin' || $user->id != $id) {
+        return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
+    }
 
+    return view('admin.editProfileAdmin', compact('user'));
+    }
 
+    public function postEditProfileAdmin(Request $request)
+{
+    $request->validate([
+        'username' => 'required',
+        'email' => 'required',
+        'profil' => 'nullable|image',
+    ]);
+
+    $user = Auth::user();
+
+    // Pastikan hanya customer yang bisa mengupdate profil
+    if ($user->role !== 'admin') {
+        return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
+    }
+
+    $user->username = $request->username;
+    $user->email = $request->email;
+
+    if ($request->hasFile('profil')) {
+        $file = $request->file('profil');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $filePath = 'img/' . $fileName;
+
+        Log::info('File upload: ' . $fileName);
+        Log::info('File path: ' . $filePath);
+
+        if ($user->profil && File::exists(public_path($user->profil))) {
+            Log::info('Deleting old file: ' . public_path($user->profil));
+            File::delete(public_path($user->profil));
+        }
+
+        $file->move(public_path('img'), $fileName);
+        $user->profil = $filePath;
+    }
+
+    $user->save();
+
+    return redirect()->route('profileAdmin')->with('success', 'Data berhasil diperbarui.');
+    }
+    public function ChangePassMin()
+{
+    $user = Auth::user();
+
+    // Pastikan hanya customer yang bisa mengganti password
+    if ($user->role !== 'admin') {
+        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+    }
+
+    return view('admin.ChangePassMin');
+    }
+    public function postChangePassMin(Request $request)
+{
+    $request->validate([
+        'password' => 'required',
+        'new_password' => 'required',
+        'confirmation_password' => 'required|same:new_password',
+    ]);
+
+    $user = Auth::user();
+
+    // Pastikan hanya customer yang bisa mengganti password
+    if ($user->role !== 'admin') {
+        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+    }
+
+    if (!Hash::check($request->password, $user->password)) {
+        return back()->withErrors(['password' => 'Password lama tidak benar.']);
+    }
+    try {
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+    } catch (\Exception $e) {
+        Log::error('Gagal memperbarui password: ' . $e->getMessage());
+        return back()->withErrors(['error' => 'Gagal memperbarui password.']);
+    }
+
+    return redirect()->route('profileAdmin')->with('status', 'Password berhasil diperbarui.');
+    }
 }
