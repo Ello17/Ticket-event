@@ -18,7 +18,9 @@ class CreateTiketsTable extends Migration
             $table->string('kategori_tiket');
             $table->integer('harga_tiket');
             $table->integer('jumlah_tiket');
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignId('event_id')
+                  ->constrained()
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

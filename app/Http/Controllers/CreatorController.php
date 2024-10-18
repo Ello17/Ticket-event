@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendTicketMail;
 use App\Models\Event;
 use App\Models\Tiket;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class CreatorController extends Controller
@@ -119,11 +122,10 @@ public function postEditEvent(Request $request, $id)
 
 
 
-  public function hapusEvent(Event $request, $id)
+  public function hapusEvent(Event $event, $request, $id)
   {
-    $event = $request;
-    $event->delete();
-    return redirect()->route('homeCreator')->with('pesan-berhasil','Event Berhasil Dihapus!!');
+      $event->delete();
+      return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
   }
 
   public function kelolaTiket()
@@ -224,5 +226,27 @@ public function hapusTiket($id)
 }
 
 
+
+public function kirimTiket(Request $request, $eventId)
+{
+    $event = Event::findOrFail($eventId);
+    $customer = User::where('email', $request->input('customer_email'))->first();
+    
+    if (!$customer) {
+        return redirect()->back()->with('error', 'Customer tidak ditemukan');
+    }
+
+    // Ambil tiket dari event
+    $tiket = Tiket::where('event_id', $eventId)->first();
+
+    if (!$tiket) {
+        return redirect()->back()->with('error', 'Tiket tidak tersedia untuk event ini');
+    }
+
+    // Kirim email tiket ke customer
+    Mail::to($customer->email)->send(new SendTicketMail($event, $tiket, $customer));
+
+    return redirect()->back()->with('success', 'Tiket telah dikirim ke email customer!');
+}
 
 }

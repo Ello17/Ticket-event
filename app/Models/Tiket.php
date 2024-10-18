@@ -9,11 +9,12 @@ class Tiket extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['kategori_tiket', 'harga_tiket', 'jumlah_tiket', 'event_id'];
 
     protected $guarded = ['id'];
 
     public function event()
     {
-        return $this->belongsTo(Event::class, 'event_id', 'id'); // Pastikan kolom 'event_id' dan 'id' sesuai dengan struktur tabel
+        return $this->belongsTo(Event::class, 'event_id', 'id'); 
     }
 }
