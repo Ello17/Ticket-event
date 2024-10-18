@@ -3,7 +3,7 @@
 @push('css')
 @endpush
 
-@section('title', 'Home Admin - Tiket Mudah')
+@section('title', 'Home Creator - Tiket Mudah')
 
 @section('content')
 <div class="content ml-64 p-8">

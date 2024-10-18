@@ -67,6 +67,9 @@ Route::get('/editEvent{id}', 'CreatorController@editEvent')->name('editEvent');
 Route::post('/postEditEvent{id}', 'CreatorController@postEditEvent')->name('postEditEvent');
 Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEvent');
 Route::get('/kelolaTiket', 'CreatorController@kelolaTiket')->name('kelolaTiket');
+Route::get('/editTiket{id}', 'CreatorController@editTiket')->name('editTiket');
+Route::post('/postEditTiket{id}', 'CreatorController@postEditTiket')->name('postEditTiket');
+Route::delete('/hapusTiket{id}', 'CreatorController@hapusTiket')->name('hapusTiket');
 Route::get('/profil', [CustomerController::class, 'profil'])->name('profil');
 Route::get('/editProfileCust/{id}',[CustomerController::class,'editProfileCust'])->name('editProfileCust');
 Route::post('postEditProfileCust{id}',[CustomerController::class,'postEditProfileCust'])->name('postEditProfileCust');
@@ -74,7 +77,6 @@ Route::get('/ChangePass',[CustomerController::class, 'ChangePass'])->name('Chang
 Route::post('/change-password', [CustomerController::class, 'postChangePass'])->middleware('auth')->name('postChangePass');;
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('tambahtiket');
-// Route::post('/posttambahtiket', 'CreatorController@posttambahtiket')->name('posttambahtiket');
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
 Route::get('/kirimTiket/{eventId}', [CreatorController::class, 'kirimTiket'])->name('kirimTiket');
 

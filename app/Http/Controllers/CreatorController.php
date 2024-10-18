@@ -121,17 +121,18 @@ public function postEditEvent(Request $request, $id)
 }
 
 
+public function hapusEvent($id)
+{
+    $event = Event::findOrFail($id);
+    $event->delete();
 
-  public function hapusEvent(Event $event, $request, $id)
-  {
-      $event->delete();
-      return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
-  }
+    return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+}
 
   public function kelolaTiket()
   {
       // Ambil event milik creator yang login berdasarkan user_id
-      $events = Event::with('tikets')->where('user_id', Auth::id())->get();
+      $events = Event::with('tiket')->where('user_id', Auth::id())->get();
 
       // Kirim data events ke view
       return view('creator.kelolaTiket', compact('events'));
@@ -182,13 +183,56 @@ public function storeTicket(Request $request)
     // Redirect atau memberikan respon sesuai kebutuhan
     return redirect()->route('kelolaTiket')->with('success', 'Tiket berhasil ditambahkan.');
 }
+public function editTiket($id){
+    $tiket = Tiket::findOrFail($id);
+    return view('creator.editTiket', compact('tiket'));
+  }
+
+  public function postEditTiket(Request $request, $id)
+  {
+      // Validasi input dari request
+      $request->validate([
+          'kategori_tiket' => 'required|string|max:255',
+          'harga_tiket' => 'required|numeric|min:0',
+          'jumlah_tiket' => 'required|integer|min:0',
+      ]);
+
+      $tiket = Tiket::findOrFail($id);
+
+      $tiket->kategori_tiket = $request->kategori_tiket;
+      $tiket->harga_tiket = $request->harga_tiket;
+      $tiket->jumlah_tiket = $request->jumlah_tiket;
+
+      $tiket->save();
+
+      return redirect()->route('kelolaTiket')
+                       ->with('pesan-berhasil', 'Data Berhasil Diedit');
+  }
+//   public function hapusTiket(Tiket $request, $id)
+//   {
+//     $tiket = $request;
+//     $tiket->delete();
+//     return redirect()->route('kelolaTiket')->with('pesan-berhasil','Tiket Berhasil Dihapus!!');
+//   }
+public function hapusTiket($id)
+{
+    $tiket = Tiket::find($id);
+
+    if ($tiket) {
+        $tiket->delete();
+        return redirect()->back()->with('success', 'Tiket berhasil dihapus!');
+    } else {
+        return redirect()->back()->with('error', 'Tiket tidak ditemukan!');
+    }
+}
+
 
 
 public function kirimTiket(Request $request, $eventId)
 {
     $event = Event::findOrFail($eventId);
     $customer = User::where('email', $request->input('customer_email'))->first();
-    
+
     if (!$customer) {
         return redirect()->back()->with('error', 'Customer tidak ditemukan');
     }

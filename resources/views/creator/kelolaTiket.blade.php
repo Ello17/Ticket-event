@@ -26,40 +26,57 @@
                     </thead>
                     <tbody class="text-gray-700">
                         @foreach ($events as $item)
-                            <tr class="border-b">
-                                <td class="p-2">
-                                    <img src="{{ asset($item->cover_event) }}"
-                                         alt="Poster Event"
-                                         class="w-20 h-auto">
-                                </td>
-                                <td class="p-2">{{ $item->nama_event }}</td>
+                        <tr class="border-b" id="row-{{ $item->tiket->first()->id ?? '' }}">
+                            <td class="p-2">
+                                <img src="{{ asset($item->cover_event) }}" alt="Poster Event" class="w-20 h-auto">
+                            </td>
+                            <td class="p-2">{{ $item->nama_event }}</td>
 
-                                {{-- Mengambil data tiket pertama terkait event --}}
-                                <td class="border p-4">
-                                    {{ optional($item->tikets->first())->kategori_tiket ?? 'Tidak ada kategori' }}
-                                </td>
-                                <td class="border p-4">
-                                    {{ optional($item->tikets->first())->harga_tiket ?? 'N/A' }}
-                                </td>
-                                <td class="border p-4">
-                                    {{ optional($item->tikets->first())->jumlah_tiket ?? 'N/A' }}
-                                </td>
+                            <td class="border p-4">
+                                @if ($item->tiket && $item->tiket->isNotEmpty())
+                                    {{ $item->tiket->first()->kategori_tiket }}
+                                @else
+                                    Tidak ada kategori
+                                @endif
+                            </td>
+                            <td class="border p-4">
+                                @if ($item->tiket && $item->tiket->isNotEmpty())
+                                    {{ $item->tiket->first()->harga_tiket }}
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td class="border p-4">
+                                @if ($item->tiket && $item->tiket->isNotEmpty())
+                                    {{ $item->tiket->first()->jumlah_tiket }}
+                                @else
+                                    N/A
+                                @endif
+                            </td>
 
-                                {{-- Perbaikan Route Tambah Tiket --}}
-                                <td class="p-2">
-                                    @if ($item->tikets->isEmpty())
-                                        <a href="{{ route('tambahtiket', ['event_id' => $item->id]) }}" class="text-blue-500 hover:underline">
-                                            Tambah Tiket
-                                        </a>
-                                    @else
-                                        <a href="" class="text-green-500 hover:underline">
-                                            Edit Tiket
-                                        </a>
-                                    @endif
-                                </td>
+                            <td class="p-2">
+                                @if ($item->tiket->isEmpty())
+                                    <a href="{{ route('tambahtiket', ['event_id' => $item->id]) }}" class="text-blue-500 hover:underline">
+                                        Tambah Tiket
+                                    </a>
+                                @else
+                                    <a href="{{ route('editTiket', $item->id) }}" class="text-green-500 hover:underline">
+                                        Edit Tiket
+                                    </a>
 
-                            </tr>
-                        @endforeach
+                                    <form action="{{ route('hapusTiket', $item->tiket->first()->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="text-red-500 hover:underline"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus tiket ini?');">
+                                            Hapus Tiket
+                                        </button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -75,8 +92,37 @@
 <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        $('#example').DataTable();
+   $(document).ready(function () {
+    // Inisialisasi DataTable
+    $('#example').DataTable();
+
+    // Menggunakan event delegation untuk hapus tiket
+    $(document).on('click', '.hapus-tiket', function () {
+        const tiketId = $(this).data('id'); // Ambil ID tiket dari atribut data-id
+
+        if (confirm('Apakah Anda yakin ingin menghapus tiket ini?')) {
+            $.ajax({
+                url: `/hapus-tiket/${tiketId}`, // Route hapus tiket
+                type: 'DELETE',
+                data: {
+                    "_token": "{{ csrf_token() }}" // CSRF token untuk keamanan
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert(response.message); // Tampilkan pesan sukses
+                        $(`#row-${tiketId}`).remove(); // Hapus baris tiket dari tabel
+                    } else {
+                        alert(response.message); // Pesan error jika tiket tidak ditemukan
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText); // Debug jika terjadi error
+                    alert('Gagal menghapus tiket. Coba lagi!'); // Pesan error jika gagal
+                }
+            });
+        }
     });
+});
+
 </script>
 @endpush
