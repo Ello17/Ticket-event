@@ -64,6 +64,20 @@
                         </li>
                     </ul> --}}
                 </div>
+                <ul class="flex flex-col">
+                    <!-- Profile Creator Menu -->
+                    <li class="py-3 px-5">
+                        <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('profilCreator') ? 'bg-gray-500 text-white' : '' }}" href="{{ route('profilCreator') }}">
+                            <!-- Default Person Icon -->
+                            <div class="relative w-6 h-6">
+                                <img id="nav-profile-picture" class="w-full h-full rounded-full object-cover hidden" alt="Profile Picture">
+                                <i id="nav-profile-icon" class="ri-user-3-fill mr-2"></i>
+                            </div>
+                            Profile Creator
+                        </a>
+                    </li>
+                </ul>
+                
 
 
             <!-- Logout -->

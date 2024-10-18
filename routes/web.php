@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use Database\Seeders\CreatorSeeder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,7 +86,11 @@ Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('ta
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
 Route::get('/kirimTiket/{eventId}', [CreatorController::class, 'kirimTiket'])->name('kirimTiket');
 
-
+Route::get('/profilCreator', [CreatorController::class, 'profilCreator'])->name('profilCreator');
+Route::get('/editProfileCreator/{id}',[CreatorController::class,'editProfileCreator'])->name('editProfileCreator');
+Route::post('postEditProfileCreator{id}',[CreatorController::class,'postEditProfileCreator'])->name('postEditProfileCreator');
+Route::get('/ubahpass',[CreatorController::class, 'ubahpass'])->name('ubahpass');
+Route::post('/postubahpass', [CreatorController::class, 'postubahpass'])->middleware('auth')->name('postubahpass');;
 });
 
 
