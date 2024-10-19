@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @push('css')
-
+<!-- Tambahkan CSS tambahan di sini jika diperlukan -->
 @endpush
 
-@section('title', '')
+@section('title', 'Detail Event')
 
 @section('content')
 <body class="bg-[#111827] text-white">
 @if($event)
-<div class="container mx-auto px-5 mt-10 ">
+<div class="container mx-auto px-5 mt-10">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Image Section -->
         <div class="col-span-2">
@@ -20,7 +20,7 @@
         <!-- Event Details Section -->
         <div>
             <div class="bg-gray-800 rounded-lg shadow-lg p-6">
-                <h3 class="text-lg font-semibold mb-4">Event Details</h3>
+                <h3 class="text-lg font-semibold mb-4">Detail Event</h3>
                 <div class="text-sm space-y-4">
                     <div>
                         <h5 class="text-sm font-medium text-gray-400">Tanggal</h5>
@@ -59,38 +59,36 @@
 @else
 <p class="text-center text-red-500">Event tidak ditemukan</p>
 @endif
+
+<!-- Ticket Section -->
+@if($tiket)
+    <div class="container mx-auto mt-8">
+        <h3 class="text-2xl font-semibold mb-4">Tiket</h3>
+        @foreach($tiket as $tiket)
+        <form action="" method="GET">
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                <div class="mb-4">
+                    <h5 class="text-white font-semibold">{{ $tiket->kategori_tiket }}</h5>
+                    <p class="text-white">Harga: Rp {{ number_format($tiket->harga_tiket, 0, ',', '.') }}</p>
+                    <p class="text-gray-400">Ketersediaan: {{ $tiket->availability_text }}</p>
+                </div>
+                <div class="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
+                    <div>
+                        <input type="number" class="form-control text-black" name="jumlah_tiket" min="1" max="{{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }}" placeholder="Masukkan jumlah tiket" style="width: 200px;">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-warning w-full lg:w-auto">Beli Tiket</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @endforeach
+    </div>
+@else
+<p class="text-center text-red-500">Tiket tidak tersedia</p>
+@endif
 </body>
 @endsection
-
-{{-- <h3 class="mb-4 text-white">Tiket</h3>
-@foreach($tiket as $tiket)
-<form action="{{ route('transaksi', $tiket->id) }}" method="GET">
-    <div class="border rounded p-3 mb-3 shadow-sm">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <div>
-                <h6 class="mb-1 text-white">Ketersediaan Tiket : {{ $tiket->availability_text }}</h6>
-                <h5 class="mb-1 text-white">{{ $tiket->kategori_tiket }}</h5>
-                <p class="mb-0 text-white"><strong>Harga :  </strong>  <span>{{ $tiket->harga }}</span></p>
-            </div>
-                <div class="row">
-                    <div class="col-12" style="margin-left: 30rem; margin-top:35px">
-                        <input type="number" class="form-control" name="jumlah_tiket" min="1" max="{{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }}" placeholder="Masukkan jumlah tiket" style="width: 200px;">
-                    </div>
-                </div>
-                <div class="row mt-1">
-                    <div class="col-12">
-                        <h5 class="mb-2 text-white">{{ $tiket->status }}</h5>
-                        <button type="submit" class="btn btn-warning w-100">Beli Tiket</button>
-                        <br>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-@endforeach
---}}
-
 
 @push('js')
 
