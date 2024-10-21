@@ -39,100 +39,112 @@ class CustomerController extends Controller
     return view('customer.listEvent', compact('events'));
 }
 
-    public function profil()
+public function profil()
 {
-    // Mengambil data pengguna yang sedang login
-    $id = Auth::user()->id;
-        $user = User::findOrFail($id);
-        return view('customer.profil', compact('user'));
+    $user = Auth::user();
+    if ($user->role !== 'customer') {
+        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
-    function editProfileCust($id){
-        $user = User::findOrFail($id);
-        return view('customer.editProfileCust',compact('user'));
+
+    return view('customer.profil', compact('user'));
+}
+
+public function editProfileCust($id)
+{
+    $user = Auth::user();
+    if ($user->role !== 'customer' || $user->id != $id) {
+        return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
     }
-    public function postEditProfileCust(Request $request)
-    {
-            // Validasi input
-        $request->validate([
-            'username' => 'required',
-            'email' => 'required',
-            'profil' => 'nullable|image', // Hanya wajib jika ada profil yang di-upload
-        ]);
 
-        // Temukan pengguna yang akan diedit
-        $id = Auth::user()->id;
-        $user = User::findOrFail($id);
+    return view('customer.editProfileCust', compact('user'));
+}
 
-        // Update data pengguna
-        $user->username = $request->username;
-        $user->email = $request->email;
+public function postEditProfileCust(Request $request)
+{
+    $request->validate([
+        'username' => 'required',
+        'email' => 'required',
+        'profil' => 'nullable|image',
+    ]);
 
-        // Jika ada profil yang di-upload, simpan profil baru
-        if ($request->hasFile('profil')) {
-            $file = $request->file('profil');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = 'img/' . $fileName;
+    $user = Auth::user();
+    if ($user->role !== 'customer') {
+        return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
+    }
 
-            // Log informasi file
-            Log::info('File upload: ' . $fileName);
-            Log::info('File path: ' . $filePath);
+    $user->username = $request->username;
+    $user->email = $request->email;
 
-            // Hapus profil lama jika ada
-            if ($user->profil && File::exists(public_path($user->profil))) {
-                Log::info('Deleting old file: ' . public_path($user->profil));
-                File::delete(public_path($user->profil));
-            }
+    if ($request->hasFile('profil')) {
+        $file = $request->file('profil');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $filePath = 'img/' . $fileName;
 
-            // Simpan profil baru
-            $file->move(public_path('img'), $fileName);
-            $user->profil = $filePath;
+        Log::info('File upload: ' . $fileName);
+        Log::info('File path: ' . $filePath);
+
+        if ($user->profil && File::exists(public_path($user->profil))) {
+            Log::info('Deleting old file: ' . public_path($user->profil));
+            File::delete(public_path($user->profil));
         }
 
-        // Simpan perubahan ke database
+        $file->move(public_path('img'), $fileName);
+        $user->profil = $filePath;
+    }
+
+    $user->save();
+
+    return redirect()->route('profil')->with('success', 'Data berhasil diperbarui.');
+}
+
+public function ChangePass()
+{
+    $user = Auth::user();
+    if ($user->role !== 'customer') {
+        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+    }
+
+    return view('customer.ChangePass');
+}
+
+public function postChangePass(Request $request)
+{
+    $request->validate([
+        'password' => 'required',
+        'new_password' => 'required',
+        'confirmation_password' => 'required|same:new_password',
+    ]);
+
+    $user = Auth::user();
+    if ($user->role !== 'customer') {
+        return redirect('/')->with('pesan-gagal', 'Anda tidak memiliki akses ke halaman ini.');
+    }
+
+    if (!Hash::check($request->password, $user->password)) {
+        return back()->withErrors(['password' => 'Password lama tidak benar.']);
+    }
+    try {
+        $user->password = Hash::make($request->new_password);
         $user->save();
-
-        // Redirect ke halaman profilAdmin dengan ID pengguna
-        return redirect()->route('profil')->with('success', 'Data berhasil diperbarui.');
-    }
-    public function ChangePass(){
-        return view('customer.ChangePass');
+    } catch (\Exception $e) {
+        Log::error('Gagal memperbarui password: ' . $e->getMessage());
+        return back()->withErrors(['error' => 'Gagal memperbarui password.']);
     }
 
-    public function postChangePass(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'password' => 'required',
-            'new_password' => 'required',
-            'confirmation_password' => 'required',
-        ]);
+    return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
+}
+public function transaksi($id)
+{
+    $event = Event::find($id);
 
-        // Ambil pengguna yang terautentikasi
-        $user = Auth::user();
+    // Ambil tiket terkait event dan cek apakah ada tiket
+    $tiket = Tiket::where('event_id', $id)->first();
 
-        // Cek jika user terautentikasi
-        if (!$user) {
-            return back()->withErrors(['error' => 'User tidak ditemukan.']);
-        }
-
-        // Periksa apakah password lama benar
-        if (!Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['password' => 'Password lama tidak benar.']);
-        }
-
-        try {
-            // Update password baru
-            $user->password = Hash::make($request->new_password);
-            $user->save();
-        } catch (\Exception $e) {
-            // Log error dan tampilkan pesan kesalahan
-            Log::error('Gagal memperbarui password: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Gagal memperbarui password.']);
-        }
-
-        // Redirect ke halaman profil dengan status sukses
-        return redirect()->route('profil')->with('status', 'Password berhasil diperbarui.');
+    // Validasi jika event tidak ditemukan
+    if (!$event) {
+        return redirect()->back()->withErrors('Event tidak ditemukan.');
     }
 
-
+    return view('customer.transaksi', compact('event', 'tiket'));
+    }
 }

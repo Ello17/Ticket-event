@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use Database\Seeders\CreatorSeeder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +37,7 @@ Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
 Route::get('/history', [CustomerController::class, 'history'])->name('history');
+Route::get('/transaksi{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
 
 
 
@@ -45,13 +47,21 @@ Route::middleware('auth')->group(function () {
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
-Route::get('/admin/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
+Route::get('/listEventAdm', [AdminController::class, 'listEventAdm'])->name('listEventAdm');
+Route::get('/edit-list/{id}', [AdminController::class, 'editList'])->name('admin.editList');
 Route::post('/posteditlist/{id}', [AdminController::class, 'posteditlist'])->name('posteditlist');
-Route::get('/hapusList/{id}', [AdminController::class, 'hapusList'])->name('hapusList');
+Route::get('/hapusList/{event}', [AdminController::class, 'hapusList'])->name('hapusList');
+Route::get('/hapusCustomer/{user}', [AdminController::class, 'hapusCustomer'])->name('hapusCustomer');
+Route::get('/hapusKreator/{user}', [AdminController::class, 'hapusKreator'])->name('hapusKreator');
 Route::get('/kelolaCustomer', 'AdminController@kelolaCustomer')->name('kelolaCustomer');
 Route::get('/kelolaKreator', 'AdminController@kelolaKreator')->name('kelolaKreator');
 Route::get('/users/pending', [AdminController::class, 'showPendingUsers'])->name('pending.users');
 Route::post('/users/approve/{id}', [AdminController::class, 'approveUser'])->name('approve.user');
+Route::get('/profileAdmin', [AdminController::class, 'profileAdmin'])->name('profileAdmin');
+Route::get('/editProfileAdmin{id}',[AdminController::class,'editProfileAdmin'])->name('editProfileAdmin');
+Route::post('postEditProfileAdmin{id}',[AdminController::class,'postEditProfileAdmin'])->name('postEditProfileAdmin');
+Route::get('/ChangePassMin',[AdminController::class, 'ChangePassMin'])->name('ChangePassMin');
+Route::post('/postChangePassMin', [AdminController::class, 'postChangePassMin'])->middleware('auth')->name('postChangePassMin');
 
 //ini buat creator
 Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
@@ -60,17 +70,30 @@ Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
 
 Route::get('/tambahEvent', 'CreatorController@tambahEvent')->name('tambahEvent');
 Route::post('/postTambahEvent', 'CreatorController@postTambahEvent')->name('postTambahEvent');
-Route::get('/editEvent{event}', 'CreatorController@editEvent')->name('editEvent');
-Route::post('/postEditEvent{event}', 'CreatorController@postEditEvent')->name('postEditEvent');
+Route::get('/editEvent{id}', 'CreatorController@editEvent')->name('editEvent');
+Route::post('/postEditEvent{id}', 'CreatorController@postEditEvent')->name('postEditEvent');
 Route::get('/hapusEvent{event}', 'CreatorController@hapusEvent')->name('hapusEvent');
-
-});
-
+Route::get('/kelolaTiket', 'CreatorController@kelolaTiket')->name('kelolaTiket');
+Route::get('/editTiket{id}', 'CreatorController@editTiket')->name('editTiket');
+Route::post('/postEditTiket{id}', 'CreatorController@postEditTiket')->name('postEditTiket');
+Route::delete('/hapusTiket{id}', 'CreatorController@hapusTiket')->name('hapusTiket');
 Route::get('/profil', [CustomerController::class, 'profil'])->name('profil');
-
 Route::get('/editProfileCust/{id}',[CustomerController::class,'editProfileCust'])->name('editProfileCust');
 Route::post('postEditProfileCust{id}',[CustomerController::class,'postEditProfileCust'])->name('postEditProfileCust');
 Route::get('/ChangePass',[CustomerController::class, 'ChangePass'])->name('ChangePass');
 Route::post('/change-password', [CustomerController::class, 'postChangePass'])->middleware('auth')->name('postChangePass');;
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('tambahtiket');
+Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
+Route::get('/editTiket/{id}', [CreatorController::class, 'editTiket'])->name('editTiket');
+Route::post('/postEditTiket/{id}', [CreatorController::class, 'postEditTiket'])->name('postEditTiket');
+Route::get('/kirimTiket/{eventId}', [CreatorController::class, 'kirimTiket'])->name('kirimTiket');
+
+Route::get('/profilCreator', [CreatorController::class, 'profilCreator'])->name('profilCreator');
+Route::get('/editProfileCreator/{id}',[CreatorController::class,'editProfileCreator'])->name('editProfileCreator');
+Route::post('postEditProfileCreator{id}',[CreatorController::class,'postEditProfileCreator'])->name('postEditProfileCreator');
+Route::get('/ubahpass',[CreatorController::class, 'ubahpass'])->name('ubahpass');
+Route::post('/postubahpass', [CreatorController::class, 'postubahpass'])->middleware('auth')->name('postubahpass');;
+});
+
 

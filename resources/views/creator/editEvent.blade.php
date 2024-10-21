@@ -45,7 +45,7 @@
         <div class="row">
             <div class="card">
                 <h2 class="text-center mt-3">Edit Event</h2>
-                <form action="{{ route('postEditEvent', $event->id) }}" method="POST" class="form-group" enctype="multipart/form-data" method="POST">
+                <form action="{{ route('postEditEvent', $event->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
                     @csrf
 
                     <label for="nama_event">Nama Event</label>
