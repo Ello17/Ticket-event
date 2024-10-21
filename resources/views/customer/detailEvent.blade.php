@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @push('css')
-
+<link rel="stylesheet" href="{{asset('components/css/detailevent.css')}}">
 @endpush
 
 @section('title', '')
@@ -13,7 +13,7 @@
         <!-- Image Section -->
         <div class="col-span-2">
             <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                <img src="{{ asset($event->cover_event) }}" alt="poster-{{ $event->nama_event }}" class="w-full h-auto object-cover">
+                <img src="{{ asset($event->cover_event) }}" alt="poster-{{ $event->nama_event }}" class="img-max w-full h-auto object-cover">
             </div>
         </div>
 
