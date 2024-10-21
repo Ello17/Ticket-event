@@ -13,7 +13,7 @@
 <body class="bg-gray-100 overflow-x-hidden">
     @include('template.notifikasi')
     <!-- Mobile Navbar -->
-    <div class="md:hidden bg-blue-600 text-white flex items-center justify-between px-4 py-3">
+    <div class="md:hidden bg-gray-800 text-white flex items-center justify-between px-4 py-3">
         <h1 class="text-lg font-bold">Admin Panel</h1>
         <button id="menu-toggle" class="focus:outline-none">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
@@ -86,11 +86,6 @@
                         </form>
                     </div>
                 </ul>
-                {{-- <a href="{{ route('homeAdmin')}}" class="block py-2.5 px-4 rounded hover:bg-gray-700">Dashboard</a>
-                <a href="{{ route('kelolaCustomer')}}" class="block py-2.5 px-4 rounded hover:bg-gray-700">Kelola Customer</a>
-                <a href="#" class="block py-2.5 px-4 rounded hover:bg-gray-700">Kelola Kamar</a>
-                <a href="#" class="block py-2.5 px-4 rounded hover:bg-gray-700">Laporan</a>
-                <a href="#" class="block py-2.5 px-4 rounded hover:bg-gray-700">Pengaturan</a> --}}
             </nav>
         </div>
 

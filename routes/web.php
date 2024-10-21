@@ -68,6 +68,7 @@ Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
      ->middleware('auth', 'check.approval')
      ->name('homeCreator');
 
+Route::get('/kelolaEvent', 'CreatorController@kelolaEvent')->name('kelolaEvent');
 Route::get('/tambahEvent', 'CreatorController@tambahEvent')->name('tambahEvent');
 Route::post('/postTambahEvent', 'CreatorController@postTambahEvent')->name('postTambahEvent');
 Route::get('/editEvent{id}', 'CreatorController@editEvent')->name('editEvent');

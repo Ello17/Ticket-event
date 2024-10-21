@@ -1,22 +1,4 @@
 @extends('layouts.appCreator')
-@section('title', 'Home Creator')
-@section('content')
-<div class="grid grid-cols-1 gap-6 md:grid-cols-3 mt-6">
-    <div class="bg-blue-500 p-6 rounded-md shadow-md flex justify-between items-center">
-        <div>
-            <h2 class="text-2xl text-white font-bold">Events</h2>
-            <span class="text-white text-xl font-semibold">{{ $eventCount }}</span>
-        </div>
-        <div class="text-4xl text-white">
-            <i class="ri-calendar-event-fill"></i>
-        </div>
-    </div>
-</div>    
-@endsection
-
-
-
-{{-- @extends('layouts.appCreator')
 
 @push('css')
 @endpush
@@ -83,4 +65,4 @@
         $('#example').DataTable();
     });
 </script>
-@endpush --}}
+@endpush
