@@ -32,7 +32,7 @@
             <div class="row">
                 <a href="{{ route('ChangePassMin') }}"
                 <div class="col-md-4">
-                    <i class="fas fa-lock"></i> <!-- Icon kunci dari Font Awesome -->
+                    <i class="fas fa-lock"></i> 
                     <span class="text-white"><i class="ri-lock-password-fill"></i> Ubah Password</span>
                 </div>
                 </a>
