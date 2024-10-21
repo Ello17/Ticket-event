@@ -68,7 +68,7 @@ class CreatorController extends Controller
 
         ]);
 
-        return redirect()->route('homeCreator')->with('pesan-berhasil','Event Berhasil Ditambahkan');
+        return redirect()->route('kelolaEvent')->with('pesan-berhasil','Event Berhasil Ditambahkan');
     }
 
   public function editEvent($id){
@@ -128,7 +128,7 @@ public function postEditEvent(Request $request, $id)
         // Perbarui semua data kecuali 'cover' jika tidak ada yang diupload
         $events->update($request->except('cover_event'));
 
-        return redirect()->route('homeCreator')->with('pesan-berhasil', 'Data Berhasil Diedit');
+        return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Data Berhasil Diedit');
     } catch (\Exception $e) {
         return back()->withErrors(['upload_error' => 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage()]);
     }
@@ -140,7 +140,7 @@ public function hapusEvent($id)
     $event = Event::findOrFail($id);
     $event->delete();
 
-    return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+    return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
 }
 
   public function kelolaTiket()
