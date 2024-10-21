@@ -3,8 +3,115 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaksi;
+use App\Models\Tiket;
+use Midtrans\Snap;
+use Midtrans\Config;
 
 class PaymentController extends Controller
 {
-    
+    public function __construct()
+    {
+        // MIDTRANS
+        Config::$serverKey = env('SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m');
+        Config::$isProduction = false; 
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+    }
+
+    public function createTransaction(Request $request)
+    {
+        
+        $data = $request->validate([
+            'tiket_id' => 'required|exists:tikets,id',
+            'nama_lengkap' => 'required|string|max:255',
+            'no_telepon' => 'required|string|max:15',
+            'no_ktp' => 'required|integer',
+            'email' => 'required|string|email|max:255',
+            'jumlah_tiket' => 'required|integer|min:1',
+        ]);
+
+        $tiket = Tiket::find($data['tiket_id']);
+        $tiketTersedia = $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket');
+
+        if ($tiket->isSoldOut() || $data['jumlah_tiket'] > $tiketTersedia) {
+            return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
+        }
+
+        $order_id = $tiket->id . '-' . time();
+        $transaksi = Transaksi::create([
+            'tiket_id' => $tiket->id,
+            'tiket_dibeli' => $tiket->kategori_tiket,
+            'tanggal_transaksi' => now()->toDateString(),
+            'no_rekening' => '1234567890',
+            'total_transaksi' => $tiket->harga * $data['jumlah_tiket'],
+            'nama_lengkap' => $data['nama_lengkap'],
+            'no_ktp' => $data['no_ktp'],
+            'no_telepon' => $data['no_telepon'],
+            'email' => $data['email'],
+            'event_id' => $tiket->event_id,
+            'jumlah_tiket' => $data['jumlah_tiket'],
+            'status' => 'pending',
+        ]);
+
+        $transaction = [
+            'transaction_details' => [
+                'order_id' => $order_id,
+                'gross_amount' => $transaksi->total_transaksi,
+            ],
+            'item_details' => [
+                [
+                    'id' => $tiket->id,
+                    'price' => $tiket->harga,
+                    'quantity' => $data['jumlah_tiket'],
+                    'name' => $tiket->kategori_tiket,
+                ],
+            ],
+            'customer_details' => [
+                'first_name' => $transaksi->nama_lengkap,
+                'email' => $transaksi->email,
+                'phone' => $transaksi->no_telepon,
+            ],
+            'callbacks' => [
+                'finish' => route('homeCustomer'), 
+                'unfinish' => route('homeCustomer'), 
+                'error' => route('homeCustomer'),   
+            ]
+        ];
+
+        $url = Snap::createTransaction($transaction)->redirect_url;
+        return redirect($url);
+    }
+
+ // Notifikasi pembayaran dari Midtrans
+ public function notificationHandler(Request $request)
+ {
+     $payload = $request->getContent();
+     $notification = json_decode($payload);
+
+     $transactionStatus = $notification->transaction_status;
+     $orderID = $notification->order_id;
+
+     $transaksi = Transaksi::find($orderID);
+
+     if ($transaksi) {
+         if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
+             $transaksi->status = 'paid';
+             $tiket = Tiket::find($transaksi->tiket_id);
+             $tiket->reduceQuantity($transaksi->jumlah_tiket);
+             $tiket->save();
+         } elseif ($transactionStatus == 'pending') {
+             $transaksi->status = 'pending';
+         } elseif ($transactionStatus == 'deny' || $transactionStatus == 'expire' || $transactionStatus == 'cancel') {
+             $transaksi->status = 'failed';
+         }
+
+         $transaksi->save();
+     } else {
+         return response()->json(['error' => 'Transaction not found'], 404);
+     }
+
+     return response()->json(['status' => 'success']);
+ }
+
 }

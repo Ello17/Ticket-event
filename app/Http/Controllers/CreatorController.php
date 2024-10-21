@@ -227,8 +227,7 @@ public function postEditProfileCreator(Request $request)
         'profil' => 'nullable|image',
     ]);
 
-    $user = Auth::user();
-
+    $user = User::where('id', Auth::id())->first();
     // Pastikan hanya customer yang bisa mengupdate profil
     if ($user->role !== 'creator') {
         return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
@@ -289,9 +288,7 @@ public function postubahpass(Request $request)
         'confirmation_password' => 'required|same:new_password',
     ]);
 
-    $user = Auth::user();
-
-    // Pastikan hanya customer yang bisa mengganti password
+    $user = User::where('id', Auth::id())->first();
     if ($user->role !== 'creator') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }

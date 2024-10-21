@@ -57,16 +57,11 @@ class AuthController extends Controller
 
     if (Auth::attempt($data)) {
         $user = Auth::user();
-
-
-        // Cek apakah user creator sudah disetujui oleh admin
         if ($user->role === 'creator' && $user->is_approved == false) {
             Log::info('User belum diapprove, logout.');
             Auth::logout();
             return redirect()->route('loginCreator')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
         }
-
-        // Redirect berdasarkan role
         if ($user->role === 'admin') {
             return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'customer') {
@@ -75,7 +70,6 @@ class AuthController extends Controller
             return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         }
     } else {
-        // Jika login gagal
         return redirect()->route('loginCreator')->with('pesan-gagal', 'Email atau password salah.');
     }
 }

@@ -101,9 +101,6 @@ class AdminController extends Controller
         return redirect()->route('kelolaKreator')->with('pesan-berhasil', 'Data berhasil dihapus');
     }
 
-
-
-
     public function kelolaCustomer(Request $request)
     {
         $search = $request->input('search');
@@ -158,7 +155,7 @@ class AdminController extends Controller
     
         return view('admin.approveCreator', compact('pendingUsers', 'search'));
     }
-    
+
     public function approveUser($id)
     {
         $user = User::find($id);

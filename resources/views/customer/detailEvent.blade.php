@@ -65,7 +65,7 @@
     <div class="container mx-auto mt-8">
         <h3 class="text-2xl font-semibold mb-4">Tiket</h3>
         @foreach($tiket as $tiket)
-        <form action="" method="GET">
+        <form action="{{ route('transaksi', $tiket->id) }}" method="GET">
             <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
                 <div class="mb-4">
                     <h5 class="text-white font-semibold">{{ $tiket->kategori_tiket }}</h5>
@@ -77,10 +77,7 @@
                         <input type="number" class="form-control text-black" name="jumlah_tiket" min="1" max="{{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }}" placeholder="Masukkan jumlah tiket" style="width: 200px;">
                     </div>
                     <div>
-                        <a href="{{ route('transaksi', $tiket->id) }}" class="btn btn-warning w-full lg:w-auto">
-                            Beli Tiket
-                        </a>
-
+                        <button type="submit" class="btn btn-warning w-full lg:w-auto">Beli Tiket</button>
                     </div>
                 </div>
             </div>
