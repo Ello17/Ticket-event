@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
 use Database\Seeders\CreatorSeeder;
 use Illuminate\Support\Facades\Route;
 
@@ -32,18 +33,30 @@ Route::post('/postLoginCreator', [AuthController::class, 'postLoginCreator'])->n
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
+//MIDTRANS
+Route::get('/transaksi{detail}', [PaymentController::class, 'createTransaction'])->name('transaksi');
+Route::post('/transaksi/create', [PaymentController::class, 'createTransaction'])->name('transaksi.create');
+Route::post('/midtrans-notification', [PaymentController::class, 'handleNotification']);
+
 // ini buat customer
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
 Route::get('/history', [CustomerController::class, 'history'])->name('history');
-Route::get('/transaksi{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
+
+// Route::get('/transaksi{tiket}', [CustomerController::class, 'transaksi']);
+// Route::get('/transaksi{event}', [CustomerController::class, 'transaksi']);
 
 
 
 //ROUTE ADMIN SAMA KREATOR ITU SIMPENNYA DI DALAM MIDDLEWARE
 Route::middleware('auth')->group(function () {
 
+     
+
+
+Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
+Route::post('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
