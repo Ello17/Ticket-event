@@ -63,19 +63,13 @@ class AdminController extends Controller
         $events = Event::findOrFail($id);
 
         try {
-            // Cek apakah ada file cover yang diupload
             if ($request->hasFile('cover_event')) {
-                // Hapus cover lama jika ada
                 if ($events->cover_event) {
                     Storage::delete($events->cover_event);
                 }
-
-                // Upload file baru
                 $filePath = $request->file('cover_event')->store('covers', 'public');
-                $events->cover_event = $filePath; // Simpan path file di database
+                $events->cover_event = $filePath; 
             }
-
-            // Perbarui semua data kecuali 'cover' jika tidak ada yang diupload
             $events->update($request->except('cover_event'));
 
             return redirect()->route('listEventAdm')->with('pesan-berhasil', 'Data Berhasil Diedit');
@@ -115,12 +109,12 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         $users = User::query()
-            ->where('role', 'customer') // Pastikan hanya pelanggan yang diambil
+            ->where('role', 'customer') 
             ->when($search, function ($query, $search) {
                 return $query->where('username', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             })
-            ->paginate(10); // Sesuaikan jumlah item per halaman sesuai kebutuhan
+            ->paginate(10);
 
         return view('admin.kelolaCustomer', compact('users', 'search'));
     }
@@ -130,12 +124,12 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         $users = User::query()
-            ->where('role', 'creator') // Pastikan hanya pelanggan yang diambil
+            ->where('role', 'creator') 
             ->when($search, function ($query, $search) {
                 return $query->where('username', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             })
-            ->paginate(10); // Sesuaikan jumlah item per halaman sesuai kebutuhan
+            ->paginate(10);
 
         return view('admin.kelolaKreator', compact('users', 'search'));
     }
@@ -152,23 +146,19 @@ class AdminController extends Controller
         $search = $request->input('search');
     
         $pendingUsers = User::query()
-            ->where('is_approved', false) // Hanya ambil pengguna yang belum disetujui
-            ->where('role', 'creator') // Ambil pengguna dengan role 'creator'
+            ->where('is_approved', false) 
+            ->where('role', 'creator')
             ->when($search, function ($query, $search) {
-                // Tambahkan kondisi pencarian pada username dan email
                 return $query->where(function ($query) use ($search) {
                     $query->where('username', 'like', "%{$search}%")
                           ->orWhere('email', 'like', "%{$search}%");
                 });
             })
-            ->paginate(10); // Sesuaikan jumlah item per halaman sesuai kebutuhan
+            ->paginate(10);
     
         return view('admin.approveCreator', compact('pendingUsers', 'search'));
     }
     
-
-
-
     public function approveUser($id)
     {
         $user = User::find($id);
