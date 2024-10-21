@@ -22,9 +22,20 @@ class CreatorController extends Controller
     public function homeCreator()
     {
         $user = Auth::user();
+        
+        // Mengambil event milik user dan menghitung jumlahnya
+        $events = Event::where('user_id', $user->id)->get();
+        $eventCount = $events->count();
+    
+        return view('creator.homeCreator', compact('events', 'eventCount'));
+    }
+    
+    public function kelolaEvent()
+    {
+        $user = Auth::user();
         $events = Event::where('user_id', $user->id)->get();
 
-        return view('creator.homeCreator', compact('events'));
+        return view('creator.kelolaEvent', compact('events'));
     }
 
     public function tambahEvent(){

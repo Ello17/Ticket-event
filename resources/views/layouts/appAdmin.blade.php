@@ -79,11 +79,6 @@
                         </form>
                     </div>
                 </ul>
-                {{-- <a href="{{ route('homeAdmin')}}" class="block py-2.5 px-4 rounded hover:bg-gray-700">Dashboard</a>
-                <a href="{{ route('kelolaCustomer')}}" class="block py-2.5 px-4 rounded hover:bg-gray-700">Kelola Customer</a>
-                <a href="#" class="block py-2.5 px-4 rounded hover:bg-gray-700">Kelola Kamar</a>
-                <a href="#" class="block py-2.5 px-4 rounded hover:bg-gray-700">Laporan</a>
-                <a href="#" class="block py-2.5 px-4 rounded hover:bg-gray-700">Pengaturan</a> --}}
             </nav>
         </div>
 
