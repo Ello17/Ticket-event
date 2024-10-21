@@ -37,7 +37,7 @@
                     <a href="{{ route('ubahpass') }}">
                     <div class="col-md-4">
                         <i class="fas fa-lock"></i> <!-- Icon kunci dari Font Awesome -->
-                        <span class="text-white"><i class="ri-lock-password-fill"></i> Ubah Password</span>
+                        <span class="text-white"></i> Ubah Password</span>
                     </div>
                     </a>
                 </div>
