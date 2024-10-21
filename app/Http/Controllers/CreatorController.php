@@ -39,7 +39,7 @@ class CreatorController extends Controller
            'tanggal_event' => 'required',
            'waktu_event' => 'required',
            'deskripsi_event' => 'required',
-           'cover_event' =>'required|image|mimes:jpeg,png,jpg|max:2048',
+           'cover_event' =>'required|image|mimes:jpeg,png,jpg|max:15360',
 
         ]);
 
@@ -65,28 +65,6 @@ class CreatorController extends Controller
     return view('creator.editEvent', compact('event'));
   }
 
-//   public function postEditEvent(Event $event, Request $request)
-//   {
-//       $data = $request->validate([
-//           'nama_event' => 'required',
-//           'nama_penyelenggara' => 'required',
-//           'lokasi_event' => 'required',
-//           'tanggal_event' => 'required',
-//           'waktu_event' => 'required',
-//           'deskripsi_event' => 'required',
-//       ]);
-
-//       if ($request->hasFile('cover_event')) {
-//           if ($event->cover_event) {
-//               Storage::delete($event->cover_event);
-//           }
-//           $data['cover_event'] = $request->file('cover_event')->store('images');
-//           Log::info('Cover event uploaded: ' . $data['cover_event']);
-//       }
-//       $event->update($data);
-
-//       return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event Berhasil Diubah!!');
-//   }
 public function postEditEvent(Request $request, $id)
 {
     $request->validate([
@@ -102,19 +80,14 @@ public function postEditEvent(Request $request, $id)
     $events = Event::findOrFail($id);
 
     try {
-        // Cek apakah ada file cover yang diupload
         if ($request->hasFile('cover_event')) {
-            // Hapus cover lama jika ada
             if ($events->cover_event) {
                 Storage::delete($events->cover_event);
             }
-
-            // Upload file baru
             $filePath = $request->file('cover_event')->store('covers', 'public');
-            $events->cover_event = $filePath; // Simpan path file di database
+            $events->cover_event = $filePath; 
         }
 
-        // Perbarui semua data kecuali 'cover' jika tidak ada yang diupload
         $events->update($request->except('cover_event'));
 
         return redirect()->route('homeCreator')->with('pesan-berhasil', 'Data Berhasil Diedit');
@@ -134,10 +107,7 @@ public function hapusEvent($id)
 
   public function kelolaTiket()
   {
-      // Ambil event milik creator yang login berdasarkan user_id
       $events = Event::with('tiket')->where('user_id', Auth::id())->get();
-
-      // Kirim data events ke view
       return view('creator.kelolaTiket', compact('events'));
   }
 
@@ -146,7 +116,6 @@ public function hapusEvent($id)
 
 public function tambahtiket($event_id)
 {
-    // Kirim event_id ke view
     return view('creator.tambahtiket', compact('event_id'));
 }
 
@@ -179,21 +148,17 @@ public function storeTicket(Request $request)
         'harga_tiket' => 'required|numeric',
         'jumlah_tiket' => 'required|integer',
     ]);
-
-    // Simpan tiket ke database
     Tiket::create($validatedData);
-
-    // Redirect atau memberikan respon sesuai kebutuhan
     return redirect()->route('kelolaTiket')->with('success', 'Tiket berhasil ditambahkan.');
 }
-public function editTiket($id){
-    $tiket = Tiket::findOrFail($id);
-    return view('creator.editTiket', compact('tiket'));
-  }
+    public function editTiket($id)
+    {
+        $tiket = Tiket::findOrFail($id);
+        return view('creator.editTiket', compact('tiket'));
+    }
 
   public function postEditTiket(Request $request, $id)
   {
-      // Validasi input dari request
       $request->validate([
           'kategori_tiket' => 'required|string|max:255',
           'harga_tiket' => 'required|numeric|min:0',
@@ -211,21 +176,16 @@ public function editTiket($id){
       return redirect()->route('kelolaTiket')
                        ->with('pesan-berhasil', 'Data Berhasil Diedit');
   }
-//   public function hapusTiket(Tiket $request, $id)
-//   {
-//     $tiket = $request;
-//     $tiket->delete();
-//     return redirect()->route('kelolaTiket')->with('pesan-berhasil','Tiket Berhasil Dihapus!!');
-//   }
+
 public function hapusTiket($id)
 {
     $tiket = Tiket::find($id);
 
     if ($tiket) {
         $tiket->delete();
-        return redirect()->back()->with('success', 'Tiket berhasil dihapus!');
+        return redirect()->back()->with('pesan-berhasil', 'Tiket berhasil dihapus!');
     } else {
-        return redirect()->back()->with('error', 'Tiket tidak ditemukan!');
+        return redirect()->back()->with('pesan-gagal', 'Tiket tidak ditemukan!');
     }
 }
 
@@ -239,15 +199,11 @@ public function kirimTiket(Request $request, $eventId)
     if (!$customer) {
         return redirect()->back()->with('error', 'Customer tidak ditemukan');
     }
-
-    // Ambil tiket dari event
     $tiket = Tiket::where('event_id', $eventId)->first();
 
     if (!$tiket) {
         return redirect()->back()->with('error', 'Tiket tidak tersedia untuk event ini');
     }
-
-    // Kirim email tiket ke customer
     Mail::to($customer->email)->send(new SendTicketMail($event, $tiket, $customer));
 
     return redirect()->back()->with('success', 'Tiket telah dikirim ke email customer!');

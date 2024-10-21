@@ -17,4 +17,9 @@ class Tiket extends Model
     {
         return $this->belongsTo(Event::class, 'event_id', 'id'); 
     }
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class);
+    }
 }
