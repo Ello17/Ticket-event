@@ -38,6 +38,9 @@
                 </button>
                 <ul id="event-menu" class="hidden bg-gray-700 mt-1 text-white rounded-lg">
                     <li>
+                        <a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('kelolaEvent') }}">Lihat Event</a>
+                    </li>
+                    <li>
                         <a class="block px-4 py-2 hover:bg-gray-600" href="{{ route('tambahEvent') }}">Tambah Event</a>
                     </li>
                 </ul>
