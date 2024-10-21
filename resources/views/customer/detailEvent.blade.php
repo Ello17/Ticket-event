@@ -77,7 +77,10 @@
                         <input type="number" class="form-control text-black" name="jumlah_tiket" min="1" max="{{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }}" placeholder="Masukkan jumlah tiket" style="width: 200px;">
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-warning w-full lg:w-auto">Beli Tiket</button>
+                        <a href="{{ route('transaksi', $tiket->id) }}" class="btn btn-warning w-full lg:w-auto">
+                            Beli Tiket
+                        </a>
+
                     </div>
                 </div>
             </div>
