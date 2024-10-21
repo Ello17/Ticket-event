@@ -133,7 +133,18 @@ public function postChangePass(Request $request)
 
     return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
 }
+public function transaksi($id)
+{
+    $event = Event::find($id);
 
-   
+    // Ambil tiket terkait event dan cek apakah ada tiket
+    $tiket = Tiket::where('event_id', $id)->first();
+
+    // Validasi jika event tidak ditemukan
+    if (!$event) {
+        return redirect()->back()->withErrors('Event tidak ditemukan.');
+    }
+
+    return view('customer.transaksi', compact('event', 'tiket'));
+    }
 }
- 
