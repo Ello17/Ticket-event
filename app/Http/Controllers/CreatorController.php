@@ -30,13 +30,26 @@ class CreatorController extends Controller
         return view('creator.homeCreator', compact('events', 'eventCount'));
     }
     
-    public function kelolaEvent()
+    public function kelolaEvent(Request $request)
     {
         $user = Auth::user();
-        $events = Event::where('user_id', $user->id)->get();
-
-        return view('creator.kelolaEvent', compact('events'));
+    
+        // Mengambil input pencarian (jika ada)
+        $search = $request->input('search');
+    
+        // Query event milik user dengan pencarian dan pagination
+        $events = Event::where('user_id', $user->id)
+                       ->when($search, function ($query, $search) {
+                           return $query->where('nama_event', 'like', "%{$search}%");
+                       })
+                       ->paginate(10);
+    
+        // Menambahkan parameter pencarian ke pagination link
+        $events->appends(['search' => $search]);
+    
+        return view('creator.kelolaEvent', compact('events', 'search'));
     }
+    
 
     public function tambahEvent(){
         return view('creator.tambahEvent');
