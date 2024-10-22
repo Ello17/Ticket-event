@@ -199,7 +199,7 @@ public function postEditProfileAdmin(Request $request)
         'profil' => 'nullable|image',
     ]);
 
-    $user = Auth::user();
+    $user = User::where('id', Auth::id())->first();
     if ($user->role !== 'admin') {
         return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
     }
@@ -249,7 +249,7 @@ public function postChangePassMin(Request $request)
         'confirmation_password' => 'required|same:new_password',
     ]);
 
-    $user = Auth::user();
+    $user = User::where('id', Auth::id())->first();
 
     // Pastikan hanya customer yang bisa mengganti password
     if ($user->role !== 'admin') {
