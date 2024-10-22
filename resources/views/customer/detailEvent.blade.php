@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @push('css')
+<link rel="stylesheet" href="{{asset('components/css/detailevent.css')}}">
 <!-- Tambahkan CSS tambahan di sini jika diperlukan -->
 @endpush
 
@@ -13,7 +14,7 @@
         <!-- Image Section -->
         <div class="col-span-2">
             <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                <img src="{{ asset($event->cover_event) }}" alt="poster-{{ $event->nama_event }}" class="w-full h-auto object-cover">
+                <img src="{{ asset($event->cover_event) }}" alt="poster-{{ $event->nama_event }}" class="img-max w-full h-auto object-cover">
             </div>
         </div>
 
@@ -70,7 +71,9 @@
                 <div class="mb-4">
                     <h5 class="text-white font-semibold">{{ $tiket->kategori_tiket }}</h5>
                     <p class="text-white">Harga: Rp {{ number_format($tiket->harga_tiket, 0, ',', '.') }}</p>
-                    <p class="text-gray-400">Ketersediaan: {{ $tiket->availability_text }}</p>
+                    <p class="text-gray-400">
+                        Ketersediaan: {{ $tiket->availability_text }} ({{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }} tiket tersedia)
+                    </p>                    
                 </div>
                 <div class="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
                     <div>

@@ -23,7 +23,7 @@
                     </div>
                     <div>
                         <label for="password"  class="login_label">Password</label>
-                        <input type="password" name="password" placeholder="Enter your password" id="password" class="login_input">
+                        <input type="password" name="password" placeholder="Enter your password" id="password" class="login_input" required>
                     </div>
                 </div>
                 <div>
@@ -36,7 +36,6 @@
             </p>
         </div>
     </div>
-
 
     @endsection
 @push('js')
