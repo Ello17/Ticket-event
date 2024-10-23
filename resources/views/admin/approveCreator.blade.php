@@ -30,12 +30,11 @@
                                 <tr class="bg-white hover:bg-gray-100">
                                     <td class="border border-gray-200 px-4 py-2">{{ $user->username }}</td>
                                     <td class="border border-gray-200 px-4 py-2">{{ $user->email }}</td>
-                                    <td class="border border-gray-200 px-4 py-2">
+                                    <td class="border border-gray-200 px-4 py-2" style="width:20px;">
                                         <form action="{{ route('approve.user', $user->id) }}" method="POST" class="inline">
                                             @csrf
                                             <button type="submit"
-                                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm">
-                                                Setujui
+                                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm"><i class="ri-check-line"></i>
                                             </button>
                                         </form>
                                     </td>

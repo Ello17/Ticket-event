@@ -67,7 +67,6 @@ class AdminController extends Controller
                 if ($events->cover_event) {
                     Storage::delete($events->cover_event);
                 }
-
                 $filePath = $request->file('cover_event')->store('covers', 'public');
                 $events->cover_event = $filePath;
             }
