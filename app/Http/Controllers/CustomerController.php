@@ -141,7 +141,7 @@ public function postChangePass(Request $request)
 
         $tiket_dibeli = $request->input('tiket_dibeli');
         $total_harga = $tiket->harga_tiket * $tiket_dibeli;
-        
+
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;

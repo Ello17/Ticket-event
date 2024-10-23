@@ -1,4 +1,4 @@
-<header class="bg-[#36455c] py-4">
+<header class="bg-[#36455c]">
     <nav class="flex justify-between items-center w-[92%] mx-auto">
         <!-- Logo -->
         <div>
@@ -11,7 +11,7 @@
         <div class="nav-links duration-500 md:static absolute bg-[#36455c] md:min-h-fit min-h-[90vh] left-[-100%] top-[12%] md:w-auto w-full flex items-center px-5 transition-all ease-in-out">
             <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8 w-full">
                 <li class="input relative md:w-auto w-full">
-                    <input type="text" class="input-nav md:w-auto w-full p-2 rounded-md" placeholder="Search">
+                    <input type="text" class="input-nav md:w-auto w-full p-1 rounded-md" placeholder="Search">
                 </li>
                 <li>
                     <a href="{{ route('registerCreator') }}" class="a-navbar text-white">Event</a>
@@ -31,13 +31,13 @@
             @auth
                 @if (Auth::user()->role === 'customer')
                     <!-- Tampilkan tombol Profil jika user adalah customer -->
-                 
+
                         <a href="{{ route('profil', ['user' => Auth::user()->id]) }}" class="px-5 py-2 rounded-full">
                             <img src="{{ Auth::user()->profil ? asset(Auth::user()->profil) : asset('components/asset/logo/user.png') }}"
                                  alt="Foto Profil {{ Auth::user()->username }}"
                                  class="profile-nav">
                         </a>
-              
+
                 @else
                     <!-- Tampilkan tombol Logout untuk role selain customer -->
                     <button class="px-5 py-2 rounded-full b-navbar">
@@ -72,7 +72,7 @@
 <style>
     /* Mobile styles for navigation */
     @media (max-width: 768px) {
-       
+
 
         .input-nav {
             width: 100%; /* Full width input for mobile */
@@ -86,7 +86,7 @@
 
     /* Desktop styles */
     @media (min-width: 768px) {
-        
+
 
         .input-nav {
             width: auto; /* Auto width input for desktop */
