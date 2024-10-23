@@ -41,8 +41,8 @@
                                     {{ \Illuminate\Support\Str::limit($item->deskripsi_event, 50) }}
                                 </td>
                                 <td class="p-2">
-                                    <a href="{{ route('hapusEvent', $item->id) }}" class="text-red-500 hover:underline">Delete</a>
-                                    <a href="{{ route('editEvent', $item->id) }}" class="text-blue-500 hover:underline">Edit</a>
+                                    <a href="{{ route('editEvent', $item->id) }}" class="text-blue-500 hover:underline"><i class="ri-edit-fill"></i></a>
+                                    <a href="{{ route('hapusEvent', $item->id) }}" class="text-red-500 hover:underline"><i class="ri-delete-bin-line"></i></a>
                                 </td>
                             </tr>
                         @endforeach
