@@ -73,9 +73,9 @@ class PaymentController extends Controller
                 'phone' => $transaksi->no_telepon,
             ],
             'callbacks' => [
-                'finish' => route('history'), 
-                'unfinish' => route('homeCustomer'), 
-                'error' => route('homeCustomer'),   
+                'finish' => route('history'),
+                'unfinish' => route('homeCustomer'),
+                'error' => route('homeCustomer'),
             ]
         ];
 
