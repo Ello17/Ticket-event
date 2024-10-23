@@ -65,7 +65,8 @@
                                 <textarea id="deskripsi_event" required name="deskripsi_event" class="form-control">{{ old('deskripsi_event', $events->deskripsi_event) }}</textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-success btn-block">Submit</button>
+                            <button type="submit" class="btn btn-success btn-block mt-2">Submit</button>
+                            <a href="{{ route('listEventAdm') }}" class="btn btn-secondary btn-block mt-2">Back</a>
                         </form>
                     </div>
                 </div>

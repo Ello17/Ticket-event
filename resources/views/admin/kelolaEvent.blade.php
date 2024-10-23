@@ -32,7 +32,7 @@
                             <tr>
                                 <td class="border p-2">{{ $loop->iteration + ($events->currentPage() - 1) * $events->perPage() }}</td>
                                 <td class="border p-2"><img src="{{ asset($e->cover_event) }}" alt="Cover Event"
-                                        class="w-24"></td>
+                                        class="w-24" style="max-height: 40px; object-fit:cover"></td>
                                 <td class="border p-2">{{ $e->nama_event }}</td>
                                 <td class="border p-2">
                                     <span>{{ $e->tanggal_event }}</span>
@@ -52,10 +52,10 @@
                                 <td class="border p-2">
                                     <div class="flex text-center space-x-2">
                                         <a href="{{ route('admin.editList', $e->id) }}"
-                                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded text-sm">Edit</a>
+                                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded text-sm"><i class="ri-edit-fill"></i></a>
                                         <a href="{{ route('hapusList', $e->id) }}"
                                             class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
-                                            onclick="return confirm('Are you sure?')">Hapus</a>
+                                            onclick="return confirm('Are you sure?')"><i class="ri-delete-bin-line"></i></a>
                                     </div>
                                 </td>
                             </tr>

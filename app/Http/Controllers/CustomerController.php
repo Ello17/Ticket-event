@@ -139,37 +139,13 @@ public function transaksi($id, Tiket $tiket, Request $request)
     $event = Event::find($id);
     $tiket = Tiket::where('event_id', $id)->first();
 
-        $jumlah_tiket = (int) $request->input('jumlah_tiket');
-        $harga_tiket = (int) $tiket->harga_tiket;
-        $total_transaksi = $harga_tiket * $jumlah_tiket;
-
-        // Log untuk memastikan total transaksi
-        Log::info('Total Transaksi:', [$total_transaksi]);
+        $tiket_dibeli = $request->input('tiket_dibeli');
+        $total_harga = $tiket->harga_tiket * $tiket_dibeli;
 
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
-    // Ambil input jumlah tiket yang dibeli
-    $tiket_dibeli = $request->input('tiket_dibeli');
-
-    // Validasi tiket dibeli harus diisi dan lebih besar dari 0
-    if (!$tiket_dibeli || $tiket_dibeli <= 0) {
-        return redirect()->back()->withErrors('Jumlah tiket harus lebih dari 0.');
-    }
-
-    // Hitung total harga
-    $total_harga = $tiket->harga_tiket * $tiket_dibeli;
-
-    // Validasi harga tiket harus lebih besar dari 0
-    if ($total_harga <= 0) {
-        return redirect()->back()->withErrors('Harga tiket tidak valid.');
-    }
-
-    \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
-    \Midtrans\Config::$isProduction = false;
-    \Midtrans\Config::$isSanitized = true;
-    \Midtrans\Config::$is3ds = true;
 
     // Siapkan parameter transaksi untuk Midtrans
     $params = array(
@@ -196,8 +172,6 @@ public function transaksi($id, Tiket $tiket, Request $request)
         return redirect()->back()->withErrors('Event tidak ditemukan.');
     }
 
-    // Tampilkan view transaksi dengan data yang dibutuhkan
-    return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken'));
-}
-
+        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken'));
+        }
 }

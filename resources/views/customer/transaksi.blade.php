@@ -69,8 +69,8 @@
                             @if ($tiket)
                                 <input type="hidden" id="tiket_id" name="tiket_id" value="{{ $tiket->id }}" required>
                                 <input type="hidden" id="kategori_tiket" name="kategori_tiket" value="{{ $tiket->kategori_tiket }}" required>
-                                <input type="hidden" id="jumlah_tiket" name="jumlah_tiket" value="{{ $tiket->jumlah_tiket }}" required>
-                                <p class="text-gray-400">Ketersediaan: {{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }}</p>
+                                <input type="hidden" id="tiket_dibeli" name="tiket_dibeli" value="{{ $tiket_dibeli }}" required>
+                                <p class="text-gray-400">Ketersediaan: {{ $tiket->jumlah_tiket }}</p>
 
                             @else
                                 <p class="text-white">Tiket tidak ditemukan.</p>
@@ -145,7 +145,7 @@
                         <div class="card-img-top rounded">
                         <h6 class="card-title text-white mt-3">{{ $event->nama_event }}</h6>
                         <hr>
-                        <h6 class="card-text text-white mt-3">{{ $tiket->kategori_tiket }} | {{ $jumlah_tiket }}x</h6>
+                        <h6 class="card-text text-white mt-3">{{ $tiket->kategori_tiket }} | {{ $tiket_dibeli }}x</h6>
                         <h6 class="card-text text-white">Harga Tiket : <span>Rp. {{ $tiket->formatted_harga }}</span></h6>
                         <hr>
                         <h6 class="card-text text-white">Subtotal : Rp. {{ $formatted_total_harga }}</h6>

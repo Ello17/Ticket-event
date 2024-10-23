@@ -72,15 +72,14 @@
                     <h5 class="text-white font-semibold">{{ $tiket->kategori_tiket }}</h5>
                     <p class="text-white">Harga: Rp {{ number_format($tiket->harga_tiket, 0, ',', '.') }}</p>
                     <p class="text-gray-400">
-                        Ketersediaan: {{ $tiket->availability_text }} ({{ $tiket->jumlah_tiket - $tiket->transaksi->sum('tiket_dibeli') }} tiket tersedia)
-                    </p>                                                     
+                        Ketersediaan:({{ $tiket->jumlah_tiket }} tiket tersedia)
+                    </p>
                 </div>
                 <div class="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
                     <div>
-                        <input type="number" class="form-control text-black" name="tiket_dibeli" min="1" 
-                                 max="{{ $tiket->jumlah_tiket - $tiket->transaksi->sum('tiket_dibeli') }}" 
-                                placeholder="Masukkan jumlah tiket" style="width: 200px;">
-           
+                        <input type="number" class="form-control text-black" name="tiket_dibeli" min="1"
+                        max=""
+                        placeholder="Masukkan jumlah tiket" style="width: 200px;">
                     </div>
                     <div>
                         <button type="submit" class="btn btn-warning w-full lg:w-auto">Beli Tiket</button>

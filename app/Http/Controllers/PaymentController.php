@@ -32,24 +32,25 @@ class PaymentController extends Controller
         ]);
 
         $tiket = Tiket::find($data['tiket_id']);
-        $tiketTersedia = $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket');
+        $tiketTersedia = $tiket->tiket_dibeli - $tiket->transaksi()->sum('tiket_dibeli');
 
-        if ($tiket->isSoldOut() || $data['tiket_dibeli'] > $tiketTersedia) {
-            return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
-        }
+        // if ($tiket->isSoldOut() || $data['jumlah_tiket'] > $tiketTersedia) {
+        //     return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
+        // }
 
         $order_id = $tiket->id . '-' . time();
         $transaksi = Transaksi::create([
             'tiket_id' => $tiket->id,
-            'tiket_dibeli' => $tiket->kategori_tiket,
+            'tiket_dibeli' => $data['tiket_dibeli'],
             'tanggal_transaksi' => now()->toDateString(),
             'no_rekening' => '1234567890',
-            'total_transaksi' => $tiket->harga_tiket * $data['jumlah_tiket'],
+            'total_transaksi' => $tiket->harga_tiket * $data['tiket_dibeli'],
             'nama_lengkap' => $data['nama_lengkap'],
             'no_ktp' => $data['no_ktp'],
             'no_telepon' => $data['no_telepon'],
             'email' => $data['email'],
             'event_id' => $tiket->event_id,
+            // 'jumlah_tiket' => $data['jumlah_tiket'],
             'status' => 'pending',
         ]);
 
@@ -97,7 +98,7 @@ class PaymentController extends Controller
          if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
              $transaksi->status = 'paid';
              $tiket = Tiket::find($transaksi->tiket_id);
-             $tiket->reduceQuantity($transaksi->jumlah_tiket);
+             $tiket->reduceQuantity($transaksi->tiket_dibeli);
              $tiket->save();
          } elseif ($transactionStatus == 'pending') {
              $transaksi->status = 'pending';
