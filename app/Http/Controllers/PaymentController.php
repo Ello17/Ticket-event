@@ -13,17 +13,10 @@ class PaymentController extends Controller
     public function __construct()
     {
         // MIDTRANS
-<<<<<<< HEAD
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         Config::$isProduction = false;
         Config::$isSanitized = true;
         Config::$is3ds = true;
-=======
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = config('midtrans.is_sanitized');
-        Config::$is3ds = config('midtrans.is_3ds');
->>>>>>> dba4fbec0a88e2f958cd4ecacb39b1f0aaf9cb19
     }
 
     public function createTransaction(Request $request)
@@ -80,15 +73,9 @@ class PaymentController extends Controller
                 'phone' => $transaksi->no_telepon,
             ],
             'callbacks' => [
-<<<<<<< HEAD
                 'finish' => route('homeCustomer'),
                 'unfinish' => route('homeCustomer'),
                 'error' => route('homeCustomer'),
-=======
-                'finish' => route('history'), 
-                'unfinish' => route('homeCustomer'), 
-                'error' => route('homeCustomer'),   
->>>>>>> dba4fbec0a88e2f958cd4ecacb39b1f0aaf9cb19
             ]
         ];
 
