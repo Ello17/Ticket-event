@@ -27,7 +27,7 @@ class Tiket extends Model
 
     public function getFormattedHargaAttribute()
     {
-        return number_format($this->attributes['harga'], 0, ',', '.');
+        return number_format($this->attributes['harga_tiket'], 0, ',', '.');
     }
 
     public function isSoldOut()

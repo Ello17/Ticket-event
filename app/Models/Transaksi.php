@@ -14,7 +14,6 @@ class Transaksi extends Model
     protected $fillable = [
         'tiket_dibeli',
         'tanggal_transaksi',
-        'jumlah_tiket',
         'total_transaksi',
         'nama_lengkap',
         'no_ktp',
