@@ -28,13 +28,13 @@ class PaymentController extends Controller
             'no_telepon' => 'required|string|max:15',
             'no_ktp' => 'required|string',
             'email' => 'required|string|email|max:255',
-            'jumlah_tiket' => 'required|integer|min:1',
+            'tiket_dibeli' => 'required|integer|min:1',
         ]);
 
         $tiket = Tiket::find($data['tiket_id']);
         $tiketTersedia = $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket');
 
-        if ($tiket->isSoldOut() || $data['jumlah_tiket'] > $tiketTersedia) {
+        if ($tiket->isSoldOut() || $data['tiket_dibeli'] > $tiketTersedia) {
             return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
         }
 
@@ -50,7 +50,6 @@ class PaymentController extends Controller
             'no_telepon' => $data['no_telepon'],
             'email' => $data['email'],
             'event_id' => $tiket->event_id,
-            'jumlah_tiket' => $data['jumlah_tiket'],
             'status' => 'pending',
         ]);
 
@@ -63,7 +62,7 @@ class PaymentController extends Controller
                 [
                     'id' => $tiket->id,
                     'price' => $tiket->harga_tiket,
-                    'quantity' => $data['jumlah_tiket'],
+                    'quantity' => $data['tiket_dibeli'],
                     'name' => $tiket->kategori_tiket,
                 ],
             ],
