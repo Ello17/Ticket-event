@@ -142,19 +142,14 @@
                 <div class="card shadow">
                     <div class="card-body border rounded bg-dark">
                         <h3 class="text-white"><i class="fa-solid fa-cart-shopping"></i> Rincian Pembelian</h3>
-                        <h6 class="text-white mt-3">{{ $event->nama_event }}</h6>
+                        <div class="card-img-top rounded">
+                        <h6 class="card-title text-white mt-3">{{ $event->nama_event }}</h6>
                         <hr>
-                        @if ($tiket)
-                            <h6 class="text-white mt-3">{{ $tiket->kategori_tiket }} | {{ $tiket->jumlah_tiket }}x</h6>
-                            <h6 class="text-white">Harga Tiket: Rp. {{ $tiket->harga_tiket }}</h6>
-                            <hr>
-                            <h6 class="text-white">Subtotal: Rp. {{ $tiket->harga_tiket }}</h6>
-                        @else
-                            <p class="text-white">Tiket tidak tersedia.</p>
-                        @endif
-                    </div>
-                </div>
-
+                        <h6 class="card-text text-white mt-3">{{ $tiket->kategori_tiket }} | {{ $jumlah_tiket }}x</h6>
+                        <h6 class="card-text text-white">Harga Tiket : <span>Rp. {{ $tiket->formatted_harga }}</span></h6>
+                        <hr>
+                        <h6 class="card-text text-white">Subtotal : Rp. {{ $formatted_total_harga }}</h6>
+            </div>
             </div>
         </div>
     </div>

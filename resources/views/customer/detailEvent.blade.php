@@ -77,7 +77,9 @@
                 </div>
                 <div class="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
                     <div>
-                        <input type="number" class="form-control text-black" name="jumlah_tiket" min="1" max="{{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }}" placeholder="Masukkan jumlah tiket" style="width: 200px;">
+                        <input type="number" class="form-control text-black" name="jumlah_tiket" min="1" 
+                        max="{{ $tiket->jumlah_tiket - $tiket->transaksi->sum('jumlah_tiket') }}" 
+                        placeholder="Masukkan jumlah tiket" style="width: 200px;">                 
                     </div>
                     <div>
                         <button type="submit" class="btn btn-warning w-full lg:w-auto">Beli Tiket</button>
