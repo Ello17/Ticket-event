@@ -30,13 +30,26 @@ class CreatorController extends Controller
         return view('creator.homeCreator', compact('events', 'eventCount'));
     }
     
-    public function kelolaEvent()
+    public function kelolaEvent(Request $request)
     {
         $user = Auth::user();
-        $events = Event::where('user_id', $user->id)->get();
-
-        return view('creator.kelolaEvent', compact('events'));
+    
+        // Mengambil input pencarian (jika ada)
+        $search = $request->input('search');
+    
+        // Query event milik user dengan pencarian dan pagination
+        $events = Event::where('user_id', $user->id)
+                       ->when($search, function ($query, $search) {
+                           return $query->where('nama_event', 'like', "%{$search}%");
+                       })
+                       ->paginate(10);
+    
+        // Menambahkan parameter pencarian ke pagination link
+        $events->appends(['search' => $search]);
+    
+        return view('creator.kelolaEvent', compact('events', 'search'));
     }
+    
 
     public function tambahEvent(){
         return view('creator.tambahEvent');
@@ -68,7 +81,7 @@ class CreatorController extends Controller
 
         ]);
 
-        return redirect()->route('homeCreator')->with('pesan-berhasil','Event Berhasil Ditambahkan');
+        return redirect()->route('kelolaEvent')->with('pesan-berhasil','Event Berhasil Ditambahkan');
     }
 
   public function editEvent($id){
@@ -101,7 +114,7 @@ public function postEditEvent(Request $request, $id)
 
         $events->update($request->except('cover_event'));
 
-        return redirect()->route('homeCreator')->with('pesan-berhasil', 'Data Berhasil Diedit');
+        return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Data Berhasil Diedit');
     } catch (\Exception $e) {
         return back()->withErrors(['upload_error' => 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage()]);
     }
@@ -113,7 +126,7 @@ public function hapusEvent($id)
     $event = Event::findOrFail($id);
     $event->delete();
 
-    return redirect()->route('homeCreator')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+    return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
 }
 
   public function kelolaTiket()
