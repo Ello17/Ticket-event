@@ -28,29 +28,29 @@ class PaymentController extends Controller
             'no_telepon' => 'required|string|max:15',
             'no_ktp' => 'required|string',
             'email' => 'required|string|email|max:255',
-            'jumlah_tiket' => 'required|integer|min:1',
+            'tiket_dibeli' => 'required|integer|min:1',
         ]);
 
         $tiket = Tiket::find($data['tiket_id']);
-        $tiketTersedia = $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket');
+        $tiketTersedia = $tiket->tiket_dibeli - $tiket->transaksi()->sum('tiket_dibeli');
 
-        if ($tiket->isSoldOut() || $data['jumlah_tiket'] > $tiketTersedia) {
-            return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
-        }
+        // if ($tiket->isSoldOut() || $data['jumlah_tiket'] > $tiketTersedia) {
+        //     return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
+        // }
 
         $order_id = $tiket->id . '-' . time();
         $transaksi = Transaksi::create([
             'tiket_id' => $tiket->id,
-            'tiket_dibeli' => $tiket->kategori_tiket,
+            'tiket_dibeli' => $data['tiket_dibeli'],
             'tanggal_transaksi' => now()->toDateString(),
             'no_rekening' => '1234567890',
-            'total_transaksi' => $tiket->harga * $data['jumlah_tiket'],
+            'total_transaksi' => $tiket->harga_tiket * $data['tiket_dibeli'],
             'nama_lengkap' => $data['nama_lengkap'],
             'no_ktp' => $data['no_ktp'],
             'no_telepon' => $data['no_telepon'],
             'email' => $data['email'],
             'event_id' => $tiket->event_id,
-            'jumlah_tiket' => $data['jumlah_tiket'],
+            // 'jumlah_tiket' => $data['jumlah_tiket'],
             'status' => 'pending',
         ]);
 
@@ -63,7 +63,7 @@ class PaymentController extends Controller
                 [
                     'id' => $tiket->id,
                     'price' => $tiket->harga_tiket,
-                    'quantity' => $data['jumlah_tiket'],
+                    'quantity' => $data['tiket_dibeli'],
                     'name' => $tiket->kategori_tiket,
                 ],
             ],
@@ -73,9 +73,9 @@ class PaymentController extends Controller
                 'phone' => $transaksi->no_telepon,
             ],
             'callbacks' => [
-                'finish' => route('homeCustomer'),
-                'unfinish' => route('homeCustomer'),
-                'error' => route('homeCustomer'),
+                'finish' => route('history'), 
+                'unfinish' => route('homeCustomer'), 
+                'error' => route('homeCustomer'),   
             ]
         ];
 
@@ -98,7 +98,7 @@ class PaymentController extends Controller
          if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
              $transaksi->status = 'paid';
              $tiket = Tiket::find($transaksi->tiket_id);
-             $tiket->reduceQuantity($transaksi->jumlah_tiket);
+             $tiket->reduceQuantity($transaksi->tiket_dibeli);
              $tiket->save();
          } elseif ($transactionStatus == 'pending') {
              $transaksi->status = 'pending';
@@ -108,10 +108,27 @@ class PaymentController extends Controller
 
          $transaksi->save();
      } else {
-         return response()->json(['error' => 'Transaction not found'], 404);
+         return response()->json(['pesan-gagal' => 'Transaction not found'], 404);
      }
 
-     return response()->json(['status' => 'success']);
- }
+     return response()->json(['pesan-berhasil' => 'success']);
+ }
+
+ public function midtransCallback(Request $request)
+{
+    $payload = $request->all();
+    $transaction_status = $payload['transaction_status'];
+    $order_id = $payload['order_id'];
+    $transaksi = Transaksi::where('order_id', $order_id)->first();
+
+    if ($transaksi) {
+        $transaksi->status = $transaction_status;
+        $transaksi->save();
+        if ($transaction_status == 'success') {
+            return redirect()->route('history')->with('pesan-berhasil', 'Pembayaran berhasil. Terima kasih!');
+        }
+    }
+    return redirect()->route('history')->with('pesan-gagal', 'Pembayaran tidak berhasil.');
+}
 
 }

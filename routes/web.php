@@ -44,8 +44,8 @@ Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->na
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
 
 
-// Route::get('/transaksi{tiket}', [CustomerController::class, 'transaksi']);
-// Route::get('/transaksi{event}', [CustomerController::class, 'transaksi']);
+Route::get('/transaksi{tiket}', [CustomerController::class, 'transaksi']);
+Route::get('/transaksi{event}', [CustomerController::class, 'transaksi']);
 
 
 

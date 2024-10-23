@@ -87,3 +87,15 @@ body {
     font-size: 0.875rem;
     padding: 10px;
 }
+.btn-edit{
+    padding:10px;
+    text-align:center;
+    background-color:#6c757d;
+    border-radius:8px;
+     color:white;
+     width: fit-content;
+    }
+    .btn-edit:hover{
+    transition: all .5s;
+    background-color: #555c62;
+}

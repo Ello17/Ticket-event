@@ -21,24 +21,24 @@
                 <table class="table-auto w-full border-collapse border border-gray-300">
                     <thead>
                         <tr>
-                            <th class="border px-4 py-2 text-left">No</th>
-                            <th class="border px-4 py-2 text-left">Username</th>
-                            <th class="border px-4 py-2 text-left">Email</th>
-                            <th class="border px-4 py-2 text-left">Role</th>
-                            <th class="border px-4 py-2 text-left">Aksi</th>
+                            <th class="border px-4 py-2 text-center">No</th>
+                            <th class="border px-4 py-2 text-center">Username</th>
+                            <th class="border px-4 py-2 text-center">Email</th>
+                            <th class="border px-4 py-2 text-center">Role</th>
+                            <th class="border px-4 py-2 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
                             <tr class="hover:bg-gray-50">
-                                <td class="border px-4 py-2">{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
+                                <td class="border px-4 py-2 text-center">{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                                 <td class="border px-4 py-2">{{ $user->username }}</td>
                                 <td class="border px-4 py-2">{{ $user->email }}</td>
                                 <td class="border px-4 py-2">{{ $user->role }}</td>
-                                <td class="border px-4 py-2">
-                                    <a href="{{ route('hapusCustomer', $user->id) }}"
+                                <td class="border px-4 py-2 text-center">
+                                <a href="{{ route('hapusCustomer', $user->id) }}"
                                         class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
-                                        onclick="return confirm('Are you sure?')">Hapus</a>
+                                        onclick="return confirm('Are you sure?')"><i class="ri-delete-bin-line"></i></a>
                                 </td>
                             </tr>
                         @endforeach

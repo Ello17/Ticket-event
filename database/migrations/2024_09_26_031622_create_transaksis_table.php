@@ -17,7 +17,6 @@ class CreateTransaksisTable extends Migration
             $table->id();
             $table->string('tiket_dibeli');
             $table->string('tanggal_transaksi');
-            $table->integer('jumlah_tiket');
             $table->integer('total_transaksi');
             $table->string('nama_lengkap');
             $table->string('no_ktp');
