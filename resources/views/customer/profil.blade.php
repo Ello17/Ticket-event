@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="container mt-5 py-5">
-    <div class="profile-container bg-light p-4 rounded">
+    <div class="profile-container bg-gray-800 p-4 rounded">
         <div class="profile-header d-flex align-items-center">
             <img src="{{ asset($user->profil ?? 'components/asset/logo/user.png') }}"
                  alt="Foto Profil {{ $user->username }}" class="rounded-circle me-3" width="100" height="100">
@@ -28,11 +28,11 @@
 
         <div class="profile-info mt-4">
             <div class="row mb-2">
-                <div class="col-md-2 fw-bold"><i class="ri-user-fill me-1"></i> Username:</div>
+                <div class="col-md-0 fw-bold"><i class="ri-user-fill me-1"></i> Username:</div>
                 <div class="col-md-10">{{ $user->username }}</div>
             </div>
             <div class="row mb-2">
-                <div class="col-md-2 fw-bold"><i class="ri-mail-fill me-1"></i> Email:</div>
+                <div class="col-md-0 fw-bold"><i class="ri-mail-fill me-1"></i> Email:</div>
                 <div class="col-md-10">{{ $user->email }}</div>
             </div>
             <div class="row mt-3">
