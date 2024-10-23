@@ -133,38 +133,42 @@ public function postChangePass(Request $request)
 
     return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
 }
-public function transaksi($id, Tiket $tiket, Request $request)
-{
-    $event = Event::find($id);
-    $tiket = Tiket::where('event_id', $id)->first();
+    public function transaksi($id, Tiket $tiket, Request $request)
+    {
+        $event = Event::find($id);
+        $tiket = Tiket::where('event_id', $id)->first();
 
-    $jumlah_tiket = $request->input('jumlah_tiket');
-    $total_transaksi = $tiket->harga * $jumlah_tiket;
+        $jumlah_tiket = (int) $request->input('jumlah_tiket');
+        $harga_tiket = (int) $tiket->harga_tiket;
+        $total_transaksi = $harga_tiket * $jumlah_tiket;
 
-    \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
-    \Midtrans\Config::$isProduction = false;
-    \Midtrans\Config::$isSanitized = true;
-    \Midtrans\Config::$is3ds = true;
+        // Log untuk memastikan total transaksi
+        Log::info('Total Transaksi:', [$total_transaksi]);
 
-    $params = array(
-        'transaction_details' => array(
-            'order_id' => rand(),
-            'gross_amount' => $total_transaksi,
-        ),
-        'customer_details' => [
-            'first_name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-        ],
-    );
+        \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
 
-    $snapToken = \Midtrans\Snap::getSnapToken($params);
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => $total_transaksi,
+            ),
+            'customer_details' => [
+                'first_name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone'),
+            ],
+        );
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
 
 
-    if (!$event) {
-        return redirect()->back()->withErrors('Event tidak ditemukan.');
-    }
+        if (!$event) {
+            return redirect()->back()->withErrors('Event tidak ditemukan.');
+        }
 
-    return view('customer.transaksi', compact('event', 'tiket', 'jumlah_tiket', 'formatted_total_harga', 'snapToken'));
-    }
+        return view('customer.transaksi', compact('event', 'tiket', 'jumlah_tiket', 'snapToken'));
+        }
 }

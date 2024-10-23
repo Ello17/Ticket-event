@@ -13,20 +13,20 @@ class PaymentController extends Controller
     public function __construct()
     {
         // MIDTRANS
-        Config::$serverKey = env('SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m');
-        Config::$isProduction = false; 
+        Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        Config::$isProduction = false;
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }
 
     public function createTransaction(Request $request)
     {
-        
+
         $data = $request->validate([
             'tiket_id' => 'required|exists:tikets,id',
             'nama_lengkap' => 'required|string|max:255',
             'no_telepon' => 'required|string|max:15',
-            'no_ktp' => 'required|integer',
+            'no_ktp' => 'required|string',
             'email' => 'required|string|email|max:255',
             'jumlah_tiket' => 'required|integer|min:1',
         ]);
@@ -62,7 +62,7 @@ class PaymentController extends Controller
             'item_details' => [
                 [
                     'id' => $tiket->id,
-                    'price' => $tiket->harga,
+                    'price' => $tiket->harga_tiket,
                     'quantity' => $data['jumlah_tiket'],
                     'name' => $tiket->kategori_tiket,
                 ],
@@ -73,9 +73,9 @@ class PaymentController extends Controller
                 'phone' => $transaksi->no_telepon,
             ],
             'callbacks' => [
-                'finish' => route('homeCustomer'), 
-                'unfinish' => route('homeCustomer'), 
-                'error' => route('homeCustomer'),   
+                'finish' => route('homeCustomer'),
+                'unfinish' => route('homeCustomer'),
+                'error' => route('homeCustomer'),
             ]
         ];
 

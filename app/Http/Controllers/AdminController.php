@@ -67,6 +67,10 @@ class AdminController extends Controller
                 if ($events->cover_event) {
                     Storage::delete($events->cover_event);
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 16af571ba8c123c06c60b983cfac79e560577236
                 $filePath = $request->file('cover_event')->store('covers', 'public');
                 $events->cover_event = $filePath;
             }
@@ -198,7 +202,7 @@ public function postEditProfileAdmin(Request $request)
         'profil' => 'nullable|image',
     ]);
 
-    $user = Auth::user();
+    $user = User::where('id', Auth::id())->first();
     if ($user->role !== 'admin') {
         return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
     }
@@ -248,7 +252,7 @@ public function postChangePassMin(Request $request)
         'confirmation_password' => 'required|same:new_password',
     ]);
 
-    $user = Auth::user();
+    $user = User::where('id', Auth::id())->first();
 
     // Pastikan hanya customer yang bisa mengganti password
     if ($user->role !== 'admin') {
