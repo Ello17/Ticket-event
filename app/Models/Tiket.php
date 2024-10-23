@@ -13,6 +13,8 @@ class Tiket extends Model
 
     protected $guarded = ['id'];
 
+    protected $appends = ['formatted_harga'];
+
     public function event()
     {
         return $this->belongsTo(Event::class, 'event_id', 'id'); 
@@ -21,5 +23,26 @@ class Tiket extends Model
     public function transaksi()
     {
         return $this->hasMany(Transaksi::class);
+    }
+
+    public function getFormattedHargaAttribute()
+    {
+        return number_format($this->attributes['harga'], 0, ',', '.');
+    }
+
+    public function isSoldOut()
+    {
+        return $this->transaksi()->sum('jumlah_tiket') >= $this->jumlah_tiket;
+    }
+
+    public function getStatusAttribute()
+    {
+        return $this->isSoldOut() ? 'sold out' : 'on sale';
+    }
+
+    public function getAvailabilityTextAttribute()
+    {
+        $terjual = $this->transaksi()->sum('jumlah_tiket');
+        return "{$terjual}/{$this->jumlah_tiket}";
     }
 }

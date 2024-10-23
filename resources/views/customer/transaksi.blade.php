@@ -7,6 +7,9 @@
     <title>TMD</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome-free-6.5.2-web/css/all.min.css') }}">
+  <script type="text/javascript"
+  src="https://app.stg.midtrans.com/snap/snap.js"
+    data-client-key="SB-Mid-client-VlcG7DV3_odk4Alv"></script>
     <script type="text/javascript"
         src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ config('midtrans.client_key') }}">
@@ -58,7 +61,8 @@
                 <div class="card shadow">
                     <div class="card-body border rounded bg-dark">
                         <h2 class="text-center text-white">Transaksi</h2>
-                        <form action="" id="payment-form" method="POST" class="form-group" enctype="multipart/form-data">
+                        <form action="{{ route('transaksi.create') }}" id="payment-form" method="POST" class="form-group" enctype="multipart/form-data">
+
                             @csrf
 
                             {{-- Validasi apakah tiket ditemukan --}}
@@ -66,6 +70,8 @@
                                 <input type="hidden" id="tiket_id" name="tiket_id" value="{{ $tiket->id }}" required>
                                 <input type="hidden" id="kategori_tiket" name="kategori_tiket" value="{{ $tiket->kategori_tiket }}" required>
                                 <input type="hidden" id="jumlah_tiket" name="jumlah_tiket" value="{{ $tiket->jumlah_tiket }}" required>
+                                <p class="text-gray-400">Ketersediaan: {{ $tiket->jumlah_tiket - $tiket->transaksi()->sum('jumlah_tiket') }}</p>
+
                             @else
                                 <p class="text-white">Tiket tidak ditemukan.</p>
                             @endif
@@ -115,7 +121,7 @@
                             <h3 class="text-white"><i class="fa-solid fa-ticket text-white"></i> Informasi Tiket</h3>
                             <div class="row">
                                 <div class="card-img">
-                                    <img src="{{ asset($event->poster_event) }}" alt="poster-{{ $event->nama_event }}" style="width: 100%; border-radius:12px;">
+                                    <img src="{{ asset($event->cover_event) }}" alt="poster-{{ $event->nama_event }}" style="width: 100%; border-radius:12px;">
                                 </div>
                                 <div class="col-6 text-white">
                                     <p>
@@ -149,13 +155,35 @@
                     </div>
                 </div>
 
-                @if (isset($snapToken))
-                    <p class="text-white">Token: {{ $snapToken }}</p>
-                @else
-                    <p class="text-white">Token tidak tersedia.</p>
-                @endif
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        // For example trigger on button clicked, or any time you need
+        var payButton = document.getElementById('pay-button');
+        payButton.addEventListener('click', function () {
+          // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token.
+          // Also, use the embedId that you defined in the div above, here.
+          window.snap.embed('$snapToken', {
+            embedId: 'snap-container',
+            onSuccess: function (result) {
+              /* You may add your own implementation here */
+              alert("payment success!"); console.log(result);
+            },
+            onPending: function (result) {
+              /* You may add your own implementation here */
+              alert("wating your payment!"); console.log(result);
+            },
+            onError: function (result) {
+              /* You may add your own implementation here */
+              alert("payment failed!"); console.log(result);
+            },
+            onClose: function () {
+              /* You may add your own implementation here */
+              alert('you closed the popup without finishing the payment');
+            }
+          });
+        });
+      </script>
 </body>
 </html>

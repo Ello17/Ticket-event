@@ -67,9 +67,8 @@ class AdminController extends Controller
                 if ($events->cover_event) {
                     Storage::delete($events->cover_event);
                 }
-
                 $filePath = $request->file('cover_event')->store('covers', 'public');
-                $events->cover_event = $filePath;
+                $events->cover_event = $filePath; 
             }
             $events->update($request->except('cover_event'));
 
@@ -102,15 +101,12 @@ class AdminController extends Controller
         return redirect()->route('kelolaKreator')->with('pesan-berhasil', 'Data berhasil dihapus');
     }
 
-
-
-
     public function kelolaCustomer(Request $request)
     {
         $search = $request->input('search');
 
         $users = User::query()
-            ->where('role', 'customer')
+            ->where('role', 'customer') 
             ->when($search, function ($query, $search) {
                 return $query->where('username', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
@@ -125,7 +121,7 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         $users = User::query()
-            ->where('role', 'creator')
+            ->where('role', 'creator') 
             ->when($search, function ($query, $search) {
                 return $query->where('username', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
@@ -147,7 +143,7 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         $pendingUsers = User::query()
-            ->where('is_approved', false)
+            ->where('is_approved', false) 
             ->where('role', 'creator')
             ->when($search, function ($query, $search) {
                 return $query->where(function ($query) use ($search) {
@@ -156,12 +152,9 @@ class AdminController extends Controller
                 });
             })
             ->paginate(10);
-
+    
         return view('admin.approveCreator', compact('pendingUsers', 'search'));
     }
-
-
-
 
     public function approveUser($id)
     {
