@@ -3,7 +3,7 @@
         <!-- Logo -->
         <div>
             <a href="{{ route('homeCustomer') }}">
-                <img class="img-nav" src="{{ asset('components/asset/logo/512.png') }}" alt="Logo">
+                <img class="img-nav" src="{{ asset('components/asset/logo/512.png') }}" alt="Logo" >
             </a>
         </div>
 
@@ -31,13 +31,13 @@
             @auth
                 @if (Auth::user()->role === 'customer')
                     <!-- Tampilkan tombol Profil jika user adalah customer -->
-                    <button class="px-5 py-2 rounded-full">
-                        <a href="{{ route('profil', ['user' => Auth::user()->id]) }}">
+                 
+                        <a href="{{ route('profil', ['user' => Auth::user()->id]) }}" class="px-5 py-2 rounded-full">
                             <img src="{{ Auth::user()->profil ? asset(Auth::user()->profil) : asset('components/asset/logo/user.png') }}"
                                  alt="Foto Profil {{ Auth::user()->username }}"
                                  class="profile-nav">
                         </a>
-                    </button>
+              
                 @else
                     <!-- Tampilkan tombol Logout untuk role selain customer -->
                     <button class="px-5 py-2 rounded-full b-navbar">
