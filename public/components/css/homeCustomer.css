@@ -59,7 +59,7 @@ section{
 @media (min-width: 768px) {
     .grid-card{
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 25px;
+        gap: 1.2rem;
     }
     .card{
         height: 420px;

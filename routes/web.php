@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
 use Database\Seeders\CreatorSeeder;
 use Illuminate\Support\Facades\Route;
 
@@ -32,17 +33,30 @@ Route::post('/postLoginCreator', [AuthController::class, 'postLoginCreator'])->n
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
+//MIDTRANS
+Route::get('/transaksi{detail}', [PaymentController::class, 'createTransaction'])->name('transaksi');
+Route::post('/transaksi/create', [PaymentController::class, 'createTransaction'])->name('transaksi.create');
+Route::post('/midtrans-notification', [PaymentController::class, 'handleNotification']);
+
 // ini buat customer
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
-Route::get('/history', [CustomerController::class, 'history'])->name('history');
+
+
+// Route::get('/transaksi{tiket}', [CustomerController::class, 'transaksi']);
+// Route::get('/transaksi{event}', [CustomerController::class, 'transaksi']);
 
 
 
 //ROUTE ADMIN SAMA KREATOR ITU SIMPENNYA DI DALAM MIDDLEWARE
 Route::middleware('auth')->group(function () {
 
+
+
+Route::get('/history', [CustomerController::class, 'history'])->name('history');
+Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
+Route::post('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
@@ -56,6 +70,11 @@ Route::get('/kelolaCustomer', 'AdminController@kelolaCustomer')->name('kelolaCus
 Route::get('/kelolaKreator', 'AdminController@kelolaKreator')->name('kelolaKreator');
 Route::get('/users/pending', [AdminController::class, 'showPendingUsers'])->name('pending.users');
 Route::post('/users/approve/{id}', [AdminController::class, 'approveUser'])->name('approve.user');
+Route::get('/profileAdmin', [AdminController::class, 'profileAdmin'])->name('profileAdmin');
+Route::get('/editProfileAdmin{id}',[AdminController::class,'editProfileAdmin'])->name('editProfileAdmin');
+Route::post('postEditProfileAdmin{id}',[AdminController::class,'postEditProfileAdmin'])->name('postEditProfileAdmin');
+Route::get('/ChangePassMin',[AdminController::class, 'ChangePassMin'])->name('ChangePassMin');
+Route::post('/postChangePassMin', [AdminController::class, 'postChangePassMin'])->middleware('auth')->name('postChangePassMin');
 
 //ini buat creator
 Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
@@ -80,6 +99,8 @@ Route::post('/change-password', [CustomerController::class, 'postChangePass'])->
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('tambahtiket');
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
+Route::get('/editTiket/{id}', [CreatorController::class, 'editTiket'])->name('editTiket');
+Route::post('/postEditTiket/{id}', [CreatorController::class, 'postEditTiket'])->name('postEditTiket');
 Route::get('/kirimTiket/{eventId}', [CreatorController::class, 'kirimTiket'])->name('kirimTiket');
 
 Route::get('/profilCreator', [CreatorController::class, 'profilCreator'])->name('profilCreator');
