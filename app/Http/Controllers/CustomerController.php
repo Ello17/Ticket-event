@@ -139,13 +139,9 @@ public function transaksi($id, Tiket $tiket, Request $request)
     $event = Event::find($id);
     $tiket = Tiket::where('event_id', $id)->first();
 
-        $jumlah_tiket = (int) $request->input('jumlah_tiket');
-        $harga_tiket = (int) $tiket->harga_tiket;
-        $total_transaksi = $harga_tiket * $jumlah_tiket;
-
-      
-        Log::info('Total Transaksi:', [$total_transaksi]);
-
+        $tiket_dibeli = $request->input('tiket_dibeli');
+        $total_harga = $tiket->harga_tiket * $tiket_dibeli;
+        
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
@@ -154,7 +150,7 @@ public function transaksi($id, Tiket $tiket, Request $request)
     $params = array(
         'transaction_details' => array(
             'order_id' => rand(),
-            'gross_amount' => $total_transaksi,
+            'gross_amount' => $total_harga,
         ),
         'customer_details' => [
             'first_name' => $request->input('name'),
@@ -166,7 +162,7 @@ public function transaksi($id, Tiket $tiket, Request $request)
     $snapToken = \Midtrans\Snap::getSnapToken($params);
 
     // Format total harga untuk tampilan
-    $formatted_total_harga = number_format($total_transaksi, 0, ',', '.');
+    $formatted_total_harga = number_format($total_harga, 0, ',', '.');
     $event = $tiket->event;
 
     if (!$event) {
