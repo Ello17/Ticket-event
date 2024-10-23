@@ -133,17 +133,14 @@ public function postChangePass(Request $request)
 
     return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
 }
+
     public function transaksi($id, Tiket $tiket, Request $request)
     {
         $event = Event::find($id);
         $tiket = Tiket::where('event_id', $id)->first();
 
-        $jumlah_tiket = (int) $request->input('jumlah_tiket');
-        $harga_tiket = (int) $tiket->harga_tiket;
-        $total_transaksi = $harga_tiket * $jumlah_tiket;
-        
-        // Log untuk memastikan total transaksi
-        Log::info('Total Transaksi:', [$total_transaksi]);
+        $jumlah_tiket = $request->input('jumlah_tiket');
+        $total_harga = $tiket->harga_tiket * $jumlah_tiket;
         
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
@@ -153,7 +150,7 @@ public function postChangePass(Request $request)
         $params = array(
             'transaction_details' => array(
                 'order_id' => rand(),
-                'gross_amount' => $total_transaksi,
+                'gross_amount' => $total_harga,
             ),
             'customer_details' => [
                 'first_name' => $request->input('name'),
@@ -163,12 +160,13 @@ public function postChangePass(Request $request)
         );
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
-
+        $formatted_total_harga = number_format($total_harga, 0, ',', '.');
+        $event = $tiket->event;
 
         if (!$event) {
             return redirect()->back()->withErrors('Event tidak ditemukan.');
         }
 
-        return view('customer.transaksi', compact('event', 'tiket', 'jumlah_tiket', 'snapToken'));
+        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'jumlah_tiket', 'snapToken'));
         }
 }
