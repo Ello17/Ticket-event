@@ -10,12 +10,12 @@
     box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
 }
 .img-nav{
-    height: 64px;
+    height: 50px;
 }
 .a-navbar{
     background-color: #7da1c3;
     border-radius: 10px;
-    padding: 10px 20px;
+    padding: 13px 25px;
     color: white;
     transition: all .2s ease-in-out;
 }
@@ -35,10 +35,10 @@ header{
 }
 .nav-links
 {
-    z-index: 9999999;
+    z-index: 99999;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
     .input{
 
         display: flex;
@@ -54,4 +54,7 @@ header{
     width: 48px;
     object-fit: cover;
     border-radius: 50%;
+}
+nav{
+    max-height: 100px;
 }
