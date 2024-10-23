@@ -139,19 +139,9 @@ public function postChangePass(Request $request)
         $event = Event::find($id);
         $tiket = Tiket::where('event_id', $id)->first();
 
-<<<<<<< HEAD
-        $jumlah_tiket = (int) $request->input('jumlah_tiket');
-        $harga_tiket = (int) $tiket->harga_tiket;
-        $total_transaksi = $harga_tiket * $jumlah_tiket;
-
-        // Log untuk memastikan total transaksi
-        Log::info('Total Transaksi:', [$total_transaksi]);
-
-=======
         $tiket_dibeli = $request->input('tiket_dibeli');
         $total_harga = $tiket->harga_tiket * $tiket_dibeli;
-        
->>>>>>> dba4fbec0a88e2f958cd4ecacb39b1f0aaf9cb19
+
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
