@@ -14,14 +14,14 @@ class PaymentController extends Controller
     {
         // MIDTRANS
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        Config::$isProduction = false; 
+        Config::$isProduction = false;
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }
 
     public function createTransaction(Request $request)
     {
-        
+
         $data = $request->validate([
             'tiket_id' => 'required|exists:tikets,id',
             'nama_lengkap' => 'required|string|max:255',
@@ -73,9 +73,9 @@ class PaymentController extends Controller
                 'phone' => $transaksi->no_telepon,
             ],
             'callbacks' => [
-                'finish' => route('homeCustomer'), 
-                'unfinish' => route('homeCustomer'), 
-                'error' => route('homeCustomer'),   
+                'finish' => route('homeCustomer'),
+                'unfinish' => route('homeCustomer'),
+                'error' => route('homeCustomer'),
             ]
         ];
 
@@ -112,6 +112,6 @@ class PaymentController extends Controller
      }
 
      return response()->json(['status' => 'success']);
- }
+ }
 
 }

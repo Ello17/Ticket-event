@@ -141,10 +141,10 @@ public function postChangePass(Request $request)
         $jumlah_tiket = (int) $request->input('jumlah_tiket');
         $harga_tiket = (int) $tiket->harga_tiket;
         $total_transaksi = $harga_tiket * $jumlah_tiket;
-        
+
         // Log untuk memastikan total transaksi
         Log::info('Total Transaksi:', [$total_transaksi]);
-        
+
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
@@ -170,5 +170,6 @@ public function postChangePass(Request $request)
         }
 
         return view('customer.transaksi', compact('event', 'tiket', 'jumlah_tiket', 'snapToken'));
-        }
+
+    }
 }
