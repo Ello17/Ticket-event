@@ -139,8 +139,8 @@ public function postChangePass(Request $request)
         $event = Event::find($id);
         $tiket = Tiket::where('event_id', $id)->first();
 
-        $jumlah_tiket = $request->input('jumlah_tiket');
-        $total_harga = $tiket->harga_tiket * $jumlah_tiket;
+        $tiket_dibeli = $request->input('tiket_dibeli');
+        $total_harga = $tiket->harga_tiket * $tiket_dibeli;
         
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
@@ -167,6 +167,6 @@ public function postChangePass(Request $request)
             return redirect()->back()->withErrors('Event tidak ditemukan.');
         }
 
-        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'jumlah_tiket', 'snapToken'));
+        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken'));
         }
 }
