@@ -78,24 +78,24 @@
 
                             <div class="form-group text-white">
                                 <label for="name">Nama Lengkap :</label>
-                                <input type="text" id="name" name="nama_lengkap" class="form-control text-white bg-dark text-start" required>
+                                <input type="text" id="name" value="{{ $user->nama_lengkap }}" name="nama_lengkap" class="form-control text-white bg-dark text-start" required>
                             </div>
 
                             <div class="form-group text-white" style="margin-top: 1rem;">
                                 <label for="no_ktp">No. KTP :</label>
-                                <input type="text" id="no_ktp" name="no_ktp" class="form-control text-white bg-dark text-start" required>
+                                <input type="text" id="no_ktp" value="{{ $user->no_ktp }}" name="no_ktp" class="form-control text-white bg-dark text-start" required>
                                 <small class="form-text text-muted">Harus 16 digit.</small>
                             </div>
 
                             <div class="form-group text-white">
                                 <label for="phone">No. Telepon :</label>
-                                <input type="tel" id="phone" name="no_telepon" class="form-control text-white bg-dark text-start" pattern="\d{10,15}" required>
+                                <input type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" class="form-control text-white bg-dark text-start" pattern="\d{10,15}" required>
                                 <small class="form-text text-muted">Harus antara 10-15 digit.</small>
                             </div>
 
                             <div class="form-group text-white" style="margin-bottom: 3rem;">
                                 <label for="email">Email :</label>
-                                <input type="email" id="email" name="email" class="form-control text-white bg-dark text-start" required>
+                                <input type="email" id="email" value="{{ $user->email }}" name="email" class="form-control text-white bg-dark text-start" required>
                             </div>
 
                             <div class="text-center">
