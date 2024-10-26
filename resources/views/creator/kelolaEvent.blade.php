@@ -1,12 +1,8 @@
 @extends('layouts.appCreator')
-
-@push('css')
-@endpush
-
 @section('title', 'Home Creator - Tiket Mudah')
 
 @section('content')
-    <div class="content ml-64 p-8">
+    <div class="content p-8">
         <div class="card bg-white shadow-lg rounded-lg">
             <div class="card-header p-4">
                 <h5 class="text-lg font-semibold">Tabel List Event</h5>
@@ -71,16 +67,3 @@
         </div>
     </div>
 @endsection
-
-@push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-    </script>
-@endpush
