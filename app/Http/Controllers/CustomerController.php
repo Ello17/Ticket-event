@@ -22,9 +22,15 @@ class CustomerController extends Controller
 
     }
 
-    function history() {
-        return view('customer.history');
-    }
+    public function history()
+{
+    $transaksiList = Transaksi::with('tiket')
+                    ->where('user_id', auth()->id())
+                    ->get();
+
+    return view('customer.history', compact('transaksiList'));
+}
+
     public function detailEvent($id)
     {
         $event = Event::find($id);
@@ -138,6 +144,7 @@ public function transaksi($id, Tiket $tiket, Request $request)
 {
     $event = Event::find($id);
     $tiket = Tiket::where('event_id', $id)->first();
+    $user = Auth::user();
 
         $tiket_dibeli = $request->input('tiket_dibeli');
         $total_harga = $tiket->harga_tiket * $tiket_dibeli;
@@ -169,7 +176,7 @@ public function transaksi($id, Tiket $tiket, Request $request)
         return redirect()->back()->withErrors('Event tidak ditemukan.');
     }
 
-        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken'));
+        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
         }
 }
 

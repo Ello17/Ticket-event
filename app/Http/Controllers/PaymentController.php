@@ -38,6 +38,7 @@ class PaymentController extends Controller
         $tiketTersedia = $tiket->jumlah_tiket; // Gunakan stok total tiket dari kolom stok_tiket
 
         // Validasi ketersediaan tiket
+        $tiketTersedia = $tiket->jumlah_tiket;
         if ($data['tiket_dibeli'] > $tiketTersedia) {
             return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
         }
@@ -55,6 +56,7 @@ class PaymentController extends Controller
             'email' => $data['email'],
             'event_id' => $tiket->event_id,
             'status' => 'pending',
+           'user_id' => auth()->id(),
         ]);
 
         // Mengurangi stok tiket yang tersedia
