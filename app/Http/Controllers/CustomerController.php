@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Tiket;
+use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,8 +23,15 @@ class CustomerController extends Controller
 
     }
 
-    function history() {
-        return view('customer.history');
+    public function history()
+    {
+        $userId = Auth::id(); 
+        $transaksiList = Transaksi::whereHas('tiket', function ($query) use ($userId) {
+            $query->whereHas('event', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            });
+        })->get();
+        return view('customer.history', compact('transaksiList'));
     }
     public function detailEvent($id)
     {
@@ -138,6 +146,7 @@ public function transaksi($id, Tiket $tiket, Request $request)
 {
     $event = Event::find($id);
     $tiket = Tiket::where('event_id', $id)->first();
+    $user = Auth::user();
 
         $tiket_dibeli = $request->input('tiket_dibeli');
         $total_harga = $tiket->harga_tiket * $tiket_dibeli;
@@ -147,7 +156,6 @@ public function transaksi($id, Tiket $tiket, Request $request)
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
 
-    // Siapkan parameter transaksi untuk Midtrans
     $params = array(
         'transaction_details' => array(
             'order_id' => rand(),
@@ -160,18 +168,16 @@ public function transaksi($id, Tiket $tiket, Request $request)
         ],
     );
 
-    // Dapatkan Snap Token dari Midtrans
     $snapToken = \Midtrans\Snap::getSnapToken($params);
 
     // Format total harga untuk tampilan
     $formatted_total_harga = number_format($total_harga, 0, ',', '.');
     $event = $tiket->event;
 
-    // Jika event tidak ditemukan, kembalikan pesan error
     if (!$event) {
         return redirect()->back()->withErrors('Event tidak ditemukan.');
     }
 
-        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken'));
-}
+        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
+        }
 }
