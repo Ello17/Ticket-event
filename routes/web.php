@@ -42,6 +42,8 @@ Route::post('/midtrans-notification', [PaymentController::class, 'handleNotifica
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
+Route::get('/search', [CustomerController::class, 'search'])->name('search');
+
 
 
 Route::get('/transaksi{tiket}', [CustomerController::class, 'transaksi']);
