@@ -1,5 +1,5 @@
-<header class="bg-[#6482ad]">
-    <nav class="flex justify-between items-center w-[92%] mx-auto">
+<header class="bg-[#36455c]">
+    <nav class="flex justify-between items-center w-[92%] mx-auto p-2">
         <!-- Logo -->
         <div>
             <a href="{{ route('homeCustomer') }}">

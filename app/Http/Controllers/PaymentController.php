@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Tiket;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
 
@@ -19,24 +21,26 @@ class PaymentController extends Controller
         Config::$is3ds = config('midtrans.is_3ds');
     }
 
+
+
     public function createTransaction(Request $request)
     {
-
         $data = $request->validate([
             'tiket_id' => 'required|exists:tikets,id',
             'nama_lengkap' => 'required|string|max:255',
             'no_telepon' => 'required|string|max:15',
-            'no_ktp' => 'required|string',
+            'no_ktp' => 'required|string|digits:16',
             'email' => 'required|string|email|max:255',
             'tiket_dibeli' => 'required|integer|min:1',
         ]);
 
         $tiket = Tiket::find($data['tiket_id']);
-        $tiketTersedia = $tiket->tiket_dibeli - $tiket->transaksi()->sum('tiket_dibeli');
+        $tiketTersedia = $tiket->jumlah_tiket; // Gunakan stok total tiket dari kolom stok_tiket
 
-        // if ($tiket->isSoldOut() || $data['jumlah_tiket'] > $tiketTersedia) {
-        //     return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
-        // }
+        // Validasi ketersediaan tiket
+        if ($data['tiket_dibeli'] > $tiketTersedia) {
+            return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
+        }
 
         $order_id = $tiket->id . '-' . time();
         $transaksi = Transaksi::create([
@@ -50,9 +54,11 @@ class PaymentController extends Controller
             'no_telepon' => $data['no_telepon'],
             'email' => $data['email'],
             'event_id' => $tiket->event_id,
-            // 'jumlah_tiket' => $data['jumlah_tiket'],
             'status' => 'pending',
         ]);
+
+        // Mengurangi stok tiket yang tersedia
+        $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
 
         $transaction = [
             'transaction_details' => [
@@ -82,6 +88,8 @@ class PaymentController extends Controller
         $url = Snap::createTransaction($transaction)->redirect_url;
         return redirect($url);
     }
+
+
 
  // Notifikasi pembayaran dari Midtrans
  public function notificationHandler(Request $request)
