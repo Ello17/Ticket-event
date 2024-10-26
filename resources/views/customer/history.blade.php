@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($transaksiList as $index => $transaksi)
+                        @forelse($transaksiList as $index => $transaksi)
                         <tr>
                             <th scope="row" style="text-align: center;">{{ $index + 1 }}</th>
                             <td>{{ $transaksi->tiket_dibeli }}</td>
@@ -42,7 +42,13 @@
                             <td>{{ $transaksi->no_telepon }}</td>
                             <td>{{ $transaksi->email }}</td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-3">
+                                <strong>Belum ada Tiket dibeli</strong>
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
