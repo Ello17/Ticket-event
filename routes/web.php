@@ -108,6 +108,7 @@ Route::get('/editProfileCreator/{id}',[CreatorController::class,'editProfileCrea
 Route::post('postEditProfileCreator{id}',[CreatorController::class,'postEditProfileCreator'])->name('postEditProfileCreator');
 Route::get('/ubahpass',[CreatorController::class, 'ubahpass'])->name('ubahpass');
 Route::post('/postubahpass', [CreatorController::class, 'postubahpass'])->middleware('auth')->name('postubahpass');;
+Route::get('/grafik', [CreatorController::class, 'grafik'])->name('grafik');
 });
 
 

@@ -15,10 +15,10 @@ class PaymentController extends Controller
     public function __construct()
     {
         // MIDTRANS
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = config('midtrans.is_sanitized');
-        Config::$is3ds = config('midtrans.is_3ds');
+        Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        Config::$isProduction = false;
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
     }
 
     
@@ -35,9 +35,7 @@ class PaymentController extends Controller
         ]);
     
         $tiket = Tiket::find($data['tiket_id']);
-        $tiketTersedia = $tiket->jumlah_tiket; // Gunakan stok total tiket dari kolom stok_tiket
-    
-        // Validasi ketersediaan tiket
+        $tiketTersedia = $tiket->jumlah_tiket; 
         if ($data['tiket_dibeli'] > $tiketTersedia) {
             return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
         }
@@ -55,9 +53,8 @@ class PaymentController extends Controller
             'email' => $data['email'],
             'event_id' => $tiket->event_id,
             'status' => 'pending',
+           'user_id' => auth()->id(),
         ]);
-    
-        // Mengurangi stok tiket yang tersedia
         $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
     
         $transaction = [

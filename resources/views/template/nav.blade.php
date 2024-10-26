@@ -27,7 +27,6 @@
                     <a href="{{ route('login') }}">Sign In</a>
                 </button>
             @endguest
-
             @auth
                 @if (Auth::user()->role === 'customer')
                     <!-- Tampilkan tombol Profil jika user adalah customer -->
