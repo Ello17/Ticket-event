@@ -336,34 +336,32 @@ public function postubahpass(Request $request)
 
 public function grafik()
 {
-
-    // Fetch activity logs
     $now = Carbon::now();
-    
-    // Fetch all transactions for the current month and year with related user and booking
+
+    // Ambil semua transaksi bulan ini dan tahun ini, termasuk data tiket terkait
     $transaksis = Transaksi::with(['tiket'])
         ->whereMonth('tanggal_transaksi', $now->month)
         ->whereYear('tanggal_transaksi', $now->year)
         ->get();
 
-    // Data for chart
+    // Kelompokkan transaksi berdasarkan bulan-tahun
     $labels = $transaksis->groupBy(function ($item) {
-        return Carbon::parse($item->tanggal_transaksi)->format('F Y'); // Format to display month and year
+        return Carbon::parse($item->tanggal_transaksi)->format('F Y'); // Format bulan dan tahun
     })->keys()->toArray();
 
+    // Hitung total tiket yang dibeli di bulan tersebut
     $jumlahTiket = $transaksis->groupBy(function ($item) {
         return Carbon::parse($item->tanggal_transaksi)->format('F Y');
     })->map(function ($items) {
-        return $items->count();
+        return $items->sum('tiket_dibeli'); // Ambil langsung dari kolom tiket_dibeli di tabel transaksi
     })->toArray();
 
-    // Pass data to view
+    // Kirim data ke view
     return view('creator.grafik', [
         'transaksis' => $transaksis,
-        'labels' => $labels,    
+        'labels' => $labels,
         'jumlahTiket' => $jumlahTiket,
     ]);
 }
-
 
 }
