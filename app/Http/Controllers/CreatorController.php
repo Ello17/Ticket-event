@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Mail\SendTicketMail;
 use App\Models\Event;
 use App\Models\Tiket;
+use App\Models\Transaksi;
 use App\Models\User;
+use Carbon\Carbon;
 // use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -330,6 +332,37 @@ public function postubahpass(Request $request)
     }
 
     return redirect()->route('profilCreator')->with('status', 'Password berhasil diperbarui.');
+}
+
+public function grafik()
+{
+
+    // Fetch activity logs
+    $now = Carbon::now();
+    
+    // Fetch all transactions for the current month and year with related user and booking
+    $transaksis = Transaksi::with(['tiket'])
+        ->whereMonth('tanggal_transaksi', $now->month)
+        ->whereYear('tanggal_transaksi', $now->year)
+        ->get();
+
+    // Data for chart
+    $labels = $transaksis->groupBy(function ($item) {
+        return Carbon::parse($item->tanggal_transaksi)->format('F Y'); // Format to display month and year
+    })->keys()->toArray();
+
+    $jumlahTiket = $transaksis->groupBy(function ($item) {
+        return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+    })->map(function ($items) {
+        return $items->count();
+    })->toArray();
+
+    // Pass data to view
+    return view('creator.grafik', [
+        'transaksis' => $transaksis,
+        'labels' => $labels,    
+        'jumlahTiket' => $jumlahTiket,
+    ]);
 }
 
 

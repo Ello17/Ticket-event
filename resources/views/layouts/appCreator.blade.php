@@ -75,6 +75,12 @@
                     </ul>
                 </div>
                 <li class="py-3 px-5">
+                    <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('grafik') ? 'bg-blue-500 text-white' : '' }}"
+                        href="{{ route('grafik') }}">
+                        <i class="ri-account-circle-fill  mr-2"></i>Grafik
+                    </a>
+                </li>
+                <li class="py-3 px-5">
                     <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('profilCreator') ? 'bg-blue-500 text-white' : '' }}"
                         href="{{ route('profilCreator') }}">
                         <i class="ri-account-circle-fill  mr-2"></i>Account

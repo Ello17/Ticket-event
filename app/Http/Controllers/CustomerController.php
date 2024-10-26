@@ -134,10 +134,10 @@ public function postChangePass(Request $request)
     return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
 }
 
-    public function transaksi($id, Tiket $tiket, Request $request)
-    {
-        $event = Event::find($id);
-        $tiket = Tiket::where('event_id', $id)->first();
+public function transaksi($id, Tiket $tiket, Request $request)
+{
+    $event = Event::find($id);
+    $tiket = Tiket::where('event_id', $id)->first();
 
         $tiket_dibeli = $request->input('tiket_dibeli');
         $total_harga = $tiket->harga_tiket * $tiket_dibeli;
@@ -147,26 +147,31 @@ public function postChangePass(Request $request)
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
 
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => rand(),
-                'gross_amount' => $total_harga,
-            ),
-            'customer_details' => [
-                'first_name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'phone' => $request->input('phone'),
-            ],
-        );
+    // Siapkan parameter transaksi untuk Midtrans
+    $params = array(
+        'transaction_details' => array(
+            'order_id' => rand(),
+            'gross_amount' => $total_harga,
+        ),
+        'customer_details' => [
+            'first_name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+        ],
+    );
 
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
-        $formatted_total_harga = number_format($total_harga, 0, ',', '.');
-        $event = $tiket->event;
+    // Dapatkan Snap Token dari Midtrans
+    $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-        if (!$event) {
-            return redirect()->back()->withErrors('Event tidak ditemukan.');
-        }
+    // Format total harga untuk tampilan
+    $formatted_total_harga = number_format($total_harga, 0, ',', '.');
+    $event = $tiket->event;
+
+    // Jika event tidak ditemukan, kembalikan pesan error
+    if (!$event) {
+        return redirect()->back()->withErrors('Event tidak ditemukan.');
+    }
 
         return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken'));
-        }
+}
 }
