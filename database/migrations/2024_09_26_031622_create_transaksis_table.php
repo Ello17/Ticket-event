@@ -21,9 +21,10 @@ class CreateTransaksisTable extends Migration
             $table->string('nama_lengkap');
             $table->string('no_ktp');
             $table->string('no_telepon');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->foreignId('tiket_id')->constrained();
             $table->foreignId('event_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

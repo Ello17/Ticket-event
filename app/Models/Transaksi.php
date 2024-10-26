@@ -20,7 +20,8 @@ class Transaksi extends Model
         'no_telepon',
         'email',
         'tiket_id',
-        'event_id'
+        'event_id',
+        'user_id',
     ];
 
     public function event(){
