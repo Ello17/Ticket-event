@@ -24,15 +24,14 @@ class CustomerController extends Controller
     }
 
     public function history()
-    {
-        $userId = Auth::id(); 
-        $transaksiList = Transaksi::whereHas('tiket', function ($query) use ($userId) {
-            $query->whereHas('event', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            });
-        })->get();
-        return view('customer.history', compact('transaksiList'));
-    }
+{
+    $transaksiList = Transaksi::with('tiket')
+                    ->where('user_id', auth()->id())
+                    ->get();
+                    
+    return view('customer.history', compact('transaksiList'));
+}
+
     public function detailEvent($id)
     {
         $event = Event::find($id);
