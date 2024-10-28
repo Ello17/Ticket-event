@@ -1,38 +1,38 @@
 @extends('layouts.appCreator')
 
 @push('css')
-<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-<style>
-    body {
-        background-color: #ffffff;
-    }
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
 
-    .card {
-        margin: 0 auto;
-        max-width: 500px;
-        padding: 20px;
-        background-color: #b9e2f4;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+        .card {
+            margin: 0 auto;
+            max-width: 500px;
+            padding: 20px;
+            background-color: #b9e2f4;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    .card-title {
-        text-align: center;
-        margin-top: 0;
-    }
+        .card-title {
+            text-align: center;
+            margin-top: 0;
+        }
 
-    .form-control {
-        margin-bottom: 15px;
-    }
+        .form-control {
+            margin-bottom: 15px;
+        }
 
-    .btn-success {
-        width: 100%;
-    }
+        .btn-success {
+            width: 100%;
+        }
 
-    .alert {
-        margin-top: 20px;
-    }
-</style>
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
 @endpush
 
 @section('title', 'Tambah Event')
@@ -49,7 +49,8 @@
                     <input type="text" required name="nama_event" class="form-control" placeholder="Masukkan nama event">
 
                     <label for="nama_penyelenggara">Nama Penyelenggara</label>
-                    <input type="text" required name="nama_penyelenggara" class="form-control" placeholder="Masukkan nama penyelenggara">
+                    <input type="text" required name="nama_penyelenggara" class="form-control"
+                        placeholder="Masukkan nama penyelenggara">
 
                     <label for="tanggal_event">Tanggal Event</label>
                     <input type="date" required name="tanggal_event" class="form-control">
@@ -58,7 +59,8 @@
                     <input type="time" required name="waktu_event" class="form-control">
 
                     <label for="lokasi_event">Lokasi</label>
-                    <input type="text" required name="lokasi_event" class="form-control" placeholder="Masukkan lokasi event">
+                    <input type="text" required name="lokasi_event" class="form-control"
+                        placeholder="Masukkan lokasi event">
 
                     <label for="deskripsi_event">Deskripsi</label>
                     <textarea required name="deskripsi_event" class="form-control" rows="3" placeholder="Masukkan deskripsi event"></textarea>
@@ -82,6 +84,5 @@
 
 @endsection
 @push('js')
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 @endpush
