@@ -32,7 +32,7 @@
 
 <div class="flex">
     <!-- Sidebar -->
-    <div id="sidebar"
+    <div id="sidebar" style="z-index: 9999;"
         class="fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="flex items-center justify-center h-16 bg-gray-900">
             <h1 class="text-2xl font-semibold">Creator</h1>
