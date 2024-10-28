@@ -13,9 +13,10 @@
     background: #1f2937;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     /* box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px; */
-    height: 330px;
+    height: fit-content;
     width: 180px;
     border-radius: 10px;
+    min-height: 420px;
 
 }
 .card-section{
@@ -62,7 +63,7 @@ section{
         gap: 1.2rem;
     }
     .card{
-        height: 420px;
+        max-height: 420px;
         width: 400px;
         padding: 10px;
     }
