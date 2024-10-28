@@ -47,12 +47,12 @@
                             Kelola Event
                         </button>
                         <ul id="dropdown-user-menu" class="hidden bg-gray-700 mt-1 text-white">
-                            <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('kelolaCustomer') ? 'bg-blue-500 text-white' : '' }}"
-                                    href="{{ route('kelolaCustomer') }}"><i class="ri-user-line mr-2"></i>Customer</a></li>
-                            <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('kelolaKreator') ? 'bg-blue-500 text-white' : '' }}"
-                                    href="{{ route('kelolaKreator') }}"><i class="ri-user-2-line mr-2"></i>Creator</a></li>
-                            <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('pending.users') ? 'bg-blue-500 text-white' : '' }}"
-                                    href="{{ route('pending.users') }}"><i class="ri-user-follow-fill mr-2"></i>Permintaan Creator</a></li>
+                            <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('') ? 'bg-blue-500 text-white' : '' }}"
+                                    href=""><i class="ri-user-line mr-2"></i>Customer</a></li>
+                            <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('') ? 'bg-blue-500 text-white' : '' }}"
+                                    href=""><i class="ri-user-2-line mr-2"></i>Creator</a></li>
+                            <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('') ? 'bg-blue-500 text-white' : '' }}"
+                                    href=""><i class="ri-user-follow-fill mr-2"></i>Permintaan Creator</a></li>
                         </ul>
                     </div>
                     <!-- Kelola Event Dropdown Menu -->
@@ -64,8 +64,8 @@
                             Kelola Event
                         </button>
                         <ul id="dropdown-event-menu" class="hidden bg-gray-700 mt-1 text-white">
-                            <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('listEventAdm') ? 'bg-blue-500 text-white' : '' }}"
-                                    href="{{ route('listEventAdm') }}"><i class="ri-calendar-event-line mr-2"></i>Event</a></li>
+                            <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('kelolaEvent') ? 'bg-blue-500 text-white' : '' }}"
+                                    href="{{ route('kelolaEvent') }}"><i class="ri-calendar-event-line mr-2"></i>Event</a></li>
                         </ul>
                     </div>
                     <li class="py-3 px-5">
