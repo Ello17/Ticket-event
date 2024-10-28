@@ -101,9 +101,9 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-4 md:p-6 md:ml-64 max-w-full">
-        @yield('content')
-    </div>
+</div>
+<div class="flex-1 p-4 md:p-6 md:ml-64 max-w-full">
+    @yield('content')
 </div>
 
     {{--
@@ -182,7 +182,6 @@
         </ul>
     </div> --}}
 
-    @yield('content')
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
