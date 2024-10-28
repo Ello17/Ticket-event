@@ -218,10 +218,10 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-4 md:p-6 md:ml-64 max-w-full">
-        @yield('content')
-    </div>
-</div> --}}
+</div>
+<div class="flex-1 p-4 md:p-6 md:ml-64 max-w-full">
+    @yield('content')
+</div>
 
     {{--
     <div class="sidebar bg-gray-800 text-white fixed top-0 left-0 w-64 h-full shadow-lg z-50">
@@ -299,7 +299,12 @@
         </ul>
     </div> --}}
 
-    @yield('content')
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script>
         const menuToggle = document.getElementById("menu-toggle");
