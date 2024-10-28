@@ -168,8 +168,6 @@ public function transaksi($id, Tiket $tiket, Request $request)
     );
 
     $snapToken = \Midtrans\Snap::getSnapToken($params);
-
-    // Format total harga untuk tampilan
     $formatted_total_harga = number_format($total_harga, 0, ',', '.');
     $event = $tiket->event;
 
@@ -178,5 +176,9 @@ public function transaksi($id, Tiket $tiket, Request $request)
     }
 
         return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
-        }
+        } 
+        
 }
+
+
+
