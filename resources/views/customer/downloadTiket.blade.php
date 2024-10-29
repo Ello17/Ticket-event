@@ -6,7 +6,12 @@
 <body>
     <h1>Tiket Event</h1>
     <p>Kode Tiket: {{ $transaksi->kode_tiket }}</p>
+    <p>Nama Lengkap: {{ $transaksi->nama_lengkap }}</p>
+    <p>Tanggal Transaksi: {{ $transaksi->tanggal_transaksi }}</p>
+    <p>Total Transaksi: {{ $transaksi->total_transaksi }}</p>
+    <p>Email: {{ $transaksi->email }}</p>
 
+   
     <div>
         {!! DNS1D::getBarcodeHTML($transaksi->kode_tiket, 'C39') !!}
     </div>

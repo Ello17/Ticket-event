@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\kirimTiket;
 use App\Models\Event;
 use App\Models\Tiket;
 use App\Models\Transaksi;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
 class CustomerController extends Controller
@@ -28,7 +30,7 @@ class CustomerController extends Controller
     $transaksiList = Transaksi::with('tiket')
                     ->where('user_id', auth()->id())
                     ->get();
-                    
+
     return view('customer.history', compact('transaksiList'));
 }
 
@@ -143,17 +145,27 @@ public function postChangePass(Request $request)
 
 public function transaksi($id, Tiket $tiket, Request $request)
 {
+    // Mencari event berdasarkan ID
     $event = Event::find($id);
+    if (!$event) {
+        return redirect()->back()->withErrors('Event tidak ditemukan.');
+    }
+
+    // Mencari tiket berdasarkan event_id
     $tiket = Tiket::where('event_id', $id)->first();
+    if (!$tiket) {
+        return redirect()->back()->withErrors('Tiket tidak ditemukan untuk event ini.');
+    }
+
     $user = Auth::user();
+    $tiket_dibeli = $request->input('tiket_dibeli', 1); // Default ke 1 jika tidak ada input
+    $total_harga = $tiket->harga_tiket * $tiket_dibeli;
 
-        $tiket_dibeli = $request->input('tiket_dibeli');
-        $total_harga = $tiket->harga_tiket * $tiket_dibeli;
-
-        \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
-        \Midtrans\Config::$isProduction = false;
-        \Midtrans\Config::$isSanitized = true;
-        \Midtrans\Config::$is3ds = true;
+    // Konfigurasi Midtrans
+    \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
+    \Midtrans\Config::$isProduction = false;
+    \Midtrans\Config::$isSanitized = true;
+    \Midtrans\Config::$is3ds = true;
 
     $params = array(
         'transaction_details' => array(
@@ -167,18 +179,35 @@ public function transaksi($id, Tiket $tiket, Request $request)
         ],
     );
 
+    // Mendapatkan Snap Token dari Midtrans
     $snapToken = \Midtrans\Snap::getSnapToken($params);
     $formatted_total_harga = number_format($total_harga, 0, ',', '.');
-    $event = $tiket->event;
 
-    if (!$event) {
-        return redirect()->back()->withErrors('Event tidak ditemukan.');
-    }
-
-        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
-        } 
-        
+    return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
 }
 
 
 
+            public function kirimTiket()
+            {
+                $transaksi = Transaksi::all();
+
+                return view('emails.kirimTiket', compact('transaksi'));
+            }
+
+public function postKirimTiket(Request $request)
+{
+
+                $request->validate([
+                    'id_transaksi' => 'required|exists:transaksis,id',
+                ]);
+
+                $transaksi = Transaksi::find($request->id_transaksi);
+                if ($transaksi) {
+                    Mail::to($transaksi->email_pembeli)
+                        ->send(new kirimTiket($transaksi));
+                }
+                return 'berhasil mengirim email';
+        }
+
+        }
