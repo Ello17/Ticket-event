@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\kirimTiket;
 use App\Models\Event;
 use App\Models\Tiket;
 use App\Models\Transaksi;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
 class CustomerController extends Controller
@@ -179,5 +181,29 @@ public function transaksi($id, Tiket $tiket, Request $request)
 
         return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
         }
-}
 
+
+
+            public function kirimTiket()
+            {
+                $transaksi = Transaksi::all();
+
+                return view('emails.kirimTiket', compact('transaksi'));
+            }
+
+public function postKirimTiket(Request $request)
+{
+
+                $request->validate([
+                    'id_transaksi' => 'required|exists:transaksis,id',
+                ]);
+
+                $transaksi = Transaksi::find($request->id_transaksi);
+                if ($transaksi) {
+                    Mail::to($transaksi->email_pembeli)
+                        ->send(new kirimTiket($transaksi));
+                }
+                return 'berhasil mengirim email';
+        }
+
+        }

@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/history', [CustomerController::class, 'history'])->name('history');
 Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
 Route::post('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
+Route::get('/kirimTiket', [CustomerController::class, 'kirimTiket'])->name('kirimTiket');
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
@@ -114,3 +115,4 @@ Route::get('/grafik', [CreatorController::class, 'grafik'])->name('grafik');
 });
 
 
+Route::post('/postKirimTiket/{id}', [CustomerController::class, 'postKirimTiket'])->name('postKirimTiket');
