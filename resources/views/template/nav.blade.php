@@ -10,7 +10,7 @@
         <div class="nav-links duration-500 md:static absolute bg-[#36455c] md:min-h-fit min-h-[90vh] left-[-100%] top-[12%] md:w-auto w-full flex items-center px-5 transition-all ease-in-out">
             <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8 w-full">
                 <li class="input relative md:w-auto w-full">
-                    <form action="{{ route('searchEvent') }}" method="GET" class="w-full">
+                    <form action="{{ route('search') }}" method="GET" class="w-full">
                         <input 
                             type="text" 
                             name="search" 

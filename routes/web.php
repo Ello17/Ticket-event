@@ -36,7 +36,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ini buat customer
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
-Route::get('/search', [CustomerController::class, 'search'])->name('searchEvent');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
 Route::get('/list-events', [CustomerController::class, 'listEvents'])->name('listEvent');
 Route::get('/search', [CustomerController::class, 'search'])->name('search');
