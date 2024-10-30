@@ -26,6 +26,12 @@ class PaymentController extends Controller
 
     public function createTransaction(Request $request)
     {
+
+        \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
+        
         $data = $request->validate([
             'tiket_id' => 'required|exists:tikets,id',
             'nama_lengkap' => 'required|string|max:255',
