@@ -23,6 +23,19 @@ class CustomerController extends Controller
 
     }
 
+    public function search(Request $request)
+    {
+        $keyword = $request->input('search');
+        
+        // Cari event berdasarkan nama atau deskripsi
+        $events = Event::where('nama_event', 'LIKE', "%{$keyword}%")
+                       ->orWhere('lokasi_event', 'LIKE', "%{$keyword}%")
+                       ->get();
+
+        // Kembalikan hasil pencarian ke view
+        return view('customer.listEvent', compact('events'));
+    }
+
     public function history()
 {
     $transaksiList = Transaksi::with('tiket')
