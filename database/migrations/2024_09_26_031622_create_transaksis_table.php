@@ -15,6 +15,7 @@ class CreateTransaksisTable extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_tiket')->unique(); 
             $table->string('tiket_dibeli');
             $table->string('tanggal_transaksi');
             $table->integer('total_transaksi');
@@ -28,7 +29,7 @@ class CreateTransaksisTable extends Migration
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

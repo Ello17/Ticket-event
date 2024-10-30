@@ -143,13 +143,20 @@ public function postChangePass(Request $request)
     return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
 }
 
-public function transaksi($id, Tiket $tiket, Request $request)
+public function transaksi($id, Request $request)
 {
     $event = Event::find($id);
-    $tiket = Tiket::where('event_id', $id)->first();
-    $user = Auth::user();
+    if (!$event) {
+        return redirect()->back()->withErrors('Event tidak ditemukan.');
+    }
 
-    $tiket_dibeli = $request->input('tiket_dibeli');
+    $tiket = Tiket::where('event_id', $id)->first();
+    if (!$tiket) {
+        return redirect()->back()->withErrors('Tiket tidak ditemukan untuk event ini.');
+    }
+
+    $user = Auth::user();
+    $tiket_dibeli = $request->input('tiket_dibeli', 1);
     $total_harga = $tiket->harga_tiket * $tiket_dibeli;
 
     \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
@@ -157,91 +164,40 @@ public function transaksi($id, Tiket $tiket, Request $request)
     \Midtrans\Config::$isSanitized = true;
     \Midtrans\Config::$is3ds = true;
 
-    $params = array(
-        'transaction_details' => array(
+
+    $params = [
+        'transaction_details' => [
             'order_id' => rand(),
             'gross_amount' => $total_harga,
-        ),
+        ],
         'customer_details' => [
             'first_name' => $request->input('name'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
         ],
-    );
+    ];
 
     $snapToken = \Midtrans\Snap::getSnapToken($params);
-
-    // Format total harga untuk tampilan
     $formatted_total_harga = number_format($total_harga, 0, ',', '.');
-    $event = $tiket->event;
 
-    if (!$event) {
-        return redirect()->back()->withErrors('Event tidak ditemukan.');
-    }
-
-    // Menambahkan logika pengiriman email di sini
-    try {
-        // Simpan data transaksi di database jika perlu
-        // Misalnya, jika ada model Transaksi untuk menyimpan data
-        $transaksi = Transaksi::create([
-            'event_id' => $id,
-            'user_id' => $user->id,
-            'tiket_id' => $tiket->id,
-            'tiket_dibeli' => $tiket_dibeli,
-            'total_harga' => $total_harga,
-            'email_pembeli' => $request->input('email'), // Simpan email untuk pengiriman
-        ]);
-
-        // Kirim email notifikasi
-        Mail::to($request->input('email'))->send(new kirimTiket($transaksi, $tiket));
-
-        // Log pengiriman email
-        Log::info('Email berhasil dikirim ke: ' . $request->input('email'));
-    } catch (\Exception $e) {
-        // Log error jika terjadi masalah saat mengirim email
-        Log::error('Gagal mengirim email: ' . $e->getMessage());
-    }
-
-    return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
+    return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
 }
 
-public function postKirimTiket(Request $request)
-{
-    // Validasi request untuk memastikan id_transaksi ada di tabel transaksis
-    $request->validate([
-        'id_transaksi' => 'required|exists:transaksis,id',
-    ]);
 
-    try {
-        // Cari transaksi berdasarkan ID
-        $transaksi = Transaksi::find($request->id_transaksi);
 
-        // Ambil tiket yang terkait dengan transaksi
-        $tiket = Tiket::where('transaksi_id', $transaksi->id)->first();
+        public function postKirimTiket(Request $request)
+            {
 
-        // Cek apakah transaksi dan tiket ditemukan
-        if ($transaksi && $tiket) {
-            // Kirim email ke email pembeli
-            Mail::to($transaksi->email)
-                ->send(new kirimTiket($transaksi, $tiket));
+                            $request->validate([
+                                'id_transaksi' => 'required|exists:transaksis,id',
+                            ]);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Email berhasil dikirim!'
-            ]);
-        } else {
-            // Jika tiket tidak ditemukan, beri respon error
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Tiket atau transaksi tidak ditemukan.'
-            ], 404);
-        }
-    } catch (\Exception $e) {
-        // Tangkap error jika proses pengiriman email gagal
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Gagal mengirim email: ' . $e->getMessage()
-        ], 500);
-    }
-}
-}
+                            $transaksi = Transaksi::find($request->id_transaksi);
+                            if ($transaksi) {
+                                Mail::to($transaksi->email_pembeli)
+                                    ->send(new kirimTiket($transaksi));
+                            }
+                            return 'berhasil mengirim email';
+                    }
+
+                    }

@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PaymentController;
 use Database\Seeders\CreatorSeeder;
+use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,11 +34,6 @@ Route::post('/postLoginCreator', [AuthController::class, 'postLoginCreator'])->n
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-//MIDTRANS
-Route::get('/transaksi{detail}', [PaymentController::class, 'createTransaction'])->name('transaksi');
-Route::post('/transaksi/create', [PaymentController::class, 'createTransaction'])->name('transaksi.create');
-Route::post('/midtrans-notification', [PaymentController::class, 'handleNotification']);
-
 // ini buat customer
 Route::get('/', [CustomerController::class, 'homeCustomer'])->name('homeCustomer');
 Route::get('/detail-event/{id}', [CustomerController::class, 'detailEvent'])->name('detailEvent');
@@ -46,20 +42,28 @@ Route::get('/search', [CustomerController::class, 'search'])->name('search');
 
 
 
-Route::get('/transaksi{tiket}', [CustomerController::class, 'transaksi']);
-Route::get('/transaksi{event}', [CustomerController::class, 'transaksi']);
 
 
 
 //ROUTE ADMIN SAMA KREATOR ITU SIMPENNYA DI DALAM MIDDLEWARE
 Route::middleware('auth')->group(function () {
 
+//MIDTRANS
+Route::get('/transaksi{detail}', [PaymentController::class, 'createTransaction'])->name('transaksi.detail');
+Route::post('/transaksi/create', [PaymentController::class, 'createTransaction'])->name('transaksi.create');
+Route::post('/midtrans-notification', [PaymentController::class, 'handleNotification']);
+
+
+Route::get('/transaksi/{kode_tiket}', [PaymentController::class, 'show'])->name('transaksi.show');
+Route::get('/download/tiket/{id}', [PaymentController::class, 'downloadTiket'])->name('downloadTiket');
 
 
 Route::get('/history', [CustomerController::class, 'history'])->name('history');
 Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
-Route::post('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
-Route::post('/kirim-tiket', [CustomerController::class, 'postKirimTiket'])->name('postKirimTiket');     
+Route::get('/transaksi/{tiket}/{id}', [CustomerController::class, 'transaksi'])->name('transaksi.tiket');
+Route::get('/transaksi/{event}', [CustomerController::class, 'transaksi'])->name('transaksi.event');
+
+// Route::get('/kirimTiket', [CustomerController::class, 'kirimTiket'])->name('kirimTiket');
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
@@ -102,8 +106,8 @@ Route::post('/change-password', [CustomerController::class, 'postChangePass'])->
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('tambahtiket');
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
-Route::get('/editTiket/{id}', [CreatorController::class, 'editTiket'])->name('editTiket');
-Route::post('/postEditTiket/{id}', [CreatorController::class, 'postEditTiket'])->name('postEditTiket');
+// Route::get('/editTiket/{id}', [CreatorController::class, 'editTiket'])->name('editTiket');
+// Route::post('/postEditTiket/{id}', [CreatorController::class, 'postEditTiket'])->name('postEditTiket');
 Route::get('/kirimTiket/{eventId}', [CreatorController::class, 'kirimTiket'])->name('kirimTiket');
 
 Route::get('/profilCreator', [CreatorController::class, 'profilCreator'])->name('profilCreator');

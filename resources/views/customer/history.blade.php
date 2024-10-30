@@ -28,8 +28,10 @@
                             <th scope="col">No-KTP</th>
                             <th scope="col">No-Telepon</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Aksi</th> 
                         </tr>
                     </thead>
+                    
                     <tbody>
                         @forelse($transaksiList as $index => $transaksi)
                         <tr>
@@ -41,15 +43,19 @@
                             <td>{{ $transaksi->no_ktp }}</td>
                             <td>{{ $transaksi->no_telepon }}</td>
                             <td>{{ $transaksi->email }}</td>
+                            <td>
+                                <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                            </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="8" class="text-center py-3">
+                            <td colspan="9" class="text-center py-3">
                                 <strong>Belum ada Tiket dibeli</strong>
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
+                    
                 </table>
             </div>
 

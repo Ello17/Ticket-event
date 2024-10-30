@@ -6,7 +6,7 @@
 @section('title', 'Kelola Tiket - Tiket Mudah')
 
 @section('content')
-    <div class="content ml-64 p-8">
+    <div class="content  p-8">
         <div class="card bg-white shadow-lg rounded-lg">
             <div class="card-header p-4">
                 <h5 class="text-lg font-semibold">Tabel List Tiket</h5>
