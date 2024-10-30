@@ -11,14 +11,17 @@ class kirimTiket extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $transaksi; // Buat properti untuk menyimpan data transaksi
+
     /**
      * Create a new message instance.
      *
+     * @param $transaksi
      * @return void
      */
-    public function __construct()
+    public function __construct($transaksi)
     {
-        //
+        $this->transaksi = $transaksi; // Simpan data transaksi ke properti
     }
 
     /**
@@ -29,7 +32,7 @@ class kirimTiket extends Mailable
     public function build()
     {
         return $this->subject('Tiket Event Mudah')
-                    ->view('emails.kirimtiket'); // Pastikan ini sesuai dengan struktur folder.
+                    ->view('emails.kirimtiket') // Pastikan view tersedia
+                    ->with(['transaksi' => $this->transaksi]); // Kirim data ke view
     }
-
 }

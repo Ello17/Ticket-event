@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/history', [CustomerController::class, 'history'])->name('history');
 Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
 Route::post('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
-Route::get('/kirimTiket', [CustomerController::class, 'kirimTiket'])->name('kirimTiket');
+Route::post('/kirim-tiket', [CustomerController::class, 'postKirimTiket'])->name('postKirimTiket');     
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');

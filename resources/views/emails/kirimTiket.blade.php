@@ -6,7 +6,7 @@
     <title>Tiket Event Anda</title>
 </head>
 <body>
-    <h1>Halo, {{ $transaksi->nama_lengkap}}</h1>
+    <h1>Halo, {{ $transaksi->nama_lengkap }}</h1>
     <p>Berikut adalah tiket untuk event yang telah Anda pesan:</p>
 
     <p>Kategori Tiket: {{ $tiket->kategori_tiket }}</p>

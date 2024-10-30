@@ -149,13 +149,13 @@ public function transaksi($id, Tiket $tiket, Request $request)
     $tiket = Tiket::where('event_id', $id)->first();
     $user = Auth::user();
 
-        $tiket_dibeli = $request->input('tiket_dibeli');
-        $total_harga = $tiket->harga_tiket * $tiket_dibeli;
+    $tiket_dibeli = $request->input('tiket_dibeli');
+    $total_harga = $tiket->harga_tiket * $tiket_dibeli;
 
-        \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
-        \Midtrans\Config::$isProduction = false;
-        \Midtrans\Config::$isSanitized = true;
-        \Midtrans\Config::$is3ds = true;
+    \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
+    \Midtrans\Config::$isProduction = false;
+    \Midtrans\Config::$isSanitized = true;
+    \Midtrans\Config::$is3ds = true;
 
     $params = array(
         'transaction_details' => array(
@@ -179,31 +179,69 @@ public function transaksi($id, Tiket $tiket, Request $request)
         return redirect()->back()->withErrors('Event tidak ditemukan.');
     }
 
-        return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
-        }
+    // Menambahkan logika pengiriman email di sini
+    try {
+        // Simpan data transaksi di database jika perlu
+        // Misalnya, jika ada model Transaksi untuk menyimpan data
+        $transaksi = Transaksi::create([
+            'event_id' => $id,
+            'user_id' => $user->id,
+            'tiket_id' => $tiket->id,
+            'tiket_dibeli' => $tiket_dibeli,
+            'total_harga' => $total_harga,
+            'email_pembeli' => $request->input('email'), // Simpan email untuk pengiriman
+        ]);
 
+        // Kirim email notifikasi
+        Mail::to($request->input('email'))->send(new kirimTiket($transaksi, $tiket));
 
+        // Log pengiriman email
+        Log::info('Email berhasil dikirim ke: ' . $request->input('email'));
+    } catch (\Exception $e) {
+        // Log error jika terjadi masalah saat mengirim email
+        Log::error('Gagal mengirim email: ' . $e->getMessage());
+    }
 
-            public function kirimTiket()
-            {
-                $transaksi = Transaksi::all();
-
-                return view('emails.kirimTiket', compact('transaksi'));
-            }
+    return view('customer.transaksi', compact('event', 'tiket',  'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
+}
 
 public function postKirimTiket(Request $request)
 {
+    // Validasi request untuk memastikan id_transaksi ada di tabel transaksis
+    $request->validate([
+        'id_transaksi' => 'required|exists:transaksis,id',
+    ]);
 
-                $request->validate([
-                    'id_transaksi' => 'required|exists:transaksis,id',
-                ]);
+    try {
+        // Cari transaksi berdasarkan ID
+        $transaksi = Transaksi::find($request->id_transaksi);
 
-                $transaksi = Transaksi::find($request->id_transaksi);
-                if ($transaksi) {
-                    Mail::to($transaksi->email_pembeli)
-                        ->send(new kirimTiket($transaksi));
-                }
-                return 'berhasil mengirim email';
+        // Ambil tiket yang terkait dengan transaksi
+        $tiket = Tiket::where('transaksi_id', $transaksi->id)->first();
+
+        // Cek apakah transaksi dan tiket ditemukan
+        if ($transaksi && $tiket) {
+            // Kirim email ke email pembeli
+            Mail::to($transaksi->email)
+                ->send(new kirimTiket($transaksi, $tiket));
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Email berhasil dikirim!'
+            ]);
+        } else {
+            // Jika tiket tidak ditemukan, beri respon error
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Tiket atau transaksi tidak ditemukan.'
+            ], 404);
         }
-
-        }
+    } catch (\Exception $e) {
+        // Tangkap error jika proses pengiriman email gagal
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Gagal mengirim email: ' . $e->getMessage()
+        ], 500);
+    }
+}
+}
