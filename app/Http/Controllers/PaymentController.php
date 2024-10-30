@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PaymentController extends Controller
 {
@@ -21,10 +22,16 @@ class PaymentController extends Controller
         Config::$is3ds = true;
     }
 
-    
-    
+
+
     public function createTransaction(Request $request)
     {
+
+        \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
+        
         $data = $request->validate([
             'tiket_id' => 'required|exists:tikets,id',
             'nama_lengkap' => 'required|string|max:255',
@@ -33,13 +40,15 @@ class PaymentController extends Controller
             'email' => 'required|string|email|max:255',
             'tiket_dibeli' => 'required|integer|min:1',
         ]);
-    
+
         $tiket = Tiket::find($data['tiket_id']);
         $tiketTersedia = $tiket->jumlah_tiket; 
+        $tiketTersedia = $tiket->jumlah_tiket;
+
         if ($data['tiket_dibeli'] > $tiketTersedia) {
             return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
         }
-    
+
         $order_id = $tiket->id . '-' . time();
         $transaksi = Transaksi::create([
             'tiket_id' => $tiket->id,
@@ -55,8 +64,10 @@ class PaymentController extends Controller
             'status' => 'pending',
            'user_id' => auth()->id(),
         ]);
+
+        
         $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
-    
+
         $transaction = [
             'transaction_details' => [
                 'order_id' => $order_id,
@@ -81,11 +92,12 @@ class PaymentController extends Controller
                 'error' => route('homeCustomer'),
             ]
         ];
-    
+
         $url = Snap::createTransaction($transaction)->redirect_url;
         return redirect($url);
     }
-    
+
+
 
  // Notifikasi pembayaran dari Midtrans
  public function notificationHandler(Request $request)
@@ -134,5 +146,24 @@ class PaymentController extends Controller
     }
     return redirect()->route('history')->with('pesan-gagal', 'Pembayaran tidak berhasil.');
 }
+
+
+public function show($kode_tiket)
+    {
+        $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
+
+        if ($transaksi) {
+            return view('transaksi.detail', compact('transaksi'));
+        } else {
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
+        }
+    }
+
+    public function downloadTiket($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+        $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi'));
+        return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
+    }
 
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Transaksi extends Model
 {
@@ -35,5 +36,15 @@ class Transaksi extends Model
     public function tiket()
     {
         return $this->belongsTo(Tiket::class, 'tiket_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($transaksi) {
+          
+            $transaksi->kode_tiket = 'EV' . $transaksi->event_id . '-TK' . $transaksi->tiket_id . '-TR' . Str::random(5);
+        });
     }
 }

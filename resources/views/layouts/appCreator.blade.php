@@ -32,7 +32,7 @@
 
 <div class="flex">
     <!-- Sidebar -->
-    <div id="sidebar"
+    <div id="sidebar" style="z-index: 9999;"
         class="fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="flex items-center justify-center h-16 bg-gray-900">
             <h1 class="text-2xl font-semibold">Creator</h1>
@@ -101,9 +101,9 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-4 md:p-6 md:ml-64 max-w-full">
-        @yield('content')
-    </div>
+</div>
+<div class="flex-1 p-4 md:p-6 md:ml-64 max-w-full">
+    @yield('content')
 </div>
 
     {{--
@@ -182,7 +182,6 @@
         </ul>
     </div> --}}
 
-    @yield('content')
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>

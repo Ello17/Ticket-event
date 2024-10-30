@@ -216,7 +216,6 @@ public function hapusTiket($id)
 }
 
 
-
 public function kirimTiket(Request $request, $eventId)
 {
     $event = Event::findOrFail($eventId);
@@ -237,8 +236,6 @@ public function kirimTiket(Request $request, $eventId)
 public function editProfileCreator($id)
 {
     $user = Auth::user();
-
-    // Pastikan hanya customer yang bisa mengedit profil
     if ($user->role !== 'creator' || $user->id != $id) {
         return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
     }
@@ -254,7 +251,6 @@ public function postEditProfileCreator(Request $request)
     ]);
 
     $user = User::where('id', Auth::id())->first();
-    // Pastikan hanya customer yang bisa mengupdate profil
     if ($user->role !== 'creator') {
         return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
     }
@@ -286,8 +282,6 @@ public function postEditProfileCreator(Request $request)
 public function profilCreator()
 {
     $user = Auth::user();
-
-    // Memastikan hanya pengguna dengan role 'customer' yang bisa mengakses
     if ($user->role !== 'creator') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
@@ -297,8 +291,6 @@ public function profilCreator()
 public function ubahpass()
 {
     $user = Auth::user();
-
-    // Pastikan hanya customer yang bisa mengganti password
     if ($user->role !== 'creator') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
@@ -337,26 +329,23 @@ public function postubahpass(Request $request)
 public function grafik()
 {
     $now = Carbon::now();
-
-    // Ambil semua transaksi bulan ini dan tahun ini, termasuk data tiket terkait
     $transaksis = Transaksi::with(['tiket'])
         ->whereMonth('tanggal_transaksi', $now->month)
         ->whereYear('tanggal_transaksi', $now->year)
         ->get();
 
-    // Kelompokkan transaksi berdasarkan bulan-tahun
+ 
     $labels = $transaksis->groupBy(function ($item) {
-        return Carbon::parse($item->tanggal_transaksi)->format('F Y'); // Format bulan dan tahun
+        return Carbon::parse($item->tanggal_transaksi)->format('F Y'); 
     })->keys()->toArray();
 
-    // Hitung total tiket yang dibeli di bulan tersebut
     $jumlahTiket = $transaksis->groupBy(function ($item) {
         return Carbon::parse($item->tanggal_transaksi)->format('F Y');
     })->map(function ($items) {
-        return $items->sum('tiket_dibeli'); // Ambil langsung dari kolom tiket_dibeli di tabel transaksi
+        return $items->sum('tiket_dibeli');
     })->toArray();
 
-    // Kirim data ke view
+   
     return view('creator.grafik', [
         'transaksis' => $transaksis,
         'labels' => $labels,
