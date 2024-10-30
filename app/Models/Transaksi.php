@@ -44,7 +44,7 @@ class Transaksi extends Model
 
         static::creating(function ($transaksi) {
           
-            $transaksi->kode_tiket = 'EV' . $transaksi->event_id . '-TK' . $transaksi->tiket_id . '-TR' . Str::random(5);
+            $transaksi->kode_tiket = 'TMD' .  $transaksi->tiket_id . '-TR' . Str::random(5);
         });
     }
 }
