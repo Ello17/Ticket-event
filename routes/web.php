@@ -60,7 +60,7 @@ Route::get('/download/tiket/{id}', [PaymentController::class, 'downloadTiket'])-
 
 Route::get('/history', [CustomerController::class, 'history'])->name('history');
 Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
-Route::get('/transaksi/{tiket}/{id}', [CustomerController::class, 'transaksi'])->name('transaksi.tiket');
+Route::get('/transaksi/{event_id}', [CustomerController::class, 'transaksi'])->name('transaksi.tiket');
 Route::get('/transaksi/{event}', [CustomerController::class, 'transaksi'])->name('transaksi.event');
 
 // Route::get('/kirimTiket', [CustomerController::class, 'kirimTiket'])->name('kirimTiket');
