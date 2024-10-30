@@ -52,23 +52,26 @@
     </ul>
 </div>
 <section class="card-section">
-<div class="grid-card">
-    @foreach ($data as $item)
-    <a href="{{ route('detailEvent', $item->id) }}">
-        <div class="card">
-            <div class="img-card">
-                <img src="{{asset($item->cover_event)}}" alt="Event Image">
+    <div class="grid-card">
+        @forelse ($data as $item)
+        <a href="{{ route('detailEvent', $item->id) }}">
+            <div class="card">
+                <div class="img-card">
+                    <img src="{{ asset($item->cover_event) }}" alt="Event Image">
+                </div>
+                <div class="text-card-detail">
+                    <h2 class="text-card text-white">{{ $item->nama_event }}</h2>
+                    <p class="text-white text-card">{{ $item->tanggal_event }}</p>
+                    <p class="text-white text-card">{{ \Illuminate\Support\Str::limit($item->lokasi_event, 40) }}</p>
+                    <p class="text-white text-card">{{ $item->waktu_event }}</p>
+                </div>
             </div>
-            <div class="text-card-detail">
-                <h2 class="text-card text-white">{{ $item->nama_event}}</h4>
-                <p class="text-white text-card">{{ $item->tanggal_event }}</p>
-                <p class="text-white text-card">{{ \Illuminate\Support\Str::limit($item->lokasi_event, 40) }}</p>
-                <p class="text-white text-card">{{ $item->waktu_event }}</p>
-            </div>
-        </div>
-    </a>
-    @endforeach
-</div>
+        </a>
+        @empty
+        <p class="text-white">No events found.</p>
+        @endforelse
+    </div>
+
 </section>
 <section>
     <div class="see-all">

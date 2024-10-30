@@ -50,7 +50,7 @@
             <div class="container mx-auto mt-8 w-[100%]">
                 <h3 class="text-2xl font-semibold mb-4">Tiket</h3>
                 @foreach($tiket as $tiket)
-                <form action="{{ route('transaksi', $tiket->id) }}" method="GET">
+                <form action="{{ route('transaksi.tiket', ['tiket' => $tiket->id, 'id' => $event->id]) }}" method="GET">
                     <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
                         <div class="mb-4">
                             <h5 class="text-white font-semibold">{{ $tiket->kategori_tiket }}</h5>
@@ -61,8 +61,7 @@
                         </div>
                         <div class="tiket-input">
                             <div>
-                                <input type="text" class="form-control text-black" name="tiket_dibeli" min="1"
-                                max=""
+                                <input type="number" class="form-control text-black" name="tiket_dibeli" min="1"
                                 placeholder="Masukkan jumlah tiket" style="width: 200px;" inputmode="numeric">
                             </div>
                             <div>
@@ -74,8 +73,9 @@
                 @endforeach
             </div>
         @else
-        <p class="text-center text-red-500">Tiket tidak tersedia</p>
+            <p class="text-center text-red-500">Tiket tidak tersedia</p>
         @endif
+        
         </div>
     </div>
 

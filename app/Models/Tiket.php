@@ -15,9 +15,11 @@ class Tiket extends Model
 
     protected $appends = ['formatted_harga'];
 
+    
+
     public function event()
     {
-        return $this->belongsTo(Event::class, 'event_id', 'id'); 
+        return $this->belongsTo(Event::class, 'event_id', 'id');
     }
 
     public function transaksi()
