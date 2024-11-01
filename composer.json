@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "barryvdh/laravel-dompdf": "^2.2",
+        "endroid/qr-code": "^5.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
@@ -14,6 +15,7 @@
         "laravel/tinker": "^2.5",
         "midtrans/midtrans-php": "^2.6",
         "milon/barcode": "^11.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "symfony/mailer": "^6.0"
     },
     "require-dev": {

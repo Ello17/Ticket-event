@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\emailController;
 use App\Http\Controllers\PaymentController;
 use Database\Seeders\CreatorSeeder;
 use Faker\Provider\ar_EG\Payment;
@@ -53,7 +54,6 @@ Route::get('/transaksi{detail}', [PaymentController::class, 'createTransaction']
 Route::post('/transaksi/create', [PaymentController::class, 'createTransaction'])->name('transaksi.create');
 Route::post('/midtrans-notification', [PaymentController::class, 'handleNotification']);
 
-
 Route::get('/transaksi/{kode_tiket}', [PaymentController::class, 'show'])->name('transaksi.show');
 Route::get('/download/tiket/{id}', [PaymentController::class, 'downloadTiket'])->name('downloadTiket');
 
@@ -63,7 +63,10 @@ Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('t
 Route::get('/transaksi/{tiket}/{id}', [CustomerController::class, 'transaksi'])->name('transaksi.tiket');
 Route::get('/transaksi/{event}', [CustomerController::class, 'transaksi'])->name('transaksi.event');
 
-// Route::get('/kirimTiket', [CustomerController::class, 'kirimTiket'])->name('kirimTiket');
+
+//EMAIL
+// Route::get('/kirimTiket', [emailController::class, 'kirimTiket'])->name('kirimTiket');
+Route::post('/postKirimTiket/{id}', [emailController::class, 'postKirimTiket'])->name('postKirimTiket');
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
@@ -119,4 +122,3 @@ Route::get('/grafik', [CreatorController::class, 'grafik'])->name('grafik');
 });
 
 
-Route::post('/postKirimTiket/{id}', [CustomerController::class, 'postKirimTiket'])->name('postKirimTiket');
