@@ -2,37 +2,31 @@
 
 namespace App\Mail;
 
+use App\Models\Transaksi;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class kirimTiket extends Mailable
+class kirimTiket extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $transaksi; // Buat properti untuk menyimpan data transaksi
 
-    /**
-     * Create a new message instance.
-     *
-     * @param $transaksi
-     * @return void
-     */
-    public function __construct($transaksi)
+    public $transaksi;
+
+    public function __construct(Transaksi $transaksi)
     {
-        $this->transaksi = $transaksi; // Simpan data transaksi ke properti
+        $this->transaksi = $transaksi;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
-        return $this->subject('Tiket Event Mudah')
-                    ->view('emails.kirimtiket')
-                    ->with(['transaksi' => $this->transaksi]); 
+        return $this->view('emails.kirimTiket')
+                    ->with([
+                        'transaksi' => $this->transaksi,
+                    ])
+                    ->subject('Tiket Transaksi Anda');
     }
 }
