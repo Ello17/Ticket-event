@@ -11,11 +11,20 @@
 <div class="title py-3">
     <h1>HISTORY</h1>
 </div>
+
 <div class="container py-2">
     <div class="row">
         <div class="col-lg-9 mx-auto bg-[#1f2937] rounded shadow">
 
-            <!-- Fixed header table-->
+            <!-- Notifikasi sukses jika email berhasil dikirim -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <!-- Fixed header table -->
             <div class="table-responsive">
                 <table class="table text-white">
                     <thead>
@@ -28,17 +37,17 @@
                             <th scope="col">No-KTP</th>
                             <th scope="col">No-Telepon</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Aksi</th> 
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         @forelse($transaksiList as $index => $transaksi)
                         <tr>
                             <th scope="row" style="text-align: center;">{{ $index + 1 }}</th>
                             <td>{{ $transaksi->tiket_dibeli }}</td>
                             <td>{{ $transaksi->tanggal_transaksi }}</td>
-                            <td>{{ $transaksi->total_transaksi }}</td>
+                            <td>{{ number_format($transaksi->total_transaksi, 0, ',', '.') }}</td>
                             <td>{{ $transaksi->nama_lengkap }}</td>
                             <td>{{ $transaksi->no_ktp }}</td>
                             <td>{{ $transaksi->no_telepon }}</td>
@@ -55,7 +64,7 @@
                         </tr>
                         @endforelse
                     </tbody>
-                    
+
                 </table>
             </div>
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\PaymentController;
 use Database\Seeders\CreatorSeeder;
 use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
+use PharIo\Manifest\Email;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,8 +66,9 @@ Route::get('/transaksi/{event}', [CustomerController::class, 'transaksi'])->name
 
 
 //EMAIL
-// Route::get('/kirimTiket', [emailController::class, 'kirimTiket'])->name('kirimTiket');
-Route::post('/postKirimTiket/{id}', [emailController::class, 'postKirimTiket'])->name('postKirimTiket');
+Route::get('/konfirmasi', [emailController::class, 'konfirmasi'])->name('konfirmasi');
+Route::post('/midtrans/callback', [emailController::class, 'callbackMidtrans']);
+Route::get('/transaksi/konfirmasi', [emailController::class, 'showConfirmation'])->middleware('auth')->name('transaksi.konfirmasi');
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');

@@ -11,9 +11,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class kirimTiket extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-
-    public $transaksi; // Buat properti untuk menyimpan data transaksi
-
     public $transaksi;
 
     public function __construct(Transaksi $transaksi)
@@ -23,10 +20,6 @@ class kirimTiket extends Mailable implements ShouldQueue
 
     public function build()
     {
-        return $this->view('emails.kirimTiket')
-                    ->with([
-                        'transaksi' => $this->transaksi,
-                    ])
-                    ->subject('Tiket Transaksi Anda');
+        return $this->view('emails.konfirmasi');
     }
 }
