@@ -41,12 +41,15 @@
             background: transparent;
             border: 2px solid rgb(255, 255, 255);
             width: 90%;
-            text-align: center;
+            text-align: left;
+            padding: 5px;
+    
         }
 
         .form-group {
-            justify-content: space-evenly;
-            margin-left: 30px;
+            /* justify-content: left; */
+            margin-left: 0px;
+            flex-wrap: nowrap;
         }
     </style>
 
@@ -72,25 +75,30 @@
                                 <p class="text-white">Tiket tidak ditemukan.</p>
                             @endif
 
-                            <div class="form-group text-white">
+                            <div class="form-group text-white mb-1">
                                 <label for="name">Nama Lengkap :</label>
+                                <br>
                                 <input class="input-transaksi" type="text" id="name" value="{{ $user->nama_lengkap }}" name="nama_lengkap" class="form-control text-white bg-dark text-start" required>
                             </div>
 
-                            <div class="form-group text-white" style="margin-top: 1rem;">
+                            <div class="form-group text-white">
                                 <label for="no_ktp">No. KTP :</label>
+                                <br>
                                 <input class="input-transaksi" type="text" id="no_ktp" value="{{ $user->no_ktp }}" name="no_ktp" class="form-control text-white bg-dark text-start" required>
+                                <br>
                                 <small class="form-text text-muted">Harus 16 digit.</small>
                             </div>
 
                             <div class="form-group text-white">
                                 <label for="phone">No. Telepon :</label>
                                 <input class="input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" class="form-control text-white bg-dark text-start" pattern="\d{10,15}" required>
+                                <br>
                                 <small class="form-text text-muted">Harus antara 10-15 digit.</small>
                             </div>
 
                             <div class="form-group text-white" style="margin-bottom: 3rem;">
                                 <label for="email">Email :</label>
+                                <br>
                                 <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" class="form-control text-white bg-dark text-start" required>
                             </div>
 
