@@ -32,7 +32,7 @@ class kirimTiket extends Mailable
     public function build()
     {
         return $this->subject('Tiket Event Mudah')
-                    ->view('emails.kirimtiket') // Pastikan view tersedia
-                    ->with(['transaksi' => $this->transaksi]); // Kirim data ke view
+                    ->view('emails.kirimtiket')
+                    ->with(['transaksi' => $this->transaksi]); 
     }
 }
