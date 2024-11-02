@@ -27,4 +27,6 @@ class kirimTiket extends Mailable implements ShouldQueue
                     ])
                     ->subject('Tiket Transaksi Anda');
     }
+
+
 }
