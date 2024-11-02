@@ -185,19 +185,4 @@ public function transaksi($id, Request $request)
 
     
     
-        public function postKirimTiket(Request $request)
-            {
-
-                            $request->validate([
-                                'id_transaksi' => 'required|exists:transaksis,id',
-                            ]);
-
-                            $transaksi = Transaksi::find($request->id_transaksi);
-                            if ($transaksi) {
-                                Mail::to($transaksi->email_pembeli)
-                                    ->send(new kirimTiket($transaksi));
-                            }
-                            return 'berhasil mengirim email';
-                    }
-
-                    }
+}

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
+use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
 
 class PaymentController extends Controller
 {
@@ -162,7 +164,15 @@ public function show($kode_tiket)
     public function downloadTiket($id)
     {
         $transaksi = Transaksi::findOrFail($id);
-        $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi'));
+
+        // Buat QR Code menggunakan Milon
+        $qrcode = DNS2D::getBarcodeHTML($transaksi->kode_tiket, 'QRCODE');
+
+        // Buat Barcode menggunakan Milon
+        $barcode = DNS1D::getBarcodeHTML($transaksi->kode_tiket, 'C39');
+
+        // Generate PDF dengan view
+        $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcode', 'barcode'));
         return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
     }
 

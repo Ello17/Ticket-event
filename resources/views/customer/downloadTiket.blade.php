@@ -11,9 +11,15 @@
     <p>Total Transaksi: {{ $transaksi->total_transaksi }}</p>
     <p>Email: {{ $transaksi->email }}</p>
 
-   
-    <div>
-        {!! DNS1D::getBarcodeHTML($transaksi->kode_tiket, 'C39') !!}
+    <div class="qrcode">
+        <p><strong>QR Code:</strong></p>
+        {!! $qrcode !!}
     </div>
+
+    <!-- Barcode -->
+    {{-- <div class="barcode">
+        <p><strong>Barcode:</strong></p>
+        {!! $barcode !!}
+    </div> --}}
 </body>
 </html>
