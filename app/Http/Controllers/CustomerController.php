@@ -149,40 +149,38 @@ public function transaksi($id, Request $request)
     if (!$event) {
         return redirect()->back()->withErrors('Event tidak ditemukan.');
     }
-
     $tiket = Tiket::where('event_id', $id)->first();
     if (!$tiket) {
         return redirect()->back()->withErrors('Tiket tidak ditemukan untuk event ini.');
     }
-
     $user = Auth::user();
-    $tiket_dibeli = $request->input('tiket_dibeli', 1); 
+    $tiket_dibeli = $request->input('tiket_dibeli', 1);
     $total_harga = $tiket->harga_tiket * $tiket_dibeli;
 
+    // Konfigurasi Midtrans
     \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
     \Midtrans\Config::$isProduction = false;
     \Midtrans\Config::$isSanitized = true;
     \Midtrans\Config::$is3ds = true;
 
-    
     $params = [
         'transaction_details' => [
             'order_id' => rand(),
             'gross_amount' => $total_harga,
         ],
         'customer_details' => [
-            'first_name' => $request->input('name'),
+            'first_name' => $request->input('nama_lengkap'), 
             'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
+            'phone' => $request->input('no_telepon'), 
         ],
+        'finish_redirect_url' => route('history') 
     ];
 
+    // Dapatkan token Snap dari Midtrans
     $snapToken = \Midtrans\Snap::getSnapToken($params);
     $formatted_total_harga = number_format($total_harga, 0, ',', '.');
 
+    // Kirim data ke view transaksi
     return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
 }
-
-    
-    
 }
