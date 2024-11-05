@@ -31,6 +31,7 @@ class PaymentController extends Controller
 
     public function createTransaction(Request $request)
     {
+
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
@@ -44,16 +45,16 @@ class PaymentController extends Controller
             'email' => 'required|string|email|max:255',
             'tiket_dibeli' => 'required|integer|min:1',
         ]);
+
         $tiket = Tiket::find($data['tiket_id']);
         $tiketTersedia = $tiket->jumlah_tiket;
-
+        $tiketTersedia = $tiket->jumlah_tiket;
 
         if ($data['tiket_dibeli'] > $tiketTersedia) {
             return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
-
         }
 
-        $order_id = $tiket->id . '-' . uniqid(); // Pastikan order_id selalu unik
+        $order_id = $tiket->id . '-' . time();
         $transaksi = Transaksi::create([
             'tiket_id' => $tiket->id,
             'tiket_dibeli' => $data['tiket_dibeli'],
@@ -66,18 +67,19 @@ class PaymentController extends Controller
             'email' => $data['email'],
             'event_id' => $tiket->event_id,
             'status' => 'pending',
-            'user_id' => auth()->id(),
-            'order_id' => $order_id // Tambahkan ke database jika perlu
+           'user_id' => auth()->id(),
         ]);
 
         $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
         try{
-            Mail::to("sukun024@gmail.com")->send(new kirimTiket($transaksi));
-            // dd('ok');
+            Mail::to("ayialipa16@gmail.com")->send(new kirimTiket($transaksi));
+            
         }
         catch(\Exception $ex){
             // dd($ex);
         }
+
+        $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
 
         $transaction = [
             'transaction_details' => [
@@ -101,13 +103,12 @@ class PaymentController extends Controller
                 'finish' => route('history'),
                 'unfinish' => route('homeCustomer'),
                 'error' => route('homeCustomer'),
-            ],
-            'custom_field1' => route('history'), 
+            ]
         ];
+
         $url = Snap::createTransaction($transaction)->redirect_url;
         return redirect($url);
     }
-
 
 
 

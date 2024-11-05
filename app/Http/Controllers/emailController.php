@@ -25,8 +25,7 @@ class emailController extends Controller
             return response()->json(['message' => 'Invalid signature'], 403);
         }
 
-        // Ambil transaksi beserta data event terkait
-        $transaksi = Transaksi::with('event')->where('order_id', $request->order_id)->first();
+        $transaksi = Transaksi::where('order_id', $request->order_id)->first();
 
         if (!$transaksi) {
             return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
@@ -39,6 +38,7 @@ class emailController extends Controller
             try {
                 Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
                 session()->flash('success', 'Pesan telah dikirim ke email Anda');
+
                 return response()->json(['message' => 'Email tiket berhasil dikirim'], 200);
             } catch (Exception $e) {
                 Log::error('Gagal mengirim email: ' . $e->getMessage());
@@ -50,6 +50,21 @@ class emailController extends Controller
         }
 
         return response()->json(['message' => 'Status tidak memenuhi syarat'], 200);
+    }
+
+    public function showConfirmation(Request $request)
+    {
+        // Ambil transaksi yang berdasarkan order_id yang mungkin dikirimkan sebagai parameter
+        $transaksi = Transaksi::with('event')->where('order_id', $request->query('order_id'))->first();
+
+        if (!$transaksi) {
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
+        }
+
+        // Kirim email konfirmasi
+        Mail::to($transaksi->email)->send(new \App\Mail\kirimTiket($transaksi));
+
+        return view('emails.konfirmasi', compact('transaksi'));
     }
 }
 
