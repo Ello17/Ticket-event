@@ -74,10 +74,11 @@
                                 href="{{ route('kelolaTiket') }}"><i class="ri-ticket-2-line"></i> Kelola Tickets</a></li>
                     </ul>
                 </div>
+
                 <li class="py-3 px-5">
                     <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('grafik') ? 'bg-blue-500 text-white' : '' }}"
-                        href="{{ route('grafik') }}">
-                        <i class="ri-account-circle-fill  mr-2"></i>Grafik
+                        href="{{ route('grafik', ['user_id' => $user->id]) }}">
+                        <i class="ri-account-circle-fill mr-2"></i>Grafik
                     </a>
                 </li>
                 <li class="py-3 px-5">

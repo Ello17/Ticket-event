@@ -73,10 +73,10 @@ class PaymentController extends Controller
         $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
         try{
             Mail::to("ayialipa16@gmail.com")->send(new kirimTiket($transaksi));
-            
+
         }
         catch(\Exception $ex){
-            dd($ex);
+            // dd($ex);
         }
 
         $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
@@ -198,3 +198,4 @@ public function show($kode_tiket)
     }
 
 }
+    
