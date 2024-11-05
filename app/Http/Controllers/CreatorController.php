@@ -216,23 +216,25 @@ public function hapusTiket($id)
 }
 
 
-public function kirimTiket(Request $request, $eventId)
-{
-    $event = Event::findOrFail($eventId);
-    $customer = User::where('email', $request->input('customer_email'))->first();
+// public function kirimTiket(Request $request, $eventId)
+// {
+//     $event = Event::findOrFail($eventId);
+//     $customer = User::where('email', $request->input('customer_email'))->first();
 
-    if (!$customer) {
-        return redirect()->back()->with('error', 'Customer tidak ditemukan');
-    }
-    $tiket = Tiket::where('event_id', $eventId)->first();
+//     if (!$customer) {
+//         return redirect()->back()->with('error', 'Customer tidak ditemukan');
+//     }
+//     $tiket = Tiket::where('event_id', $eventId)->first();
 
-    if (!$tiket) {
-        return redirect()->back()->with('error', 'Tiket tidak tersedia untuk event ini');
-    }
-    Mail::to($customer->email)->send(new SendTicketMail($event, $tiket, $customer));
+//     if (!$tiket) {
+//         return redirect()->back()->with('error', 'Tiket tidak tersedia untuk event ini');
+//     }
+//     Mail::to($customer->email)->send(new SendTicketMail($event, $tiket, $customer));
 
-    return redirect()->back()->with('success', 'Tiket telah dikirim ke email customer!');
-}
+//     return redirect()->back()->with('success', 'Tiket telah dikirim ke email customer!');
+// }
+
+
 public function editProfileCreator($id)
 {
     $user = Auth::user();
