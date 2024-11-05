@@ -24,34 +24,34 @@ class CreatorController extends Controller
     public function homeCreator()
     {
         $user = Auth::user();
-        
+
         // Mengambil event milik user dan menghitung jumlahnya
         $events = Event::where('user_id', $user->id)->get();
         $eventCount = $events->count();
-    
+
         return view('creator.homeCreator', compact('events', 'eventCount'));
     }
-    
+
     public function kelolaEvent(Request $request)
     {
         $user = Auth::user();
-    
+
         // Mengambil input pencarian (jika ada)
         $search = $request->input('search');
-    
+
         // Query event milik user dengan pencarian dan pagination
         $events = Event::where('user_id', $user->id)
                        ->when($search, function ($query, $search) {
                            return $query->where('nama_event', 'like', "%{$search}%");
                        })
                        ->paginate(10);
-    
+
         // Menambahkan parameter pencarian ke pagination link
         $events->appends(['search' => $search]);
-    
+
         return view('creator.kelolaEvent', compact('events', 'search'));
     }
-    
+
 
     public function tambahEvent(){
         return view('creator.tambahEvent');
@@ -111,7 +111,7 @@ public function postEditEvent(Request $request, $id)
                 Storage::delete($events->cover_event);
             }
             $filePath = $request->file('cover_event')->store('covers', 'public');
-            $events->cover_event = $filePath; 
+            $events->cover_event = $filePath;
         }
 
         $events->update($request->except('cover_event'));
@@ -215,26 +215,6 @@ public function hapusTiket($id)
     }
 }
 
-
-// public function kirimTiket(Request $request, $eventId)
-// {
-//     $event = Event::findOrFail($eventId);
-//     $customer = User::where('email', $request->input('customer_email'))->first();
-
-//     if (!$customer) {
-//         return redirect()->back()->with('error', 'Customer tidak ditemukan');
-//     }
-//     $tiket = Tiket::where('event_id', $eventId)->first();
-
-//     if (!$tiket) {
-//         return redirect()->back()->with('error', 'Tiket tidak tersedia untuk event ini');
-//     }
-//     Mail::to($customer->email)->send(new SendTicketMail($event, $tiket, $customer));
-
-//     return redirect()->back()->with('success', 'Tiket telah dikirim ke email customer!');
-// }
-
-
 public function editProfileCreator($id)
 {
     $user = Auth::user();
@@ -327,32 +307,46 @@ public function postubahpass(Request $request)
 
     return redirect()->route('profilCreator')->with('status', 'Password berhasil diperbarui.');
 }
-
-public function grafik()
+public function grafik($user_id) // Ambil user_id sebagai parameter
 {
     $now = Carbon::now();
-    $transaksis = Transaksi::with(['tiket'])
+
+    // Mengambil transaksi berdasarkan bulan dan tahun saat ini
+    $transaksis = Transaksi::with(['tiket.event']) // Ambil data event saat mengambil tiket
         ->whereMonth('tanggal_transaksi', $now->month)
         ->whereYear('tanggal_transaksi', $now->year)
+        ->whereHas('tiket.event', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id); // Memeriksa user_id dari event
+        })
         ->get();
 
- 
+    // Membuat label untuk grafik berdasarkan tanggal transaksi
     $labels = $transaksis->groupBy(function ($item) {
-        return Carbon::parse($item->tanggal_transaksi)->format('F Y'); 
+        return Carbon::parse($item->tanggal_transaksi)->format('F Y');
     })->keys()->toArray();
 
+    // Menghitung jumlah tiket yang terjual
     $jumlahTiket = $transaksis->groupBy(function ($item) {
         return Carbon::parse($item->tanggal_transaksi)->format('F Y');
     })->map(function ($items) {
-        return $items->sum('tiket_dibeli');
+        return $items->sum('tiket_dibeli'); // Pastikan kolom tiket_dibeli ada di tabel transaksi
     })->toArray();
 
-   
+    // Jika tidak ada data transaksi, kirimkan pesan ke view
+    if (empty($labels) || empty($jumlahTiket)) {
+        return view('creator.grafik', [
+            'transaksis' => $transaksis,
+            'labels' => [],
+            'jumlahTiket' => [],
+            'message' => "Tidak ada transaksi yang cocok untuk bulan ini dan user_id ini."
+        ]);
+    }
+
+    // Mengirimkan data ke view
     return view('creator.grafik', [
         'transaksis' => $transaksis,
         'labels' => $labels,
         'jumlahTiket' => $jumlahTiket,
     ]);
 }
-
 }

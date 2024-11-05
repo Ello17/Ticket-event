@@ -12,6 +12,9 @@
             <div class="card-body">
                 <h5 class="card-title">Grafik Penjualan</h5>
                 <canvas id="tiketChart"></canvas>
+                @if(isset($message))
+                    <div class="alert alert-warning mt-3">{{ $message }}</div>
+                @endif
             </div>
         </div>
     </div>
@@ -48,4 +51,3 @@
 </script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
