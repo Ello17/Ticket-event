@@ -1,60 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TMD</title>
+@extends('layouts.app')
+@push('css')
+    <link rel="stylesheet" href="{{ asset('components/css/detailevent.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome-free-6.5.2-web/css/all.min.css') }}">
-  <script type="text/javascript"
-  src="https://app.stg.midtrans.com/snap/snap.js"
-    data-client-key="SB-Mid-client-VlcG7DV3_odk4Alv"></script>
-    <script type="text/javascript"
-        src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('midtrans.client_key') }}">
-    </script>
-</head>
-<style>
-    @font-face {
-        font-family: 'coolvetica rg';
-        src: url('/fonts/coolvetica rg.otf') format('opentype');
-    }
+@endpush
 
-    * {
-        font-family: 'coolvetica rg', sans-serif;
-        font-size: 1rem;
-    }
+@section('title', 'TMD')
 
-    .card {
-        border: none;
-        background-color: #f6f6f6;
-    }
+@section('content')
+    <style>
+        @font-face {
+            font-family: 'coolvetica rg';
+            src: url('/fonts/coolvetica rg.otf') format('opentype');
+        }
 
-    .card-img-top {
-        border-radius: 10px;
-    }
+        * {
+            font-family: 'coolvetica rg', sans-serif;
+            font-size: 1rem;
+        }
 
-    .card-text {
-        margin-top: 30px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 0.8rem;
-    }
+        .card {
+            border: none;
+            background-color: #f6f6f6;
+        }
 
-    input[type="text"], input[type="email"], input[type="tel"] {
-        border: groove;
-        background: transparent;
-        border: 2px solid rgb(255, 255, 255);
-        width: 90%;
-        text-align: center;
-    }
+        .card-img-top {
+            border-radius: 10px;
+        }
 
-    .form-group {
-        justify-content: space-evenly;
-        margin-left: 30px;
-    }
-</style>
-<body class="bg bg-dark">
+        .card-text {
+            margin-top: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 0.8rem;
+        }
+
+        .input-transaksi[type="text"],
+        .input-transaksi[type="email"],
+        .input-transaksi[type="tel"] {
+            border: groove;
+            background: transparent;
+            border: 2px solid rgb(255, 255, 255);
+            width: 90%;
+            text-align: left;
+            padding: 5px;
+    
+        }
+
+        .form-group {
+            /* justify-content: left; */
+            margin-left: 0px;
+            flex-wrap: nowrap;
+        }
+    </style>
+
     <div class="container mt-4">
         <div class="row">
             <div class="col-8">
@@ -67,36 +65,41 @@
 
                             {{-- Validasi apakah tiket ditemukan --}}
                             @if ($tiket)
-                            <input type="hidden" id="tiket_id" name="tiket_id" value="{{ $tiket->id }}" required>
-                            <input type="hidden" id="user_id" name="user_id" value="{{ auth()->user()->id }}" required>
-                                <input type="hidden" id="kategori_tiket" name="kategori_tiket" value="{{ $tiket->kategori_tiket }}" required>
-                                <input type="hidden" id="tiket_dibeli" name="tiket_dibeli" value="{{ $tiket_dibeli }}" required>
+                            <input class="input-transaksi" type="hidden" id="tiket_id" name="tiket_id" value="{{ $tiket->id }}" required>
+                            <input class="input-transaksi" type="hidden" id="user_id" name="user_id" value="{{ auth()->user()->id }}" required>
+                                <input class="input-transaksi" type="hidden" id="kategori_tiket" name="kategori_tiket" value="{{ $tiket->kategori_tiket }}" required>
+                                <input class="input-transaksi" type="hidden" id="tiket_dibeli" name="tiket_dibeli" value="{{ $tiket_dibeli }}" required>
                                 <p class="text-gray-400">Ketersediaan: {{ $tiket->jumlah_tiket }}</p>
 
                             @else
                                 <p class="text-white">Tiket tidak ditemukan.</p>
                             @endif
 
-                            <div class="form-group text-white">
+                            <div class="form-group text-white mb-1">
                                 <label for="name">Nama Lengkap :</label>
-                                <input type="text" id="name" value="{{ $user->nama_lengkap }}" name="nama_lengkap" class="form-control text-white bg-dark text-start" required>
+                                <br>
+                                <input class="input-transaksi" type="text" id="name" value="{{ $user->nama_lengkap }}" name="nama_lengkap" class="form-control text-white bg-dark text-start" required>
                             </div>
 
-                            <div class="form-group text-white" style="margin-top: 1rem;">
+                            <div class="form-group text-white">
                                 <label for="no_ktp">No. KTP :</label>
-                                <input type="text" id="no_ktp" value="{{ $user->no_ktp }}" name="no_ktp" class="form-control text-white bg-dark text-start" required>
+                                <br>
+                                <input class="input-transaksi" type="text" id="no_ktp" value="{{ $user->no_ktp }}" name="no_ktp" class="form-control text-white bg-dark text-start" required>
+                                <br>
                                 <small class="form-text text-muted">Harus 16 digit.</small>
                             </div>
 
                             <div class="form-group text-white">
                                 <label for="phone">No. Telepon :</label>
-                                <input type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" class="form-control text-white bg-dark text-start" pattern="\d{10,15}" required>
+                                <input class="input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" class="form-control text-white bg-dark text-start" pattern="\d{10,15}" required>
+                                <br>
                                 <small class="form-text text-muted">Harus antara 10-15 digit.</small>
                             </div>
 
                             <div class="form-group text-white" style="margin-bottom: 3rem;">
                                 <label for="email">Email :</label>
-                                <input type="email" id="email" value="{{ $user->email }}" name="email" class="form-control text-white bg-dark text-start" required>
+                                <br>
+                                <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" class="form-control text-white bg-dark text-start" required>
                             </div>
 
                             <div class="text-center">
@@ -154,32 +157,42 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        // For example trigger on button clicked, or any time you need
-        var payButton = document.getElementById('pay-button');
-        payButton.addEventListener('click', function () {
-          // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token.
-          // Also, use the embedId that you defined in the div above, here.
-          window.snap.embed('$snapToken', {
-            embedId: 'snap-container',
-            onSuccess: function (result) {
-              /* You may add your own implementation here */
-              alert("payment success!"); console.log(result);
-            },
-            onPending: function (result) {
-              /* You may add your own implementation here */
-              alert("wating your payment!"); console.log(result);
-            },
-            onError: function (result) {
-              /* You may add your own implementation here */
-              alert("payment failed!"); console.log(result);
-            },
-            onClose: function () {
-              /* You may add your own implementation here */
-              alert('you closed the popup without finishing the payment');
-            }
-          });
-        });
-      </script>
-</body>
-                                                                                </html>
+
+    @endsection
+
+    @push('js')
+        <script type="text/javascript">
+            // For example trigger on button clicked, or any time you need
+            var payButton = document.getElementById('pay-button');
+            payButton.addEventListener('click', function() {
+                // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token.
+                // Also, use the embedId that you defined in the div above, here.
+                window.snap.embed('$snapToken', {
+                    embedId: 'snap-container',
+                    onSuccess: function(result) {
+                        /* You may add your own implementation here */
+                        alert("payment success!");
+                        console.log(result);
+                    },
+                    onPending: function(result) {
+                        /* You may add your own implementation here */
+                        alert("wating your payment!");
+                        console.log(result);
+                    },
+                    onError: function(result) {
+                        /* You may add your own implementation here */
+                        alert("payment failed!");
+                        console.log(result);
+                    },
+                    onClose: function() {
+                        /* You may add your own implementation here */
+                        alert('you closed the popup without finishing the payment');
+                    }
+                });
+            });
+        </script>
+        <script type="text/javascript" src="https://app.stg.midtrans.com/snap/snap.js"
+            data-client-key="SB-Mid-client-VlcG7DV3_odk4Alv"></script>
+        <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+            data-client-key="{{ config('midtrans.client_key') }}"></script>
+    @endpush
