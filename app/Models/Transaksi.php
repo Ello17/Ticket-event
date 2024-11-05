@@ -26,7 +26,7 @@ class Transaksi extends Model
     ];
 
     public function event(){
-        return $this->hasMany(Event::class);
+        return $this->belongsTo(Event::class);
     }
 
     public function user(){
@@ -43,7 +43,7 @@ class Transaksi extends Model
         parent::boot();
 
         static::creating(function ($transaksi) {
-          
+
             $transaksi->kode_tiket = 'TMD' .  $transaksi->tiket_id . '-TR' . Str::random(5);
         });
     }

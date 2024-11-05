@@ -67,7 +67,7 @@ Route::get('/transaksi/{event}', [CustomerController::class, 'transaksi'])->name
 
 //EMAIL
 Route::get('/konfirmasi', [emailController::class, 'konfirmasi'])->name('konfirmasi');
-Route::post('/midtrans/callback', [emailController::class, 'callbackMidtrans']);
+Route::post('/midtrans/callback', [emailController::class, 'callbackMidtrans'])->name('callbackMidtrans');
 Route::get('/transaksi/konfirmasi', [emailController::class, 'showConfirmation'])->middleware('auth')->name('transaksi.konfirmasi');
 
 //admin
