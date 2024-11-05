@@ -26,16 +26,16 @@ class Transaksi extends Model
     ];
 
     public function event(){
-        return $this->hasMany(Event::class);
+        return $this->belongsTo(Event::class);
     }
 
     public function user(){
         return $this->belongsTo(User::class);
     }
-
+    
     public function tiket()
     {
-        return $this->belongsTo(Tiket::class, 'tiket_id');
+        return $this->belongsTo(Tiket::class, 'tiket_id'); // Pastikan menggunakan nama kolom yang sesuai
     }
 
     protected static function boot()
@@ -43,7 +43,7 @@ class Transaksi extends Model
         parent::boot();
 
         static::creating(function ($transaksi) {
-          
+
             $transaksi->kode_tiket = 'TMD' .  $transaksi->tiket_id . '-TR' . Str::random(5);
         });
     }

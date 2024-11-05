@@ -9,6 +9,7 @@ use App\Http\Controllers\PaymentController;
 use Database\Seeders\CreatorSeeder;
 use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
+use PharIo\Manifest\Email;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,9 +65,10 @@ Route::get('/transaksi/{tiket}/{id}', [CustomerController::class, 'transaksi'])-
 Route::get('/transaksi/{event}', [CustomerController::class, 'transaksi'])->name('transaksi.event');
 
 
-//EMAIL
-// Route::get('/kirimTiket', [emailController::class, 'kirimTiket'])->name('kirimTiket');
-Route::post('/postKirimTiket/{id}', [emailController::class, 'postKirimTiket'])->name('postKirimTiket');
+// //EMAIL
+// Route::get('/konfirmasi', [emailController::class, 'konfirmasi'])->name('konfirmasi');
+// Route::post('/midtrans/callback', [emailController::class, 'callbackMidtrans'])->name('callbackMidtrans');
+Route::get('/transaksi/konfirmasi', [emailController::class, 'showConfirmation'])->middleware('auth')->name('transaksi.konfirmasi');
 
 //admin
 Route::get('/homeAdmin', 'AdminController@homeAdmin')->name('homeAdmin');
@@ -111,14 +113,13 @@ Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('ta
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
 // Route::get('/editTiket/{id}', [CreatorController::class, 'editTiket'])->name('editTiket');
 // Route::post('/postEditTiket/{id}', [CreatorController::class, 'postEditTiket'])->name('postEditTiket');
-Route::get('/kirimTiket/{eventId}', [CreatorController::class, 'kirimTiket'])->name('kirimTiket');
 
 Route::get('/profilCreator', [CreatorController::class, 'profilCreator'])->name('profilCreator');
 Route::get('/editProfileCreator/{id}',[CreatorController::class,'editProfileCreator'])->name('editProfileCreator');
 Route::post('postEditProfileCreator{id}',[CreatorController::class,'postEditProfileCreator'])->name('postEditProfileCreator');
 Route::get('/ubahpass',[CreatorController::class, 'ubahpass'])->name('ubahpass');
 Route::post('/postubahpass', [CreatorController::class, 'postubahpass'])->middleware('auth')->name('postubahpass');;
-Route::get('/grafik', [CreatorController::class, 'grafik'])->name('grafik');
+Route::get('/grafik{user_id}', [CreatorController::class, 'grafik'])->name('grafik');
 });
 
 

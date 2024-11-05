@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\kirimTiket;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Tiket;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
+use Illuminate\Support\Facades\Mail;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
 
@@ -33,7 +36,7 @@ class PaymentController extends Controller
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
-        
+
         $data = $request->validate([
             'tiket_id' => 'required|exists:tikets,id',
             'nama_lengkap' => 'required|string|max:255',
@@ -44,7 +47,7 @@ class PaymentController extends Controller
         ]);
 
         $tiket = Tiket::find($data['tiket_id']);
-        $tiketTersedia = $tiket->jumlah_tiket; 
+        $tiketTersedia = $tiket->jumlah_tiket;
         $tiketTersedia = $tiket->jumlah_tiket;
 
         if ($data['tiket_dibeli'] > $tiketTersedia) {
@@ -67,7 +70,15 @@ class PaymentController extends Controller
            'user_id' => auth()->id(),
         ]);
 
-        
+        $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
+        try{
+            Mail::to("ayialipa16@gmail.com")->send(new kirimTiket($transaksi));
+
+        }
+        catch(\Exception $ex){
+            // dd($ex);
+        }
+
         $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
 
         $transaction = [
@@ -103,34 +114,44 @@ class PaymentController extends Controller
 
  // Notifikasi pembayaran dari Midtrans
  public function notificationHandler(Request $request)
- {
-     $payload = $request->getContent();
-     $notification = json_decode($payload);
+{
+    $payload = $request->getContent();
+    $notification = json_decode($payload);
 
-     $transactionStatus = $notification->transaction_status;
-     $orderID = $notification->order_id;
+    $transactionStatus = $notification->transaction_status;
+    $orderID = $notification->order_id;
 
-     $transaksi = Transaksi::find($orderID);
+    $transaksi = Transaksi::where('order_id', $orderID)->first();
 
-     if ($transaksi) {
-         if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
-             $transaksi->status = 'paid';
-             $tiket = Tiket::find($transaksi->tiket_id);
-             $tiket->reduceQuantity($transaksi->tiket_dibeli);
-             $tiket->save();
-         } elseif ($transactionStatus == 'pending') {
-             $transaksi->status = 'pending';
-         } elseif ($transactionStatus == 'deny' || $transactionStatus == 'expire' || $transactionStatus == 'cancel') {
-             $transaksi->status = 'failed';
-         }
+    if ($transaksi) {
+        if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
+            $transaksi->status = 'paid';
+            $tiket = Tiket::find($transaksi->tiket_id);
+            $tiket->reduceQuantity($transaksi->tiket_dibeli);
+            $tiket->save();
 
-         $transaksi->save();
-     } else {
-         return response()->json(['pesan-gagal' => 'Transaction not found'], 404);
-     }
+            // Kirim email otomatis setelah transaksi berhasil
+            try {
+                dd('oke');
+                Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+            } catch (Exception $e) {
+                Log::error('Gagal mengirim email: ' . $e->getMessage());
+            }
 
-     return response()->json(['pesan-berhasil' => 'success']);
- }
+        } elseif ($transactionStatus == 'pending') {
+            $transaksi->status = 'pending';
+        } elseif ($transactionStatus == 'deny' || $transactionStatus == 'expire' || $transactionStatus == 'cancel') {
+            $transaksi->status = 'failed';
+        }
+
+        $transaksi->save();
+    } else {
+        return response()->json(['pesan-gagal' => 'Transaction not found'], 404);
+    }
+
+    return response()->json(['pesan-berhasil' => 'success']);
+}
+
 
  public function midtransCallback(Request $request)
 {
@@ -177,3 +198,4 @@ public function show($kode_tiket)
     }
 
 }
+    
