@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html>
 <head>
     <title>Tiket Event</title>
@@ -20,4 +20,4 @@
         <img src="data:image/png;base64,{{ $qrcodeBase64 }}" alt="QR Code">
     </div>
 </body>
-</html>
+</html> --}}
