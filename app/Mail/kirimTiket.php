@@ -2,34 +2,24 @@
 
 namespace App\Mail;
 
+use App\Models\Transaksi;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class kirimTiket extends Mailable
+class kirimTiket extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
+    public $transaksi;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(Transaksi $transaksi)
     {
-        //
+        $this->transaksi = $transaksi;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
-        return $this->subject('Tiket Event Mudah')
-                    ->view('emails.kirimtiket'); // Pastikan ini sesuai dengan struktur folder.
+        return $this->view('emails.konfirmasi');
     }
-
 }
