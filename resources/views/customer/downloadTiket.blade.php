@@ -14,54 +14,57 @@
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .receipt h1 {
             text-align: center;
-            font-size: 1.5em;
+        }
+        .receipt h2 {
+            font-size: 1.3em;
             margin-bottom: 10px;
         }
         .receipt p {
             font-size: 0.9em;
             margin: 5px 0;
         }
-        .receipt .total {
-            font-weight: bold;
-            margin-top: 15px;
-        }
-        .qrcode {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .qrcode p {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .divider {
+        .receipt .divider {
             border-top: 1px dashed #bbb;
-            margin: 10px 0;
+            margin: 15px 0;
+        }
+        .receipt .qrcode {
+            margin-top: 15px;
+        }
+        .qrcode img {
+            max-width: 100px;
+            height: auto;
+        }
+        .page-break {
+            page-break-after: always;
         }
     </style>
 </head>
 <body>
+    @foreach ($qrcodes as $index => $qrcode)
+        <div class="receipt">
+            <h2>Struk Tiket Event</h2>
+            <p>Nama Lengkap: {{ $transaksi->nama_lengkap }}</p>
+            <p>Email: {{ $transaksi->email }}</p>
+            <p>No. KTP: {{ $transaksi->no_ktp }}</p>
+            <p>No. Telepon: {{ $transaksi->no_telepon }}</p>
+            <p>Kode Tiket: {{ $transaksi->kode_tiket }} - {{ $index + 1 }}</p>
+            
+            <div class="divider"></div>
+            
+            <div class="qrcode">
+                <p>Scan QR Code Anda:</p>
+                {!! $qrcode !!}
+            </div>
+        </div>
 
-<div class="receipt">
-    <h1>Tiket Event</h1>
-    <p><strong>Kode Tiket:</strong> {{ $transaksi->kode_tiket }}</p>
-    <p><strong>Nama Lengkap:</strong> {{ $transaksi->nama_lengkap }}</p>
-    <p><strong>Tanggal Transaksi:</strong> {{ $transaksi->tanggal_transaksi }}</p>
-    <div class="divider"></div>
-    <p class="total"><strong>Total Transaksi:</strong> {{ $transaksi->total_transaksi }}</p>
-    <p><strong>Email:</strong> {{ $transaksi->email }}</p>
-
-    <div class="qrcode">
-        <p>QR Code:</p>
-        {!! $qrcode !!}
-    </div>
-</div>
-
+        @if (!$loop->last)
+            <div class="page-break"></div>
+        @endif
+    @endforeach
 </body>
 </html>
+
 
 
 {{-- <!DOCTYPE html>
