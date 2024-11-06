@@ -349,4 +349,21 @@ public function grafik($user_id) // Ambil user_id sebagai parameter
         'jumlahTiket' => $jumlahTiket,
     ]);
 }
+public function sendTickets() {
+    // Mendapatkan transaksi dengan tiket dan event yang dimiliki oleh user dengan role creator
+    $transaksi = Transaksi::with(['tiket', 'event.user']) // Pastikan memuat user melalui event
+        ->whereHas('event.user', function ($query) {
+            // Filter user dengan role 'creator' dan sesuai dengan ID user yang sedang login
+            $query->where('role', 'creator')
+                  ->where('id', auth()->id());
+        })
+        ->whereHas('tiket', function ($query) {
+            // Hanya pilih transaksi dengan kategori tiket 'online'
+            $query->where('kategori_tiket', 'online');
+        })
+        ->get();
+
+    // Mengirim data ke view menggunakan compact
+    return view('creator.sendTickets', compact('transaksi'));
+}
 }
