@@ -21,6 +21,9 @@ class CreateEventsTable extends Migration
             $table->string('tanggal_event');
             $table->string('waktu_event');
             $table->string('lokasi_event');
+            $table->decimal('latitude', 10, 6)->nullable(); // Kolom untuk latitude
+            $table->decimal('longitude', 10, 6)->nullable(); // Kolom untuk longitude
+            $table->longText('maps')->nullable(); // Kolom untuk link maps
             $table->text('deskripsi_event');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
