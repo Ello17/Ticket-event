@@ -2,7 +2,6 @@
 @push('css')
 <link rel="stylesheet" href="{{ asset('components/css/homeCustomer.css') }}">
 <link rel="stylesheet" href="{{asset('components/css/slider.css')}}">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 @endpush
 
 @section('title', 'Tiket Mudah hanya di Tiket Mudah')
@@ -63,29 +62,10 @@
                 <div class="text-card-detail">
                     <h2 class="text-card text-white">{{ $item->nama_event }}</h2>
                     <p class="text-white text-card">{{ $item->tanggal_event }}</p>
-                    <p class="text-white text-card"><a href="{{ $item->maps }}">{{ \Illuminate\Support\Str::limit($item->lokasi_event, 40) }}</a></p>
+                    <p class="text-white text-card">{{ \Illuminate\Support\Str::limit($item->lokasi_event, 40) }}</p>
                     <p class="text-white text-card">{{ $item->waktu_event }}</p>
                 </div>
-                <div class="text-card-detail">
-                    <div id="map-{{ $item->id }}" style="width: 100%; height: 200px;"></div>
-                </div>
             </div>
-            <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                    var latitude = @json($item->latitude);
-                    var longitude = @json($item->longitude);
-                    
-                    var map = L.map('map-{{ $item->id }}').setView([latitude, longitude], 14);
-            
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                    }).addTo(map);
-            
-                    L.marker([latitude, longitude]).addTo(map)
-                        .bindPopup("{{ $item->nama_event }}")
-                        .openPopup();
-                });
-            </script>
         </a>
         @empty
         <p class="text-white">No events found.</p>
@@ -117,6 +97,4 @@
 
 @push('js')
 <script src="{{ asset('components/js/slider.js') }}"></script>
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
 @endpush
