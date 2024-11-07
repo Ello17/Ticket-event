@@ -8,9 +8,9 @@
 @section('title', 'TMD')
 
 @section('content')
-
+<form action="{{ route('transaksi.create') }}" id="payment-form" method="POST" class="form-group" enctype="multipart/form-data">
+    @csrf
     <div class="container-view">
-
             <div class="box-detail">
                 <div class="title">
                     <h2>Detail Pemesanan</h2>
@@ -67,18 +67,18 @@
                     <div class="form-group">
                         <label for="name">Email :</label>
                         <br>
-                        <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" required>
+                        <input class="form-control input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" required>
                     </div>
                     <div class="form-group">
                         <label for="name">No. KTP :</label>
                         <br>
-                        <input class="input-transaksi" type="text" id="no_ktp" value="{{ $user->no_ktp }}" name="no_ktp" required>
+                        <input class="form-control input-transaksi" type="text" id="no_ktp" value="{{ $user->no_ktp }}" name="no_ktp" required>
                         <small>Harus 16 digit.</small>
                     </div>
                     <div class="form-group">
                         <label for="name">No. Ponsel :</label>
                         <br>
-                        <input class="input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" required>
+                        <input class="form-control input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" required>
                         <small>Harus antara 10-15 digit.</small>
                     </div>
                 </div>
@@ -87,7 +87,8 @@
                 </div>
             </div>
 
-    </div>
+        </div>
+    </form>
                             {{-- @if ($tiket)
                             <input class="input-transaksi" type="hidden" id="tiket_id" name="tiket_id" value="{{ $tiket->id }}" required>
                             <input class="input-transaksi" type="hidden" id="user_id" name="user_id" value="{{ auth()->user()->id }}" required>
