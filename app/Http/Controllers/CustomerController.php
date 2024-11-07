@@ -159,6 +159,7 @@ public function transaksi($id, Request $request)
 
     // Ambil data pengguna yang sedang login
     $user = Auth::user();
+    $status = $user->status; // Tambahkan variabel $status
     $tiket_dibeli = $request->input('tiket_dibeli', 1);
     $total_harga = $tiket->harga_tiket * $tiket_dibeli;
 
@@ -187,6 +188,7 @@ public function transaksi($id, Request $request)
     $formatted_total_harga = number_format($total_harga, 0, ',', '.');
 
     // Kirim data ke view transaksi
-    return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
+    return view('customer.transaksi', compact('event', 'tiket', 'status', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
 }
+
 }

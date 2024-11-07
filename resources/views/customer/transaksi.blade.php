@@ -71,6 +71,7 @@
                             <input type="hidden" id="user_id" name="user_id" value="{{ auth()->user()->id }}" required>
                                 <input type="hidden" id="kategori_tiket" name="kategori_tiket" value="{{ $tiket->kategori_tiket }}" required>
                                 <input type="hidden" id="tiket_dibeli" name="tiket_dibeli" value="{{ $tiket_dibeli }}" required>
+                                <input type="hidden" id="status" name="status" value="{{ $status }}" required>
                                 <p class="text-gray-400">Ketersediaan: {{ $tiket->jumlah_tiket }}</p>
 
                             @else
