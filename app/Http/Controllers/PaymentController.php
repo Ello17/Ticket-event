@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\KirimEmail;
+use App\Mail\kirimTiket;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Tiket;
@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 use Illuminate\Support\Facades\Mail;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
@@ -45,10 +46,7 @@ class PaymentController extends Controller
         ]);
 
         $tiket = Tiket::find($data['tiket_id']);
-        $tiketTersedia = $tiket->jumlah_tiket;
-        $tiketTersedia = $tiket->jumlah_tiket;
-
-        if ($data['tiket_dibeli'] > $tiketTersedia) {
+        if ($data['tiket_dibeli'] > $tiket->jumlah_tiket) {
             return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
         }
 
@@ -67,15 +65,6 @@ class PaymentController extends Controller
             'status' => 'pending',
             'user_id' => auth()->id(),
         ]);
-
-        $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
-        try{
-            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
-
-        }
-        catch(\Exception $ex){
-            dd($ex);
-        }
 
         $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
 
@@ -109,8 +98,6 @@ class PaymentController extends Controller
     }
 
 
-
-
     public function midtransCallback(Request $request)
     {
         $payload = $request->all();
@@ -119,29 +106,29 @@ class PaymentController extends Controller
         $transaksi = Transaksi::where('order_id', $order_id)->first();
 
         if ($transaksi) {
-            // Update status transaksi berdasarkan status dari Midtrans
             $transaksi->status = $transaction_status;
             $transaksi->save();
 
-            // Cek apakah status transaksi menunjukkan pembayaran berhasil
-            if (in_array($transaction_status, ['capture', 'settlement', 'paid'])) {
+            // Hanya kirim email jika pembayaran berhasil
+            if (in_array($transaction_status, ['capture', 'settlement'])) {
                 try {
-                    // Kirim email setelah status sukses
                     Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
-                    return redirect()->route('history')->with('pesan-berhasil', 'Pembayaran berhasil. Terima kasih!');
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Log::error('Gagal mengirim email: ' . $e->getMessage());
-                    return redirect()->route('history')->with('pesan-gagal', 'Pembayaran berhasil tetapi email gagal terkirim.');
                 }
+
+                return redirect()->route('history')->with('pesan-berhasil', 'Pembayaran berhasil. Terima kasih!');
             }
         }
 
-        // Jika status pembayaran belum berhasil atau transaksi tidak ditemukan
         return redirect()->route('history')->with('pesan-gagal', 'Pembayaran tidak berhasil.');
     }
 
+
+
+
  // Notifikasi pembayaran dari Midtrans
-public function notificationHandler(Request $request)
+ public function notificationHandler(Request $request)
 {
     $payload = $request->getContent();
     $notification = json_decode($payload);
@@ -159,7 +146,12 @@ public function notificationHandler(Request $request)
             $tiket->save();
 
             // Kirim email otomatis setelah transaksi berhasil
-
+            try {
+                dd('oke');
+                Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+            } catch (Exception $e) {
+                Log::error('Gagal mengirim email: ' . $e->getMessage());
+            }
 
         } elseif ($transactionStatus == 'pending') {
             $transaksi->status = 'pending';
@@ -178,7 +170,6 @@ public function notificationHandler(Request $request)
 
 
 
-
 public function show($kode_tiket)
     {
         $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
@@ -193,24 +184,16 @@ public function show($kode_tiket)
     public function downloadTiket($id)
     {
         $transaksi = Transaksi::findOrFail($id);
-        $qrcodes = [];
-        $barcodes = [];
 
-        for ($i = 0; $i < $transaksi->tiket_dibeli; $i++) {
-            // Buat QR Code menggunakan Milon
-            $qrcode = DNS2D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'QRCODE');
-            $barcode = DNS1D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'C39');
+        // Buat QR Code menggunakan Milon
+        $qrcode = DNS2D::getBarcodeHTML($transaksi->kode_tiket, 'QRCODE');
 
-            $qrcodes[] = $qrcode;
-            $barcodes[] = $barcode;
-        }
+        // Buat Barcode menggunakan Milon
+        $barcode = DNS1D::getBarcodeHTML($transaksi->kode_tiket, 'C39');
 
-        // Generate PDF
-        $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes', 'barcodes'))
-                  ->setPaper('a4');
-
+        // Generate PDF dengan view
+        $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcode', 'barcode'));
         return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
     }
-
 
 }
