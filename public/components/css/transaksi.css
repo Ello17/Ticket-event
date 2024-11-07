@@ -1,0 +1,168 @@
+.container-view{
+    height: 100vh;
+    width: 100%;
+}
+.box-detail{
+    color: white;
+    width: 100%;
+    margin-top: 1%;
+    display: grid;
+    place-items: center;
+}
+.title h2{
+    font-size: 20px;
+    font-weight: 600;
+}
+.title{
+    margin-bottom: .5%;
+}
+.border{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 1%;
+    border-radius: 12px;
+    width: 90%;
+}
+
+.box img{
+    width: 20%;
+    object-fit: cover;
+    height: 20%;
+    border-radius: 10px;
+}
+.box{
+    display: flex;
+    gap: 10px;
+    max-height: fit-content;
+    width:fit-content;
+    align-items: center;
+}
+.box h3{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.container-detail{
+    width: 100%;
+    margin-top: 10px;
+    /* border: 1px solid rebeccapurple; */
+    border-top: 1px solid white;
+    padding: 10px 10px 0px 10px;
+    display: flex;
+}
+.jumlah-tiket{
+    display: grid;
+    /* align-items: center; */
+    place-items: center;
+}
+.jenis-tiket{
+    display: grid;
+    /* align-items: center; */
+    place-items: left;
+}
+.harga-tiket{
+    display: grid;
+    /* width: 100%; */
+    place-items: center;
+    margin-right: 20px;
+}
+.harga{
+    padding-right: 28px;
+}
+.jenis-tiket{
+    width: 100%;
+    justify-content: left;
+}
+.jumlah-harga{
+    width: 100%;
+    justify-content: right;
+    display: flex;
+    /* border: 1px solid white; */
+}
+hr{
+    color: white;
+    width: 100%;
+}
+.jenis-tiket h3 > img{
+    height: 16px;
+}
+.jenis-tiket h3{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+@media (min-width: 1024px) {
+    .column{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 768px) {
+    .box{
+       display: flex;
+       flex-direction: column;
+       align-items: normal;
+    }
+    .box img{
+        width: 100%;
+    }
+    .box .text-detail{
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        margin-left: 2%;
+    }
+    .text-detail br{
+        display: none;
+    }
+    .harga{
+        padding-right: 20px;
+    }
+    .box-pemesan{
+        margin-top: 5%;
+    }
+    .column{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        padding: 3%;
+        place-items: center;
+    }
+    .container-view{
+        height: 100lvh;
+    }
+}
+.input-transaksi{
+    border: none;
+    padding: 5px;
+    color: rgb(200, 200, 200);
+    outline: none;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(14.7px);
+    -webkit-backdrop-filter: blur(14.7px);
+    border: 1px solid rgba(255, 255, 255, 0.97);
+}
+.input-transaksi:focus{
+    color: white;
+}
+.column{
+    display: grid;
+    gap: 10px;
+    /* width: fit-content; */
+}
+.form-group{
+    width: 100%;
+}
+.btn{
+    background-color:rgb(31 41 55);
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+}
+.box-btn{
+    margin-top: 15px;
+    width: 90%;
+    justify-content: right;
+    display: flex;
+    align-items: normal;
+}
