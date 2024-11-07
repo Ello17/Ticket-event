@@ -98,12 +98,15 @@ class PaymentController extends Controller
     }
 
 
-    pub  $payload = $request->all();
+    public function midtransCallback(Request $request)
+    {
+      $payload = $request->all();
         $transaction_status = $payload['transaction_status'];
-        $order_id = $payload['order_id'];lic function midtransCallback(Request $request)
+        $order_id = $payload['order_id'];
+        $transaksi = Transaksi::where('order_id', $order_id)->first();
     {
 
-        $transaksi = Transaksi::where('order_id', $order_id)->first();
+       
 
         if ($transaksi) {
             $transaksi->status = $transaction_status;
@@ -123,8 +126,7 @@ class PaymentController extends Controller
 
         return redirect()->route('history')->with('pesan-gagal', 'Pembayaran tidak berhasil.');
     }
-
-
+}
 
 
  // Notifikasi pembayaran dari Midtrans
