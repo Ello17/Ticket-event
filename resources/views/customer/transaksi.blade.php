@@ -62,17 +62,17 @@
                     <div class="form-group">
                         <label for="name">Nama Lengkap :</label>
                         <br>
-                        <input class="form-control input-transaksi" type="text" id="name" value="{{$user->nama_lengkap}}" name="nama_lengkap" required>
+                        <input class="form-control input-transaksi" type="text" id="name" value="{{$user->username }}" name="nama_lengkap" required>
                     </div>
                     <div class="form-group">
                         <label for="name">Email :</label>
                         <br>
-                        <input class="form-control input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" required>
+                        <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" readonly>
                     </div>
                     <div class="form-group">
                         <label for="name">No. KTP :</label>
                         <br>
-                        <input class="form-control input-transaksi" type="text" id="no_ktp" value="{{ $user->no_ktp }}" name="no_ktp" required>
+                        <input class="input-transaksi" type="text" id="no_ktp"  name="no_ktp" required>
                         <small>Harus 16 digit.</small>
                     </div>
                     <div class="form-group">
