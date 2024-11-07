@@ -7,7 +7,7 @@
 @section('title', 'Detail Event')
 
 @section('content')
-<body class="bg-[#111827] text-white">
+<body class="bg-[#111827] text-white" style="width: 100%;">
 @if($event)
 <div class="container mx-auto px-5 mt-10">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -19,8 +19,8 @@
         </div>
 
         <!-- Event Details Section -->
-        <div>
-            <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+        <div class="lg:w-[100%] w-[100%]">
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6 w-[100%]">
                 <h3 class="text-lg font-semibold mb-4">Detail Event</h3>
                 <div class="text-sm space-y-4">
                     <div>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             @if($tiket)
-            <div class="container mx-auto mt-8 w-[100%]">
+            <div class=" mt-8 w-[100%]">
                 <h3 class="text-2xl font-semibold mb-4">Tiket</h3>
                 @foreach($tiket as $tiket)
                 <form action="{{ route('transaksi.tiket', ['tiket' => $tiket->id, 'id' => $event->id]) }}" method="GET">
@@ -75,7 +75,7 @@
         @else
             <p class="text-center text-red-500">Tiket tidak tersedia</p>
         @endif
-        
+
         </div>
     </div>
 
