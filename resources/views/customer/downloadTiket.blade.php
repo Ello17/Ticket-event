@@ -49,9 +49,9 @@
             <p>No. KTP: {{ $transaksi->no_ktp }}</p>
             <p>No. Telepon: {{ $transaksi->no_telepon }}</p>
             <p>Kode Tiket: {{ $transaksi->kode_tiket }} - {{ $index + 1 }}</p>
-            
+
             <div class="divider"></div>
-            
+
             <div class="qrcode">
                 <p>Scan QR Code Anda:</p>
                 {!! $qrcode !!}
@@ -89,6 +89,6 @@
     <div class="barcode">
         <p><strong>Barcode:</strong></p>
         {!! $barcode !!}
-    </div> 
+    </div>
 </body>
 </html> --}}

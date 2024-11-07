@@ -15,7 +15,7 @@ class CreateTransaksisTable extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_tiket')->unique(); 
+            $table->string('kode_tiket')->unique();
             $table->string('tiket_dibeli');
             $table->string('tanggal_transaksi');
             $table->integer('total_transaksi');
@@ -23,14 +23,14 @@ class CreateTransaksisTable extends Migration
             $table->string('no_ktp');
             $table->string('no_telepon');
             $table->string('email');
-            $table->enum('status',['pending','complete',]);
+            $table->enum('status', ['pending', 'paid', 'failed'])->default('pending');
             $table->foreignId('tiket_id')->constrained();
             $table->foreignId('event_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      *

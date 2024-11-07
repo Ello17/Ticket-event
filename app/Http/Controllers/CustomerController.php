@@ -168,14 +168,17 @@ class CustomerController extends Controller
             return redirect()->back()->withErrors('Tiket tidak ditemukan untuk event ini.');
         }
 
-        $user = Auth::user();
-        $tiket_dibeli = $request->input('tiket_dibeli', 1);
-        $total_harga = $tiket->harga_tiket * $tiket_dibeli;
- 
-        \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
-        \Midtrans\Config::$isProduction = false;
-        \Midtrans\Config::$isSanitized = true;
-        \Midtrans\Config::$is3ds = true;
+    // Ambil data pengguna yang sedang login
+    $user = Auth::user();
+    $status = $user->status; // Tambahkan variabel $status
+    $tiket_dibeli = $request->input('tiket_dibeli', 1);
+    $total_harga = $tiket->harga_tiket * $tiket_dibeli;
+
+    // Konfigurasi Midtrans
+    \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
+    \Midtrans\Config::$isProduction = false;
+    \Midtrans\Config::$isSanitized = true;
+    \Midtrans\Config::$is3ds = true;
 
 
         $params = [
@@ -193,30 +196,8 @@ class CustomerController extends Controller
         $snapToken = \Midtrans\Snap::getSnapToken($params);
         $formatted_total_harga = number_format($total_harga, 0, ',', '.');
 
-        return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
-    }
+    // Kirim data ke view transaksi
+    return view('customer.transaksi', compact('event', 'tiket', 'status', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
+}
 
-
-
-    public function postKirimTiket(Request $request)
-    {
-        $request->validate([
-            'id_transaksi' => 'required|exists:transaksis,id',
-        ]);
-    
-        $transaksi = Transaksi::find($request->id_transaksi);
-    
-        if ($transaksi) {
-            try {
-                Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
-                return response()->json(['message' => 'Berhasil mengirim email tiket.'], 200);
-            } catch (\Exception $e) {
-                Log::error('Gagal mengirim email tiket: ' . $e->getMessage());
-                return response()->json(['error' => 'Gagal mengirim email tiket. Silakan coba lagi.'], 500);
-            }
-        }
-    
-        return response()->json(['error' => 'Transaksi tidak ditemukan.'], 404);
-    }
-    
 }

@@ -23,7 +23,13 @@ class Transaksi extends Model
         'tiket_id',
         'event_id',
         'user_id',
+        'status'
     ];
+
+    protected $attributes = [
+        'status' => 'pending',
+    ];
+
 
     public function event(){
         return $this->belongsTo(Event::class);
@@ -32,7 +38,7 @@ class Transaksi extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
-    
+
     public function tiket()
     {
         return $this->belongsTo(Tiket::class, 'tiket_id'); // Pastikan menggunakan nama kolom yang sesuai

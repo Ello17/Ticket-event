@@ -7,8 +7,6 @@
 @section('title', 'Profile Creator - Tiket Mudah')
 @section('content')
 
-
-
 <div class="container mt-5 py-5">
     <div class="profile-container">
         <div class="profile-header">
