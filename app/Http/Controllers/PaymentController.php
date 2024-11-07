@@ -98,11 +98,11 @@ class PaymentController extends Controller
     }
 
 
-    public function midtransCallback(Request $request)
-    {
-        $payload = $request->all();
+    pub  $payload = $request->all();
         $transaction_status = $payload['transaction_status'];
-        $order_id = $payload['order_id'];
+        $order_id = $payload['order_id'];lic function midtransCallback(Request $request)
+    {
+
         $transaksi = Transaksi::where('order_id', $order_id)->first();
 
         if ($transaksi) {

@@ -4,16 +4,17 @@
     <link rel="stylesheet" href="{{ asset('components/css/transaksi.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script type="text/javascript" src="https://app.stg.midtrans.com/snap/snap.js"
-    data-client-key="SB-Mid-client-VlcG7DV3_odk4Alv"></script>
-<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-    data-client-key="{{ config('midtrans.client_key') }}"></script>
+        data-client-key="SB-Mid-client-VlcG7DV3_odk4Alv"></script>
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}"></script>
 @endpush
 
 @section('title', 'TMD')
 
 @section('content')
-<div class="container-view">
-        <form action="{{ route('transaksi.create') }}" id="payment-form" method="POST" class="form-group" enctype="multipart/form-data">
+    <div class="container-view">
+        <form action="{{ route('transaksi.create') }}" id="payment-form" method="POST" class="form-group"
+            enctype="multipart/form-data">
             @csrf
             <div class="box-detail">
                 <div class="title">
@@ -30,11 +31,7 @@
                             <br>
                             <small><i class="fa-solid fa-location-dot"></i> {{ $event->lokasi_event }}</small>
                             <br>
-                            @if ($tiket)
                             <small>Tersedia : {{ $tiket->jumlah_tiket }} Tiket</small>
-                            @else
-                            <small>Tiket Habis Terjual</small>
-                            @endif
                         </div>
                     </div>
 
@@ -62,55 +59,65 @@
                 <div class="title">
                     <h2>Detail Pemesan</h2>
                 </div>
-                @if ($tiket)
                 <div class="border column">
-                        <input class="form-control" type="hidden" id="tiket_id" value="{{$tiket->tiket_id}}" name="tiket_id" required>
-                        <input class="form-control" type="hidden" id="tiket_dibeli" value="{{ $tiket->tiket_dibeli }}" name="tiket_dibeli" required>
-                        <input class="form-control" type="hidden" id="status" value="{{ $tiket->status }}" name="status" required>
-                     
-                    </div>
+                    @if ($tiket)
+                        <div class="form-group">
+                            <input class="form-control" type="hidden" id="tiket_id" value="{{ $tiket->id }}"
+                                name="tiket_id" required>
+                            <input class="form-control" type="hidden" id="user_id" value="{{ auth()->user()->id }}"
+                                name="user_id" required>
+                            <input class="form-control" type="hidden" id="kategori_tiket" value="{{ $tiket->kategori_tiket }}"
+                                name="kategori_tiket" required>
+                            <input class="form-control" type="hidden" id="tiket_dibeli" value="{{ $tiket_dibeli }}"
+                                name="tiket_dibeli" required>
+                            <input class="form-control" type="hidden" id="status" value="{{ $status }}"
+                                name="status" required>
+                        </div>
                     @else
-                    <p>Tiket Tidak ditemukan</p>
+                        <p>Tiket Tidak ditemukan</p>
                     @endif
                     <div class="form-group">
                         <label for="name">Nama Lengkap :</label>
                         <br>
-                        <input class="form-control input-transaksi" type="text" id="name" value="{{$user->username }}" name="nama_lengkap" required>
+                        <input class="form-control input-transaksi" type="text" id="name"
+                            value="{{ $user->username }}" name="nama_lengkap" required>
                     </div>
                     <div class="form-group">
                         <label for="name">Email :</label>
                         <br>
-                        <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" readonly>
+                        <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}"
+                            name="email" readonly>
                     </div>
                     <div class="form-group">
                         <label for="name">No. KTP :</label>
                         <br>
-                        <input class="input-transaksi" type="text" id="no_ktp"  name="no_ktp" required>
+                        <input class="input-transaksi" type="text" id="no_ktp" name="no_ktp" required>
                         <small>Harus 16 digit.</small>
                     </div>
                     <div class="form-group">
                         <label for="name">No. Ponsel :</label>
                         <br>
-                        <input class="form-control input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" required>
+                        <input class="form-control input-transaksi" type="tel" id="phone"
+                            value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" required>
                         <small>Harus antara 10-15 digit.</small>
                     </div>
                 </div>
                 <div class="box-btn">
-                <button class="btn" id="pay-button">BAYAR SEKARANG</button>
+                    <button class="btn" id="pay-button">BAYAR SEKARANG</button>
                 </div>
             </div>
 
             @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </form>
-        </div>
+    </div>
 @endsection
 
 @push('js')
