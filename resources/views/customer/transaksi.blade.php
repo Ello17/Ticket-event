@@ -3,14 +3,18 @@
     {{-- <link rel="stylesheet" href="{{ asset('components/css/detailevent.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('components/css/transaksi.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script type="text/javascript" src="https://app.stg.midtrans.com/snap/snap.js"
+    data-client-key="SB-Mid-client-VlcG7DV3_odk4Alv"></script>
+<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="{{ config('midtrans.client_key') }}"></script>
 @endpush
 
 @section('title', 'TMD')
 
 @section('content')
-<form action="{{ route('transaksi.create') }}" id="payment-form" method="POST" class="form-group" enctype="multipart/form-data">
-    @csrf
-    <div class="container-view">
+<div class="container-view">
+        <form action="{{ route('transaksi.create') }}" id="payment-form" method="POST" class="form-group" enctype="multipart/form-data">
+            @csrf
             <div class="box-detail">
                 <div class="title">
                     <h2>Detail Pemesanan</h2>
@@ -58,7 +62,16 @@
                 <div class="title">
                     <h2>Detail Pemesan</h2>
                 </div>
+                @if ($tiket)
                 <div class="border column">
+                        <input class="form-control" type="hidden" id="tiket_id" value="{{$tiket->tiket_id}}" name="tiket_id" required>
+                        <input class="form-control" type="hidden" id="tiket_dibeli" value="{{ $tiket->tiket_dibeli }}" name="tiket_dibeli" required>
+                        <input class="form-control" type="hidden" id="status" value="{{ $tiket->status }}" name="status" required>
+                     
+                    </div>
+                    @else
+                    <p>Tiket Tidak ditemukan</p>
+                    @endif
                     <div class="form-group">
                         <label for="name">Nama Lengkap :</label>
                         <br>
@@ -87,62 +100,17 @@
                 </div>
             </div>
 
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        </form>
         </div>
-    </form>
-                            {{-- @if ($tiket)
-                            <input class="input-transaksi" type="hidden" id="tiket_id" name="tiket_id" value="{{ $tiket->id }}" required>
-                            <input class="input-transaksi" type="hidden" id="user_id" name="user_id" value="{{ auth()->user()->id }}" required>
-                                <input class="input-transaksi" type="hidden" id="kategori_tiket" name="kategori_tiket" value="{{ $tiket->kategori_tiket }}" required>
-                                <input class="input-transaksi" type="hidden" id="tiket_dibeli" name="tiket_dibeli" value="{{ $tiket_dibeli }}" required>
-                                <p class="text-gray-400">Ketersediaan: {{ $tiket->jumlah_tiket }}</p>
-
-                            @else
-                                <p class="text-white">Tiket tidak ditemukan.</p>
-                            @endif --}}
-
-                            {{-- <div class="form-group text-white mb-1">
-                                <label for="name">Nama Lengkap :</label>
-                                <br>
-                                <input class="input-transaksi" type="text" id="name" value="{{ $user->nama_lengkap }}" name="nama_lengkap" class="form-control text-white bg-dark text-start" required>
-                            </div>
-
-                            <div class="form-group text-white">
-                                <label for="no_ktp">No. KTP :</label>
-                                <br>
-                                <input class="input-transaksi" type="text" id="no_ktp" value="{{ $user->no_ktp }}" name="no_ktp" class="form-control text-white bg-dark text-start" required>
-                                <br>
-                                <small class="form-text text-muted">Harus 16 digit.</small>
-                            </div>
-
-                            <div class="form-group text-white">
-                                <label for="phone">No. Telepon :</label>
-                                <input class="input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" class="form-control text-white bg-dark text-start" pattern="\d{10,15}" required>
-                                <br>
-                                <small class="form-text text-muted">Harus antara 10-15 digit.</small>
-                            </div>
-
-                            <div class="form-group text-white" style="margin-bottom: 3rem;">
-                                <label for="email">Email :</label>
-                                <br>
-                                <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" class="form-control text-white bg-dark text-start" required>
-                            </div>
-
-                            <div class="text-center">
-                                <button class="btn btn-outline-warning mx-auto d-block w-100" id="pay-button">BAYAR SEKARANG</button>
-                            </div> --}}
-
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                        {{-- </form>
-                    </div>
-                </div> --}}
 @endsection
 
 @push('js')
@@ -176,8 +144,4 @@
             });
         });
     </script>
-    <script type="text/javascript" src="https://app.stg.midtrans.com/snap/snap.js"
-        data-client-key="SB-Mid-client-VlcG7DV3_odk4Alv"></script>
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('midtrans.client_key') }}"></script>
 @endpush
