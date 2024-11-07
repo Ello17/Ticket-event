@@ -1,7 +1,7 @@
 @extends('layouts.appCreator')
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
     <style>
         body {
             background-color: #ffffff;
@@ -45,7 +45,7 @@
                 <h2 class="text-center mt-3">Tambah Event</h2>
                 <form action="{{ route('postTambahEvent') }}" method="POST" class="form-group" enctype="multipart/form-data">
                     @csrf
-                    
+
                     <div class="mb-3">
                         <label for="nama_event" class="form-label">Nama Event</label>
                         <input type="text" name="nama_event" class="form-control" placeholder="Masukkan nama event" required>

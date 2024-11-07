@@ -89,7 +89,7 @@ class CreatorController extends Controller
             'cover_event' => $imagePath,
         ]);
 
-        return redirect()->route('kelolaEvent')->with('pesan-berhasil','Event Berhasil Ditambahkan');
+        return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Event Berhasil Ditambahkan');
     }
 
   public function editEvent($id){
@@ -97,36 +97,40 @@ class CreatorController extends Controller
     return view('creator.editEvent', compact('event'));
   }
 
-public function postEditEvent(Request $request, $id)
-{
-    $request->validate([
-        'cover_event' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'nama_penyelenggara' => 'required',
-        'nama_event' => 'required',
-        'tanggal_event' => 'required|date',
-        'waktu_event' => 'required',
-        'lokasi_event' => 'required',
-        'deskripsi_event' => 'required',
-    ]);
+    public function postEditEvent(Request $request, $id)
+    {
+        $request->validate([
+            'cover_event' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama_event' => 'required|string|max:255',
+            'nama_penyelenggara' => 'required|string|max:255',
+            'tanggal_event' => 'required|date|after_or_equal:today',
+            'waktu_event' => 'required|date_format:H:i',
+            'lokasi_event' => 'required|string|max:255',
+            'maps' => 'required|url',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'deskripsi_event' => 'required|string',
+        ]);
 
-    $events = Event::findOrFail($id);
+        $event = Event::findOrFail($id);
 
-    try {
-        if ($request->hasFile('cover_event')) {
-            if ($events->cover_event) {
-                Storage::delete($events->cover_event);
+        try {
+            if ($request->hasFile('cover_event')) {
+                if ($event->cover_event) {
+                    Storage::delete($event->cover_event);
+                }
+                $filePath = $request->file('cover_event')->store('covers', 'public');
+                $event->cover_event = $filePath;
             }
-            $filePath = $request->file('cover_event')->store('covers', 'public');
-            $events->cover_event = $filePath;
+
+            // Update the other fields except 'cover_event'
+            $event->update($request->except('cover_event'));
+
+            return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Data Berhasil Diedit');
+        } catch (\Exception $e) {
+            return back()->withErrors(['upload_error' => 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage()]);
         }
-
-        $events->update($request->except('cover_event'));
-
-        return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Data Berhasil Diedit');
-    } catch (\Exception $e) {
-        return back()->withErrors(['upload_error' => 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage()]);
     }
-}
 
 
     public function hapusEvent($id)
@@ -351,38 +355,15 @@ public function postEditEvent(Request $request, $id)
             return $items->sum('tiket_dibeli');
         })->toArray();
 
-    // Jika tidak ada data transaksi, kirimkan pesan ke view
-    if (empty($labels) || empty($jumlahTiket)) {
+
         return view('creator.grafik', [
             'transaksis' => $transaksis,
-            'labels' => [],
-            'jumlahTiket' => [],
-            'message' => "Tidak ada transaksi yang cocok untuk bulan ini dan user_id ini."
+            'labels' => $labels,
+            'jumlahTiket' => $jumlahTiket,
         ]);
     }
-
-    // Mengirimkan data ke view
-    return view('creator.grafik', [
-        'transaksis' => $transaksis,
-        'labels' => $labels,
-        'jumlahTiket' => $jumlahTiket,
-    ]);
-}
-public function sendTickets() {
-    // Mendapatkan transaksi dengan tiket dan event yang dimiliki oleh user dengan role creator
-    $transaksi = Transaksi::with(['tiket', 'event.user']) // Pastikan memuat user melalui event
-        ->whereHas('event.user', function ($query) {
-            // Filter user dengan role 'creator' dan sesuai dengan ID user yang sedang login
-            $query->where('role', 'creator')
-                  ->where('id', auth()->id());
-        })
-        ->whereHas('tiket', function ($query) {
-            // Hanya pilih transaksi dengan kategori tiket 'online'
-            $query->where('kategori_tiket', 'online');
-        })
-        ->get();
-
-    // Mengirim data ke view menggunakan compact
-    return view('creator.sendTickets', compact('transaksi'));
-}
+    public function scanQr()
+    {
+        return view('creator.scanqr');
+    }
 }
