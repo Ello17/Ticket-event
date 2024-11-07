@@ -67,9 +67,9 @@ class CreatorController extends Controller
             'tanggal_event' => 'required|date|after_or_equal:today',
             'waktu_event' => 'required|date_format:H:i',
             'deskripsi_event' => 'required|string',
-            'latitude' => 'required|numeric',  // Validasi untuk latitude
-            'longitude' => 'required|numeric', // Validasi untuk longitude
-            'maps' => 'required|url',           // Validasi untuk maps URL
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'maps' => 'required|url',          
             'cover_event' => 'required|image|mimes:jpeg,png,jpg|max:15360',
         ]);
 
