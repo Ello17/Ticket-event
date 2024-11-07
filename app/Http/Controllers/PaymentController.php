@@ -93,8 +93,6 @@ class PaymentController extends Controller
                 'error' => route('homeCustomer'),
             ]
         ];
-    
-        // Kirim email konfirmasi sebelum redirect ke Midtrans (opsional)
         try {
             Mail::to($transaksi->email)->send(new KirimEmail($transaksi));
         } catch (\Exception $e) {
@@ -181,8 +179,6 @@ public function show($kode_tiket)
     public function downloadTiket($id)
     {
         $transaksi = Transaksi::findOrFail($id);
-    
-        // Menyimpan QR Code dan Barcode dalam array untuk setiap tiket yang dibeli
         $qrcodes = [];
         $barcodes = [];
     
@@ -195,7 +191,7 @@ public function show($kode_tiket)
             $barcodes[] = $barcode;
         }
     
-        // Generate PDF dengan view
+        // Generate PDF 
         $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes', 'barcodes'))
                   ->setPaper('a4');
     

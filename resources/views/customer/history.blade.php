@@ -37,6 +37,7 @@
                             <th scope="col">No-KTP</th>
                             <th scope="col">No-Telepon</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -52,6 +53,7 @@
                             <td>{{ $transaksi->no_ktp }}</td>
                             <td>{{ $transaksi->no_telepon }}</td>
                             <td>{{ $transaksi->email }}</td>
+                            <td>{{ $transaksi->status }}</td>
                             <td>
                                 <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
                             </td>

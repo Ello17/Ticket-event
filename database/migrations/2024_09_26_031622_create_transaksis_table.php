@@ -23,6 +23,7 @@ class CreateTransaksisTable extends Migration
             $table->string('no_ktp');
             $table->string('no_telepon');
             $table->string('email');
+            $table->enum('status',['pending','complete',]);
             $table->foreignId('tiket_id')->constrained();
             $table->foreignId('event_id')->constrained();
             $table->foreignId('user_id')->constrained();
