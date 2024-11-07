@@ -98,7 +98,8 @@ class PaymentController extends Controller
     }
 
 
-    pub  $payload = $request->all();
+    public function midtransCallback()
+    {  $payload = $request->all();
         $transaction_status = $payload['transaction_status'];
         $order_id = $payload['order_id'];lic function midtransCallback(Request $request)
     {
@@ -197,3 +198,4 @@ public function show($kode_tiket)
     }
 
 }
+
