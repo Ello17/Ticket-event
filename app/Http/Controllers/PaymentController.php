@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\kirimTiket;
+use App\Mail\KirimEmail;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Tiket;
@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Exception;
 use Illuminate\Support\Facades\Mail;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
@@ -31,7 +30,6 @@ class PaymentController extends Controller
 
     public function createTransaction(Request $request)
     {
-
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
@@ -67,7 +65,7 @@ class PaymentController extends Controller
             'email' => $data['email'],
             'event_id' => $tiket->event_id,
             'status' => 'pending',
-           'user_id' => auth()->id(),
+            'user_id' => auth()->id(),
         ]);
 
         $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
@@ -213,5 +211,6 @@ public function show($kode_tiket)
 
         return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
     }
+
 
 }
