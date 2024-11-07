@@ -1,6 +1,6 @@
 @extends('layouts.appCreator')
 @push('css')
-<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
 <link rel="stylesheet" href="{{asset('components/css/profile.css')}}">
 @endpush
 

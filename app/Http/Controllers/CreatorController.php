@@ -72,9 +72,9 @@ class CreatorController extends Controller
             'maps' => 'required|url',           // Validasi untuk maps URL
             'cover_event' => 'required|image|mimes:jpeg,png,jpg|max:15360',
         ]);
-    
+
         $imagePath = $request->file('cover_event')->store('images', 'public');
-    
+
         Event::create([
             'user_id' => Auth::id(),
             'nama_event' => $request->nama_event,
@@ -88,9 +88,9 @@ class CreatorController extends Controller
             'deskripsi_event' => $request->deskripsi_event,
             'cover_event' => $imagePath,
         ]);
-    
+
         return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Event Berhasil Ditambahkan');
-    }    
+    }
 
     public function editEvent($id)
     {
@@ -112,9 +112,9 @@ class CreatorController extends Controller
             'longitude' => 'required|numeric',
             'deskripsi_event' => 'required|string',
         ]);
-    
+
         $event = Event::findOrFail($id);
-    
+
         try {
             if ($request->hasFile('cover_event')) {
                 if ($event->cover_event) {
@@ -123,15 +123,15 @@ class CreatorController extends Controller
                 $filePath = $request->file('cover_event')->store('covers', 'public');
                 $event->cover_event = $filePath;
             }
-    
+
             // Update the other fields except 'cover_event'
             $event->update($request->except('cover_event'));
-    
+
             return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Data Berhasil Diedit');
         } catch (\Exception $e) {
             return back()->withErrors(['upload_error' => 'Terjadi kesalahan saat mengupload gambar: ' . $e->getMessage()]);
         }
-    }    
+    }
 
 
     public function hapusEvent($id)
@@ -362,5 +362,9 @@ class CreatorController extends Controller
             'labels' => $labels,
             'jumlahTiket' => $jumlahTiket,
         ]);
+    }
+    public function scanQr()
+    {
+        return view('creator.scanqr');
     }
 }
