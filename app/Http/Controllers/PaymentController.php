@@ -55,7 +55,7 @@ class PaymentController extends Controller
             'tiket_id' => $tiket->id,
             'tiket_dibeli' => $data['tiket_dibeli'],
             'tanggal_transaksi' => now()->toDateString(),
-            'no_rekening' => '1234567890',
+            
             'total_transaksi' => $tiket->harga_tiket * $data['tiket_dibeli'],
             'nama_lengkap' => $data['nama_lengkap'],
             'no_ktp' => $data['no_ktp'],
@@ -112,7 +112,7 @@ class PaymentController extends Controller
             $transaksi->status = $transaction_status;
             $transaksi->save();
 
-            // Hanya kirim email jika pembayaran berhasil
+            
             if (in_array($transaction_status, ['capture', 'settlement'])) {
                 try {
                     Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
@@ -182,7 +182,7 @@ public function show($kode_tiket)
             return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
         }
     }
-
+    
     public function downloadTiket($id)
     {
         $transaksi = Transaksi::findOrFail($id);
