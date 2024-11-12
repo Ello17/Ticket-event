@@ -1,13 +1,11 @@
 @extends('layouts.appCreator')
 @push('css')
-<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
 <link rel="stylesheet" href="{{asset('components/css/profile.css')}}">
 @endpush
 
 @section('title', 'Profile Creator - Tiket Mudah')
 @section('content')
-
-
 
 <div class="container mt-5 py-5">
     <div class="profile-container">

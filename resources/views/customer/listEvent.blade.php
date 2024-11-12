@@ -8,6 +8,9 @@
 
 @section('content')
 <section class="card-section">
+    @if ($events->isEmpty())
+    <p class="text-white mt-5">No events found.</p>
+    @else
     <div class="grid-card">
         @foreach($events as $event)
         <a href="{{ route('detailEvent', $event->id) }}">
@@ -24,7 +27,9 @@
             </div>
         </a>
         @endforeach
-    </div>
+    </div>        
+    @endif
+
     </section>
 
 @endsection

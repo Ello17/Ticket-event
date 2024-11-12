@@ -57,12 +57,16 @@ Route::post('/midtrans-notification', [PaymentController::class, 'handleNotifica
 
 Route::get('/transaksi/{kode_tiket}', [PaymentController::class, 'show'])->name('transaksi.show');
 Route::get('/download/tiket/{id}', [PaymentController::class, 'downloadTiket'])->name('downloadTiket');
+Route::get('/midtransCallback', [PaymentController::class, 'midtransCallback'])->name('midtransCallback');
+
+
 
 
 Route::get('/history', [CustomerController::class, 'history'])->name('history');
 Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
 Route::get('/transaksi/{tiket}/{id}', [CustomerController::class, 'transaksi'])->name('transaksi.tiket');
 Route::get('/transaksi/{event}', [CustomerController::class, 'transaksi'])->name('transaksi.event');
+
 
 
 // //EMAIL
@@ -111,6 +115,7 @@ Route::post('/change-password', [CustomerController::class, 'postChangePass'])->
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('tambahtiket');
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
+Route::get('/scanQr', [CreatorController::class, 'scanQr'])->name('scanQr');
 // Route::get('/editTiket/{id}', [CreatorController::class, 'editTiket'])->name('editTiket');
 // Route::post('/postEditTiket/{id}', [CreatorController::class, 'postEditTiket'])->name('postEditTiket');
 
@@ -120,6 +125,7 @@ Route::post('postEditProfileCreator{id}',[CreatorController::class,'postEditProf
 Route::get('/ubahpass',[CreatorController::class, 'ubahpass'])->name('ubahpass');
 Route::post('/postubahpass', [CreatorController::class, 'postubahpass'])->middleware('auth')->name('postubahpass');;
 Route::get('/grafik{user_id}', [CreatorController::class, 'grafik'])->name('grafik');
+Route::get('/sendTickets', [CreatorController::class, 'sendTickets'])->name('sendTickets');
 });
 
 

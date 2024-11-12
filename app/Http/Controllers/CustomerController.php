@@ -19,20 +19,33 @@ class CustomerController extends Controller
 {
     //
 
-    function homeCustomer(){
-        $data= Event::all();
+    function homeCustomer()
+    {
+        $data = Event::all();
         return view('customer.homeCustomer', compact('data'));
+    }
 
+    public function search(Request $request)
+    {
+        $keyword = $request->input('search');
+
+        // Cari event berdasarkan nama atau deskripsi
+        $events = Event::where('nama_event', 'LIKE', "%{$keyword}%")
+            ->orWhere('lokasi_event', 'LIKE', "%{$keyword}%")
+            ->get();
+
+        // Kembalikan hasil pencarian ke view
+        return view('customer.listEvent', compact('events'));
     }
 
     public function history()
-{
-    $transaksiList = Transaksi::with('tiket')
-                    ->where('user_id', auth()->id())
-                    ->get();
+    {
+        $transaksiList = Transaksi::with('tiket')
+            ->where('user_id', auth()->id())
+            ->get();
 
-    return view('customer.history', compact('transaksiList'));
-}
+        return view('customer.history', compact('transaksiList'));
+    }
 
     public function detailEvent($id)
     {
@@ -42,151 +55,147 @@ class CustomerController extends Controller
     }
 
     public function listEvents()
-{
+    {
 
-    $events = Event::all();
-    return view('customer.listEvent', compact('events'));
-}
-
-public function profil()
-{
-    $user = Auth::user();
-    if ($user->role !== 'customer') {
-        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        $events = Event::all();
+        return view('customer.listEvent', compact('events'));
     }
 
-    return view('customer.profil', compact('user'));
-}
-
-public function editProfileCust($id)
-{
-    $user = Auth::user();
-    if ($user->role !== 'customer' || $user->id != $id) {
-        return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
-    }
-
-    return view('customer.editProfileCust', compact('user'));
-}
-
-public function postEditProfileCust(Request $request)
-{
-    $request->validate([
-        'username' => 'required',
-        'email' => 'required',
-        'profil' => 'nullable|image',
-    ]);
-
-    $user = User::where('id', Auth::id())->first();
-    if ($user->role !== 'customer') {
-        return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
-    }
-
-    $user->username = $request->username;
-    $user->email = $request->email;
-
-    if ($request->hasFile('profil')) {
-        $file = $request->file('profil');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = 'img/' . $fileName;
-
-        Log::info('File upload: ' . $fileName);
-        Log::info('File path: ' . $filePath);
-
-        if ($user->profil && File::exists(public_path($user->profil))) {
-            Log::info('Deleting old file: ' . public_path($user->profil));
-            File::delete(public_path($user->profil));
+    public function profil()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'customer') {
+            return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
 
-        $file->move(public_path('img'), $fileName);
-        $user->profil = $filePath;
+        return view('customer.profil', compact('user'));
     }
 
-    $user->save();
+    public function editProfileCust($id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'customer' || $user->id != $id) {
+            return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
+        }
 
-    return redirect()->route('profil')->with('success', 'Data berhasil diperbarui.');
-}
-
-public function ChangePass()
-{
-    $user = Auth::user();
-    if ($user->role !== 'customer') {
-        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        return view('customer.editProfileCust', compact('user'));
     }
 
-    return view('customer.ChangePass');
-}
+    public function postEditProfileCust(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'email' => 'required',
+            'profil' => 'nullable|image',
+        ]);
 
-public function postChangePass(Request $request)
-{
-    $request->validate([
-        'password' => 'required',
-        'new_password' => 'required',
-        'confirmation_password' => 'required|same:new_password',
-    ]);
+        $user = User::where('id', Auth::id())->first();
+        if ($user->role !== 'customer') {
+            return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
+        }
 
-    $user = User::where('id', Auth::id())->first();
-    if ($user->role !== 'customer') {
-        return redirect('/')->with('pesan-gagal', 'Anda tidak memiliki akses ke halaman ini.');
-    }
+        $user->username = $request->username;
+        $user->email = $request->email;
 
-    if (!Hash::check($request->password, $user->password)) {
-        return back()->withErrors(['password' => 'Password lama tidak benar.']);
-    }
-    try {
-        $user->password = Hash::make($request->new_password);
+        if ($request->hasFile('profil')) {
+            $file = $request->file('profil');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = 'img/' . $fileName;
+
+            Log::info('File upload: ' . $fileName);
+            Log::info('File path: ' . $filePath);
+
+            if ($user->profil && File::exists(public_path($user->profil))) {
+                Log::info('Deleting old file: ' . public_path($user->profil));
+                File::delete(public_path($user->profil));
+            }
+
+            $file->move(public_path('img'), $fileName);
+            $user->profil = $filePath;
+        }
+
         $user->save();
-    } catch (\Exception $e) {
-        Log::error('Gagal memperbarui password: ' . $e->getMessage());
-        return back()->withErrors(['error' => 'Gagal memperbarui password.']);
+
+        return redirect()->route('profil')->with('success', 'Data berhasil diperbarui.');
     }
 
-    return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
-}
+    public function ChangePass()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'customer') {
+            return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        }
 
-public function transaksi($id, Request $request)
-{
-    // Ambil data event berdasarkan ID
-    $event = Event::find($id);
-    if (!$event) {
-        return redirect()->back()->withErrors('Event tidak ditemukan.');
+        return view('customer.ChangePass');
     }
 
-    // Ambil data tiket yang terkait dengan event
-    $tiket = Tiket::where('event_id', $id)->first();
-    if (!$tiket) {
-        return redirect()->back()->withErrors('Tiket tidak ditemukan untuk event ini.');
+    public function postChangePass(Request $request)
+    {
+        $request->validate([
+            'password' => 'required',
+            'new_password' => 'required',
+            'confirmation_password' => 'required|same:new_password',
+        ]);
+
+        $user = User::where('id', Auth::id())->first();
+        if ($user->role !== 'customer') {
+            return redirect('/')->with('pesan-gagal', 'Anda tidak memiliki akses ke halaman ini.');
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['password' => 'Password lama tidak benar.']);
+        }
+        try {
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+        } catch (\Exception $e) {
+            Log::error('Gagal memperbarui password: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Gagal memperbarui password.']);
+        }
+
+        return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
     }
 
-    // Ambil data pengguna yang sedang login
-    $user = Auth::user();
-    $tiket_dibeli = $request->input('tiket_dibeli', 1);
-    $total_harga = $tiket->harga_tiket * $tiket_dibeli;
+    public function transaksi($id, Request $request)
+    {
+        $event = Event::find($id);
+        if (!$event) {
+            return redirect()->back()->withErrors('Event tidak ditemukan.');
+        }
 
-    // Konfigurasi Midtrans
-    \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
-    \Midtrans\Config::$isProduction = false;
-    \Midtrans\Config::$isSanitized = true;
-    \Midtrans\Config::$is3ds = true;
+        $tiket = Tiket::where('event_id', $id)->first();
+        if (!$tiket) {
+            return redirect()->back()->withErrors('Tiket tidak ditemukan untuk event ini.');
+        }
 
-    // Detail transaksi dan pengaturan redirect setelah transaksi selesai
-    $params = [
-        'transaction_details' => [
-            'order_id' => rand(),
-            'gross_amount' => $total_harga,
-        ],
-        'customer_details' => [
-            'first_name' => $request->input('nama_lengkap'), // Menggunakan nama lengkap
-            'email' => $request->input('email'),
-            'phone' => $request->input('no_telepon'), // Menyimpan nomor telepon
-        ],
-        'finish_redirect_url' => route('transaksi.konfirmasi') // Redirect URL setelah transaksi sukses
-    ];
 
-    // Dapatkan token Snap dari Midtrans
-    $snapToken = \Midtrans\Snap::getSnapToken($params);
-    $formatted_total_harga = number_format($total_harga, 0, ',', '.');
+        $user = Auth::user();
+        $status = $user->status;
+        $tiket_dibeli = $request->input('tiket_dibeli', 1);
+        $total_harga = $tiket->harga_tiket * $tiket_dibeli;
 
-    // Kirim data ke view transaksi
-    return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
-}
+        // Konfigurasi Midtrans
+        \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
+
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => rand(),
+                'gross_amount' => $total_harga,
+            ],
+            'customer_details' => [
+                'first_name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone'),
+            ],
+        ];
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+        $formatted_total_harga = number_format($total_harga, 0, ',', '.');
+
+        return view('customer.transaksi', compact('event', 'tiket', 'status', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
+    }
 }
