@@ -115,7 +115,7 @@ Route::post('/change-password', [CustomerController::class, 'postChangePass'])->
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('tambahtiket');
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
-Route::get('/scanQr', [CreatorController::class, 'scanQr'])->name('scanQr');
+Route::get('/scanQr/{transaksi_id}', [CreatorController::class, 'scanQr'])->name('scanQr');
 // Route::get('/editTiket/{id}', [CreatorController::class, 'editTiket'])->name('editTiket');
 // Route::post('/postEditTiket/{id}', [CreatorController::class, 'postEditTiket'])->name('postEditTiket');
 

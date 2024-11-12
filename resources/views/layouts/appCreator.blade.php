@@ -48,7 +48,7 @@
                 </li>
                 <li class="py-3 px-5">
                     <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('scanQr') ? 'bg-blue-500 text-white' : '' }}"
-                        href="{{ route('scanQr') }}">
+                        href="{{ route('scanQr', ['transaksi_id' => $transaksi->id]) }}">
                         <i class="ri-dashboard-2-line mr-2"></i>Scan QR
                     </a>
                 </li>
