@@ -362,20 +362,11 @@ class CreatorController extends Controller
             'jumlahTiket' => $jumlahTiket,
         ]);
     }
-    public function scanQr($transaksi_id)
+    public function scanQr()
     {
-    
-    $transaksi = Transaksi::find($transaksi_id);
-    
-    if ($transaksi) {
-        $transaksi->status = 'complete';
-        $transaksi->save();
 
-        return view('creator.scanqr', compact('transaksi'))->with('success', 'Transaksi berhasil.');
-    } else {
-        return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
+        return view('creator.scanqr');
     }
-}
 
     
 }
