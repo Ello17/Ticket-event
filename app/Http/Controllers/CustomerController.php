@@ -155,7 +155,6 @@ class CustomerController extends Controller
 
         return redirect()->route('profil')->with('pesan-berhasil', 'Password berhasil diperbarui.');
     }
-
     public function transaksi($id, Request $request)
     {
         $event = Event::find($id);
@@ -168,34 +167,48 @@ class CustomerController extends Controller
             return redirect()->back()->withErrors('Tiket tidak ditemukan untuk event ini.');
         }
 
-
         $user = Auth::user();
-        $status = $user->status;
+        if (!$user) {
+            return redirect()->route('login')->withErrors('Silakan login untuk melanjutkan transaksi.');
+        }
+
         $tiket_dibeli = $request->input('tiket_dibeli', 1);
+        if ($tiket_dibeli < 1) {
+            return redirect()->back()->withErrors('Jumlah tiket yang dibeli harus minimal 1.');
+        }
+
         $total_harga = $tiket->harga_tiket * $tiket_dibeli;
 
-        // Konfigurasi Midtrans
-        \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
+        \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
 
+        // Menggunakan ID unik untuk setiap transaksi
+        $order_id = 'ORDER-' . uniqid();
 
         $params = [
             'transaction_details' => [
-                'order_id' => rand(),
+                'order_id' => $order_id,
                 'gross_amount' => $total_harga,
             ],
             'customer_details' => [
-                'first_name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'phone' => $request->input('phone'),
+                'first_name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
             ],
         ];
 
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
+        try {
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors('Terjadi kesalahan dalam proses transaksi: ' . $e->getMessage());
+        }
+
         $formatted_total_harga = number_format($total_harga, 0, ',', '.');
 
-        return view('customer.transaksi', compact('event', 'tiket', 'status', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'user'));
+        // Mengirim data ke view transaksi
+        return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'order_id', 'user'));
     }
+
 }
