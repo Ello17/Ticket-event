@@ -364,9 +364,16 @@ class CreatorController extends Controller
     }
     public function scanQr()
     {
-
         return view('creator.scanqr');
     }
 
+    public function postScanQr(Request $request)
+    {
+        $request->validate([
+            'qr_code' =>'required',
+        ]);
+        $qrCode = $request->qr_code;
+        
+    }
 
 }

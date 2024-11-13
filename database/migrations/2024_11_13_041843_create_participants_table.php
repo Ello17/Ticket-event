@@ -15,6 +15,8 @@ class CreateParticipantsTable extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_tiket');
+            
             $table->timestamps();
         });
     }

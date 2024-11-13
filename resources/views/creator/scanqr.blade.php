@@ -12,11 +12,11 @@
         <br>
         <div class="result">
             <p id="qr-reader-results">Scan result :</p>
+            <form action="" method="POST">
+                <input type="text" id="input">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
-        <form action="GET">
-            <input type="text" value=>
-            <div id="input"></div>
-        </form>
     </div>
 </div>
 @endsection

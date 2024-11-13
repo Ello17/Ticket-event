@@ -15,15 +15,6 @@
 <div class="container py-2">
     <div class="row">
         <div class="col-lg-9 mx-auto bg-[#1f2937] rounded shadow">
-
-            <!-- Notifikasi sukses jika email berhasil dikirim -->
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
             <!-- Fixed header table -->
             <div class="table-responsive">
                 <table class="table text-white">
@@ -55,8 +46,16 @@
                             <td>{{ $transaksi->email }}</td>
                             <td>{{ $transaksi->status }}</td>
                             <td>
-                                <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
-                            </td>
+                                @if($transaksi->status == 'paid')
+                                    <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                @else
+                                    <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                @endif
+                            </td>                            
                         </tr>
                         @empty
                         <tr>
