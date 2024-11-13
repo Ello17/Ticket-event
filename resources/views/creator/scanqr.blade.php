@@ -1,10 +1,11 @@
 @extends('layouts.appCreator')
 
 @push('css')
-<link rel="stylesheet" href="{{asset('components/css/scanQr.css')}}">
+<link rel="stylesheet" href="{{ asset('components/css/scanQr.css') }}">
 @endpush
 
 @section('title', 'Profile Creator - Tiket Mudah')
+
 @section('content')
 <div class="container-view">
     <div class="box-result">
@@ -12,54 +13,47 @@
         <br>
         <div class="result">
             <p id="qr-reader-results">Scan result :</p>
-            <form action="" method="POST">
-                <input type="text" id="input">
+            <form action="{{ route('postScanQr') }}" method="POST" id="formqr">
+                @csrf
+                <input type="text" id="input" name="kode_tiket">
                 <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            </form>            
         </div>
     </div>
+
+    {{-- Tampilkan pesan sukses atau error --}}
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 </div>
 @endsection
 
 @push('js')
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-
-<script src="{{asset('components/js/scanQr.js')}}"></script>
+<script src="{{ asset('components/js/scanQr.js') }}"></script>
 <script>
-    function docReady(fn) {
-        if (document.readyState === "complete" || document.readyState === "interactive") {
-            setTimeout(fn, 1);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
-        }
-    }
-
-    let result = document.getElementById('qr-reader-results');
-    let input = document.getElementById('input')
-    docReady(function () {
-        var lastResult, countResults = 0;
+    document.addEventListener("DOMContentLoaded", function() {
+        let resultElement = document.getElementById('qr-reader-results');
+        let inputElement = document.getElementById('input');
+        let formElement = document.getElementById('formqr');
 
         function onScanSuccess(decodedText, decodedResult) {
-            if (decodedText !== lastResult) {
-                ++countResults;
-                lastResult = decodedText;
-                console.log(`Scan result: ${decodedText}`, decodedResult);
-                result.innerHTML = `Scan result : ${decodedText}`;
-                input.innerHTML =  `${decodedText}`;
+            if (decodedText !== inputElement.value) {
+                inputElement.value = decodedText;  // Masukkan hasil scan ke input
+                resultElement.textContent = `Scan result: ${decodedText}`; // Tampilkan hasil scan di halaman
+                formElement.submit();  // Submit otomatis form
             }
         }
 
-        var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+        const html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
         html5QrcodeScanner.render(onScanSuccess);
     });
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendTicketMail;
 use App\Models\Event;
+use App\Models\participant;
 use App\Models\Tiket;
 use App\Models\Transaksi;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Carbon\Carbon;
 // use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -366,14 +368,51 @@ class CreatorController extends Controller
     {
         return view('creator.scanqr');
     }
-
     public function postScanQr(Request $request)
     {
-        $request->validate([
-            'qr_code' =>'required',
-        ]);
-        $qrCode = $request->qr_code;
-        
+        // Ambil kode_tiket dari form
+        $kodeTiket = $request->input('kode_tiket');
+        Log::info('Nilai input kode_tiket: ' . $kodeTiket);
+    
+        if (!$kodeTiket) {
+            Log::error('Kode tiket tidak ditemukan dalam input.');
+            return back()->with('error', 'Kode tiket tidak ditemukan dalam input.');
+        }
+    
+        // Cek apakah tiket sudah discan sebelumnya di tabel participant
+        $existingParticipant = Participant::where('kode_tiket', $kodeTiket)->first();
+        if ($existingParticipant) {
+            Log::info('Tiket sudah pernah discan sebelumnya: ' . $kodeTiket);
+            return back()->with('error', 'Tiket sudah discan sebelumnya!');
+        }
+    
+        // Cari data transaksi berdasarkan kode_tiket
+        $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
+        if (!$transaksi) {
+            Log::warning('Data transaksi tidak ditemukan untuk kode_tiket: ' . $kodeTiket);
+            return back()->with('error', 'Kode tiket tidak ditemukan!');
+        }
+    
+        // Simpan data ke tabel participant
+        try {
+            $participant = Participant::create([
+                'user_id' => $transaksi->user_id,
+                'event_id' => $transaksi->event_id,
+                'tiket_id' => $transaksi->id,
+                'kode_tiket' => $transaksi->kode_tiket,
+                'scan_time' => now(),
+                'is_present' => true,
+            ]);
+    
+            Log::info('Data Participant berhasil disimpan.', $participant->toArray());
+    
+            // Notifikasi sukses
+            return back()->with('success', 'Tiket berhasil discan dan disimpan sebagai hadir.');
+        } catch (\Exception $e) {
+            Log::error('Error saat menyimpan data Participant: ' . $e->getMessage());
+            Log::error('Trace Error: ' . $e->getTraceAsString());
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
+        }
     }
-
+       
 }

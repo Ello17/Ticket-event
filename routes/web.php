@@ -117,7 +117,7 @@ Route::post('/change-password', [CustomerController::class, 'postChangePass'])->
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/tambahtiket/{event_id}', 'CreatorController@tambahtiket')->name('tambahtiket');
 Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('tambahtiket.store');
-Route::get('/scanQr', [CreatorController::class, 'scanQr'])->name('scanQr');
+// Route::get('/scanQr', [CreatorController::class, 'scanQr'])->name('scanQr');
 // Route::get('/getPurchaserDetails', [CreatorController::class, 'getPurchaserDetails'])->name('getPurchaserDetails');
 
 // Route::get('/editTiket/{id}', [CreatorController::class, 'editTiket'])->name('editTiket');
@@ -130,6 +130,8 @@ Route::get('/ubahpass',[CreatorController::class, 'ubahpass'])->name('ubahpass')
 Route::post('/postubahpass', [CreatorController::class, 'postubahpass'])->middleware('auth')->name('postubahpass');;
 Route::get('/grafik{user_id}', [CreatorController::class, 'grafik'])->name('grafik');
 Route::get('/sendTickets', [CreatorController::class, 'sendTickets'])->name('sendTickets');
+Route::get('/scan-qr', [CreatorController::class, 'ScanQr'])->name('scanQr');
+Route::post('/scan-qr', [CreatorController::class, 'postScanQr'])->name('postScanQr');
 });
 
 

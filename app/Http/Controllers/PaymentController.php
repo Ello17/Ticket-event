@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\kirimTiket;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Tiket;
@@ -185,5 +186,6 @@ public function destroy($id)
     // Redirect back with a success message
     return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
 }
+
 
 }
