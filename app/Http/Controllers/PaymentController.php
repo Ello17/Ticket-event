@@ -131,6 +131,9 @@ class PaymentController extends Controller
                 'new_status' => $transaksi->status,
             ]);
 
+            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+
+
             return redirect()->route('history')->with(
                 $transaction_status === 'settlement' || $transaction_status === 'capture'
                 ? 'pesan-berhasil'
