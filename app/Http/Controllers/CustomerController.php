@@ -173,6 +173,7 @@ class CustomerController extends Controller
         $status = $user->status;
         $tiket_dibeli = $request->input('tiket_dibeli', 1);
         $total_harga = $tiket->harga_tiket * $tiket_dibeli;
+        $kode_tiket = $tiket->id . '-' . time();
 
         // Konfigurasi Midtrans
         \Midtrans\Config::$serverKey = 'SB-Mid-server-CnJxn_ehQltuNunsQNfJRl3m';
@@ -183,7 +184,7 @@ class CustomerController extends Controller
 
         $params = [
             'transaction_details' => [
-                'order_id' => rand(),
+                'order_id' => $kode_tiket,
                 'gross_amount' => $total_harga,
             ],
             'customer_details' => [
