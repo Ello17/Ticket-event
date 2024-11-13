@@ -13,6 +13,10 @@
         <div class="result">
             <p id="qr-reader-results">Scan result :</p>
         </div>
+        <form action="GET">
+            <input type="text">
+            <div id="input"></div>
+        </form>
     </div>
 </div>
 @endsection
@@ -41,6 +45,7 @@
     }
 
     let result = document.getElementById('qr-reader-results');
+    let input = document.getElementById('input')
     docReady(function () {
         var lastResult, countResults = 0;
 
@@ -50,6 +55,7 @@
                 lastResult = decodedText;
                 console.log(`Scan result: ${decodedText}`, decodedResult);
                 result.innerHTML = `Scan result : ${decodedText}`;
+                input.innerHTML =  `${decodedText}`;
             }
         }
 
