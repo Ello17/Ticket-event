@@ -86,12 +86,6 @@ class PaymentController extends Controller
             ]
         ];
 
-        try {
-            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
-        } catch (Exception $ex) {
-            Log::error("Error sending email: " . $ex->getMessage());
-        }
-
         $url = Snap::createTransaction($transaction)->redirect_url;
         return redirect($url);
     }
@@ -116,7 +110,6 @@ class PaymentController extends Controller
 
             if (in_array($transaction_status, ['settlement', 'capture'])) {
                 $transaksi->status = 'paid';
-
                 // Send the ticket email to the purchaser
                 Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
 
@@ -180,4 +173,17 @@ class PaymentController extends Controller
 
     return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
 }
+
+public function destroy($id)
+{
+    // Find the transaction by ID
+    $transaksi = Transaksi::findOrFail($id);
+
+    // Delete the transaction
+    $transaksi->delete();
+
+    // Redirect back with a success message
+    return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
+}
+
 }

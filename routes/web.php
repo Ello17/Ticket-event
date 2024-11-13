@@ -58,6 +58,8 @@ Route::post('/midtrans-notification', [PaymentController::class, 'handleNotifica
 Route::get('/transaksi/{kode_tiket}', [PaymentController::class, 'show'])->name('transaksi.show');
 Route::get('/download/tiket/{id}', [PaymentController::class, 'downloadTiket'])->name('downloadTiket');
 Route::get('/midtrans/callback', [PaymentController::class, 'midtransCallback'])->name('midtransCallback');
+Route::delete('/transaksi/{id}', [PaymentController::class, 'destroy'])->name('destroyTransaksi');
+
 
 
 
