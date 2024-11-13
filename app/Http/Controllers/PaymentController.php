@@ -21,7 +21,7 @@ class PaymentController extends Controller
     public function __construct()
     {
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        Config::$isProduction = false; // Set to true if on production
+        Config::$isProduction = false; 
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }
