@@ -14,7 +14,7 @@
             <p id="qr-reader-results">Scan result :</p>
         </div>
         <form action="GET">
-            <input type="text">
+            <input type="text" value=>
             <div id="input"></div>
         </form>
     </div>

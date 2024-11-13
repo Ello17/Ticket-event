@@ -116,6 +116,10 @@ class PaymentController extends Controller
 
             if (in_array($transaction_status, ['settlement', 'capture'])) {
                 $transaksi->status = 'paid';
+
+                // Send the ticket email to the purchaser
+                Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+
             } elseif ($transaction_status === 'pending') {
                 $transaksi->status = 'pending';
             } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
@@ -131,9 +135,6 @@ class PaymentController extends Controller
                 'new_status' => $transaksi->status,
             ]);
 
-            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
-
-
             return redirect()->route('history')->with(
                 $transaction_status === 'settlement' || $transaction_status === 'capture'
                 ? 'pesan-berhasil'
@@ -147,6 +148,7 @@ class PaymentController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
         }
     }
+
     public function show($kode_tiket)
     {
         $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
