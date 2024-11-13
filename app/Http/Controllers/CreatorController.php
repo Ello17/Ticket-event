@@ -69,7 +69,7 @@ class CreatorController extends Controller
             'deskripsi_event' => 'required|string',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
-            'maps' => 'required|url',          
+            'maps' => 'required|url',
             'cover_event' => 'required|image|mimes:jpeg,png,jpg|max:15360',
         ]);
 
@@ -364,6 +364,42 @@ class CreatorController extends Controller
     }
     public function scanQr()
     {
+
         return view('creator.scanqr');
     }
+//     public function getPurchaserDetails(Request $request)
+// {
+//     $ticketCode = $request->query('ticketCode');
+
+//     // Cari transaksi berdasarkan kode tiket
+//     $transaksi = Transaksi::with(['tiket', 'event', 'user'])
+//                           ->where('kode_tiket', $ticketCode)
+//                           ->first();
+
+//     if (!$transaksi) {
+//         return response()->json(['success' => false]);
+//     }
+
+//     // Ambil data dari relasi
+//     $eventName = $transaksi->event->nama_event;
+//     $jumlahTiket = $transaksi->tiket_dibeli;
+//     $totalTransaksi = $transaksi->total_transaksi;
+//     $namaPembeli = $transaksi->nama_lengkap;
+//     $email = $transaksi->email;
+//     $noTelepon = $transaksi->no_telepon;
+
+//     // Kembalikan data dalam bentuk JSON
+//     return response()->json([
+//         'success' => true,
+//         'kode_tiket' => $transaksi->kode_tiket,
+//         'event' => $eventName,
+//         'jumlah_tiket' => $jumlahTiket,
+//         'total_transaksi' => $totalTransaksi,
+//         'pembeli' => $namaPembeli,
+//         'email' => $email,
+//         'no_telepon' => $noTelepon,
+//     ]);
+// }
+
+
 }

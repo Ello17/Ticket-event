@@ -137,11 +137,42 @@ class PaymentController extends Controller
                 : 'pesan-gagal',
                 $transaction_status === 'settlement' || $transaction_status === 'capture'
                 ? 'Pembayaran berhasil. Terima kasih!'
-                : 'Pembayaran tidak berhasil.'
+                : 'Pembayaran tidak berhasil.',
             );
         } else {
             Log::error('Transaction not found for kode_tiket:', ['kode_tiket' => $kode_tiket]);
             return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
         }
     }
+    public function show($kode_tiket)
+    {
+        $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
+
+        if ($transaksi) {
+            return view('transaksi.detail', compact('transaksi'));
+        } else {
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
+        }
+    }
+    public function downloadTiket($id)
+{
+    $transaksi = Transaksi::findOrFail($id);
+    $qrcodes = [];
+    $barcodes = [];
+
+    for ($i = 0; $i < $transaksi->tiket_dibeli; $i++) {
+        // Buat QR Code dan Barcode
+        $qrcode = DNS2D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'QRCODE');
+        $barcode = DNS1D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'C39');
+
+        $qrcodes[] = $qrcode;
+        $barcodes[] = $barcode;
+    }
+
+    // Generate PDF
+    $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes', 'barcodes'))
+               ->setPaper('a4');
+
+    return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
+}
 }
