@@ -8,19 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Participant extends Model
 {
     use HasFactory;
-
-
+    
     protected $fillable = [
-        'user_id',
-        'event_id',
-        'tiket_id',
-        'kode_tiket',
-        'scan_time',
-        'is_present'
+        'kode_result',
+        'status',
     ];
-
-    public function transaksi()
-    {
-        return $this->belongsTo(Transaksi::class, 'tiket_id');
-    }
 }

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class CreatorController extends Controller
 {
@@ -370,51 +371,42 @@ class CreatorController extends Controller
     }
     public function postScanQr(Request $request)
     {
-        // Ambil kode_tiket dari form
-        $kodeTiket = $request->input('kode_tiket');
-        Log::info('Nilai input kode_tiket: ' . $kodeTiket);
+        $request->validate([
+            'kode_result' => 'required', // Menghapus aturan 'unique' di sini untuk memeriksa secara manual
+        ]);
     
-        if (!$kodeTiket) {
-            Log::error('Kode tiket tidak ditemukan dalam input.');
-            return back()->with('error', 'Kode tiket tidak ditemukan dalam input.');
-        }
+        $kodeResult = $request->kode_result;
     
-        // Cek apakah tiket sudah discan sebelumnya di tabel participant
-        $existingParticipant = Participant::where('kode_tiket', $kodeTiket)->first();
+        // Pisahkan kode tiket dengan nomor urut, misalnya 'TIKET123-1' akan menjadi 'TIKET123'
+        $kodeTiket = Str::beforeLast($kodeResult, '-');
+    
+        // Cek apakah kode_result sudah ada di tabel participants
+        $existingParticipant = Participant::where('kode_result', $kodeResult)->first();
+    
         if ($existingParticipant) {
-            Log::info('Tiket sudah pernah discan sebelumnya: ' . $kodeTiket);
-            return back()->with('error', 'Tiket sudah discan sebelumnya!');
+            // Jika kode_result sudah ada, berikan pesan gagal
+            return back()->with('pesan-gagal', 'Kode tiket sudah digunakan, scan gagal diproses.');
         }
     
-        // Cari data transaksi berdasarkan kode_tiket
+        // Cari data transaksi berdasarkan kode_tiket tanpa nomor urut
         $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
-        if (!$transaksi) {
-            Log::warning('Data transaksi tidak ditemukan untuk kode_tiket: ' . $kodeTiket);
-            return back()->with('error', 'Kode tiket tidak ditemukan!');
-        }
     
-        // Simpan data ke tabel participant
-        try {
-            $participant = Participant::create([
-                'user_id' => $transaksi->user_id,
-                'event_id' => $transaksi->event_id,
-                'tiket_id' => $transaksi->id,
-                'kode_tiket' => $transaksi->kode_tiket,
-                'scan_time' => now(),
-                'is_present' => true,
+        if ($transaksi) {
+            // Jika kode_tiket ditemukan, update status participant menjadi 'hadir'
+            Participant::create([
+                'kode_result' => $kodeResult,
+                'status' => 'hadir',
             ]);
     
-            Log::info('Data Participant berhasil disimpan.', $participant->toArray());
+            return back()->with('pesan-berhasil', 'Scan QR berhasil diproses.');
+        } else {
+            // Jika kode_tiket tidak ditemukan, update status participant menjadi 'gagal'
+            Participant::create([
+                'kode_result' => $kodeResult,
+                'status' => 'gagal',
+            ]);
     
-            // Notifikasi sukses
-            return back()->with('success', 'Tiket berhasil discan dan disimpan sebagai hadir.');
-        } catch (\Exception $e) {
-            Log::error('Error saat menyimpan data Participant: ' . $e->getMessage());
-            Log::error('Trace Error: ' . $e->getTraceAsString());
-            return back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            return back()->with('pesan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
         }
     }
-    
-
-       
 }
