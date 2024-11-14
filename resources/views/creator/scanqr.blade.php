@@ -17,7 +17,7 @@
                 @csrf
                 <input type="text" id="input" name="kode_tiket">
                 <button type="submit" class="btn btn-primary">Submit</button>
-            </form>            
+            </form>                      
         </div>
     </div>
 
@@ -57,4 +57,5 @@
         html5QrcodeScanner.render(onScanSuccess);
     });
 </script>
+
 @endpush

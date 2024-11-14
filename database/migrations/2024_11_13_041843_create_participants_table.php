@@ -18,7 +18,7 @@ class CreateParticipantsTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('event_id')->constrained('events');
             $table->foreignId('tiket_id')->constrained('tikets');
-            $table->string('kode_tiket')->index();
+            $table->string('kode_tiket')->unique();
             $table->timestamp('scan_time')->nullable();
             $table->boolean('is_present')->default(false);
             $table->timestamps();

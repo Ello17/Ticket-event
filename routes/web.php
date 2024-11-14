@@ -132,6 +132,7 @@ Route::get('/grafik{user_id}', [CreatorController::class, 'grafik'])->name('graf
 Route::get('/sendTickets', [CreatorController::class, 'sendTickets'])->name('sendTickets');
 Route::get('/scan-qr', [CreatorController::class, 'ScanQr'])->name('scanQr');
 Route::post('/scan-qr', [CreatorController::class, 'postScanQr'])->name('postScanQr');
+
 });
 
 
