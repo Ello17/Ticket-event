@@ -161,10 +161,8 @@ class PaymentController extends Controller
     for ($i = 0; $i < $transaksi->tiket_dibeli; $i++) {
         // Buat QR Code dan Barcode
         $qrcode = DNS2D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'QRCODE');
-        $barcode = DNS1D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'C39');
 
         $qrcodes[] = $qrcode;
-        $barcodes[] = $barcode;
     }
 
     // Generate PDF

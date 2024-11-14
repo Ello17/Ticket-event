@@ -11,9 +11,10 @@
         <div id="qr-reader" class="qr-reader"></div>
         <br>
         <div class="result">
-            <p id="qr-reader-results">Scan result :</p>
-            <form action="" method="POST">
-                <input type="text" id="input">
+            <form action="{{ route('postScanQr') }}" method="POST" id="scan-form">
+                @csrf
+                <p id="qr-reader-results">Scan result :</p>
+                <input type="text" id="input" name="kode_result" readonly>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -44,18 +45,23 @@
         }
     }
 
-    let result = document.getElementById('qr-reader-results');
-    let input = document.getElementById('input')
     docReady(function () {
-        var lastResult, countResults = 0;
+        var lastResult;
+        let result = document.getElementById('qr-reader-results');
+        let input = document.getElementById('input');
+        let form = document.getElementById('scan-form');
 
         function onScanSuccess(decodedText, decodedResult) {
             if (decodedText !== lastResult) {
-                ++countResults;
                 lastResult = decodedText;
                 console.log(`Scan result: ${decodedText}`, decodedResult);
+                
+                // Set the input value to the scan result
+                input.value = decodedText;
                 result.innerHTML = `Scan result : ${decodedText}`;
-                input.innerHTML =  `${decodedText}`;
+                
+                // Automatically submit the form
+                form.submit();
             }
         }
 
