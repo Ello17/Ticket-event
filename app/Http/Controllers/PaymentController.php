@@ -22,7 +22,7 @@ class PaymentController extends Controller
     public function __construct()
     {
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        Config::$isProduction = false; 
+        Config::$isProduction = false;
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }
@@ -111,11 +111,7 @@ class PaymentController extends Controller
 
             if (in_array($transaction_status, ['settlement', 'capture'])) {
                 $transaksi->status = 'paid';
-<<<<<<< HEAD
-
-=======
                 // Send the ticket email to the purchaser
->>>>>>> 978aa9e9131d7839de300ae2cfa2e47d9d1081fc
                 Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
 
             } elseif ($transaction_status === 'pending') {
