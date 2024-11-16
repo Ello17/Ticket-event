@@ -6,7 +6,7 @@
 @section('title', 'Sign-In Creator')
 @section('content')
 @include('template.notifikasi')
-    <div class="container">
+    <div class="container-form">
         <div class="box-image">
             <a href="{{ route('homeCreator') }}">
                 <img src="{{ asset('components/asset/logo/512.png') }}" alt="">
