@@ -15,6 +15,8 @@ class CreateParticipantsTable extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_result')->unique();
+            $table->string('status');
             $table->timestamps();
         });
     }

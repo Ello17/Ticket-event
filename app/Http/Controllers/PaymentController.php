@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\kirimTiket;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Tiket;
@@ -21,7 +22,7 @@ class PaymentController extends Controller
     public function __construct()
     {
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        Config::$isProduction = false; // Set to true if on production
+        Config::$isProduction = false; 
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }
@@ -86,12 +87,6 @@ class PaymentController extends Controller
             ]
         ];
 
-        try {
-            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
-        } catch (Exception $ex) {
-            Log::error("Error sending email: " . $ex->getMessage());
-        }
-
         $url = Snap::createTransaction($transaction)->redirect_url;
         return redirect($url);
     }
@@ -116,7 +111,11 @@ class PaymentController extends Controller
 
             if (in_array($transaction_status, ['settlement', 'capture'])) {
                 $transaksi->status = 'paid';
+<<<<<<< HEAD
 
+=======
+                // Send the ticket email to the purchaser
+>>>>>>> 978aa9e9131d7839de300ae2cfa2e47d9d1081fc
                 Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
 
             } elseif ($transaction_status === 'pending') {
@@ -167,10 +166,8 @@ class PaymentController extends Controller
     for ($i = 0; $i < $transaksi->tiket_dibeli; $i++) {
         // Buat QR Code dan Barcode
         $qrcode = DNS2D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'QRCODE');
-        $barcode = DNS1D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'C39');
 
         $qrcodes[] = $qrcode;
-        $barcodes[] = $barcode;
     }
 
     // Generate PDF
@@ -179,4 +176,18 @@ class PaymentController extends Controller
 
     return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
 }
+
+public function destroy($id)
+{
+    // Find the transaction by ID
+    $transaksi = Transaksi::findOrFail($id);
+
+    // Delete the transaction
+    $transaksi->delete();
+
+    // Redirect back with a success message
+    return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
+}
+
+
 }
