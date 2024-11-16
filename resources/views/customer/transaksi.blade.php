@@ -59,24 +59,24 @@
                 <div class="title">
                     <h2>Detail Pemesan</h2>
                 </div>
+                @if ($tiket)
+                <div class="form-group">
+                    <input class="form-control" type="hidden" id="tiket_id" value="{{ $tiket->id }}"
+                    name="tiket_id" required>
+                    <input class="form-control" type="hidden" id="user_id" value="{{ auth()->user()->id }}"
+                    name="user_id" required>
+                    <input class="form-control" type="hidden" id="kategori_tiket" value="{{ $tiket->kategori_tiket }}"
+                    name="kategori_tiket" required>
+                    <input class="form-control" type="hidden" id="tiket_dibeli" value="{{ $tiket_dibeli }}"
+                    name="tiket_dibeli" required>
+                    <input class="form-control" type="hidden" id="status" value="{{ $status }}"
+                    name="status" required>
+                </div>
+                @else
+                <p>Tiket Tidak ditemukan</p>
+                @endif
                 <div class="border column">
-                    @if ($tiket)
-                        <div class="form-group">
-                            <input class="form-control" type="hidden" id="tiket_id" value="{{ $tiket->id }}"
-                                name="tiket_id" required>
-                            <input class="form-control" type="hidden" id="user_id" value="{{ auth()->user()->id }}"
-                                name="user_id" required>
-                            <input class="form-control" type="hidden" id="kategori_tiket" value="{{ $tiket->kategori_tiket }}"
-                                name="kategori_tiket" required>
-                            <input class="form-control" type="hidden" id="tiket_dibeli" value="{{ $tiket_dibeli }}"
-                                name="tiket_dibeli" required>
-                            <input class="form-control" type="hidden" id="status" value="{{ $status }}"
-                                name="status" required>
-                        </div>
-                    @else
-                        <p>Tiket Tidak ditemukan</p>
-                    @endif
-                    <div class="form-group">
+                    <div class="group">
                         <label for="name">Nama Lengkap :</label>
                         <br>
                         <input class="form-control input-transaksi" type="text" id="name"

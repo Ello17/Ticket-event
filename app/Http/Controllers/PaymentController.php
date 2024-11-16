@@ -117,7 +117,6 @@ class PaymentController extends Controller
             if (in_array($transaction_status, ['settlement', 'capture'])) {
                 $transaksi->status = 'paid';
 
-                // Send the ticket email to the purchaser
                 Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
 
             } elseif ($transaction_status === 'pending') {
