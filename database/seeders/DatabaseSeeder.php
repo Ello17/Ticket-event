@@ -255,35 +255,35 @@ class DatabaseSeeder extends Seeder
             'kategori_tiket' => 'online',
             'harga_tiket' => 50000,
             'jumlah_tiket' => 100,
-            'link_tiket' => 'ini link zoom nya',
+            'link_tiket' => 'https://meet.google.com/wqd-qxpo-hre',
             'event_id' => '6'
         ]);
         Tiket::create([
             'kategori_tiket' => 'online',
             'harga_tiket' => 30000,
             'jumlah_tiket' => 100,
-            'link_tiket' => 'ini link zoom nya',
+            'link_tiket' => 'https://meet.google.com/wqd-qxpo-hre',
             'event_id' => '7'
         ]);
         Tiket::create([
             'kategori_tiket' => 'online',
             'harga_tiket' => 37000,
             'jumlah_tiket' => 100,
-            'link_tiket' => 'ini link zoom nya',
+            'link_tiket' => 'https://meet.google.com/wqd-qxpo-hre',
             'event_id' => '8'
         ]);
         Tiket::create([
             'kategori_tiket' => 'online',
             'harga_tiket' => 22000,
             'jumlah_tiket' => 100,
-            'link_tiket' => 'ini link zoom nya',
+            'link_tiket' => 'https://meet.google.com/wqd-qxpo-hre',
             'event_id' => '9'
         ]);
         Tiket::create([
             'kategori_tiket' => 'online',
             'harga_tiket' => 25000,
             'jumlah_tiket' => 100,
-            'link_tiket' => 'ini link zoom nya',
+            'link_tiket' => 'https://meet.google.com/wqd-qxpo-hre',
             'event_id' => '10'
         ]);
 
@@ -296,7 +296,7 @@ class DatabaseSeeder extends Seeder
             'scan_time' => now(),
             'is_present' => true
         ]);
-        
+
 
         // Transaksi::create([
         //    'tiket_dibeli'=>'1',

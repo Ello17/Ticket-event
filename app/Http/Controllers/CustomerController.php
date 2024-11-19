@@ -189,6 +189,15 @@ class CustomerController extends Controller
         // Menggunakan ID unik untuk setiap transaksi
         $order_id = 'ORDER-' . uniqid();
 
+        // Tentukan status transaksi
+        $status = 'pending'; // Status default, bisa Anda sesuaikan sesuai kebutuhan
+
+        // Contoh logika untuk status transaksi
+        if ($tiket_dibeli > 0) {
+            $status = 'confirmed'; // Jika tiket dibeli, status menjadi confirmed
+        }
+
+        // Mengirimkan data ke Midtrans
         $params = [
             'transaction_details' => [
                 'order_id' => $kode_tiket,
@@ -209,8 +218,7 @@ class CustomerController extends Controller
 
         $formatted_total_harga = number_format($total_harga, 0, ',', '.');
 
-        // Mengirim data ke view transaksi
-        return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'order_id', 'user'));
+        // Kirim data ke view transaksi
+        return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'order_id', 'user', 'status'));
     }
-
 }
