@@ -135,5 +135,5 @@ Route::get('/scan-qr', [CreatorController::class, 'ScanQr'])->name('scanQr');
 Route::post('/scan-qr', [CreatorController::class, 'postScanQr'])->name('postScanQr');
 
 });
-
+   
 
