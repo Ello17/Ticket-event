@@ -55,6 +55,8 @@
 
                     <label for="jumlah_tiket">Jumlah Tiket</label>
                     <input type="text" name="jumlah_tiket" class="form-control" value="{{ $tiket->jumlah_tiket }}" required>
+                    <label for="link_tiket">Link Acara</label>
+                    <input type="text" name="link_tiket" class="form-control" value="{{ $tiket->link_tiket }}" required>
                     <button type="submit" class="btn btn-primary mt-3">Update Tiket</button>
                 </form>
 

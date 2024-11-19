@@ -15,16 +15,6 @@
 </div>
 @endsection
 @push('js')
-
-@if (session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif
-@if (session('error'))
-<div class="alert alert-danger">
-    {{ session('error') }}
-</div>
 <script src="{{asset('components/js/scanQr.js')}}"></script>
 <script>
     function docReady(fn) {
@@ -46,8 +36,8 @@ docReady(function () {
             ++countResults;
                 lastResult = decodedText;
                 // Handle on success condition with the decoded message.
-                console.log(`Scan result ${decodedText}`, decodedResult);
-                result.innerHTML = (`Scan result : ${decodedText}`);
+                console.log(Scan result ${decodedText}, decodedResult);
+                result.innerHTML = (Scan result : ${decodedText});
             }
         }
 

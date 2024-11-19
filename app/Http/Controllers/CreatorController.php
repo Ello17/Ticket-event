@@ -69,7 +69,7 @@ class CreatorController extends Controller
             'deskripsi_event' => 'required|string',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
-            'maps' => 'required|url',          
+            'maps' => 'required|url',
             'cover_event' => 'required|image|mimes:jpeg,png,jpg|max:15360',
         ]);
 
@@ -158,23 +158,29 @@ class CreatorController extends Controller
 
 
     public function posttambahtiket(Request $request)
-    {
-        $request->validate([
-            'event_id' => 'required|exists:events,id',
-            'kategori_tiket' => 'required',
-            'harga_tiket' => 'required|numeric',
-            'jumlah_tiket' => 'required|integer',
-        ]);
+{
+    $request->validate([
+        'event_id' => 'required|exists:events,id',
+        'kategori_tiket' => 'required',
+        'harga_tiket' => 'required|numeric',
+        'jumlah_tiket' => 'required|integer',
+        'link_tiket' => 'required|string',
+    ]);
 
-        Tiket::create([
-            'event_id' => $request->event_id,
-            'kategori_tiket' => $request->kategori_tiket,
-            'harga_tiket' => $request->harga_tiket,
-            'jumlah_tiket' => $request->jumlah_tiket,
-        ]);
+    // Debug data request
+    dd($request->all()); // Ini akan menampilkan semua input yang diterima oleh controller.
 
-        return redirect()->route('kelolaTiket')->with('pesan-berhasil', 'Tiket Berhasil Ditambahkan');
-    }
+    Tiket::create([
+        'event_id' => $request->event_id,
+        'kategori_tiket' => $request->kategori_tiket,
+        'harga_tiket' => $request->harga_tiket,
+        'jumlah_tiket' => $request->jumlah_tiket,
+        'link_tiket' => $request->link_tiket,
+    ]);
+
+    return redirect()->route('kelolaTiket')->with('pesan-berhasil', 'Tiket Berhasil Ditambahkan');
+}
+
 
     public function storeTicket(Request $request)
     {
@@ -199,6 +205,7 @@ class CreatorController extends Controller
             'kategori_tiket' => 'required|string|max:255',
             'harga_tiket' => 'required|numeric|min:0',
             'jumlah_tiket' => 'required|integer|min:0',
+            'link_tiket' => 'required|string|min:0',
         ]);
 
         $tiket = Tiket::findOrFail($id);
@@ -206,6 +213,7 @@ class CreatorController extends Controller
         $tiket->kategori_tiket = $request->kategori_tiket;
         $tiket->harga_tiket = $request->harga_tiket;
         $tiket->jumlah_tiket = $request->jumlah_tiket;
+        $tiket->link_tiket = $request->link_tiket;
 
         $tiket->save();
 
@@ -362,20 +370,20 @@ class CreatorController extends Controller
             'jumlahTiket' => $jumlahTiket,
         ]);
     }
-    public function scanQr($transaksi_id)
-    {
-    
-    $transaksi = Transaksi::find($transaksi_id);
-    
-    if ($transaksi) {
-        $transaksi->status = 'complete';
-        $transaksi->save();
-
-        return view('creator.scanqr', compact('transaksi'))->with('success', 'Transaksi berhasil.');
-    } else {
-        return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
-    }
+    public function scanQr()
+{
+   return view('creator.scanqr');
 }
 
-    
+
+public function sendTickets()
+{
+    // Ambil transaksi beserta event dan tiket yang terhubung
+    $transaksi = Transaksi::with(['event', 'tiket'])->get();
+
+    return view('creator.sendTickets', compact('transaksi'));
 }
+
+}
+
+
