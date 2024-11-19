@@ -54,7 +54,7 @@
                                 <h3 class="text-2xl font-semibold mb-4">Tiket</h3>
                                 @foreach ($tiket as $tiket)
                                     <form
-                                        action="{{ route('transaksi', ['tiket' => $tiket->id, 'id' => $event->id]) }}"
+                                        action="{{ route('transaksi.tiket', ['tiket' => $tiket->id, 'id' => $event->id]) }}"
                                         method="GET">
                                         <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
                                             <div class="mb-4">

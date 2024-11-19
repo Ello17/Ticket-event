@@ -86,12 +86,6 @@ class PaymentController extends Controller
             ]
         ];
 
-        try {
-            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
-        } catch (Exception $ex) {
-            Log::error("Error sending email: " . $ex->getMessage());
-        }
-
         $url = Snap::createTransaction($transaction)->redirect_url;
         return redirect($url);
     }
@@ -123,6 +117,9 @@ class PaymentController extends Controller
             // Update status transaksi berdasarkan callback status
             if (in_array($transaction_status, ['settlement', 'capture'])) {
                 $transaksi->status = 'paid';
+                // Send the ticket email to the purchaser
+                Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+
             } elseif ($transaction_status === 'pending') {
                 $transaksi->status = 'pending';
             } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
@@ -138,12 +135,20 @@ class PaymentController extends Controller
                 'status' => $transaksi->status,
             ]);
 
-            return response()->json(['status' => 'success', 'message' => 'Transaction status updated.']);
+            return redirect()->route('history')->with(
+                $transaction_status === 'settlement' || $transaction_status === 'capture'
+                ? 'pesan-berhasil'
+                : 'pesan-gagal',
+                $transaction_status === 'settlement' || $transaction_status === 'capture'
+                ? 'Pembayaran berhasil. Terima kasih!'
+                : 'Pembayaran tidak berhasil.',
+            );
         } else {
             Log::error('Transaction not found for kode_tiket:', ['kode_tiket' => $kode_tiket]);
             return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
         }
     }
+
     public function show($kode_tiket)
     {
         $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
@@ -163,10 +168,8 @@ class PaymentController extends Controller
     for ($i = 0; $i < $transaksi->tiket_dibeli; $i++) {
         // Buat QR Code dan Barcode
         $qrcode = DNS2D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'QRCODE');
-        $barcode = DNS1D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'C39');
 
         $qrcodes[] = $qrcode;
-        $barcodes[] = $barcode;
     }
 
     // Generate PDF
@@ -175,4 +178,17 @@ class PaymentController extends Controller
 
     return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
 }
+
+public function destroy($id)
+{
+    // Find the transaction by ID
+    $transaksi = Transaksi::findOrFail($id);
+
+    // Delete the transaction
+    $transaksi->delete();
+
+    // Redirect back with a success message
+    return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
+}
+
 }

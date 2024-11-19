@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendTicketMail;
 use App\Models\Event;
+use App\Models\participant;
 use App\Models\Tiket;
 use App\Models\Transaksi;
 use App\Models\User;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class CreatorController extends Controller
 {
@@ -371,19 +373,48 @@ class CreatorController extends Controller
         ]);
     }
     public function scanQr()
-{
-   return view('creator.scanqr');
+    {
+        return view('creator.scanqr');
+    }
+
+    public function postScanQr(Request $request)
+    {
+        $request->validate([
+            'kode_result' => 'required', // Menghapus aturan 'unique' di sini untuk memeriksa secara manual
+        ]);
+
+        $kodeResult = $request->kode_result;
+
+        // Pisahkan kode tiket dengan nomor urut, misalnya 'TIKET123-1' akan menjadi 'TIKET123'
+        $kodeTiket = Str::beforeLast($kodeResult, '-');
+
+        // Cek apakah kode_result sudah ada di tabel participants
+        $existingParticipant = Participant::where('kode_result', $kodeResult)->first();
+
+        if ($existingParticipant) {
+            // Jika kode_result sudah ada, berikan pesan gagal
+            return back()->with('pesan-gagal', 'Kode tiket sudah digunakan, scan gagal diproses.');
+        }
+
+        // Cari data transaksi berdasarkan kode_tiket tanpa nomor urut
+        $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
+
+        if ($transaksi) {
+            // Jika kode_tiket ditemukan, update status participant menjadi 'hadir'
+            Participant::create([
+                'kode_result' => $kodeResult,
+                'status' => 'hadir',
+            ]);
+
+            return back()->with('pesan-berhasil', 'Scan QR berhasil diproses.');
+        } else {
+            // Jika kode_tiket tidak ditemukan, update status participant menjadi 'gagal'
+            Participant::create([
+                'kode_result' => $kodeResult,
+                'status' => 'gagal',
+            ]);
+
+            return back()->with('pesan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
+        }
+    }
 }
-
-
-public function sendTickets()
-{
-    // Ambil transaksi beserta event dan tiket yang terhubung
-    $transaksi = Transaksi::with(['event', 'tiket'])->get();
-
-    return view('creator.sendTickets', compact('transaksi'));
-}
-
-}
-
-

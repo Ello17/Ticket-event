@@ -179,6 +179,7 @@ class CustomerController extends Controller
         }
 
         $total_harga = $tiket->harga_tiket * $tiket_dibeli;
+        $kode_tiket = $tiket->id . '-' . time();
 
         \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         \Midtrans\Config::$isProduction = false;
@@ -190,7 +191,7 @@ class CustomerController extends Controller
 
         $params = [
             'transaction_details' => [
-                'order_id' => $order_id,
+                'order_id' => $kode_tiket,
                 'gross_amount' => $total_harga,
             ],
             'customer_details' => [
