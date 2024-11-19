@@ -6,7 +6,7 @@
     @section('title', 'Sign-In')
     @section('content')
 
-    <div class="container">
+    <div class="container-form">
         <div class="box-image">
             <a href="{{route('homeCustomer')}}">
             <img src="{{asset('components/asset/logo/512.png')}}" alt="">
