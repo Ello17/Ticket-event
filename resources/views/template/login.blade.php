@@ -34,6 +34,9 @@
             <p class="signup_login">
                 You do not have an account? <a href="{{ route('registerCustomer') }}" class="a-lg">Sign up</a>
             </p>
+            <p class="reset">
+                <a href="{{ route('password.request') }}">Forgot Your Password?</a>
+            </p>
         </div>
     </div>
 
