@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\kirimTiket;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Tiket;
@@ -21,7 +22,7 @@ class PaymentController extends Controller
     public function __construct()
     {
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        Config::$isProduction = false; // Set to true if on production
+        Config::$isProduction = false;
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }
@@ -190,5 +191,6 @@ public function destroy($id)
     // Redirect back with a success message
     return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
 }
+
 
 }
