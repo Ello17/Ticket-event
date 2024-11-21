@@ -48,22 +48,25 @@
                             <td>{{ $transaksi->email }}</td>
                             <td>{{ $transaksi->status }}</td>
                             <td>
-                                @if($transaksi->tiket->kategori_tiket === 'online' && $transaksi->status === 'paid')
-                                    <!-- Tombol untuk tiket online yang sudah dibayar -->
-                                    <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
-                                @elseif($transaksi->status === 'paid')
-                                    <!-- Tombol untuk tiket offline yang sudah dibayar -->
-                                    <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
-                                @else
-                                    <!-- Tombol untuk transaksi yang belum dibayar -->
-                                    <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                @endif
-                            </td>   
-                        </tr>
+                                <div class="d-flex justify-content-center gap-2">
+                                    @if($transaksi->tiket->kategori_tiket === 'online' && $transaksi->status === 'paid')
+                                        <!-- Tombol untuk tiket online yang sudah dibayar -->
+                                        <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
+                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                    @elseif($transaksi->status === 'paid')
+                                        <!-- Tombol untuk tiket offline yang sudah dibayar -->
+                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                    @else
+                                        <!-- Tombol untuk transaksi yang belum dibayar -->
+                                        <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </td>
+                         </tr>
                         @empty
                         <tr>
                             <td colspan="10" class="text-center py-3">
