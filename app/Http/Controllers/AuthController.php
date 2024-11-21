@@ -114,10 +114,6 @@ class AuthController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-    
-        if (User::where('email', $request->input('email'))->exists() || User::where('username', $request->input('username'))->exists()) {
             return redirect()->back()->with('pesan-gagal', 'Akun dengan email atau username ini sudah ada.')->withInput();
         }
     
@@ -139,34 +135,40 @@ class AuthController extends Controller
     }
 
     public function postRegisterCreator(Request $request)
-{
-    // Validasi input
+    {
+   
     $this->validate($request, [
         'username' => 'required|string|max:255|unique:users',
         'email' => 'required|string|email|max:255|unique:users',
         'password' => 'required|string|min:3',
     ]);
 
-    // Membuat user baru
+    if ($this->fails()) {
+        return redirect()->back()->with('pesan-gagal', 'Akun dengan email atau username ini sudah ada.')->withInput();
+    }
+
+    
     $user = User::create([
         'username' => $request->username,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'role' => 'creator', // Set role sebagai creator
-        'is_approved' => false, // Creator perlu persetujuan admin
+        'role' => 'creator', 
+        'is_approved' => false, 
     ]);
 
-    // Redirect ke halaman login dengan notifikasi
+   
     return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
 }
 
     public function logout()
     {
     Auth::logout();
-    session()->flush(); // Menghapus semua session termasuk role
+    session()->flush(); 
     return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Silahkan Login Kembali');
     }
 
+
+    
 
 
 

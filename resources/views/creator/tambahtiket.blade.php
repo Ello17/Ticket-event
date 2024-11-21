@@ -58,6 +58,10 @@
                     <input type="text" required name="jumlah_tiket" class="form-control"
                         placeholder="Masukkan Jumlah Tiket">
 
+                    <label for="link_tiket">Link Acara</label>
+                    <input type="text" required name="link_tiket" class="form-control"
+                        placeholder="Masukkan Link Acara">
+
                     <button type="submit" class="btn btn-success mt-3">Tambah</button>
                 </form>
 

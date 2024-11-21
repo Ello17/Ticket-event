@@ -7,7 +7,7 @@
 @section('title', 'Sign-Up')
 @section('content')
 
-<div class="container">
+<div class="container-form">
     <div class="box-image">
         <a href="{{ route('homeCustomer') }}">
             <img src="{{ asset('components/asset/logo/512.png') }}" alt="">
@@ -16,28 +16,6 @@
 
     <div class="box-form">
         <h2>Register</h2>
-
-        @if(session('pesan-berhasil'))
-        <div class="alert alert-success">
-            {{ session('pesan-berhasil') }}
-        </div>
-    @endif
-    
-    @if(session('pesan-gagal'))
-        <div class="alert alert-danger">
-            {{ session('pesan-gagal') }}
-        </div>
-    @endif
-    
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         <form action="{{ route('postRegisterCustomer') }}" enctype="multipart/form-data" method="POST" class="register_form">
             @csrf

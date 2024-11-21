@@ -14,7 +14,7 @@
 </head>
 <body style="background-color: #111827;">
     @include('template.notifikasi')
-@yield('content')
+    @yield('content')
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
 @stack('js')

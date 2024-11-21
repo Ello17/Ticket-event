@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendTicketMail;
 use App\Models\Event;
+use App\Models\participant;
 use App\Models\Tiket;
 use App\Models\Transaksi;
 use App\Models\User;
@@ -11,11 +12,13 @@ use Carbon\Carbon;
 // use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class CreatorController extends Controller
 {
@@ -69,7 +72,7 @@ class CreatorController extends Controller
             'deskripsi_event' => 'required|string',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
-            'maps' => 'required|url',          
+            'maps' => 'required|url',
             'cover_event' => 'required|image|mimes:jpeg,png,jpg|max:15360',
         ]);
 
@@ -158,23 +161,29 @@ class CreatorController extends Controller
 
 
     public function posttambahtiket(Request $request)
-    {
-        $request->validate([
-            'event_id' => 'required|exists:events,id',
-            'kategori_tiket' => 'required',
-            'harga_tiket' => 'required|numeric',
-            'jumlah_tiket' => 'required|integer',
-        ]);
+{
+    $request->validate([
+        'event_id' => 'required|exists:events,id',
+        'kategori_tiket' => 'required',
+        'harga_tiket' => 'required|numeric',
+        'jumlah_tiket' => 'required|integer',
+        'link_tiket' => 'required|string',
+    ]);
 
-        Tiket::create([
-            'event_id' => $request->event_id,
-            'kategori_tiket' => $request->kategori_tiket,
-            'harga_tiket' => $request->harga_tiket,
-            'jumlah_tiket' => $request->jumlah_tiket,
-        ]);
+    // Debug data request
+    dd($request->all()); // Ini akan menampilkan semua input yang diterima oleh controller.
 
-        return redirect()->route('kelolaTiket')->with('pesan-berhasil', 'Tiket Berhasil Ditambahkan');
-    }
+    Tiket::create([
+        'event_id' => $request->event_id,
+        'kategori_tiket' => $request->kategori_tiket,
+        'harga_tiket' => $request->harga_tiket,
+        'jumlah_tiket' => $request->jumlah_tiket,
+        'link_tiket' => $request->link_tiket,
+    ]);
+
+    return redirect()->route('kelolaTiket')->with('pesan-berhasil', 'Tiket Berhasil Ditambahkan');
+}
+
 
     public function storeTicket(Request $request)
     {
@@ -199,6 +208,7 @@ class CreatorController extends Controller
             'kategori_tiket' => 'required|string|max:255',
             'harga_tiket' => 'required|numeric|min:0',
             'jumlah_tiket' => 'required|integer|min:0',
+            'link_tiket' => 'required|string|min:0',
         ]);
 
         $tiket = Tiket::findOrFail($id);
@@ -206,6 +216,7 @@ class CreatorController extends Controller
         $tiket->kategori_tiket = $request->kategori_tiket;
         $tiket->harga_tiket = $request->harga_tiket;
         $tiket->jumlah_tiket = $request->jumlah_tiket;
+        $tiket->link_tiket = $request->link_tiket;
 
         $tiket->save();
 
@@ -364,9 +375,46 @@ class CreatorController extends Controller
     }
     public function scanQr()
     {
-    
         return view('creator.scanqr');
-}
+    }
+    public function postScanQr(Request $request)
+    {
+        $request->validate([
+            'kode_result' => 'required', // Menghapus aturan 'unique' di sini untuk memeriksa secara manual
+        ]);
 
-    
+        $kodeResult = $request->kode_result;
+
+        // Pisahkan kode tiket dengan nomor urut, misalnya 'TIKET123-1' akan menjadi 'TIKET123'
+        $kodeTiket = Str::beforeLast($kodeResult, '-');
+
+        // Cek apakah kode_result sudah ada di tabel participants
+        $existingParticipant = Participant::where('kode_result', $kodeResult)->first();
+
+        if ($existingParticipant) {
+            // Jika kode_result sudah ada, berikan pesan gagal
+            return back()->with('pesan-gagal', 'Kode tiket sudah digunakan, scan gagal diproses.');
+        }
+
+        // Cari data transaksi berdasarkan kode_tiket tanpa nomor urut
+        $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
+
+        if ($transaksi) {
+            // Jika kode_tiket ditemukan, update status participant menjadi 'hadir'
+            Participant::create([
+                'kode_result' => $kodeResult,
+                'status' => 'hadir',
+            ]);
+
+            return back()->with('pesan-berhasil', 'Scan QR berhasil diproses.');
+        } else {
+            // Jika kode_tiket tidak ditemukan, update status participant menjadi 'gagal'
+            Participant::create([
+                'kode_result' => $kodeResult,
+                'status' => 'gagal',
+            ]);
+
+            return back()->with('pesan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
+        }
+    }
 }

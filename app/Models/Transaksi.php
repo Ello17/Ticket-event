@@ -23,13 +23,9 @@ class Transaksi extends Model
         'tiket_id',
         'event_id',
         'user_id',
-        'status'
+        'status',
+        'kode_tiket'
     ];
-
-    protected $attributes = [
-        'status' => 'pending',
-    ];
-
 
     public function event(){
         return $this->belongsTo(Event::class);
@@ -44,13 +40,15 @@ class Transaksi extends Model
         return $this->belongsTo(Tiket::class, 'tiket_id'); // Pastikan menggunakan nama kolom yang sesuai
     }
 
-    protected static function boot()
-    {
-        parent::boot();
+    
 
-        static::creating(function ($transaksi) {
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-            $transaksi->kode_tiket = 'TMD' .  $transaksi->tiket_id . '-TR' . Str::random(5);
-        });
-    }
+    //     static::creating(function ($transaksi) {
+
+    //         $transaksi->kode_tiket = 'TMD' .  $transaksi->tiket_id . '-TR' . Str::random(5);
+    //     });
+    // }
 }

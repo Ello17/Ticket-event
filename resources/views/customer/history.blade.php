@@ -15,15 +15,6 @@
 <div class="container py-2">
     <div class="row">
         <div class="col-lg-9 mx-auto bg-[#1f2937] rounded shadow">
-
-            <!-- Notifikasi sukses jika email berhasil dikirim -->
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
             <!-- Fixed header table -->
             <div class="table-responsive">
                 <table class="table text-white">
@@ -31,6 +22,7 @@
                         <tr>
                             <th scope="col" style="text-align: center">No</th>
                             <th scope="col">Tiket Dibeli</th>
+                            <th scope="col">Kategori Tiket</th>
                             <th scope="col">Tanggal Transaksi</th>
                             <th scope="col">Total Transaksi</th>
                             <th scope="col">Nama Lengkap</th>
@@ -47,6 +39,7 @@
                         <tr>
                             <th scope="row" style="text-align: center;">{{ $index + 1 }}</th>
                             <td>{{ $transaksi->tiket_dibeli }}</td>
+                            <td>{{ $transaksi->tiket->kategori_tiket }}</td>
                             <td>{{ $transaksi->tanggal_transaksi }}</td>
                             <td>{{ number_format($transaksi->total_transaksi, 0, ',', '.') }}</td>
                             <td>{{ $transaksi->nama_lengkap }}</td>
@@ -55,12 +48,28 @@
                             <td>{{ $transaksi->email }}</td>
                             <td>{{ $transaksi->status }}</td>
                             <td>
-                                <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                <div class="d-flex justify-content-center gap-2">
+                                    @if($transaksi->tiket->kategori_tiket === 'online' && $transaksi->status === 'paid')
+                                        <!-- Tombol untuk tiket online yang sudah dibayar -->
+                                        <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
+                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                    @elseif($transaksi->status === 'paid')
+                                        <!-- Tombol untuk tiket offline yang sudah dibayar -->
+                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                    @else
+                                        <!-- Tombol untuk transaksi yang belum dibayar -->
+                                        <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
-                        </tr>
+                         </tr>
                         @empty
                         <tr>
-                            <td colspan="9" class="text-center py-3">
+                            <td colspan="10" class="text-center py-3">
                                 <strong>Belum ada Tiket dibeli</strong>
                             </td>
                         </tr>

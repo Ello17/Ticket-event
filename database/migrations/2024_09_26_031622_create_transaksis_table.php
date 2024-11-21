@@ -14,7 +14,7 @@ class CreateTransaksisTable extends Migration
     public function up()
     {
         Schema::create('transaksis', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('kode_tiket')->unique();
             $table->string('tiket_dibeli');
             $table->string('tanggal_transaksi');
@@ -23,7 +23,7 @@ class CreateTransaksisTable extends Migration
             $table->string('no_ktp');
             $table->string('no_telepon');
             $table->string('email');
-            $table->enum('status', ['pending', 'paid', 'failed'])->default('pending');
+            $table->enum('status', ['pending', 'paid', 'failed']);
             $table->foreignId('tiket_id')->constrained();
             $table->foreignId('event_id')->constrained();
             $table->foreignId('user_id')->constrained();
