@@ -137,29 +137,24 @@ class AuthController extends Controller
 
     public function postRegisterCreator(Request $request)
     {
-
-    $this->validate($request, [
-        'username' => 'required|string|max:255|unique:users',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:3',
-    ]);
-
-    if ($this->fails()) {
-        return redirect()->back()->with('pesan-gagal', 'Akun dengan email atau username ini sudah ada.')->withInput();
+        
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:3',
+        ]);
+    
+        $user = User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'creator',
+            'is_approved' => false, 
+        ]);
+    
+        return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat. Silakan tunggu 2-3 hari untuk disetujui admin.');
     }
-
-
-    $user = User::create([
-        'username' => $request->username,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'role' => 'creator',
-        'is_approved' => false,
-    ]);
-
-
-    return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
-}
+    
 
     public function logout()
     {

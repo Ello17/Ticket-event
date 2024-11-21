@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountApprovedMail;
+use App\Mail\AccountRejectedMail;
 use App\Models\Event;
 use App\Models\Tiket;
 use App\Models\User;
@@ -161,18 +163,41 @@ class AdminController extends Controller
 
     public function approveUser($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
+    
+        if ($user->is_approved) {
+            return back()->with('error', 'Akun sudah disetujui.');
+        }
+    
         $user->is_approved = true;
         $user->save();
-
-        return redirect()->route('pending.users')->with('pesan-berhasil', 'Pengguna berhasil disetujui.');
+    
+        event(new \App\Events\AccountApproved($user));
+    
+        return back()->with('success', 'Akun berhasil disetujui.');
     }
+    
+
+    public function rejectUser($id)
+    {
+        $user = User::findOrFail($id);
+    
+        if ($user->is_approved) {
+            return back()->with('error', 'Akun tidak dapat ditolak setelah disetujui.');
+        }
+    
+        event(new \App\Events\AccountRejected($user));
+        $user->delete();
+    
+        return back()->with('success', 'Akun berhasil ditolak.');
+    }
+    
 
     public function profileAdmin()
 {
     $user = Auth::user();
 
-    // Memastikan hanya pengguna dengan role 'customer' yang bisa mengakses
+   
     if ($user->role !== 'admin') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
@@ -231,8 +256,6 @@ public function postEditProfileAdmin(Request $request)
 public function ChangePassMin()
 {
     $user = Auth::user();
-
-    // Pastikan hanya customer yang bisa mengganti password
     if ($user->role !== 'admin') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
@@ -250,7 +273,6 @@ public function postChangePassMin(Request $request)
 
     $user = User::where('id', Auth::id())->first();
 
-    // Pastikan hanya customer yang bisa mengganti password
     if ($user->role !== 'admin') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }

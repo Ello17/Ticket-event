@@ -14,14 +14,14 @@ class CreateParticipantsTable extends Migration
     public function up()
     {
         Schema::create('participants', function (Blueprint $table) {
-            $table->id(); // Ini sudah benar sebagai primary key auto-increment
-            $table->foreignId('user_id')->constrained(); // Foreign key ke tabel users
-            $table->foreignId('event_id')->constrained(); // Foreign key ke tabel events
-            $table->foreignId('tiket_id')->constrained(); // Foreign key ke tabel tiket
-            $table->string('kode_tiket')->unique(); // Kolom kode_tiket yang sesuai dengan query
-            $table->timestamp('scan_time')->nullable(); // Kolom scan_time (boleh null)
-            $table->boolean('is_present')->default(false); // Kolom is_present dengan default false
-            $table->timestamps(); // Kolom untuk created_at dan updated_at
+            $table->id(); 
+            $table->foreignId('user_id')->constrained(); 
+            $table->foreignId('event_id')->constrained();
+            $table->foreignId('tiket_id')->constrained(); 
+            $table->string('kode_tiket')->unique(); 
+            $table->timestamp('scan_time')->nullable(); 
+            $table->boolean('is_present')->default(false); 
+            $table->timestamps();
         });
     }
 
