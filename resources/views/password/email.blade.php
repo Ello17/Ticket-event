@@ -1,9 +1,8 @@
 @extends('layouts.app2')
+@section('content')
 @push('css')
 <link rel="stylesheet" href="{{asset('components/css/register.css')}}">
 @endpush
-@section('content')
-
 <div class="container-form">
     <div class="box-form">
         <h2>{{ __('Reset Password') }}</h2>
