@@ -288,8 +288,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-    
-
+        // participant::create([
+        //     'user_id' => 2,
+        //     'event_id' => 1,
+        //     'tiket_id' => 1,
+        //     'kode_tiket' => 'sample-code',
+        //     'scan_time' => now(),
+        //     'is_present' => true
+        // ]);
+        
 
         // Transaksi::create([
         //    'tiket_dibeli'=>'1',
