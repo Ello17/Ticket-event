@@ -32,7 +32,7 @@
                                     <td class="border border-gray-200 px-4 py-2 flex gap-2" style="width:100%;">
                                         <form action="{{ route('approve.user', $user->id) }}" method="POST" style="width: 100%">
                                             @csrf
-                                            @method('DELETE')
+                                            @method('POST')
                                             <button type="submit"
                                                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm" style="width: 100%"><i class="ri-check-line"></i>
                                             </button>
