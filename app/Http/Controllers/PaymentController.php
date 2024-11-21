@@ -93,20 +93,12 @@ class PaymentController extends Controller
     public function midtransCallback(Request $request)
     {
         $payload = $request->all();
-        Log::info('Midtrans Callback received:', $payload);
-
         $transaction_status = $payload['transaction_status'] ?? null;
         $kode_tiket = $payload['order_id'] ?? null;
-
-        if (!$kode_tiket || !$transaction_status) {
-            Log::error('Invalid callback payload', $payload);
-            return response()->json(['status' => 'error', 'message' => 'Invalid callback payload.'], 400);
-        }
 
         $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
 
         if ($transaksi) {
-            Log::info('Transaction found:', ['kode_tiket' => $kode_tiket, 'status' => $transaction_status]);
 
             if (in_array($transaction_status, ['settlement', 'capture'])) {
                 $transaksi->status = 'paid';
@@ -122,11 +114,6 @@ class PaymentController extends Controller
             }
 
             $transaksi->save();
-
-            Log::info('Transaction status updated:', [
-                'kode_tiket' => $kode_tiket,
-                'new_status' => $transaksi->status,
-            ]);
 
             return redirect()->route('history')->with(
                 $transaction_status === 'settlement' || $transaction_status === 'capture'
@@ -156,7 +143,6 @@ class PaymentController extends Controller
 {
     $transaksi = Transaksi::findOrFail($id);
     $qrcodes = [];
-    $barcodes = [];
 
     for ($i = 0; $i < $transaksi->tiket_dibeli; $i++) {
         // Buat QR Code dan Barcode
@@ -166,7 +152,7 @@ class PaymentController extends Controller
     }
 
     // Generate PDF
-    $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes', 'barcodes'))
+    $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes'))
                ->setPaper('a4');
 
     return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
