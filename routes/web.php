@@ -34,18 +34,11 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/loginCreator', [AuthController::class, 'loginCreator'])->name('loginCreator');
 Route::post('/postLoginCreator', [AuthController::class, 'postLoginCreator'])->name('postLoginCreator');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-// Halaman untuk meminta reset password
 Route::get('password/reset', function () {
      return view('password.email');
  })->name('password.request');
- 
- // Halaman reset password dengan token
  Route::get('password/reset/{token}', [AuthController::class, 'ResetForm'])->name('password.reset');
- 
- // Proses pengiriman email reset password
  Route::post('password/email', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
- 
- // Proses update password baru
  Route::post('password/reset', [AuthController::class, 'postReset'])->name('password.update');
  
 

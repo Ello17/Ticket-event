@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @push('css')
     <link rel="stylesheet" href="{{ asset('components/css/detailevent.css') }}">
-    <!-- Tambahkan CSS tambahan di sini jika diperlukan -->
+   
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 @endpush
 
@@ -122,7 +122,7 @@
             <p class="text-center text-red-500">Event tidak deventukan</p>
         @endif
 
-        <!-- Ticket Section -->
+      
 
     </body>
 @endsection
