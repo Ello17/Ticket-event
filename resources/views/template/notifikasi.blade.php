@@ -34,3 +34,8 @@
         $('.toast').delay(5000).fadeOut();
     });
 </script>
+<style>
+    .toast{
+        z-index: 99999;
+    }
+</style>
