@@ -20,6 +20,7 @@
                                 <th class="py-2 px-4 border">Nama Event</th>
                                 <th class="py-2 px-4 border">Kategori Tiket</th>
                                 <th class="py-2 px-4 border">Harga</th>
+                                <th class="py-2 px-4 border">Tautan Event Offline</th>
                                 <th class="py-2 px-4 border">Jumlah Tiket</th>
                                 <th class="py-2 px-4 border">Aksi</th>
                             </tr>
@@ -42,6 +43,13 @@
                                     <td class="border p-4">
                                         @if ($item->tiket && $item->tiket->isNotEmpty())
                                             {{ $item->tiket->first()->harga_tiket }}
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td class="border p-4">
+                                        @if ($item->tiket && $item->tiket->isNotEmpty())
+                                            {{ $item->tiket->first()->link_tiket }}
                                         @else
                                             N/A
                                         @endif

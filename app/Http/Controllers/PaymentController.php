@@ -94,21 +94,28 @@ class PaymentController extends Controller
     public function midtransCallback(Request $request)
     {
         $payload = $request->all();
-        Log::info('Midtrans Callback received:', $payload);
+        Log::info('Received Midtrans callback:', $payload);  // Log seluruh payload untuk cek semua data
 
         $transaction_status = $payload['transaction_status'] ?? null;
         $kode_tiket = $payload['order_id'] ?? null;
 
+        Log::info('Kode tiket and status:', [
+            'kode_tiket' => $kode_tiket,
+            'transaction_status' => $transaction_status
+        ]);
+
         if (!$kode_tiket || !$transaction_status) {
-            Log::error('Invalid callback payload', $payload);
+            Log::error('Invalid callback payload:', $payload);
             return response()->json(['status' => 'error', 'message' => 'Invalid callback payload.'], 400);
         }
 
         $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
+        Log::info('Transaction lookup result:', ['transaksi' => $transaksi]);
 
         if ($transaksi) {
             Log::info('Transaction found:', ['kode_tiket' => $kode_tiket, 'status' => $transaction_status]);
 
+            // Update status transaksi berdasarkan callback status
             if (in_array($transaction_status, ['settlement', 'capture'])) {
                 $transaksi->status = 'paid';
                 // Send the ticket email to the purchaser
@@ -125,8 +132,8 @@ class PaymentController extends Controller
             $transaksi->save();
 
             Log::info('Transaction status updated:', [
-                'kode_tiket' => $kode_tiket,
-                'new_status' => $transaksi->status,
+                'kode_tiket' => $transaksi->kode_tiket,
+                'status' => $transaksi->status,
             ]);
 
             return redirect()->route('history')->with(

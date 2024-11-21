@@ -57,11 +57,11 @@
             if (decodedText !== lastResult) {
                 lastResult = decodedText;
                 console.log(`Scan result: ${decodedText}`, decodedResult);
-                
+
                 // Set the input value to the scan result
                 input.value = decodedText;
                 result.innerHTML = `Scan result : ${decodedText}`;
-                
+
                 // Automatically submit the form
                 form.submit();
             }
