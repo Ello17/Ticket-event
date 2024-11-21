@@ -167,7 +167,7 @@ class CreatorController extends Controller
         'kategori_tiket' => 'required',
         'harga_tiket' => 'required|numeric',
         'jumlah_tiket' => 'required|integer',
-        'link_tiket' => 'required|string',
+        'link_tiket' => 'nullable|string',
     ]);
 
     // Debug data request
@@ -178,7 +178,7 @@ class CreatorController extends Controller
         'kategori_tiket' => $request->kategori_tiket,
         'harga_tiket' => $request->harga_tiket,
         'jumlah_tiket' => $request->jumlah_tiket,
-        'link_tiket' => $request->link_tiket,
+        'link_tiket' => $request->link_tiket ?: '-',
     ]);
 
     return redirect()->route('kelolaTiket')->with('pesan-berhasil', 'Tiket Berhasil Ditambahkan');
@@ -208,7 +208,7 @@ class CreatorController extends Controller
             'kategori_tiket' => 'required|string|max:255',
             'harga_tiket' => 'required|numeric|min:0',
             'jumlah_tiket' => 'required|integer|min:0',
-            'link_tiket' => 'required|string|min:0',
+            'link_tiket' => 'nullable|string|min:0',
         ]);
 
         $tiket = Tiket::findOrFail($id);
@@ -216,7 +216,7 @@ class CreatorController extends Controller
         $tiket->kategori_tiket = $request->kategori_tiket;
         $tiket->harga_tiket = $request->harga_tiket;
         $tiket->jumlah_tiket = $request->jumlah_tiket;
-        $tiket->link_tiket = $request->link_tiket;
+        $tiket->link_tiket = $request->link_tiket ?? null;
 
         $tiket->save();
 
