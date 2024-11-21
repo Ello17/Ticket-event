@@ -7,7 +7,6 @@
         </div>
         <div class="p-4">
             <div class="overflow-x-auto">
-                <!-- Search Form -->
                 <form method="GET" action="{{ route('pending.users') }}" class="mb-4">
                     <input type="text" name="search" value="{{ request('search') }}"
                         placeholder="Search by username or email" class="border rounded px-2 py-1">
@@ -30,19 +29,29 @@
                                 <tr class="bg-white hover:bg-gray-100">
                                     <td class="border border-gray-200 px-4 py-2">{{ $user->username }}</td>
                                     <td class="border border-gray-200 px-4 py-2">{{ $user->email }}</td>
-                                    <td class="border border-gray-200 px-4 py-2" style="width:20px;">
-                                        <form action="{{ route('approve.user', $user->id) }}" method="POST" class="inline">
+                                    <td class="border border-gray-200 px-4 py-2 flex gap-2" style="width:100%;">
+                                        <form action="{{ route('approve.user', $user->id) }}" method="POST" style="width: 100%">
                                             @csrf
+                                            @method('POST')
                                             <button type="submit"
-                                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm"><i class="ri-check-line"></i>
+                                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm" style="width: 100%"><i class="ri-check-line"></i>
                                             </button>
                                         </form>
+                                        <form action="{{ route('rejectUser', $user->id) }}" method="POST" style="width:100%">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
+                                                onclick="return confirm('Are you sure?')" style="width: 100%">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </button>
+                                        </form>
+
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <!-- Paginasi -->
                     <div class="mt-4">
                         {{ $pendingUsers->links() }}
                     </div>

@@ -36,7 +36,7 @@
                                 <td class="border px-4 py-2">{{ $user->email }}</td>
                                 <td class="border px-4 py-2">{{ $user->role }}</td>
                                 <td class="border px-4 py-2 text-center">
-                                <a href="{{ route('hapusCustomer', $user->id) }}"
+                                <a href="{{ route('hapusKreator', $user->id) }}"
                                         class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
                                         onclick="return confirm('Are you sure?')"><i class="ri-delete-bin-line"></i></a>
                                 </td>

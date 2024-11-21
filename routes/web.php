@@ -100,6 +100,10 @@ Route::get('/editProfileAdmin{id}',[AdminController::class,'editProfileAdmin'])-
 Route::post('postEditProfileAdmin{id}',[AdminController::class,'postEditProfileAdmin'])->name('postEditProfileAdmin');
 Route::get('/ChangePassMin',[AdminController::class, 'ChangePassMin'])->name('ChangePassMin');
 Route::post('/postChangePassMin', [AdminController::class, 'postChangePassMin'])->middleware('auth')->name('postChangePassMin');
+Route::delete('/reject-user/{id}', [AdminController::class, 'rejectUser'])->name('rejectUser');
+
+
+
 
 //ini buat creator
 Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
