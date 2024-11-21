@@ -31,11 +31,15 @@
                                     <td class="border border-gray-200 px-4 py-2">{{ $user->username }}</td>
                                     <td class="border border-gray-200 px-4 py-2">{{ $user->email }}</td>
                                     <td class="border border-gray-200 px-4 py-2" style="width:20px;">
-                                        <form action="{{ route('approve.user', $user->id) }}" method="POST" class="inline">
+                                        <form action="{{ route('approve.user', $user->id) }}" method="POST" class="inline flex gap-1">
                                             @csrf
                                             <button type="submit"
                                                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm"><i class="ri-check-line"></i>
                                             </button>
+
+                                            <a href="{{ route('hapusCustomer', $user->id) }}"
+                                                class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
+                                                onclick="return confirm('Are you sure?')"><i class="ri-delete-bin-line"></i></a>
                                         </form>
                                     </td>
                                 </tr>
