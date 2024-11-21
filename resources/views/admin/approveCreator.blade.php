@@ -7,7 +7,6 @@
         </div>
         <div class="p-4">
             <div class="overflow-x-auto">
-                <!-- Search Form -->
                 <form method="GET" action="{{ route('pending.users') }}" class="mb-4">
                     <input type="text" name="search" value="{{ request('search') }}"
                         placeholder="Search by username or email" class="border rounded px-2 py-1">
@@ -42,7 +41,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <!-- Paginasi -->
                     <div class="mt-4">
                         {{ $pendingUsers->links() }}
                     </div>
