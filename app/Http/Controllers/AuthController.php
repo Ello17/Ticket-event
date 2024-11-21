@@ -169,7 +169,7 @@ class AuthController extends Controller
     }
 
 
-    // Kirim tautan reset password
+    
     public function sendResetLinkEmail(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -183,13 +183,13 @@ class AuthController extends Controller
             : back()->withErrors(['email' => __($status)]);
     }
 
-    // Tampilkan formulir reset password
+   
     public function ResetForm($token)
     {
         return view('password.reset', ['token' => $token]);
     }
 
-    // Proses reset password
+   
     public function postReset(Request $request)
     {
         $request->validate([

@@ -10,7 +10,7 @@
     <div class="container mt-4">
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">Grafik Penjualan</h5>
+                <h5 class="card-title">Grafik Penjualan Tiket Bulanan</h5>
                 <canvas id="tiketChart"></canvas>
                 @if(isset($message))
                     <div class="alert alert-warning mt-3">{{ $message }}</div>
@@ -20,28 +20,46 @@
     </div>
 @endsection
 
+@push('js')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('tiketChart').getContext('2d');
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line', // Ganti ke 'line' atau 'bar' sesuai kebutuhan
             data: {
-                labels: @json($labels ?? []),
+                labels: @json($labels ?? []), // Tanggal (1-31)
                 datasets: [{
-                    label: 'Tiket',
-                    data: @json($jumlahTiket ?? []),
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
+                    label: 'Jumlah Tiket Terjual',
+                    data: @json($jumlahTiket ?? []), // Jumlah tiket per hari
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4, // Membuat garis melengkung
                 }]
             },
             options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                },
                 scales: {
                     x: {
+                        title: {
+                            display: true,
+                            text: 'Tanggal'
+                        },
                         beginAtZero: true
                     },
                     y: {
+                        title: {
+                            display: true,
+                            text: 'Jumlah Tiket'
+                        },
                         beginAtZero: true
                     }
                 }
@@ -49,5 +67,4 @@
         });
     });
 </script>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@endpush

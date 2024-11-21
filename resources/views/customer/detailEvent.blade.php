@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @push('css')
     <link rel="stylesheet" href="{{ asset('components/css/detailevent.css') }}">
-    <!-- Tambahkan CSS tambahan di sini jika diperlukan -->
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 @endpush
 
@@ -121,8 +121,14 @@
         @else
             <p class="text-center text-red-500">Event tidak deventukan</p>
         @endif
+        @if ($errors->any())
+        <div class="alert alert-danger mt-3" role="alert">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
 
-        <!-- Ticket Section -->
 
     </body>
 @endsection
