@@ -35,7 +35,7 @@ class AuthController extends Controller
         if ($user->role === 'admin') {
             return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang' . $user->username);
+            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang ' . $user->username);
         } else if ($user->role === 'creator') {
             return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         }
@@ -66,9 +66,9 @@ class AuthController extends Controller
         if ($user->role === 'admin') {
             return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
         } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang' . $user->username);
+            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang ' . $user->username);
         } else if ($user->role === 'creator') {
-            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
+            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' .  $user->username);
         }
     } else {
         return redirect()->route('loginCreator')->with('pesan-gagal', 'Email atau password salah.');
@@ -113,11 +113,11 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:3|confirmed',
         ]);
-    
+
         if ($validator->fails()) {
             return redirect()->back()->with('pesan-gagal', 'Akun dengan email atau username ini sudah ada.')->withInput();
         }
-    
+
         $user = User::create([
             'email' => $request->input('email'),
             'username' => $request->input('username'),
@@ -125,11 +125,11 @@ class AuthController extends Controller
             'role' => 'customer',
             'profile' => 'default_profile',
         ]);
-    
+
         Auth::login($user);
         return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Akun sukses dibuat');
     }
-  
+
 
     public function registerCreator() {
         return view('template.registerCreator');
@@ -137,7 +137,7 @@ class AuthController extends Controller
 
     public function postRegisterCreator(Request $request)
     {
-   
+
     $this->validate($request, [
         'username' => 'required|string|max:255|unique:users',
         'email' => 'required|string|email|max:255|unique:users',
@@ -148,23 +148,23 @@ class AuthController extends Controller
         return redirect()->back()->with('pesan-gagal', 'Akun dengan email atau username ini sudah ada.')->withInput();
     }
 
-    
+
     $user = User::create([
         'username' => $request->username,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'role' => 'creator', 
-        'is_approved' => false, 
+        'role' => 'creator',
+        'is_approved' => false,
     ]);
 
-   
+
     return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat, menunggu persetujuan admin.');
 }
 
     public function logout()
     {
     Auth::logout();
-    session()->flush(); 
+    session()->flush();
     return redirect()->route('login')->with('pesan-berhasil', 'Berhasil Logout, Silahkan Login Kembali');
     }
 

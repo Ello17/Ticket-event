@@ -35,7 +35,7 @@
                 You do not have an account? <a href="{{ route('registerCustomer') }}" class="a-lg">Sign up</a>
             </p>
             <p class="reset">
-                <a href="{{ route('password.request') }}">Forgot Your Password?</a>
+                <a href="{{ route('password.request') }}" style="color: #e1c664; border-bottom:1px solid #e1c664;">Forgot Your Password?</a>
             </p>
         </div>
     </div>
