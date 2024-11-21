@@ -40,7 +40,7 @@ Route::get('password/reset', function () {
  Route::get('password/reset/{token}', [AuthController::class, 'ResetForm'])->name('password.reset');
  Route::post('password/email', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
  Route::post('password/reset', [AuthController::class, 'postReset'])->name('password.update');
- 
+
 
 
 // ini buat customer
@@ -142,5 +142,5 @@ Route::get('/scan-qr', [CreatorController::class, 'ScanQr'])->name('scanQr');
 Route::post('/scan-qr', [CreatorController::class, 'postScanQr'])->name('postScanQr');
 
 });
-   
+
 

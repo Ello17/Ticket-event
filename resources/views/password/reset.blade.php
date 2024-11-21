@@ -1,58 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="author" content="Kodinger">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Reset Password</title>
-	<link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('components/css/my-login.css') }}">
-</head>
-<body class="my-login-page">
-	<section class="h-100">
-		<div class="container h-100">
-			<div class="row justify-content-md-center align-items-center h-100">
-				<div class="card-wrapper">
-				
-					<div class="cardx fat">
-						<div class="card-body">
-							<h4 class="card-title">Reset Password</h4>
-							<form method="POST" class="my-login-validation" novalidate="" action="{{ route('password.update') }}">
-                                @csrf
+@extends('layouts.app2')
+@push('css')
+<link rel="stylesheet" href="{{asset('components/css/register.css')}}">
+@endpush
+@section('content')
+<div class="container-form">
+    <div class="box-form">
+        <h2>{{ __('Reset Password') }}</h2>
+        <form method="POST" action="{{ route('password.update') }}" class="login_form" style="height: fit-content;">
+            @csrf
+            <input type="hidden" name="token" value="{{ $token }}">
+            <div class="register-group form-group">
+                <div>
+                    <label for="email" class="login_label">{{ __('E-Mail Address') }}</label>
+                    <input id="email" type="email" class="login_input form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required placeholder="Email">
+                </div>
+                <div>
+                    <label for="password" class="login_label">{{ __('Password') }}</label>
+                    <input id="password" type="password" class="login_input form-control @error('password') is-invalid @enderror" name="password" required placeholder="Password">
+                </div>
+                <div>
+                    <label for="password-confirm" class="login_label">{{ __('Confirm Password') }}</label>
+                    <input id="password-confirm" type="password" class="login_input form-control" name="password_confirmation" required placeholder="Confirm Your Password">
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="login_button">
+                    {{ __('Reset Password') }}
+                </button>
+            </div>
+        </form>
+        @error('email')
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+        @error('password')
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+    </div>
+    </div>
+</div>
 
-                                <input type="hidden" name="token" value="{{ $token }}">
-								<div class="form-group">
-									<label for="email">Email</label>
-									<input id="email" type="email" class="form-control" name="email" placeholder="Email address" value="{{ $email ?? old('email') }}">
-                                    <span class="text-danger">@error('email'){{$message}} @enderror</span>
-								</div>
-								<div class="form-group">
-									<label for="password">New Password</label>
-									<input id="password" type="password" class="form-control" name="password" placeholder="Enter new password">
-                                    <span class="text-danger">@error('password'){{$message}}@enderror</span>
-								</div>
-								<div class="form-group">
-									<label for="password-confirm">Confirm Password</label>
-									<input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Enter confirm password">
-                                    <span class="text-danger">@error('password_confirmation'){{$message}} @enderror</span>
-								</div>
-
-								<div class="form-group m-0">
-									<button type="submit" class="btn btn-primary btn-block">
-										Reset Password
-									</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<script src="jquery-3.4.1.min.js"></script>
-	<script src="bootstrap/js/popper.js"></script>
-	<script src="bootstrap/js/bootstrap.js"></script>
-	<script src="js/my-login.js"></script>
-</body>
-</html>
+<style>
+    body{
+        overflow: hidden;
+    }
+    .invalid-feedback{
+        color: white
+    }
+</style>
+@endsection

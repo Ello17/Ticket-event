@@ -1,49 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="author" content="Kodinger">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Forgot password</title>
-	<link rel="stylesheet" href="{{  asset('bootstrap/css/bootstrap.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/my-login.css') }}">
-</head>
-<body class="my-login-page">
-	<section class="h-100">
-		<div class="container h-100">
-			<div class="row justify-content-md-center align-items-center h-100">
-				<div class="card-wrapper">
+@extends('layouts.app2')
+@push('css')
+<link rel="stylesheet" href="{{asset('components/css/register.css')}}">
+@endpush
+@section('content')
 
-					<div class="cardx fat">
-						<div class="card-body">
-							<h4 class="card-title">Forgot Password</h4>
-							<form method="POST" class="my-login-validation" novalidate="" action="{{ route('password.email') }}">
-                                @csrf
+<div class="container-form">
+    <div class="box-form">
+        <h2>{{ __('Reset Password') }}</h2>
+        <form method="POST" action="{{ route('password.email') }}" class="login_form" style="height: fit-content;">
+            @csrf
+            <div class="register-group form-group">
+                <div>
+                    <label for="email" class="login_label">{{ __('E-Mail Address') }}</label>
+                    <input id="email" type="email" class="login_input form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required placeholder="Email">
+                    @error('email')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="login_button">
+                    {{ __('Send Password Reset Link') }}
+                </button>
+            </div>
+        </form>
+        @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    </div>
+</div>
+@endif
 
-                                @if (session('status'))
-                                    <div class="alert alert-ssuccess">
-                                        {{ session('status') }}
-                                    </div>
-                                @endif
-								<div class="form-group">
-									<label for="email">E-Mail Address</label>
-									<input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter your email">
-                                    <span class="text-danger">@error('email'){{ $message }} @enderror</span>
-								</div>
-
-								<div class="form-group m-0">
-									<button type="submit" class="btn btn-primary btn-block">
-										Send Password Link
-									</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	
-</body>
-</html>
+<style>
+    .alert {
+        color: white;
+    }
+</style>
+@endsection
