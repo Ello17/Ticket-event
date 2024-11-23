@@ -40,7 +40,7 @@ class Transaksi extends Model
         return $this->belongsTo(Tiket::class, 'tiket_id'); // Pastikan menggunakan nama kolom yang sesuai
     }
 
-    
+
 
     // protected static function boot()
     // {

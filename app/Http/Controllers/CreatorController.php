@@ -347,30 +347,63 @@ class CreatorController extends Controller
         return redirect()->route('profilCreator')->with('status', 'Password berhasil diperbarui.');
     }
 
-    public function grafik()
+    public function grafik($user_id = null)
     {
-        $now = Carbon::now();
-
-        // Mendapatkan data transaksi untuk bulan berjalan
-        $transaksis = Transaksi::with(['tiket'])
-            ->whereMonth('tanggal_transaksi', $now->month)
-            ->whereYear('tanggal_transaksi', $now->year)
-            ->get();
-
-        // Mengelompokkan data berdasarkan tanggal (hari) dalam bulan
-        $labels = range(1, $now->daysInMonth); // Label berupa tanggal (1-31)
-        $jumlahTiket = array_fill(0, $now->daysInMonth, 0); // Awal semua bernilai 0
-
-        foreach ($transaksis as $transaksi) {
-            $day = Carbon::parse($transaksi->tanggal_transaksi)->day; // Ambil tanggal transaksi
-            $jumlahTiket[$day - 1] += $transaksi->tiket_dibeli; // Tambahkan jumlah tiket per hari
+        if (!$user_id) {
+            // Redirect if no user_id is provided
+            return redirect()->route('some.default.route');
         }
 
+        $now = Carbon::now();
+        $currentYear = $now->year;
+
+        // Generate all months for the current year (January to December)
+        $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
+            return Carbon::create($currentYear, $month, 1)->format('F Y');
+        });
+
+        // Fetch transactions for the current year for the specified user
+        $transaksis = Transaksi::with(['tiket.event'])
+            ->whereYear('tanggal_transaksi', $currentYear)
+            ->whereHas('tiket.event', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id); // Filter events by user_id
+            })
+            ->get();
+
+        // Group transactions by month and year
+        $grouped = $transaksis->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+        });
+
+        // Prepare labels and ticket sales for the graph
+        $labels = $months->toArray(); // Use all months as labels
+        $jumlahTiket = $months->map(function ($month) use ($grouped) {
+            return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
+        })->toArray();
+
+        // If there are no transactions, show the message in the view
+        if ($transaksis->isEmpty()) {
+            return view('creator.grafik', [
+                'transaksis' => $transaksis,
+                'labels' => [],
+                'jumlahTiket' => [],
+                'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
+            ]);
+        }
+
+        // Return data to the view
         return view('creator.grafik', [
+            'transaksis' => $transaksis,
             'labels' => $labels,
             'jumlahTiket' => $jumlahTiket,
         ]);
     }
+
+
+
+
+
+
     public function scanQr()
     {
         return view('creator.scanqr');
