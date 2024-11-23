@@ -340,29 +340,27 @@ class CreatorController extends Controller
     public function grafik()
     {
         $now = Carbon::now();
+    
+        // Mendapatkan data transaksi untuk bulan berjalan
         $transaksis = Transaksi::with(['tiket'])
             ->whereMonth('tanggal_transaksi', $now->month)
             ->whereYear('tanggal_transaksi', $now->year)
             ->get();
-
-
-        $labels = $transaksis->groupBy(function ($item) {
-            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
-        })->keys()->toArray();
-
-        $jumlahTiket = $transaksis->groupBy(function ($item) {
-            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
-        })->map(function ($items) {
-            return $items->sum('tiket_dibeli');
-        })->toArray();
-
-
+    
+        // Mengelompokkan data berdasarkan tanggal (hari) dalam bulan
+        $labels = range(1, $now->daysInMonth); // Label berupa tanggal (1-31)
+        $jumlahTiket = array_fill(0, $now->daysInMonth, 0); // Awal semua bernilai 0
+    
+        foreach ($transaksis as $transaksi) {
+            $day = Carbon::parse($transaksi->tanggal_transaksi)->day; // Ambil tanggal transaksi
+            $jumlahTiket[$day - 1] += $transaksi->tiket_dibeli; // Tambahkan jumlah tiket per hari
+        }
+    
         return view('creator.grafik', [
-            'transaksis' => $transaksis,
             'labels' => $labels,
             'jumlahTiket' => $jumlahTiket,
         ]);
-    }
+    }    
     public function scanQr()
     {
         return view('creator.scanqr');
