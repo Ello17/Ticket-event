@@ -137,22 +137,35 @@ class AuthController extends Controller
 
     public function postRegisterCreator(Request $request)
     {
-        
-        $request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:3',
-        ]);
+        try {
+            $request->validate([
+                'username' => 'required|string|max:255|unique:users',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:3',
+            ]);
     
-        $user = User::create([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'creator',
-            'is_approved' => false, 
-        ]);
+            $user = User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'creator',
+                'is_approved' => false,
+            ]);
     
-        return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat. Silakan tunggu 2-3 hari untuk disetujui admin.');
+            return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat. Silakan tunggu 2-3 hari untuk disetujui admin.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $errors = $e->validator->errors();
+    
+            if ($errors->has('username')) {
+                return redirect()->back()->withInput()->with('pesan-gagal', 'Username sudah digunakan. Silakan pilih username lain.');
+            }
+    
+            if ($errors->has('email')) {
+                return redirect()->back()->withInput()->with('pesan-gagal', 'Email sudah terdaftar. Silakan gunakan email lain.');
+            }
+    
+            return redirect()->back()->withInput()->with('pesan-gagal', 'Terjadi kesalahan. Silakan coba lagi.');
+        }
     }
     
 
