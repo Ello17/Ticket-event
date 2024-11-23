@@ -50,12 +50,14 @@
             <p>No. Telepon: {{ $transaksi->no_telepon }}</p>
             <p>Kode Tiket: {{ $transaksi->kode_tiket }} - {{ $index + 1 }}</p>
 
-            <div class="divider"></div>
+            @if ($transaksi->tiket->kategori_tiket !== 'online')
+                <div class="divider"></div>
 
-            <div class="qrcode">
-                <p>Scan QR Code Anda:</p>
-                {!! $qrcode !!}
-            </div>
+                <div class="qrcode">
+                    <p>Scan QR Code Anda:</p>
+                    {!! $qrcode !!}
+                </div>
+            @endif
         </div>
 
         @if (!$loop->last)

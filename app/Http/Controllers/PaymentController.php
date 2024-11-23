@@ -163,13 +163,10 @@ class PaymentController extends Controller
 
 public function destroy($id)
 {
-    // Find the transaction by ID
     $transaksi = Transaksi::findOrFail($id);
 
-    // Delete the transaction
     $transaksi->delete();
 
-    // Redirect back with a success message
     return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
 }
 

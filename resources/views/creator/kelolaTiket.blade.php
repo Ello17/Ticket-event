@@ -68,7 +68,7 @@
                                                 <a href="{{ route('tambahtiket', ['event_id' => $item->id]) }}"
                                                     class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm">Tambah Tiket</a>
                                             @else
-                                                <a href="{{ route('editTiket', $item->id) }}"
+                                                <a href="{{ route('editTiket', $item->tiket->first()->id) }}"
                                                     class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded text-sm">Edit</a>
                                                 <form action="{{ route('hapusTiket', $item->tiket->first()->id) }}"
                                                     method="POST" class="inline-block">

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class participant extends Model
 {
     use HasFactory;
-    
     protected $fillable = [
         'kode_result',
         'status',

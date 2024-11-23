@@ -296,7 +296,7 @@ class DatabaseSeeder extends Seeder
         //     'scan_time' => now(),
         //     'is_present' => true
         // ]);
-        
+
 
         // Transaksi::create([
         //    'tiket_dibeli'=>'1',

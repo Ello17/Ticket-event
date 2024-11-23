@@ -45,8 +45,9 @@
         <div class="row">
             <div class="card">
                 <h2 class="text-center mt-3">Edit Tiket</h2>
-                <form action="{{ route('postEditTiket',$tiket->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
+                <form action="{{ route('postEditTiket', $tiket->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
                     @csrf
+
                     <label for="kategori_tiket">Kategori Tiket</label>
                     <input type="text" name="kategori_tiket" class="form-control" value="{{ $tiket->kategori_tiket }}" required>
 
@@ -55,8 +56,13 @@
 
                     <label for="jumlah_tiket">Jumlah Tiket</label>
                     <input type="text" name="jumlah_tiket" class="form-control" value="{{ $tiket->jumlah_tiket }}" required>
-                    <label for="link_tiket">Link Acara</label>
-                    <input type="text" name="link_tiket" class="form-control" value="{{ $tiket->link_tiket }}" required>
+
+                    <!-- Kolom Link Acara (Opsional) -->
+                    <label for="link_tiket">Link Acara (Opsional)</label>
+                    <input type="text" name="link_tiket" class="form-control"
+                        value="{{ $tiket->link_tiket }}"
+                        placeholder="Masukkan Link Zoom jika diperlukan">
+
                     <button type="submit" class="btn btn-primary mt-3">Update Tiket</button>
                 </form>
 

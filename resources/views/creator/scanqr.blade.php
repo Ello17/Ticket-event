@@ -55,7 +55,7 @@
                     <div class="bg-gray-300 p-3">
                         <h2 class="text-center">Result</h2>
                     <p id="qr-reader-results" class="mb-2 text-muted"></p>
-                    <input type="hidden" id="input" name="kode_result" class="form-control text-center mb-2" readonly>                        
+                    <input type="hidden" id="input" name="kode_result" class="form-control text-center mb-2" readonly>
                     </div>
                 </form>
                 @if (session('scan-berhasil'))
@@ -95,6 +95,19 @@
             let input = document.getElementById('input');
             let form = document.getElementById('scan-form');
 
+        function onScanSuccess(decodedText, decodedResult) {
+            if (decodedText !== lastResult) {
+                lastResult = decodedText;
+                console.log(`Scan result: ${decodedText}`, decodedResult);
+
+                // Set the input value to the scan result
+                input.value = decodedText;
+                result.innerHTML = `Scan result : ${decodedText}`;
+
+                // Automatically submit the form
+                form.submit();
+            }
+        }
             function onScanSuccess(decodedText, decodedResult) {
                 if (decodedText !== lastResult) {
                     lastResult = decodedText;
