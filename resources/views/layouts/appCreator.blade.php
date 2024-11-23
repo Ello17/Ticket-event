@@ -37,7 +37,7 @@
         <div class="flex items-center justify-center h-16 bg-gray-900">
             <h1 class="text-2xl font-semibold">Creator</h1>
         </div>
-        <nav class="mt-10">
+        <nav class="mt-0">
             <ul class="flex flex-col">
                 <!-- Home Admin Menu -->
                 <li class="py-3 px-5">
@@ -201,7 +201,11 @@
             </div>
         </ul>
     </div> --}}
-
+<style>
+    #sidebar{
+        overflow-y: scroll;
+    }
+</style>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>

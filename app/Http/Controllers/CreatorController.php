@@ -367,9 +367,10 @@ class CreatorController extends Controller
     }
 
     public function participants(){
-
-
-        return view('creator.participants');
+       
+            $participants = Participant::with(['user', 'event', 'tiket'])->get();
+        
+        return view('creator.participants', compact('participants'));
     }
     public function postScanQr(Request $request)
     {

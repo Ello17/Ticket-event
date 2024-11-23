@@ -10,7 +10,26 @@ class Participant extends Model
     use HasFactory;
     
     protected $fillable = [
-        'kode_result',
-        'status',
+        'user_id',
+        'event_id',
+        'tiket_id',
+        'kode_tiket',
+        'scan_time',
+        'is_present',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    public function tiket()
+    {
+        return $this->belongsTo(Tiket::class);
+    }
 }
