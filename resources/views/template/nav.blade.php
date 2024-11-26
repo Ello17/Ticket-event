@@ -21,7 +21,7 @@
                     </form>
                 </li>                
                 <li>
-                    <a href="{{ route('registerCreator') }}" class="a-navbar text-white">Event</a>
+                    <a href="{{ route('registerCreator') }}" class="a-navbar text-white">Buat Event</a>
                 </li>
             </ul>
         </div>
