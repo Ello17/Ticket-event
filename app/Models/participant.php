@@ -11,6 +11,7 @@ class participant extends Model
     
     protected $fillable = [
         'kode_result',
+        'event_id',
         'status',
     ];
 }

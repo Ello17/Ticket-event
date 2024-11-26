@@ -368,14 +368,15 @@ class CreatorController extends Controller
 
     public function participants(){
        
-            $participants = Participant::with(['user', 'event', 'tiket'])->get();
+    $participants = participant::all();
         
         return view('creator.participants', compact('participants'));
     }
     public function postScanQr(Request $request)
     {
         $request->validate([
-            'kode_result' => 'required', 
+            'kode_result' => 'required',
+            'event_id' => 'required',
         ]);
 
         $kodeResult = $request->kode_result;
@@ -384,24 +385,26 @@ class CreatorController extends Controller
         $existingParticipant = Participant::where('kode_result', $kodeResult)->first();
 
         if ($existingParticipant) {
-            return back()->with('pesan-gagal', 'Kode tiket sudah digunakan, scan gagal diproses.');
+            return back()->with('scan-gagal', 'Kode tiket sudah digunakan, scan gagal diproses.');
         }
         $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
 
         if ($transaksi) {
             Participant::create([
                 'kode_result' => $kodeResult,
+                'event_id' => $transaksi->event_id,
                 'status' => 'hadir',
             ]);
 
-            return back()->with('pesan-berhasil', 'Scan QR berhasil diproses.');
+            return back()->with('scan-berhasil', 'Scan QR berhasil diproses.');
         } else {
             Participant::create([
                 'kode_result' => $kodeResult,
+                'event_id' => $transaksi->event_id,
                 'status' => 'gagal',
             ]);
 
-            return back()->with('pesan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
+            return back()->with('scan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
         }
     }
 }
