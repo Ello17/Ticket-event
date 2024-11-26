@@ -347,29 +347,35 @@ class CreatorController extends Controller
         return redirect()->route('profilCreator')->with('status', 'Password berhasil diperbarui.');
     }
 
-    public function grafik()
-    {
-        $now = Carbon::now();
+    public function grafik($user_id)
+{
+    $now = Carbon::now();
 
-        // Mendapatkan data transaksi untuk bulan berjalan
-        $transaksis = Transaksi::with(['tiket'])
-            ->whereMonth('tanggal_transaksi', $now->month)
-            ->whereYear('tanggal_transaksi', $now->year)
-            ->get();
+    $user = User::where('id', $user_id)->where('role', 'creator')->first();
 
-        // Mengelompokkan data berdasarkan tanggal (hari) dalam bulan
-        $labels = range(1, $now->daysInMonth); // Label berupa tanggal (1-31)
-        $jumlahTiket = array_fill(0, $now->daysInMonth, 0); // Awal semua bernilai 0
+    if (!$user) {
+        abort(404, 'Creator tidak ditemukan atau Anda tidak memiliki akses.');
+    }
 
-        foreach ($transaksis as $transaksi) {
-            $day = Carbon::parse($transaksi->tanggal_transaksi)->day; // Ambil tanggal transaksi
-            $jumlahTiket[$day - 1] += $transaksi->tiket_dibeli; // Tambahkan jumlah tiket per hari
-        }
+    $transaksis = Transaksi::with(['tiket'])
+        ->where('user_id', $user_id) 
+        ->whereMonth('tanggal_transaksi', $now->month)
+        ->whereYear('tanggal_transaksi', $now->year)
+        ->get();
 
-        return view('creator.grafik', [
-            'labels' => $labels,
-            'jumlahTiket' => $jumlahTiket,
-        ]);
+    $labels = range(1, $now->daysInMonth); 
+    $jumlahTiket = array_fill(0, $now->daysInMonth, 0); 
+    foreach ($transaksis as $transaksi) {
+        $day = Carbon::parse($transaksi->tanggal_transaksi)->day; 
+        $jumlahTiket[$day - 1] += $transaksi->tiket_dibeli; 
+    }
+
+    return view('creator.grafik', [
+        'labels' => $labels,
+        'jumlahTiket' => $jumlahTiket,
+    ]);
+
+
     }
     public function scanQr()
     {
@@ -378,27 +384,22 @@ class CreatorController extends Controller
     public function postScanQr(Request $request)
     {
         $request->validate([
-            'kode_result' => 'required', // Menghapus aturan 'unique' di sini untuk memeriksa secara manual
+            'kode_result' => 'required',
         ]);
 
         $kodeResult = $request->kode_result;
 
-        // Pisahkan kode tiket dengan nomor urut, misalnya 'TIKET123-1' akan menjadi 'TIKET123'
         $kodeTiket = Str::beforeLast($kodeResult, '-');
 
-        // Cek apakah kode_result sudah ada di tabel participants
         $existingParticipant = Participant::where('kode_result', $kodeResult)->first();
 
         if ($existingParticipant) {
-            // Jika kode_result sudah ada, berikan pesan gagal
             return back()->with('scan-warning', 'Kode tiket sudah digunakan, scan gagal diproses.');
         }
 
-        // Cari data transaksi berdasarkan kode_tiket tanpa nomor urut
         $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
 
         if ($transaksi) {
-            // Jika kode_tiket ditemukan, update status participant menjadi 'hadir'
             Participant::create([
                 'kode_result' => $kodeResult,
                 'status' => 'hadir',
@@ -406,7 +407,6 @@ class CreatorController extends Controller
 
             return back()->with('scan-berhasil', 'Success Processing ' . $kodeResult);
         } else {
-            // Jika kode_tiket tidak ditemukan, update status participant menjadi 'gagal'
             Participant::create([
                 'kode_result' => $kodeResult,
                 'status' => 'gagal',
