@@ -10,6 +10,7 @@ class participant extends Model
     use HasFactory;
     protected $fillable = [
         'kode_result',
+        'event_id',
         'status',
     ];
 }
