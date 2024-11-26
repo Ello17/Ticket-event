@@ -1,4 +1,4 @@
-@extends('layouts.app')
+    @extends('layouts.app')
     @push('css')
         <link rel="stylesheet" href="{{ asset('components/css/detailevent.css') }}">
 
@@ -119,7 +119,7 @@
                     </div>
                 </div>
             @else
-                <p class="text-center text-red-500">Event tidak deventukan</p>
+                <p class="text-center text-red-500">Event tidak ditemukan</p>
             @endif
             @if ($errors->any())
             <div class="alert alert-danger mt-3" role="alert">
@@ -134,4 +134,4 @@
     @endsection
 
     @push('js')
-    @endpush
+    @endpush

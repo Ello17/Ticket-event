@@ -15,8 +15,12 @@ class CreateParticipantsTable extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_result')->unique();
-            $table->string('status');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('event_id')->constrained();
+            $table->foreignId('tiket_id')->constrained();
+            $table->string('kode_tiket')->unique();
+            $table->timestamp('scan_time')->nullable();
+            $table->boolean('is_present')->default(false);
             $table->timestamps();
         });
     }

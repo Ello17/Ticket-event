@@ -148,3 +148,4 @@ Route::post('/scan-qr', [CreatorController::class, 'postScanQr'])->name('postSca
 });
 
 
+
