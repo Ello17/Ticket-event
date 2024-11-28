@@ -59,14 +59,14 @@
             <p>Email: {{ $transaksi->email }}</p>
             <p>No. KTP: {{ $transaksi->no_ktp }}</p>
             <p>No. Telepon: {{ $transaksi->no_telepon }}</p>
-            <p>Kode Tiket: {{ $transaksi->kode_tiket }} - {{ $index + 1 }}</p>
+            <p>Kode Tiket: {{ $qrcode['kode_tiket'] }}</p> <!-- Gunakan kode tiket langsung dari participant -->
 
             @if ($transaksi->tiket->kategori_tiket !== 'online')
                 <div class="divider"></div>
 
                 <div class="qrcode">
                     <p>Scan QR Code Anda:</p>
-                    {!! $qrcode !!}
+                    {!! $qrcode['qrcode'] !!}
                 </div>
             @endif
         </div>

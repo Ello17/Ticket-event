@@ -50,33 +50,30 @@ class AuthController extends Controller
 
 
     public function postLoginCreator(Request $request)
-{
-    $data = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
-
-    if (Auth::attempt($data)) {
-        $user = Auth::user();
-        if ($user->role === 'creator' && $user->is_approved == false) {
-            Log::info('User belum diapprove, logout.');
-            Auth::logout();
-            return redirect()->route('loginCreator')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
+    {
+        $data = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+    
+        if (Auth::attempt($data)) {
+            $user = Auth::user();
+            if ($user->role !== 'creator') {
+                Log::info('Login ditolak karena peran bukan creator.');
+                Auth::logout();
+                return redirect()->route('loginCreator')->with('pesan-gagal', 'Hanya akun creator yang diizinkan login.');
+            }
+            if ($user->is_approved == false) {
+                Log::info('User belum diapprove, logout.');
+                Auth::logout();
+                return redirect()->route('loginCreator')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
+            }
+            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang ' . $user->username);
+        } else {
+            return redirect()->route('loginCreator')->with('pesan-gagal', 'Email atau password salah.');
         }
-        if ($user->role === 'admin') {
-            return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
-        } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang ' . $user->username);
-        } else if ($user->role === 'creator') {
-            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' .  $user->username);
-        }
-    } else {
-        return redirect()->route('loginCreator')->with('pesan-gagal', 'Email atau password salah.');
     }
-}
-
-
-
+    
 
     public function registerCustomer() {
         return view('template.register');

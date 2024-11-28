@@ -14,7 +14,7 @@
         </div>
         <div class="box-form">
             <h2>Login-Creator</h2>
-            <form action="{{ route('postLogin') }}" class="login_form" method="POST">
+            <form action="{{ route('postLoginCreator') }}" class="login_form" method="POST">
                 @csrf
                 <div class="register-group">
                     <div>
