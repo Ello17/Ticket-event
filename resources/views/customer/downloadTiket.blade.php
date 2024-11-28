@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struk Tiket Event</title>
     <style>
-        .receipt {
+     .receipt {
             max-width: 350px;
             margin: 20px auto;
             padding: 20px;
@@ -30,6 +30,10 @@
         }
         .receipt .qrcode {
             margin-top: 15px;
+            display: flex;
+            justify-content: center !important; /* Memusatkan QR code */
+            align-items: center;
+            margin: auto !important;
         }
         .qrcode img {
             max-width: 100px;
@@ -37,6 +41,13 @@
         }
         .page-break {
             page-break-after: always;
+        }
+        @media print {
+            .qrcode {
+                display: flex !important;
+                justify-content: center !important; /* Memusatkan QR code saat dicetak */
+                page-break-inside: avoid !important; /* Menghindari pemisahan QR code saat dicetak */
+            }
         }
     </style>
 </head>
