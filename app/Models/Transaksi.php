@@ -24,7 +24,6 @@ class Transaksi extends Model
         'event_id',
         'user_id',
         'status',
-        'kode_tiket'
     ];
 
     public function event(){
@@ -37,9 +36,11 @@ class Transaksi extends Model
 
     public function tiket()
     {
-        return $this->belongsTo(Tiket::class, 'tiket_id'); // Pastikan menggunakan nama kolom yang sesuai
+        return $this->belongsTo(Tiket::class, 'tiket_id'); 
     }
-
+    public function participants(){
+        return $this->hasMany(Participant::class);
+    }
 
 
     // protected static function boot()

@@ -58,7 +58,7 @@
                     <input class="form-control" type="hidden" id="user_id" value="{{ auth()->user()->id }}" name="user_id" required>
                     <input class="form-control" type="hidden" id="kategori_tiket" value="{{ $tiket->kategori_tiket }}" name="kategori_tiket" required>
                     <input class="form-control" type="hidden" id="tiket_dibeli" value="{{ $tiket_dibeli }}" name="tiket_dibeli" required>
-                    <input class="form-control" type="hidden" id="status" value="{{ $status }}" name="status" required>
+                    <input class="form-control" type="hidden" id="status" value="{{ $status }}" name="status" required>                    
                 </div>
                 @else
                 <p>Tiket Tidak ditemukan</p>
@@ -104,27 +104,27 @@
 @endsection
 
 @push('js')
-    <script type="text/javascript">
-        var payButton = document.getElementById('pay-button');
-        payButton.addEventListener('click', function() {
-            window.snap.embed('$snapToken', {
-                embedId: 'snap-container',
-                onSuccess: function(result) {
-                    alert("payment success!");
-                    console.log(result);
-                },
-                onPending: function(result) {
-                    alert("waiting your payment!");
-                    console.log(result);
-                },
-                onError: function(result) {
-                    alert("payment failed!");
-                    console.log(result);
-                },
-                onClose: function() {
-                    alert('you closed the popup without finishing the payment');
-                }
-            });
+<script type="text/javascript">
+    var payButton = document.getElementById('pay-button');
+    payButton.addEventListener('click', function() {
+        window.snap.embed('$snapToken', {
+            embedId: 'snap-container',
+            onSuccess: function(result) {
+                alert("payment success!");
+                console.log(result);
+            },
+            onPending: function(result) {
+                alert("waiting your payment!");
+                console.log(result);
+            },
+            onError: function(result) {
+                alert("payment failed!");
+                console.log(result);
+            },
+            onClose: function() {
+                alert('you closed the popup without finishing the payment');
+            }
         });
-    </script>
+    });
+</script>
 @endpush

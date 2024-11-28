@@ -438,7 +438,6 @@ class CreatorController extends Controller
             ]);
 
             return back()->with('scan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
-            return back()->with('scan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
         }
     }
 }

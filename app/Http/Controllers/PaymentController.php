@@ -13,6 +13,7 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
@@ -28,139 +29,181 @@ class PaymentController extends Controller
     }
 
     public function createTransaction(Request $request)
-    {
-        $data = $request->validate([
-            'tiket_id' => 'required|exists:tikets,id',
-            'nama_lengkap' => 'required|string|max:255',
-            'no_telepon' => 'required|string|max:15',
-            'no_ktp' => 'required|string|digits:16',
-            'email' => 'required|string|email|max:255',
-            'tiket_dibeli' => 'required|integer|min:1',
-        ]);
+{
+    $validated = $request->validate([
+        'tiket_id' => 'required|exists:tikets,id',
+        'tiket_dibeli' => 'required|integer|min:1',
+        'nama_lengkap' => 'required|string|max:255',
+        'no_ktp' => 'required|digits:16',
+        'no_telepon' => 'required|regex:/^\d{10,15}$/',
+        'email' => 'required|email|max:255',
+    ]);
 
-        $tiket = Tiket::find($data['tiket_id']);
+    try {
+        DB::beginTransaction();
 
-        if ($data['tiket_dibeli'] > $tiket->jumlah_tiket) {
-            return redirect()->back()->withErrors(['message' => 'Tiket tidak tersedia atau melebihi kuota.']);
+        $tiket = Tiket::findOrFail($validated['tiket_id']);
+
+        // Cek stok tiket
+        if ($tiket->jumlah_tiket < $validated['tiket_dibeli']) {
+            return back()->withErrors(['error' => 'Stok tiket tidak mencukupi.']);
         }
 
-        $kode_tiket = $tiket->id . '-' . time();
+        // Buat transaksi tanpa mengurangi tiket
         $transaksi = Transaksi::create([
-            'tiket_id' => $tiket->id,
-            'tiket_dibeli' => $data['tiket_dibeli'],
-            'tanggal_transaksi' => now()->toDateString(),
-            'total_transaksi' => $tiket->harga_tiket * $data['tiket_dibeli'],
-            'nama_lengkap' => $data['nama_lengkap'],
-            'no_ktp' => $data['no_ktp'],
-            'no_telepon' => $data['no_telepon'],
-            'email' => $data['email'],
+            'tiket_id' => $validated['tiket_id'],
+            'tiket_dibeli' => $validated['tiket_dibeli'],
+            'tanggal_transaksi' => now(),
+            'total_transaksi' => $validated['tiket_dibeli'] * $tiket->harga_tiket,
+            'nama_lengkap' => $validated['nama_lengkap'],
+            'no_ktp' => $validated['no_ktp'],
+            'no_telepon' => $validated['no_telepon'],
+            'email' => $validated['email'],
             'event_id' => $tiket->event_id,
-            'status' => 'pending',
+            'status' => 'pending', // Awalnya pending
             'user_id' => auth()->id(),
-            'kode_tiket' => $kode_tiket,
         ]);
 
-        $tiket->decrement('jumlah_tiket', $data['tiket_dibeli']);
-
+        // Siapkan data transaksi untuk Midtrans
         $transaction = [
             'transaction_details' => [
-                'order_id' => $kode_tiket,
+                'order_id' => $transaksi->id,
                 'gross_amount' => $transaksi->total_transaksi,
             ],
             'item_details' => [
                 [
                     'id' => $tiket->id,
                     'price' => $tiket->harga_tiket,
-                    'quantity' => $data['tiket_dibeli'],
+                    'quantity' => $validated['tiket_dibeli'],
                     'name' => $tiket->kategori_tiket,
                 ],
             ],
             'customer_details' => [
-                'first_name' => $transaksi->nama_lengkap,
-                'email' => $transaksi->email,
-                'phone' => $transaksi->no_telepon,
+                'first_name' => $validated['nama_lengkap'],
+                'email' => $validated['email'],
+                'phone' => $validated['no_telepon'],
             ],
             'callbacks' => [
                 'finish' => route('midtransCallback'),
                 'unfinish' => route('history'),
                 'error' => route('transaksi.create'),
-            ]
+            ],
         ];
 
+        // Dapatkan URL pembayaran
         $url = Snap::createTransaction($transaction)->redirect_url;
+
+        DB::commit();
+
+        // Redirect ke halaman pembayaran
         return redirect($url);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->withErrors(['error' => 'Gagal membuat transaksi: ' . $e->getMessage()]);
+    }
+}
+
+public function midtransCallback(Request $request)
+{
+    $payload = $request->all();
+
+    // Validasi payload
+    if (!isset($payload['transaction_status']) || !isset($payload['order_id'])) {
+        return response()->json(['status' => 'error', 'message' => 'Invalid payload.'], 400);
     }
 
-    public function midtransCallback(Request $request)
-    {
-        $payload = $request->all();
-        $transaction_status = $payload['transaction_status'] ?? null;
-        $kode_tiket = $payload['order_id'] ?? null;
+    $transaction_status = $payload['transaction_status'];
+    $order_id = $payload['order_id'];
 
-        $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
-        Log::info('Transaction lookup result:', ['transaksi' => $transaksi]);
+    // Cari transaksi berdasarkan order_id
+    $transaksi = Transaksi::find($order_id);
+    if (!$transaksi) {
+        return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
+    }
 
-        if ($transaksi) {
+    // Hindari pengulangan proses pada transaksi yang sudah paid
+    if ($transaksi->status === 'paid') {
+        return redirect()->route('history')->with('success', 'Transaction already processed.');
+    }
 
-            // Update status transaksi berdasarkan callback status
-            if (in_array($transaction_status, ['settlement', 'capture'])) {
-                $transaksi->status = 'paid';
-                // Send the ticket email to the purchaser
-                Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+    try {
+        // Proses status dari Midtrans
+        if (in_array($transaction_status, ['settlement', 'capture'])) {
+            $transaksi->status = 'paid';
 
-            } elseif ($transaction_status === 'pending') {
-                $transaksi->status = 'pending';
-            } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
-                $transaksi->status = 'failed';
-            } else {
-                Log::warning('Unexpected transaction status:', ['status' => $transaction_status]);
+            // Kurangi stok tiket
+            $tiket = Tiket::findOrFail($transaksi->tiket_id);
+            $tiket->decrement('jumlah_tiket', $transaksi->tiket_dibeli);
+
+            // Buat peserta dan kode tiket
+            foreach (range(1, $transaksi->tiket_dibeli) as $i) {
+                Participant::create([
+                    'transaksi_id' => $transaksi->id,
+                    'kode_tiket' => $transaksi->id . '-' . Str::random(8),
+                    'user_id' => $transaksi->user_id,
+                    'event_id' => $transaksi->event_id,
+                    'tiket_id' => $transaksi->tiket_id,
+                    'scan_time' => null,
+                    'is_present' => false,
+                ]);
             }
 
-            $transaksi->save();
-
-            return redirect()->route('history')->with(
-                $transaction_status === 'settlement' || $transaction_status === 'capture'
-                ? 'pesan-berhasil'
-                : 'pesan-gagal',
-                $transaction_status === 'settlement' || $transaction_status === 'capture'
-                ? 'Pembayaran berhasil. Terima kasih!'
-                : 'Pembayaran tidak berhasil.',
-            );
-        } else {
-            Log::error('Transaction not found for kode_tiket:', ['kode_tiket' => $kode_tiket]);
-            return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
+            // Kirim email tiket
+            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+        } elseif ($transaction_status === 'pending') {
+            $transaksi->status = 'pending';
+        } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
+            $transaksi->status = 'failed';
         }
+
+        $transaksi->save();
+
+        return redirect()->route('history')->with('success', 'Transaction updated successfully.');
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => 'Failed to update transaction.'], 500);
     }
+}
 
     public function show($kode_tiket)
     {
-        $transaksi = Transaksi::where('kode_tiket', $kode_tiket)->first();
-
-        if ($transaksi) {
-            return view('transaksi.detail', compact('transaksi'));
+        $participant = Participant::where('kode_tiket', $kode_tiket)->first();
+    
+        if ($participant && $participant->transaksi) {
+            $transaksi = $participant->transaksi;
+            return view('customer.history', compact('transaksi'));
         } else {
             return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
         }
-    }
+    }  
     public function downloadTiket($id)
-{
-    $transaksi = Transaksi::findOrFail($id);
-    $qrcodes = [];
-
-    for ($i = 0; $i < $transaksi->tiket_dibeli; $i++) {
-        // Buat QR Code dan Barcode
-        $qrcode = DNS2D::getBarcodeHTML($transaksi->kode_tiket . '-' . ($i + 1), 'QRCODE');
-
-        $qrcodes[] = $qrcode;
+    {
+        // Ambil transaksi beserta relasi participants
+        $transaksi = Transaksi::with('participants')->findOrFail($id);
+    
+        // Pastikan hanya pemilik transaksi yang bisa mengunduh
+        if ($transaksi->user_id !== auth()->id()) {
+            abort(403, 'Anda tidak diizinkan untuk mengakses tiket ini.');
+        }
+    
+        $qrcodes = [];
+    
+        // Ambil kode tiket dari relasi participants
+        foreach ($transaksi->participants as $participant) {
+            $qrcode = DNS2D::getBarcodeHTML($participant->kode_tiket, 'QRCODE');
+            $qrcodes[] = [
+                'kode_tiket' => $participant->kode_tiket,
+                'qrcode' => $qrcode,
+            ];            
+        }
+    
+        // Generate PDF dengan data transaksi dan kode tiket
+        $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes'))
+                  ->setPaper('a4');
+    
+        // Unduh file PDF
+        return $pdf->download('tiket-transaksi-' . $transaksi->id . '.pdf');
     }
-
-    // Generate PDF
-    $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes'))
-               ->setPaper('a4');
-
-    return $pdf->download('tiket-' . $transaksi->kode_tiket . '.pdf');
-}
-
+      
 public function destroy($id)
 {
     $transaksi = Transaksi::findOrFail($id);

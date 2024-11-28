@@ -15,7 +15,7 @@
             <thead class="bg-gray-100">
                 <tr>
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">No</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nama User</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Customer</th>
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Event</th>
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Kode Tiket</th>
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Hadir</th>
