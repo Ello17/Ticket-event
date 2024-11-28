@@ -1,4 +1,4 @@
-    @extends('layouts.app')
+@extends('layouts.app')
     @push('css')
         <link rel="stylesheet" href="{{ asset('components/css/detailevent.css') }}">
 

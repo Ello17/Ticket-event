@@ -37,7 +37,7 @@
         <div class="flex items-center justify-center h-16 bg-gray-900">
             <h1 class="text-2xl font-semibold">Creator</h1>
         </div>
-        <nav class="mt-10">
+        <nav class="mt-0">
             <ul class="flex flex-col">
                 <!-- Home Admin Menu -->
                 <li class="py-3 px-5">
@@ -50,6 +50,12 @@
                     <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('scanQr') ? 'bg-blue-500 text-white' : '' }}"
                         href="{{ route('scanQr')}}">
                         <i class="ri-qr-scan-line mr-2"></i>Scan QR
+                    </a>
+                </li>
+                <li class="py-3 px-5">
+                    <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('participants') ? 'bg-blue-500 text-white' : '' }}"
+                        href="{{ route('participants')}}">
+                        <i class="ri-group-fill mr-2"></i>Participants
                     </a>
                 </li>
 
@@ -188,7 +194,11 @@
             </div>
         </ul>
     </div> --}}
-
+<style>
+    #sidebar{
+        overflow-y: scroll;
+    }
+</style>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>

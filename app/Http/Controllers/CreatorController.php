@@ -27,8 +27,6 @@ class CreatorController extends Controller
     public function homeCreator()
     {
         $user = Auth::user();
-
-        // Mengambil event milik user dan menghitung jumlahnya
         $events = Event::where('user_id', $user->id)->get();
         $eventCount = $events->count();
 
@@ -38,18 +36,12 @@ class CreatorController extends Controller
     public function kelolaEvent(Request $request)
     {
         $user = Auth::user();
-
-        // Mengambil input pencarian (jika ada)
         $search = $request->input('search');
-
-        // Query event milik user dengan pencarian dan pagination
         $events = Event::where('user_id', $user->id)
             ->when($search, function ($query, $search) {
                 return $query->where('nama_event', 'like', "%{$search}%");
             })
             ->paginate(10);
-
-        // Menambahkan parameter pencarian ke pagination link
         $events->appends(['search' => $search]);
 
         return view('creator.kelolaEvent', compact('events', 'search'));
@@ -126,7 +118,6 @@ class CreatorController extends Controller
                 $event->cover_event = $filePath;
             }
 
-            // Update the other fields except 'cover_event'
             $event->update($request->except('cover_event'));
 
             return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Data Berhasil Diedit');
@@ -170,8 +161,7 @@ class CreatorController extends Controller
         'link_tiket' => 'nullable|string',
     ]);
 
-    // Debug data request
-    dd($request->all()); // Ini akan menampilkan semua input yang diterima oleh controller.
+    dd($request->all()); 
 
     Tiket::create([
         'event_id' => $request->event_id,
@@ -408,22 +398,27 @@ class CreatorController extends Controller
     {
         return view('creator.scanqr');
     }
+
+    public function participants(){
+       
+            $participants = Participant::with(['user', 'event', 'tiket'])->get();
+        
+        return view('creator.participants', compact('participants'));
+    }
     public function postScanQr(Request $request)
     {
         $request->validate([
-            'kode_result' => 'required',
+            'kode_result' => 'required', 
         ]);
 
         $kodeResult = $request->kode_result;
 
         $kodeTiket = Str::beforeLast($kodeResult, '-');
-
         $existingParticipant = Participant::where('kode_result', $kodeResult)->first();
 
         if ($existingParticipant) {
-            return back()->with('scan-warning', 'Kode tiket sudah digunakan, scan gagal diproses.');
+            return back()->with('pesan-gagal', 'Kode tiket sudah digunakan, scan gagal diproses.');
         }
-
         $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
 
         if ($transaksi) {
