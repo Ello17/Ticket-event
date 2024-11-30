@@ -281,7 +281,7 @@ class CreatorController extends Controller
                 Log::info('Deleting old file: ' . public_path($user->profil));
                 File::delete(public_path($user->profil));
             }
-
+            
             $file->move(public_path('img'), $fileName);
             $user->profil = $filePath;
         }
