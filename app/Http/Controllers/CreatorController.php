@@ -27,11 +27,12 @@ class CreatorController extends Controller
     public function homeCreator()
     {
         $user = Auth::user();
-        $events = Event::where('user_id', $user->id)->get();
-        $eventCount = $events->count();
-
-        return view('creator.homeCreator', compact('events', 'eventCount'));
+        $event = Event::where('user_id', $user->id)->first();  
+        $eventCount = Event::where('user_id', $user->id)->count(); 
+    
+        return view('creator.homeCreator', compact('event', 'eventCount'));
     }
+    
 
     public function kelolaEvent(Request $request)
     {
@@ -43,8 +44,9 @@ class CreatorController extends Controller
             })
             ->paginate(10);
         $events->appends(['search' => $search]);
+        $event = Event::where('user_id', $user->id)->first();  
 
-        return view('creator.kelolaEvent', compact('events', 'search'));
+        return view('creator.kelolaEvent', compact('events', 'search', 'event'));
     }
 
 
@@ -340,38 +342,27 @@ class CreatorController extends Controller
     public function grafik($user_id = null)
     {
         if (!$user_id) {
-            // Redirect if no user_id is provided
             return redirect()->route('some.default.route');
         }
 
         $now = Carbon::now();
         $currentYear = $now->year;
-
-        // Generate all months for the current year (January to December)
         $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
             return Carbon::create($currentYear, $month, 1)->format('F Y');
         });
-
-        // Fetch transactions for the current year for the specified user
         $transaksis = Transaksi::with(['tiket.event'])
             ->whereYear('tanggal_transaksi', $currentYear)
             ->whereHas('tiket.event', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id); // Filter events by user_id
+                $query->where('user_id', $user_id); 
             })
             ->get();
-
-        // Group transactions by month and year
         $grouped = $transaksis->groupBy(function ($item) {
             return Carbon::parse($item->tanggal_transaksi)->format('F Y');
         });
-
-        // Prepare labels and ticket sales for the graph
-        $labels = $months->toArray(); // Use all months as labels
+        $labels = $months->toArray(); 
         $jumlahTiket = $months->map(function ($month) use ($grouped) {
             return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
         })->toArray();
-
-        // If there are no transactions, show the message in the view
         if ($transaksis->isEmpty()) {
             return view('creator.grafik', [
                 'transaksis' => $transaksis,
@@ -380,8 +371,6 @@ class CreatorController extends Controller
                 'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
             ]);
         }
-
-        // Return data to the view
         return view('creator.grafik', [
             'transaksis' => $transaksis,
             'labels' => $labels,
@@ -390,54 +379,59 @@ class CreatorController extends Controller
     }
 
 
+    public function ScanQr($eventId)
+{
+    $event = Event::find($eventId); 
 
+ 
+    if (!$event) {
+        return redirect()->back()->with('error', 'Event tidak ditemukan.');
+    }
+    return view('creator.scanqr', compact('event'));
+}
+    
+    
+public function postScanQr(Request $request)
+{
+    // Validasi input
+    $request->validate([
+        'kode_result' => 'required|string',
+    ]);
 
+    $kodeTiket = $request->kode_result;
 
+    // Cari participant berdasarkan kode_result
+    $participant = Participant::where('kode_tiket', $kodeTiket)->first();
 
-    public function scanQr()
-    {
-        return view('creator.scanqr');
+    if (!$participant) {
+        return back()->with('scan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
+    }
+    $auth = Auth::user();
+
+    if ($auth->id!= $participant->event->user_id) {
+        return back()->with('scan-gagal', 'Anda bukan pemilik tiket ini.');
+    }
+    
+    $eventName = $participant->event->nama_event;
+
+    if ($participant->is_present) {
+        return back()->with('scan-warning', 'Tiket sudah digunakan, peserta sudah hadir.');
     }
 
-    public function participants(){
+    $participant->is_present = true;
+    $participant->scan_time = now();
+    $participant->save();
+
+    return back()->with('scan-berhasil', "Peserta berhasil dipindai untuk event : $eventName.");
+}
+
+
+    public function participants($id){
        
-    $participants = participant::all();
-        
-        return view('creator.participants', compact('participants'));
-    }
-    public function postScanQr(Request $request)
-    {
-        $request->validate([
-            'kode_result' => 'required',
-            'event_id' => 'required',
-        ]);
-
-        $kodeResult = $request->kode_result;
-
-        $kodeTiket = Str::beforeLast($kodeResult, '-');
-        $existingParticipant = Participant::where('kode_result', $kodeResult)->first();
-
-        if ($existingParticipant) {
-            return back()->with('scan-gagal', 'Kode tiket sudah digunakan, scan gagal diproses.');
+        $participants = participant::all();
+        $event = Event::all(); 
+            
+            return view('creator.participants', compact('participants', 'event'));
         }
-        $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
-
-        if ($transaksi) {
-            Participant::create([
-                'kode_result' => $kodeResult,
-                'event_id' => $transaksi->event_id,
-                'status' => 'hadir',
-            ]);
-
-            return back()->with('scan-berhasil', 'Success Processing ' . $kodeResult);
-        } else {
-            Participant::create([
-                'kode_result' => $kodeResult,
-                'event_id' => $transaksi->event_id,
-                'status' => 'gagal',
-            ]);
-
-            return back()->with('scan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
-        }
-    }
+    
 }

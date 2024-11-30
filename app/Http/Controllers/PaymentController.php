@@ -131,11 +131,8 @@ public function midtransCallback(Request $request)
         if (in_array($transaction_status, ['settlement', 'capture'])) {
             $transaksi->status = 'paid';
 
-            // Kurangi stok tiket
             $tiket = Tiket::findOrFail($transaksi->tiket_id);
             $tiket->decrement('jumlah_tiket', $transaksi->tiket_dibeli);
-
-            // Buat peserta dan kode tiket
             foreach (range(1, $transaksi->tiket_dibeli) as $i) {
                 Participant::create([
                     'transaksi_id' => $transaksi->id,
@@ -147,8 +144,6 @@ public function midtransCallback(Request $request)
                     'is_present' => false,
                 ]);
             }
-
-            // Kirim email tiket
             Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
         } elseif ($transaction_status === 'pending') {
             $transaksi->status = 'pending';
@@ -177,16 +172,13 @@ public function midtransCallback(Request $request)
     }  
     public function downloadTiket($id)
     {
-        // Ambil transaksi beserta relasi participants
+       
         $transaksi = Transaksi::with('participants')->findOrFail($id);
-    
-        // Pastikan hanya pemilik transaksi yang bisa mengunduh
         if ($transaksi->user_id !== auth()->id()) {
             abort(403, 'Anda tidak diizinkan untuk mengakses tiket ini.');
         }
     
         $qrcodes = [];
-    
         // Ambil kode tiket dari relasi participants
         foreach ($transaksi->participants as $participant) {
             $qrcode = DNS2D::getBarcodeHTML($participant->kode_tiket, 'QRCODE');
