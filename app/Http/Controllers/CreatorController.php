@@ -27,12 +27,12 @@ class CreatorController extends Controller
     public function homeCreator()
     {
         $user = Auth::user();
-        $event = Event::where('user_id', $user->id)->first();  
-        $eventCount = Event::where('user_id', $user->id)->count(); 
-    
+        $event = Event::where('user_id', $user->id)->first();
+        $eventCount = Event::where('user_id', $user->id)->count();
+
         return view('creator.homeCreator', compact('event', 'eventCount'));
     }
-    
+
 
     public function kelolaEvent(Request $request)
     {
@@ -44,7 +44,7 @@ class CreatorController extends Controller
             })
             ->paginate(10);
         $events->appends(['search' => $search]);
-        $event = Event::where('user_id', $user->id)->first();  
+        $event = Event::where('user_id', $user->id)->first();
 
         return view('creator.kelolaEvent', compact('events', 'search', 'event'));
     }
@@ -163,7 +163,7 @@ class CreatorController extends Controller
         'link_tiket' => 'nullable|string',
     ]);
 
-    dd($request->all()); 
+    dd($request->all());
 
     Tiket::create([
         'event_id' => $request->event_id,
@@ -353,13 +353,13 @@ class CreatorController extends Controller
         $transaksis = Transaksi::with(['tiket.event'])
             ->whereYear('tanggal_transaksi', $currentYear)
             ->whereHas('tiket.event', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id); 
+                $query->where('user_id', $user_id);
             })
             ->get();
         $grouped = $transaksis->groupBy(function ($item) {
             return Carbon::parse($item->tanggal_transaksi)->format('F Y');
         });
-        $labels = $months->toArray(); 
+        $labels = $months->toArray();
         $jumlahTiket = $months->map(function ($month) use ($grouped) {
             return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
         })->toArray();
@@ -381,16 +381,16 @@ class CreatorController extends Controller
 
     public function ScanQr($eventId)
 {
-    $event = Event::find($eventId); 
+    $event = Event::find($eventId);
 
- 
+
     if (!$event) {
         return redirect()->back()->with('error', 'Event tidak ditemukan.');
     }
     return view('creator.scanqr', compact('event'));
 }
-    
-    
+
+
 public function postScanQr(Request $request)
 {
     // Validasi input
@@ -411,7 +411,7 @@ public function postScanQr(Request $request)
     if ($auth->id!= $participant->event->user_id) {
         return back()->with('scan-gagal', 'Anda bukan pemilik tiket ini.');
     }
-    
+
     $eventName = $participant->event->nama_event;
 
     if ($participant->is_present) {
@@ -426,12 +426,9 @@ public function postScanQr(Request $request)
 }
 
 
-    public function participants($id){
-       
-        $participants = participant::all();
-        $event = Event::all(); 
-            
-            return view('creator.participants', compact('participants', 'event'));
-        }
-    
+public function participants()
+{
+    $participants = Participant::with(['user', 'event'])->get();
+    return view('creator.participants', compact('participants'));
+}
 }

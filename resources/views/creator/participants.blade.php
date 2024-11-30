@@ -18,7 +18,7 @@
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Customer</th>
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Event</th>
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Kode Tiket</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Hadir</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Keterangan</th>
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Waktu Scan</th>
                 </tr>
             </thead>
@@ -26,15 +26,22 @@
                 @foreach($participants as $participant)
                 <tr class="hover:bg-gray-50">
                     <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $loop->iteration }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $participant->user->name ?? '-' }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $participant->event->name ?? '-' }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $participant->kode_result }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $participant->user->username}}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $participant->event->nama_event}}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $participant->kode_tiket }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-sm text-center">
-                        <span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 ">
-                            {{ $participant->status }}
-                        </span>
+                        @if ($participant->is_present)
+                            <span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700">
+                                Hadir
+                            </span>
+                        @else
+                            <span class="inline-block px-3 py-1 rounded-full bg-red-100 text-red-700">
+                                Tidak Hadir
+                            </span>
+                        @endif
                     </td>
-                    <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $participant->created_at }}</td>
+
+                    <td class="border border-gray-300 px-4 py-2 text-sm text-gray-600">{{ $participant->scan_time }}</td>
                 </tr>
                 @endforeach
             </tbody>

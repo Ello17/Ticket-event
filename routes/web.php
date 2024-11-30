@@ -109,7 +109,7 @@ Route::delete('/reject-user/{id}', [AdminController::class, 'rejectUser'])->name
 Route::get('/homeCreator', [CreatorController::class, 'homeCreator'])
      ->middleware('auth', 'check.approval')
      ->name('homeCreator');
-Route::get('/participants{id}', 'CreatorController@participants')->name('participants');
+Route::get('/participants', 'CreatorController@participants')->name('participants');
 Route::get('/kelolaEvent', 'CreatorController@kelolaEvent')->name('kelolaEvent');
 Route::get('/tambahEvent', 'CreatorController@tambahEvent')->name('tambahEvent');
 Route::post('/postTambahEvent', 'CreatorController@postTambahEvent')->name('postTambahEvent');
