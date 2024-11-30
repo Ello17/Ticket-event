@@ -9,7 +9,6 @@ use App\Models\Tiket;
 use App\Models\Transaksi;
 use App\Models\User;
 use Carbon\Carbon;
-// use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,12 +26,12 @@ class CreatorController extends Controller
     public function homeCreator()
     {
         $user = Auth::user();
-        $event = Event::where('user_id', $user->id)->first();  
-        $eventCount = Event::where('user_id', $user->id)->count(); 
-    
+        $event = Event::where('user_id', $user->id)->first();
+        $eventCount = Event::where('user_id', $user->id)->count();
+
         return view('creator.homeCreator', compact('event', 'eventCount'));
     }
-    
+
 
     public function kelolaEvent(Request $request)
     {
@@ -44,7 +43,7 @@ class CreatorController extends Controller
             })
             ->paginate(10);
         $events->appends(['search' => $search]);
-        $event = Event::where('user_id', $user->id)->first();  
+        $event = Event::where('user_id', $user->id)->first();
 
         return view('creator.kelolaEvent', compact('events', 'search', 'event'));
     }
@@ -163,7 +162,7 @@ class CreatorController extends Controller
         'link_tiket' => 'nullable|string',
     ]);
 
-    dd($request->all()); 
+    dd($request->all());
 
     Tiket::create([
         'event_id' => $request->event_id,
@@ -229,23 +228,7 @@ class CreatorController extends Controller
     }
 
 
-    // public function kirimTiket(Request $request, $eventId)
-    // {
-    //     $event = Event::findOrFail($eventId);
-    //     $customer = User::where('email', $request->input('customer_email'))->first();
-
-    //     if (!$customer) {
-    //         return redirect()->back()->with('error', 'Customer tidak ditemukan');
-    //     }
-    //     $tiket = Tiket::where('event_id', $eventId)->first();
-
-    //     if (!$tiket) {
-    //         return redirect()->back()->with('error', 'Tiket tidak tersedia untuk event ini');
-    //     }
-    //     Mail::to($customer->email)->send(new SendTicketMail($event, $tiket, $customer));
-
-    //     return redirect()->back()->with('success', 'Tiket telah dikirim ke email customer!');
-    // }
+    
     public function editProfileCreator($id)
     {
         $user = Auth::user();
@@ -353,13 +336,13 @@ class CreatorController extends Controller
         $transaksis = Transaksi::with(['tiket.event'])
             ->whereYear('tanggal_transaksi', $currentYear)
             ->whereHas('tiket.event', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id); 
+                $query->where('user_id', $user_id);
             })
             ->get();
         $grouped = $transaksis->groupBy(function ($item) {
             return Carbon::parse($item->tanggal_transaksi)->format('F Y');
         });
-        $labels = $months->toArray(); 
+        $labels = $months->toArray();
         $jumlahTiket = $months->map(function ($month) use ($grouped) {
             return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
         })->toArray();
@@ -381,26 +364,24 @@ class CreatorController extends Controller
 
     public function ScanQr($eventId)
 {
-    $event = Event::find($eventId); 
+    $event = Event::find($eventId);
 
- 
+
     if (!$event) {
         return redirect()->back()->with('error', 'Event tidak ditemukan.');
     }
     return view('creator.scanqr', compact('event'));
 }
-    
-    
+
+
 public function postScanQr(Request $request)
 {
-    // Validasi input
     $request->validate([
         'kode_result' => 'required|string',
     ]);
 
     $kodeTiket = $request->kode_result;
 
-    // Cari participant berdasarkan kode_result
     $participant = Participant::where('kode_tiket', $kodeTiket)->first();
 
     if (!$participant) {
@@ -411,7 +392,7 @@ public function postScanQr(Request $request)
     if ($auth->id!= $participant->event->user_id) {
         return back()->with('scan-gagal', 'Anda bukan pemilik tiket ini.');
     }
-    
+
     $eventName = $participant->event->nama_event;
 
     if ($participant->is_present) {
@@ -426,11 +407,9 @@ public function postScanQr(Request $request)
 }
 
 
-    public function participants(){
-       
-        $participants = participant::all();
-            
-            return view('creator.participants', compact('participants'));
-        }
-    
+public function participants()
+{
+    $participants = Participant::with(['user', 'event'])->get();
+    return view('creator.participants', compact('participants'));
+}
 }

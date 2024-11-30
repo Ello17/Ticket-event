@@ -19,7 +19,6 @@
 <body>
     @include('template.notifikasi')
 
- <!-- Mobile Navbar -->
  <div class="md:hidden bg-gray-800 text-white flex items-center justify-between px-4 py-3">
     <h1 class="text-lg font-bold">Creator Panel</h1>
     <button id="menu-toggle" class="focus:outline-none">
@@ -31,7 +30,6 @@
 </div>
 
 <div class="flex">
-    <!-- Sidebar -->
     <div id="sidebar" style="z-index: 9999;"
         class="fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="flex items-center justify-center h-16 bg-gray-900">
@@ -39,7 +37,6 @@
         </div>
         <nav class="mt-0">
             <ul class="flex flex-col">
-                <!-- Home Admin Menu -->
                 <li class="py-3 px-5">
                     <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('homeCreator') ? 'bg-blue-500 text-white' : '' }}"
                         href="{{ route('homeCreator') }}">
@@ -51,7 +48,8 @@
                          href="{{ isset($event) ? route('scanQr', $event->id) : '#' }}">
                         <i class="ri-qr-scan-line mr-2"></i>Scan QR
                     </a>
-                </li>              
+                </li>
+
                 <li class="py-3 px-5">
                     <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('participants') ? 'bg-blue-500 text-white' : '' }}"
                         href="{{ route('participants')}}">
@@ -59,7 +57,6 @@
                     </a>
                 </li>
 
-                <!-- Kelola User Dropdown Menu -->
                 <div class="relative py-3 px-5">
                     <button onclick="toggleDropdownUser()"
                         class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none"
@@ -74,7 +71,6 @@
                                 href="{{ route('tambahEvent') }}"><i class="ri-calendar-event-fill"></i> Tambah Event</a></li>
                     </ul>
                 </div>
-                <!-- Kelola Event Dropdown Menu -->
                 <div class="relative py-3 px-5">
                     <button onclick="toggleDropdownEvent()"
                         class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none"

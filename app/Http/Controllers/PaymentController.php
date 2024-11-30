@@ -44,22 +44,19 @@ class PaymentController extends Controller
 
             $tiket = Tiket::findOrFail($validated['tiket_id']);
 
-            // Cek stok tiket
             if ($tiket->jumlah_tiket < $validated['tiket_dibeli']) {
                 return back()->withErrors(['error' => 'Stok tiket tidak mencukupi.']);
             }
 
-            // Cek jika ada transaksi pending untuk user dan tiket yang sama
             $existingTransaction = Transaksi::where('user_id', auth()->id())
                 ->where('tiket_id', $validated['tiket_id'])
                 ->where('status', 'pending')
                 ->first();
 
             if ($existingTransaction) {
-                $existingTransaction->delete(); // Hapus transaksi pending sebelumnya
+                $existingTransaction->delete(); 
             }
 
-            // Buat transaksi baru
             $transaksi = Transaksi::create([
                 'tiket_id' => $validated['tiket_id'],
                 'tiket_dibeli' => $validated['tiket_dibeli'],
@@ -74,7 +71,6 @@ class PaymentController extends Controller
                 'user_id' => auth()->id(),
             ]);
 
-            // Siapkan data transaksi untuk Midtrans
             $transaction = [
                 'transaction_details' => [
                     'order_id' => $transaksi->id . '-' . time(), // Order ID unik
@@ -100,12 +96,10 @@ class PaymentController extends Controller
                 ],
             ];
 
-            // Dapatkan URL pembayaran
             $url = Snap::createTransaction($transaction)->redirect_url;
 
             DB::commit();
 
-            // Redirect ke halaman pembayaran
             return redirect($url);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -117,27 +111,23 @@ class PaymentController extends Controller
 {
     $payload = $request->all();
 
-    // Validasi payload
     if (!isset($payload['transaction_status']) || !isset($payload['order_id'])) {
         return response()->json(['status' => 'error', 'message' => 'Invalid payload.'], 400);
     }
 
     $transaction_status = $payload['transaction_status'];
-    $order_id = explode('-', $payload['order_id'])[0]; // Ambil ID asli dari order_id
+    $order_id = explode('-', $payload['order_id'])[0]; 
 
-    // Cari transaksi berdasarkan order_id
     $transaksi = Transaksi::find($order_id);
     if (!$transaksi) {
         return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
     }
 
-    // Hindari pengulangan proses pada transaksi yang sudah selesai
     if ($transaksi->status === 'paid') {
         return redirect()->route('history')->with('success', 'Transaction already processed.');
     }
 
     try {
-        // Proses status dari Midtrans
         if (in_array($transaction_status, ['settlement', 'capture'])) {
             $transaksi->status = 'paid';
 
@@ -190,7 +180,6 @@ class PaymentController extends Controller
         }
 
         $qrcodes = [];
-        // Ambil kode tiket dari relasi participants
         foreach ($transaksi->participants as $participant) {
             $qrcode = DNS2D::getBarcodeHTML($participant->kode_tiket, 'QRCODE');
             $qrcodes[] = [
@@ -199,11 +188,9 @@ class PaymentController extends Controller
             ];
         }
 
-        // Generate PDF dengan data transaksi dan kode tiket
         $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes'))
                   ->setPaper('a4');
 
-        // Unduh file PDF
         return $pdf->download('tiket-transaksi-' . $transaksi->id . '.pdf');
     }
 

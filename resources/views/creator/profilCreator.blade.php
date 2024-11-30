@@ -30,7 +30,7 @@
             <div class="row">
                 <a href="{{ route('ubahpass') }}"
                 <div class="col-md-4">
-                    <i class="fas fa-lock"></i> <!-- Icon kunci dari Font Awesome -->
+                    <i class="fas fa-lock"></i> 
                     <span class="text-white"> Ubah Password</span>
                 </div>
                 </a>

@@ -8,7 +8,6 @@ use App\Models\Event;
 use App\Models\Tiket;
 use App\Models\User;
 use Closure;
-// use Facade\FlareClient\Stacktrace\File;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

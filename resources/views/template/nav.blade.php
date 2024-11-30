@@ -1,12 +1,10 @@
 <header class="bg-[#36455c]">
     <nav class="flex justify-between items-center w-[92%] mx-auto p-2">
-        <!-- Logo -->
         <div>
             <a href="{{ route('homeCustomer') }}">
                 <img class="img-nav" src="{{ asset('components/asset/logo/512.png') }}" alt="Logo" >
             </a>
         </div>
-        <!-- Link Navigasi -->
         <div class="nav-links duration-500 md:static absolute bg-[#36455c] md:min-h-fit min-h-[90vh] left-[-100%] top-[10%] md:w-auto w-full flex items-center px-5 transition-all ease-in-out">
             <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8 w-full">
                 <li class="input relative md:w-auto w-full">
@@ -26,17 +24,14 @@
             </ul>
         </div>
 
-        <!-- Tombol Profil / Sign In -->
         <div class="flex items-center gap-6">
             @guest
-                <!-- Tampilkan tombol Sign In jika belum login -->
                 <button class="px-5 py-2 rounded-full b-navbar">
                     <a href="{{ route('login') }}">Sign In</a>
                 </button>
             @endguest
             @auth
                 @if (Auth::user()->role === 'customer')
-                    <!-- Tampilkan tombol Profil jika user adalah customer -->
 
                         <a href="{{ route('profil', ['user' => Auth::user()->id]) }}" class="px-5 py-2 rounded-full">
                             <img src="{{ Auth::user()->profil ? asset(Auth::user()->profil) : asset('components/asset/logo/user.png') }}"
@@ -45,7 +40,6 @@
                         </a>
 
                 @else
-                    <!-- Tampilkan tombol Logout untuk role selain customer -->
                     <button class="px-5 py-2 rounded-full b-navbar">
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -58,48 +52,44 @@
                 @endif
             @endauth
 
-            <!-- Tombol menu untuk versi mobile -->
             <ion-icon name="menu" class="text-3xl cursor-pointer md:hidden text-white" onclick="onToggleMenu(this)"></ion-icon>
         </div>
     </nav>
 </header>
 
-<!-- Script Toggle Menu -->
 <script>
     const navLinks = document.querySelector(".nav-links");
 
     function onToggleMenu(icon) {
-        const isMenuOpen = navLinks.classList.toggle('left-0'); // Menu toggle logic
-        icon.name = isMenuOpen ? 'close' : 'menu'; // Switch between menu and close icon
-        document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto'; // Disable scrolling when menu is open
+        const isMenuOpen = navLinks.classList.toggle('left-0'); 
+        icon.name = isMenuOpen ? 'close' : 'menu';
+        document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto'; 
     }
 </script>
 
 <style>
-    /* Mobile styles for navigation */
     @media (max-width: 768px) {
 
 
         .input-nav {
-            width: 100%; /* Full width input for mobile */
+            width: 100%; 
         }
 
-        /* Make search aligned as in the original */
+        
         .input {
             width: 100%;
         }
     }
 
-    /* Desktop styles */
     @media (min-width: 768px) {
 
 
         .input-nav {
-            width: auto; /* Auto width input for desktop */
+            width: auto;
         }
 
         ion-icon[name="menu"] {
-            display: none; /* Hide menu icon for desktop */
+            display: none; 
         }
     }
 </style>
