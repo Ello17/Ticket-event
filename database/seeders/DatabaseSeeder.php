@@ -299,16 +299,17 @@ class DatabaseSeeder extends Seeder
 
 
         // Transaksi::create([
-        //    'tiket_dibeli'=>'1',
+        //    'tiket_dibeli'=> 1,
         //    'tanggal_transaksi'=>'2022-02-20',
-        //    'jumlah_tiket'=>'1',
-        //    'total_transaksi'=>'200000',
+        //    'jumlah_tiket'=> 1,
+        //    'total_transaksi'=>200000,
         //    'nama_lengkap'=>'customer',
-        //    'no_ktp'=>'123456789',
-        //    'no_telepon'=>'123456789',
+        //    'no_ktp'=> 1234567890987654,
+        //    'no_telepon'=> 1234567890,
         //    'email'=>'customer@gmail.com',
-        //    'tiket_id'=>'1',
-        //    'event_id'=>'1'
+        //    'tiket_id'=> 1,
+        //    'event_id'=> 1,
+        //    'user_id'=> 4
         // ]);
 
     }

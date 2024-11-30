@@ -39,9 +39,9 @@
                 </div>
             </form>
 
-            <p class="signup_login">
+            {{-- <p class="signup_login">
                 Have an account? <a href="{{route('loginCreator')}}">Sign in</a>
-            </p>
+            </p> --}}
         </div>
     </div>
 

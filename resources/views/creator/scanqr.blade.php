@@ -52,12 +52,10 @@
             <div class="result">
                 <form action="{{ route('postScanQr') }}" method="POST" id="scan-form">
                     @csrf
-                    <div class="bg-gray-300 p-3">
-                        <h2 class="text-center">Result</h2>
-                    <p id="qr-reader-results" class="mb-2 text-muted"></p>
-                    <input type="hidden" id="input" name="kode_result" class="form-control text-center mb-2" readonly>
-                    </div>
-                </form>
+                    <input type="text" id="kode_result" name="kode_result" class="text-center" readonly>
+                    <button type="submit" class="btn btn-primary hidden">Submit</button>
+                </form>                
+
                 @if (session('scan-berhasil'))
                     <div class="bg-green-500 text-center mt-3">
                         <p>{{ session('scan-berhasil') }}</p>
@@ -78,55 +76,46 @@
     </div>
 
 @endsection
-@push('js')
-    <script src="{{ asset('components/js/scanQr.js') }}"></script>
-    <script>
-        function docReady(fn) {
-            if (document.readyState === "complete" || document.readyState === "interactive") {
-                setTimeout(fn, 1);
-            } else {
-                document.addEventListener("DOMContentLoaded", fn);
-            }
-        }
 
-        docReady(function() {
-            var lastResult;
-            let result = document.getElementById('qr-reader-results');
-            let input = document.getElementById('input');
-            let form = document.getElementById('scan-form');
+@push('js')
+<script src="{{ asset('components/js/scanQr.js') }}"></script>
+<script>
+    function docReady(fn) {
+        if (document.readyState === "complete" || document.readyState === "interactive") {
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+
+    docReady(function() {
+        var lastResult; // Variable to store the last scan result
+        let input = document.getElementById('kode_result'); // Input to store the scan result
+        let form = document.getElementById('scan-form'); // Form to submit the scan result
 
         function onScanSuccess(decodedText, decodedResult) {
+            // Check if the scan result has already been processed
             if (decodedText !== lastResult) {
-                lastResult = decodedText;
-                console.log(`Scan result: ${decodedText}`, decodedResult);
+                lastResult = decodedText; // Store the scan result as lastResult
 
-                // Set the input value to the scan result
+                console.log(`Scan result: ${decodedText}`, decodedResult); // Log the scan result for debugging
+
+                // Set the value of the hidden input with the scan result
                 input.value = decodedText;
-                result.innerHTML = `Scan result : ${decodedText}`;
 
                 // Automatically submit the form
                 form.submit();
             }
         }
-            function onScanSuccess(decodedText, decodedResult) {
-                if (decodedText !== lastResult) {
-                    lastResult = decodedText;
-                    console.log(`Scan result: ${decodedText}`, decodedResult);
 
-                    // Set the input value to the scan result
-                    input.value = decodedText;
-                    result.innerHTML = `<strong>${decodedText}</strong>`;
-
-                    // Automatically submit the form
-                    form.submit();
-                }
-            }
-
-            var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
-                fps: 10,
-                qrbox: 250
-            });
-            html5QrcodeScanner.render(onScanSuccess);
+        // Initialize QR Code scanner
+        var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
+            fps: 10, // Frames per second
+            qrbox: 250 // Scanning area size
         });
-    </script>
+
+        // Render the scanner and set the callback function
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+</script>
 @endpush
