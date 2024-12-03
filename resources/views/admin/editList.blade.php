@@ -15,7 +15,6 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Edit Event</h5>
 
-                        <!-- Tampilkan pesan kesalahan jika ada -->
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>

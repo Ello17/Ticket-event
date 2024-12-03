@@ -57,7 +57,6 @@
                     <label for="jumlah_tiket">Jumlah Tiket</label>
                     <input type="text" name="jumlah_tiket" class="form-control" value="{{ $tiket->jumlah_tiket }}" required>
 
-                    <!-- Kolom Link Acara (Opsional) -->
                     <label for="link_tiket">Link Acara (Opsional)</label>
                     <input type="text" name="link_tiket" class="form-control"
                         value="{{ $tiket->link_tiket }}"

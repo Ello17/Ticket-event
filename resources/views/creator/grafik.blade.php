@@ -26,17 +26,17 @@
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('tiketChart').getContext('2d');
         new Chart(ctx, {
-            type: 'line', // Ganti ke 'line' atau 'bar' sesuai kebutuhan
+            type: 'line', 
             data: {
-                labels: @json($labels ?? []), // Tanggal (1-31)
+                labels: @json($labels ?? []), 
                 datasets: [{
                     label: 'Jumlah Tiket Terjual',
-                    data: @json($jumlahTiket ?? []), // Jumlah tiket per hari
+                    data: @json($jumlahTiket ?? []), 
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 2,
                     fill: true,
-                    tension: 0.4, // Membuat garis melengkung
+                    tension: 0.4, 
                 }]
             },
             options: {

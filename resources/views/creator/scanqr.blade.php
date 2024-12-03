@@ -52,12 +52,10 @@
             <div class="result">
                 <form action="{{ route('postScanQr') }}" method="POST" id="scan-form">
                     @csrf
-                    <div class="bg-gray-300 p-3">
-                        <h2 class="text-center">Result</h2>
-                    <p id="qr-reader-results" class="mb-2 text-muted"></p>
-                    <input type="hidden" id="input" name="kode_result" class="form-control text-center mb-2" readonly>
-                    </div>
-                </form>
+                    <input type="text" id="kode_result" name="kode_result" class="text-center" readonly>
+                    <button type="submit" class="btn btn-primary hidden">Submit</button>
+                </form>                
+
                 @if (session('scan-berhasil'))
                     <div class="bg-green-500 text-center mt-3">
                         <p>{{ session('scan-berhasil') }}</p>
@@ -78,55 +76,37 @@
     </div>
 
 @endsection
-@push('js')
-    <script src="{{ asset('components/js/scanQr.js') }}"></script>
-    <script>
-        function docReady(fn) {
-            if (document.readyState === "complete" || document.readyState === "interactive") {
-                setTimeout(fn, 1);
-            } else {
-                document.addEventListener("DOMContentLoaded", fn);
-            }
-        }
 
-        docReady(function() {
-            var lastResult;
-            let result = document.getElementById('qr-reader-results');
-            let input = document.getElementById('input');
-            let form = document.getElementById('scan-form');
+@push('js')
+<script src="{{ asset('components/js/scanQr.js') }}"></script>
+<script>
+    function docReady(fn) {
+        if (document.readyState === "complete" || document.readyState === "interactive") {
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+
+    docReady(function() {
+        var lastResult; 
+        let input = document.getElementById('kode_result'); 
+        let form = document.getElementById('scan-form'); 
 
         function onScanSuccess(decodedText, decodedResult) {
             if (decodedText !== lastResult) {
                 lastResult = decodedText;
-                console.log(`Scan result: ${decodedText}`, decodedResult);
 
-                // Set the input value to the scan result
+                console.log(`Scan result: ${decodedText}`, decodedResult); 
                 input.value = decodedText;
-                result.innerHTML = `Scan result : ${decodedText}`;
-
-                // Automatically submit the form
                 form.submit();
             }
         }
-            function onScanSuccess(decodedText, decodedResult) {
-                if (decodedText !== lastResult) {
-                    lastResult = decodedText;
-                    console.log(`Scan result: ${decodedText}`, decodedResult);
-
-                    // Set the input value to the scan result
-                    input.value = decodedText;
-                    result.innerHTML = `<strong>${decodedText}</strong>`;
-
-                    // Automatically submit the form
-                    form.submit();
-                }
-            }
-
-            var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
-                fps: 10,
-                qrbox: 250
-            });
-            html5QrcodeScanner.render(onScanSuccess);
+        var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
+            fps: 10, 
+            qrbox: 250 
         });
-    </script>
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+</script>
 @endpush

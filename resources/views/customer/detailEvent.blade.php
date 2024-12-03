@@ -12,7 +12,6 @@
         @if ($event)
             <div class="container mx-auto px-5 mt-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Image Section -->
                     <div class="col-span-2">
                         <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
                             <img src="{{ asset($event->cover_event) }}"
@@ -21,7 +20,6 @@
                         </div>
                     </div>
 
-                    <!-- Event Details Section -->
                     <div class="lg:w-full w-full">
                         <div class="bg-gray-800 rounded-lg shadow-lg p-6">
                             <h3 class="text-lg font-semibold mb-4">Detail Event</h3>
@@ -50,7 +48,6 @@
                             </div>
                         </div>
 
-                        <!-- Tiket Section -->
                         @if ($tiket)
                             <div class="mt-8">
                                 <h3 class="text-2xl font-semibold mb-4">Tiket</h3>
@@ -87,13 +84,11 @@
                     </div>
                 </div>
 
-                <!-- Description Section -->
                 <div class="my-10">
                     <h3 class="text-2xl font-semibold mb-4">Deskripsi Event</h3>
                     <p class="leading-relaxed text-gray-300 text-sm">{{ $event->deskripsi_event }}</p>
                 </div>
 
-                <!-- Lokasi Section -->
                 <div class="my-10">
                     <h3 class="text-2xl font-semibold mb-2">Lokasi Event</h3>
                     <p class="mb-4">
@@ -124,7 +119,6 @@
             <p class="text-center text-red-500">Event tidak ditemukan</p>
         @endif
 
-        <!-- Error Messages -->
         @if ($errors->any())
             <div class="alert alert-danger mt-3" role="alert">
                 @foreach ($errors->all() as $error)

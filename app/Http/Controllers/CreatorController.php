@@ -9,7 +9,6 @@ use App\Models\Tiket;
 use App\Models\Transaksi;
 use App\Models\User;
 use Carbon\Carbon;
-// use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,11 +26,12 @@ class CreatorController extends Controller
     public function homeCreator()
     {
         $user = Auth::user();
-        $events = Event::where('user_id', $user->id)->get();
-        $eventCount = $events->count();
+        $event = Event::where('user_id', $user->id)->first();
+        $eventCount = Event::where('user_id', $user->id)->count();
 
-        return view('creator.homeCreator', compact('events', 'eventCount'));
+        return view('creator.homeCreator', compact('event', 'eventCount'));
     }
+
 
     public function kelolaEvent(Request $request)
     {
@@ -43,8 +43,9 @@ class CreatorController extends Controller
             })
             ->paginate(10);
         $events->appends(['search' => $search]);
+        $event = Event::where('user_id', $user->id)->first();
 
-        return view('creator.kelolaEvent', compact('events', 'search'));
+        return view('creator.kelolaEvent', compact('events', 'search', 'event'));
     }
 
 
@@ -161,7 +162,7 @@ class CreatorController extends Controller
         'link_tiket' => 'nullable|string',
     ]);
 
-    dd($request->all()); 
+    dd($request->all());
 
     Tiket::create([
         'event_id' => $request->event_id,
@@ -227,23 +228,7 @@ class CreatorController extends Controller
     }
 
 
-    // public function kirimTiket(Request $request, $eventId)
-    // {
-    //     $event = Event::findOrFail($eventId);
-    //     $customer = User::where('email', $request->input('customer_email'))->first();
-
-    //     if (!$customer) {
-    //         return redirect()->back()->with('error', 'Customer tidak ditemukan');
-    //     }
-    //     $tiket = Tiket::where('event_id', $eventId)->first();
-
-    //     if (!$tiket) {
-    //         return redirect()->back()->with('error', 'Tiket tidak tersedia untuk event ini');
-    //     }
-    //     Mail::to($customer->email)->send(new SendTicketMail($event, $tiket, $customer));
-
-    //     return redirect()->back()->with('success', 'Tiket telah dikirim ke email customer!');
-    // }
+    
     public function editProfileCreator($id)
     {
         $user = Auth::user();
@@ -281,7 +266,7 @@ class CreatorController extends Controller
                 Log::info('Deleting old file: ' . public_path($user->profil));
                 File::delete(public_path($user->profil));
             }
-
+            
             $file->move(public_path('img'), $fileName);
             $user->profil = $filePath;
         }
@@ -340,38 +325,27 @@ class CreatorController extends Controller
     public function grafik($user_id = null)
     {
         if (!$user_id) {
-            // Redirect if no user_id is provided
             return redirect()->route('some.default.route');
         }
 
         $now = Carbon::now();
         $currentYear = $now->year;
-
-        // Generate all months for the current year (January to December)
         $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
             return Carbon::create($currentYear, $month, 1)->format('F Y');
         });
-
-        // Fetch transactions for the current year for the specified user
         $transaksis = Transaksi::with(['tiket.event'])
             ->whereYear('tanggal_transaksi', $currentYear)
             ->whereHas('tiket.event', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id); // Filter events by user_id
+                $query->where('user_id', $user_id);
             })
             ->get();
-
-        // Group transactions by month and year
         $grouped = $transaksis->groupBy(function ($item) {
             return Carbon::parse($item->tanggal_transaksi)->format('F Y');
         });
-
-        // Prepare labels and ticket sales for the graph
-        $labels = $months->toArray(); // Use all months as labels
+        $labels = $months->toArray();
         $jumlahTiket = $months->map(function ($month) use ($grouped) {
             return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
         })->toArray();
-
-        // If there are no transactions, show the message in the view
         if ($transaksis->isEmpty()) {
             return view('creator.grafik', [
                 'transaksis' => $transaksis,
@@ -380,8 +354,6 @@ class CreatorController extends Controller
                 'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
             ]);
         }
-
-        // Return data to the view
         return view('creator.grafik', [
             'transaksis' => $transaksis,
             'labels' => $labels,
@@ -390,54 +362,54 @@ class CreatorController extends Controller
     }
 
 
+    public function ScanQr($eventId)
+{
+    $event = Event::find($eventId);
 
 
+    if (!$event) {
+        return redirect()->back()->with('error', 'Event tidak ditemukan.');
+    }
+    return view('creator.scanqr', compact('event'));
+}
 
 
-    public function scanQr()
-    {
-        return view('creator.scanqr');
+public function postScanQr(Request $request)
+{
+    $request->validate([
+        'kode_result' => 'required|string',
+    ]);
+
+    $kodeTiket = $request->kode_result;
+
+    $participant = Participant::where('kode_tiket', $kodeTiket)->first();
+
+    if (!$participant) {
+        return back()->with('scan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
+    }
+    $auth = Auth::user();
+
+    if ($auth->id!= $participant->event->user_id) {
+        return back()->with('scan-gagal', 'Anda bukan pemilik tiket ini.');
     }
 
-    public function participants(){
-       
-    $participants = participant::all();
-        
-        return view('creator.participants', compact('participants'));
+    $eventName = $participant->event->nama_event;
+
+    if ($participant->is_present) {
+        return back()->with('scan-warning', 'Tiket sudah digunakan, peserta sudah hadir.');
     }
-    public function postScanQr(Request $request)
-    {
-        $request->validate([
-            'kode_result' => 'required',
-            'event_id' => 'required',
-        ]);
 
-        $kodeResult = $request->kode_result;
+    $participant->is_present = true;
+    $participant->scan_time = now();
+    $participant->save();
 
-        $kodeTiket = Str::beforeLast($kodeResult, '-');
-        $existingParticipant = Participant::where('kode_result', $kodeResult)->first();
+    return back()->with('scan-berhasil', "Peserta berhasil dipindai untuk event : $eventName.");
+}
 
-        if ($existingParticipant) {
-            return back()->with('scan-gagal', 'Kode tiket sudah digunakan, scan gagal diproses.');
-        }
-        $transaksi = Transaksi::where('kode_tiket', $kodeTiket)->first();
 
-        if ($transaksi) {
-            Participant::create([
-                'kode_result' => $kodeResult,
-                'event_id' => $transaksi->event_id,
-                'status' => 'hadir',
-            ]);
-
-            return back()->with('scan-berhasil', 'Success Processing ' . $kodeResult);
-        } else {
-            Participant::create([
-                'kode_result' => $kodeResult,
-                'event_id' => $transaksi->event_id,
-                'status' => 'gagal',
-            ]);
-
-            return back()->with('scan-gagal', 'Kode tiket tidak ditemukan, scan gagal diproses.');
-        }
-    }
+public function participants()
+{
+    $participants = Participant::with(['user', 'event'])->get();
+    return view('creator.participants', compact('participants'));
+}
 }

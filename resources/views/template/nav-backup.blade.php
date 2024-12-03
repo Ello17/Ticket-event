@@ -9,21 +9,15 @@
              </li>
            </ul>
 
-           <!-- Close button -->
            <div class="nav__close" id="nav-close">
                <i class="ri-close-line"></i>
            </div>
        </div>
        <div class="nav__actions">
-          <!-- Search button -->
           <i class="ri-search-line nav__search" id="search-btn"></i>
 
-          <!-- Login button -->
-          {{-- <a href="{{ route('login') }}"> --}}
              <i class="ri-user-line nav__login" id="login-btn"></i>
-         {{-- </a> --}}
 
-          <!-- Toggle button -->
           <div class="nav__toggle" id="nav-toggle">
              <i class="ri-menu-line"></i>
           </div>

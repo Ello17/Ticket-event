@@ -100,33 +100,31 @@
 
     <script>
         $(document).ready(function() {
-            // Inisialisasi DataTable
             $('#example').DataTable();
 
-            // Menggunakan event delegation untuk hapus tiket
             $(document).on('click', '.hapus-tiket', function() {
-                const tiketId = $(this).data('id'); // Ambil ID tiket dari atribut data-id
+                const tiketId = $(this).data('id');
 
                 if (confirm('Apakah Anda yakin ingin menghapus tiket ini?')) {
                     $.ajax({
-                        url: `/hapus-tiket/${tiketId}`, // Route hapus tiket
+                        url: `/hapus-tiket/${tiketId}`, 
                         type: 'DELETE',
                         data: {
-                            "_token": "{{ csrf_token() }}" // CSRF token untuk keamanan
+                            "_token": "{{ csrf_token() }}" 
                         },
                         success: function(response) {
                             if (response.status === 'success') {
-                                alert(response.message); // Tampilkan pesan sukses
-                                $(`#row-${tiketId}`).remove(); // Hapus baris tiket dari tabel
+                                alert(response.message); 
+                                $(`#row-${tiketId}`).remove();
                             } else {
                                 alert(response
-                                .message); // Pesan error jika tiket tidak ditemukan
+                                .message); 
                             }
                         },
                         error: function(xhr, status, error) {
-                            console.error(xhr.responseText); // Debug jika terjadi error
+                            console.error(xhr.responseText); 
                             alert(
-                            'Gagal menghapus tiket. Coba lagi!'); // Pesan error jika gagal
+                            'Gagal menghapus tiket. Coba lagi!'); 
                         }
                     });
                 }

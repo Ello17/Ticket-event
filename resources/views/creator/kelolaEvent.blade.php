@@ -8,7 +8,6 @@
                 <h5 class="text-lg font-semibold">Tabel List Event</h5>
             </div>
             <div class="card-body p-4">
-                <!-- Form Pencarian -->
                 <form action="{{ route('kelolaEvent') }}" method="GET" class="mb-3">
                     <input type="text" name="search" placeholder="Cari event..." value="{{ $search ?? '' }}"
                         class="form-control border rounded px-2 py-1">
@@ -58,7 +57,6 @@
                             @endforeach
                         </tbody>
                     </table>
-            <!-- Pagination Links -->
             <div class="mt-4">
                 {{ $events->appends(['search' => request('search')])->links() }}
             </div>
