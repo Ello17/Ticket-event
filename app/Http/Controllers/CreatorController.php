@@ -228,7 +228,7 @@ class CreatorController extends Controller
     }
 
 
-    
+
     public function editProfileCreator($id)
     {
         $user = Auth::user();
@@ -266,7 +266,7 @@ class CreatorController extends Controller
                 Log::info('Deleting old file: ' . public_path($user->profil));
                 File::delete(public_path($user->profil));
             }
-            
+
             $file->move(public_path('img'), $fileName);
             $user->profil = $filePath;
         }
@@ -323,43 +323,51 @@ class CreatorController extends Controller
     }
 
     public function grafik($user_id = null)
-    {
-        if (!$user_id) {
-            return redirect()->route('some.default.route');
-        }
+{
+    if (!$user_id) {
+        return redirect()->route('some.default.route');
+    }
 
-        $now = Carbon::now();
-        $currentYear = $now->year;
-        $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
-            return Carbon::create($currentYear, $month, 1)->format('F Y');
-        });
-        $transaksis = Transaksi::with(['tiket.event'])
-            ->whereYear('tanggal_transaksi', $currentYear)
-            ->whereHas('tiket.event', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id);
-            })
-            ->get();
-        $grouped = $transaksis->groupBy(function ($item) {
-            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
-        });
-        $labels = $months->toArray();
-        $jumlahTiket = $months->map(function ($month) use ($grouped) {
-            return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
-        })->toArray();
-        if ($transaksis->isEmpty()) {
-            return view('creator.grafik', [
-                'transaksis' => $transaksis,
-                'labels' => [],
-                'jumlahTiket' => [],
-                'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
-            ]);
-        }
+    Carbon::setLocale('en'); // Set locale to English
+
+    $now = Carbon::now();
+    $currentYear = $now->year;
+    $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
+        return Carbon::create($currentYear, $month, 1)->format('F Y');
+    });
+
+    $transaksis = Transaksi::with(['tiket.event'])
+        ->whereYear('tanggal_transaksi', $currentYear)
+        ->whereHas('tiket.event', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        })
+        ->get();
+
+    $grouped = $transaksis->groupBy(function ($item) {
+        return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+    });
+
+    $labels = $months->toArray();
+    $jumlahTiket = $months->map(function ($month) use ($grouped) {
+        return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
+    })->toArray();
+
+    if ($transaksis->isEmpty()) {
         return view('creator.grafik', [
             'transaksis' => $transaksis,
-            'labels' => $labels,
-            'jumlahTiket' => $jumlahTiket,
+            'labels' => [],
+            'jumlahTiket' => [],
+            'message' => "No matching transactions for this year and user_id."
         ]);
     }
+
+    return view('creator.grafik', [
+        'transaksis' => $transaksis,
+        'labels' => $labels,
+        'jumlahTiket' => $jumlahTiket,
+    ]);
+}
+
 
 
     public function ScanQr($eventId)

@@ -3,7 +3,7 @@
 @section('content')
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-4 border-b border-gray-200">
-            <h5 class="text-lg font-semibold">Tabel List Persetujuan</h5>
+            <h5 class="text-lg font-semibold">Creator Account Approval List Table</h5>
         </div>
         <div class="p-4">
             <div class="overflow-x-auto">
@@ -14,14 +14,14 @@
                             class="ri-search-2-line"></i></button>
                 </form>
                 @if ($pendingUsers->isEmpty())
-                    <p class="text-center text-gray-500">Tidak ada creator yang perlu disetujui.</p>
+                    <p class="text-center text-gray-500">No creators need to be approved.</p>
                 @else
                     <table class="min-w-full table-auto border-collapse border border-gray-200">
                         <thead class="bg-gray-800 text-white">
                             <tr>
-                                <th class="border border-gray-200 px-4 py-2">Nama</th>
+                                <th class="border border-gray-200 px-4 py-2">Name</th>
                                 <th class="border border-gray-200 px-4 py-2">Email</th>
-                                <th class="border border-gray-200 px-4 py-2">Aksi</th>
+                                <th class="border border-gray-200 px-4 py-2">Action</th>
                             </tr>
                         </thead>
                         <tbody>

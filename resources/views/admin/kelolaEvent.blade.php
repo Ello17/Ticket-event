@@ -16,14 +16,14 @@
                         <tr class="bg-gray-100">
                             <th class="border p-2">No</th>
                             <th class="border p-2">Cover</th>
-                            <th class="border p-2">Nama Event</th>
-                            <th class="border p-2">Waktu</th>
-                            <th class="border p-2">Lokasi Event</th>
-                            <th class="border p-2">Deskripsi Event</th>
-                            <th class="border p-2">Harga</th>
-                            <th class="border p-2">Kategori</th>
-                            <th class="border p-2">Tiket</th>
-                            <th class="border p-2">Aksi</th>
+                            <th class="border p-2">Event Name</th>
+                            <th class="border p-2">Time</th>
+                            <th class="border p-2">Event Location</th>
+                            <th class="border p-2">Event Description</th>
+                            <th class="border p-2">Price</th>
+                            <th class="border p-2">Category</th>
+                            <th class="border p-2">Ticket</th>
+                            <th class="border p-2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
