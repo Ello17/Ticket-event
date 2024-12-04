@@ -2,16 +2,15 @@
 @section('title', 'Kelola Customer - Tiket Mudah')
 @section('content')
     <h2 class="text-2xl font-bold mb-4">Customer Manage</h2>
-    <p>
+    {{-- <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, magnam amet magni sapiente, quo alias repellendus,
         maiores esse eius ratione dolorum aspernatur voluptatibus veritatis molestias id. Doloribus eos cupiditate tempore.
-    </p>
+    </p> --}}
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-4 border-b">
             <h5 class="text-lg font-semibold">Tabel List Customer</h5>
         </div>
         <div class="p-4">
-            <!-- Search Form -->
             <form method="GET" action="{{ route('kelolaCustomer') }}" class="mb-4">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by username or email" class="border rounded px-2 py-1">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded"><i class="ri-search-2-line"></i></button>

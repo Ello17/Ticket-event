@@ -1,4 +1,3 @@
-<!-- Toast Notification Berhasil -->
 @if (session('pesan-berhasil'))
     <div class="toast fixed top-6 right-6 bg-white rounded-lg shadow-2xl py-3 pl-3 pr-5 pointer-events-none">
         <div class="flex items-center">
@@ -12,7 +11,6 @@
         </div>
     </div>
 @endif
-<!-- Toast Notification Kesalahan -->
 @if (session('pesan-gagal'))
     <div class="toast fixed top-6 right-6 bg-white rounded-lg shadow-2xl py-3 pl-3 pr-5 pointer-events-none">
         <div class="flex items-center">
@@ -30,7 +28,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Hide toast messages after 5 seconds
         $('.toast').delay(5000).fadeOut();
     });
 </script>

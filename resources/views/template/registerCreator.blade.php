@@ -38,10 +38,6 @@
                     <button type="submit" class="register_button">Register</button>
                 </div>
             </form>
-
-            {{-- <p class="signup_login">
-                Have an account? <a href="{{route('loginCreator')}}">Sign in</a>
-            </p> --}}
         </div>
     </div>
 

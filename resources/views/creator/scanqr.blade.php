@@ -89,32 +89,23 @@
     }
 
     docReady(function() {
-        var lastResult; // Variable to store the last scan result
-        let input = document.getElementById('kode_result'); // Input to store the scan result
-        let form = document.getElementById('scan-form'); // Form to submit the scan result
+        var lastResult; 
+        let input = document.getElementById('kode_result'); 
+        let form = document.getElementById('scan-form'); 
 
         function onScanSuccess(decodedText, decodedResult) {
-            // Check if the scan result has already been processed
             if (decodedText !== lastResult) {
-                lastResult = decodedText; // Store the scan result as lastResult
+                lastResult = decodedText;
 
-                console.log(`Scan result: ${decodedText}`, decodedResult); // Log the scan result for debugging
-
-                // Set the value of the hidden input with the scan result
+                console.log(`Scan result: ${decodedText}`, decodedResult); 
                 input.value = decodedText;
-
-                // Automatically submit the form
                 form.submit();
             }
         }
-
-        // Initialize QR Code scanner
         var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
-            fps: 10, // Frames per second
-            qrbox: 250 // Scanning area size
+            fps: 10, 
+            qrbox: 250 
         });
-
-        // Render the scanner and set the callback function
         html5QrcodeScanner.render(onScanSuccess);
     });
 </script>

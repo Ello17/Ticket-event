@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struk Tiket Event</title>
     <style>
-        .receipt {
+     .receipt {
             max-width: 350px;
             margin: 20px auto;
             padding: 20px;
@@ -30,6 +30,10 @@
         }
         .receipt .qrcode {
             margin-top: 15px;
+            display: flex;
+            justify-content: center !important; /* Memusatkan QR code */
+            align-items: center;
+            margin: auto !important;
         }
         .qrcode img {
             max-width: 100px;
@@ -52,7 +56,7 @@
             <p>Email: {{ $transaksi->email }}</p>
             <p>No. KTP: {{ $transaksi->no_ktp }}</p>
             <p>No. Telepon: {{ $transaksi->no_telepon }}</p>
-            <p>Kode Tiket: {{ $qrcode['kode_tiket'] }}</p> 
+            <p>Kode Tiket: {{ $qrcode['kode_tiket'] }}</p>
 
             @if ($transaksi->tiket->kategori_tiket !== 'online')
                 <div class="divider"></div>

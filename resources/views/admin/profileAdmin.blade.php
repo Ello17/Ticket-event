@@ -15,7 +15,6 @@
             <div style="gap: 10px; display:grid;">
                 <h1>Hello, {{ $user->username }}</h1>
                 <a href="{{ route('editProfileAdmin', $user->id) }}" class="btn-edit"><i class="ri-settings-line"></i> Edit Profil</a>
-                {{-- <a href="{{ route('homeCreator') }}" class="btn btn-sm">Back</a> --}}
             </div>
         </div>
 
