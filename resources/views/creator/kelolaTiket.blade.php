@@ -105,7 +105,7 @@
             $(document).on('click', '.hapus-tiket', function() {
                 const tiketId = $(this).data('id');
 
-                if (confirm('Apakah Anda yakin ingin menghapus tiket ini?')) {
+                if (confirm('Are you sure you want to delete this ticket?')) {
                     $.ajax({
                         url: `/hapus-tiket/${tiketId}`, 
                         type: 'DELETE',
@@ -124,7 +124,7 @@
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText); 
                             alert(
-                            'Gagal menghapus tiket. Coba lagi!'); 
+                            'Failed to delete ticket. Try again!'); 
                         }
                     });
                 }
