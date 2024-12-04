@@ -41,28 +41,28 @@
     <div class="container mt-5">
         <div class="row">
             <div class="card">
-                <h2 class="text-center mt-3">Tambah Tiket</h2>
+                <h2 class="text-center mt-3">Add Tickets</h2>
                 <form action="{{ route('tambahtiket.store') }}" method="POST" class="form-group" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="event_id" value="{{ $event_id }}">
 
-                    <label for="kategori_tiket">Kategori Tiket</label>
+                    <label for="kategori_tiket">Ticket Category</label>
                     <input type="text" required name="kategori_tiket" class="form-control"
-                        placeholder="Masukkan Kategori Tiket">
+                        placeholder="Enter Ticket Category">
 
-                    <label for="harga_tiket">Harga Tiket</label>
+                    <label for="harga_tiket">Ticket price</label>
                     <input type="text" required name="harga_tiket" class="form-control"
-                        placeholder="Masukkan Harga Tiket">
+                        placeholder="Enter Ticket Price">
 
-                    <label for="jumlah_tiket">Jumlah Tiket</label>
+                    <label for="jumlah_tiket">Number of Tickets</label>
                     <input type="text" required name="jumlah_tiket" class="form-control"
-                        placeholder="Masukkan Jumlah Tiket">
+                        placeholder="Enter Number of Tickets">
 
-                    <label for="link_tiket">Link Acara (Opsional)</label>
+                    <label for="link_tiket">Event Link (Opsional)</label>
                     <input type="text" name="link_tiket" class="form-control"
-                        placeholder="Masukkan link acara jika ada">
+                        placeholder="Enter the event link if there is one">
 
-                    <button type="submit" class="btn btn-success mt-3">Tambah</button>
+                    <button type="submit" class="btn btn-success mt-3">Add</button>
                 </form>
 
                 @if ($errors->any())

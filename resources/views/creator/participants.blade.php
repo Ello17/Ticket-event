@@ -8,18 +8,18 @@
 
 @section('content')
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Daftar Participants</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">List of Participants</h1>
 
     <div class="overflow-x-auto">
         <table class="min-w-full table-auto border-collapse border border-gray-300 shadow-md">
             <thead class="bg-gray-100">
                 <tr>
                     <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">No</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Customer</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Event</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Kode Tiket</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Keterangan</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Waktu Scan</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Customer Name</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Event Name</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Ticket Code</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Information</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Scan Time</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -32,11 +32,11 @@
                     <td class="border border-gray-300 px-4 py-2 text-sm text-center">
                         @if ($participant->is_present)
                             <span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700">
-                                Hadir
+                                Presence
                             </span>
                         @else
                             <span class="inline-block px-3 py-1 rounded-full bg-red-100 text-red-700">
-                                Tidak Hadir
+                                Not present
                             </span>
                         @endif
                     </td>

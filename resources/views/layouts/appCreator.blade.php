@@ -108,8 +108,6 @@
             </ul>
         </nav>
     </div>
-
-    <!-- Main Content -->
 </div>
 <div class="flex-1 p-4 md:p-6 md:ml-64 max-w-full">
     @yield('content')

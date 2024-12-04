@@ -48,19 +48,19 @@
                 <form action="{{ route('postEditEvent', $event->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
                     @csrf
 
-                    <label for="nama_event">Nama Event</label>
+                    <label for="nama_event">Event Name</label>
                     <input type="text" name="nama_event" class="form-control" value="{{ $event->nama_event }}" required>
 
-                    <label for="nama_penyelenggara">Nama Penyelenggara</label>
+                    <label for="nama_penyelenggara">Organizer Name</label>
                     <input type="text" name="nama_penyelenggara" class="form-control" value="{{ $event->nama_penyelenggara }}" required>
 
-                    <label for="tanggal_event">Tanggal Event</label>
+                    <label for="tanggal_event">Event Date</label>
                     <input type="date" name="tanggal_event" class="form-control" value="{{ $event->tanggal_event }}" required>
 
-                    <label for="waktu_event">Waktu Event</label>
+                    <label for="waktu_event">Event Time</label>
                     <input type="time" name="waktu_event" class="form-control" value="{{ $event->waktu_event }}" required>
 
-                    <label for="lokasi_event">Lokasi Event</label>
+                    <label for="lokasi_event">Event Location</label>
                     <input type="text" name="lokasi_event" class="form-control" value="{{ $event->lokasi_event }}" required>
 
                     <label for="maps" class="form-label">Maps URL</label>
@@ -72,12 +72,12 @@
                     <label for="latitude" class="form-label">Latitude</label>
                     <input type="number" step="any" class="form-control" id="latitude" name="latitude" value="{{ $event->latitude }}" required>
 
-                    <label for="deskripsi_event">Deskripsi Event</label>
+                    <label for="deskripsi_event">Event Description</label>
                     <textarea name="deskripsi_event" class="form-control" rows="3" required>{{ $event->deskripsi_event }}</textarea>
 
-                    <label for="cover_event">Poster Event</label>
+                    <label for="cover_event">Event Posters</label>
                     <input type="file" name="cover_event" class="form-control">
-                    <small class="form-text text-muted">Biarkan kosong jika tidak ingin mengganti poster.</small>
+                    <small class="form-text text-muted">Leave it blank if you don't want to change the poster.</small>
 
                     @if ($event->cover_event)
                         <div class="mt-2">
