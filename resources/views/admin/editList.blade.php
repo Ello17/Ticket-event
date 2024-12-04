@@ -29,7 +29,7 @@
         }
         .form-tm {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(1, minmax(0, 1fr));
             gap: 10px;
             margin-top: 20px;
             width: 100%;
@@ -45,16 +45,35 @@
                 display: flex;
                 padding-right: 5px;
             }
+            .textarea{
+                height: 6em;
+            }
         }
         @media (max-width: 768px){
             .none{
                 display: none;
             }
+        textarea{
+         height: 6em;
+        }
         }
         .textarea{
             padding: 10px;
             color: white;
-            background: rgba(255, 255, 255, 0.18);
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: .3s ease-in-out ;
+            outline: none;
+            resize: none;
+            background: rgba(45, 45, 45, 0.18);
+            width: 100%;
+        }
+        .text-area{
+            padding: 10px;
+            color: white;
             border-radius: 16px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(5px);
@@ -63,8 +82,8 @@
             transition: .3s ease-in-out ;
             outline: none;
             resize: none;
+            background: rgba(45, 45, 45, 0.18);
             width: 100%;
-
         }
         .textarea::-webkit-scrollbar{
             display: none;
@@ -102,6 +121,7 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: black;
         }
+
         input[type="file"]{
             display: none;
         }
@@ -138,6 +158,37 @@
                     .form-tm{
                         display: flex
                     } */
+        .img-thumbnail{
+            height: 250px;
+            object-fit: cover;
+        }
+        .bg-img{
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* transition: .3s ease-in-out ; */
+            outline: none;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .bg-p{
+            background: rgba(45, 45, 45, 0.18);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* transition: .3s ease-in-out ; */
+            outline: none;
+            padding: 10px;
+            margin-top: 10px;
+        }
     </style>
 @endpush
 
@@ -152,9 +203,8 @@
                 @csrf
                 <div class="form-tm">
                     <div class="mb-3 gap-2">
-                        <label for="cover_event" class="form-label">Kategori Tiket</label>
-                        <input type="file" accept="image/*" name="cover_event" class="form-control" id="uploadimage">
-                        <label for="uploadimage" class="label-image justify-center flex">Upload File</label>
+                        <label for="nama_penyelenggara" class="form-label">Nama Penyelenggara</label>
+                        <input type="text" id="nama_penyelenggara" required value="{{ old('nama_penyelenggara', $events->nama_penyelenggara) }}" name="nama_penyelenggara" class="form-control">
                     </div>
 
                     <div class="mb-3 gap-2">
@@ -188,16 +238,15 @@
                         <input type="text" id="lokasi_event" required value="{{ old('lokasi_event', $events->lokasi_event) }}" name="lokasi_event" class="form-control">
                     </div>
 
-                    <div class="mb-3 gap-2">
-                     <label for="deskripsi_event">Deskripsi Event</label>
-                     <textarea id="deskripsi_event" required name="deskripsi_event" class="form-control textarea" rows="1">{{ old('deskripsi_event', $events->deskripsi_event) }}</textarea>
-                    </div>
-
                 </div>
                 @if ($events->cover_event)
-                    <div class="mt-2">
-                        <img src="{{ asset( $events->cover_event) }}" alt="Current Cover" class="img-thumbnail" style="width:90%;">
-                        <p>Cover saat ini</p>
+                    <div class="mt-2 bg-img">
+                        <p class="bg-p">Cover saat ini</p>
+                        <img src="{{ asset( $events->cover_event) }}" alt="Current Cover" class="img-thumbnail" style="width:100%; border-radius:10px">
+                        <div class="text-area">
+                        <label for="deskripsi_event">Deskripsi Event</label>
+                        <textarea id="deskripsi_event" required name="deskripsi_event" class="form-control textarea">{{ old('deskripsi_event', $events->deskripsi_event) }}</textarea>
+                        </div>
                     </div>
                 @endif
                 <div style="display: flex; align-items:center; gap:10px;">
