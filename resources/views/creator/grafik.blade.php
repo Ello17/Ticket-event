@@ -4,14 +4,14 @@
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"> --}}
 @endpush
 
-@section('title', 'Home Creator - Tiket Mudah')
+@section('title', 'Home Creator - Easy Ticket')
 
 @section('content')
     <div class="container mt-4">
         <div class="card mb-4">
             <div class="card-body">
                 <h5 class="card-title">Monthly Ticket Sales Chart</h5>
-                <canvas id="tiketChart"></canvas>
+                <canvas id="ticketChart"></canvas>
                 @if(isset($message))
                     <div class="alert alert-warning mt-3">{{ $message }}</div>
                 @endif
@@ -24,19 +24,19 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('tiketChart').getContext('2d');
+        const ctx = document.getElementById('ticketChart').getContext('2d');
         new Chart(ctx, {
-            type: 'line', 
+            type: 'line',
             data: {
-                labels: @json($labels ?? []), 
+                labels: @json($labels ?? []),
                 datasets: [{
-                    label: 'Jumlah Tiket Terjual',
-                    data: @json($jumlahTiket ?? []), 
+                    label: 'Number of Tickets Sold',
+                    data: @json($jumlahTiket ?? []),
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 2,
                     fill: true,
-                    tension: 0.4, 
+                    tension: 0.4,
                 }]
             },
             options: {
@@ -51,14 +51,14 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Tanggal'
+                            text: 'Date' // Changed to English
                         },
                         beginAtZero: true
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Jumlah Tiket'
+                            text: 'Number of Tickets' // Changed to English
                         },
                         beginAtZero: true
                     }
