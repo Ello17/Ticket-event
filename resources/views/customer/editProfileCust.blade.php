@@ -7,7 +7,7 @@
     <title>Edit Profil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}"> <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 </head>
 
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script> <!-- Corrected JS Path -->
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script> 
     <style>
         body {
             background-color: #6b7699;

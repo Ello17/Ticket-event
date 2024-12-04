@@ -45,7 +45,6 @@
                 </table>
             </div>
 
-            <!-- Pagination Links -->
             <div class="mt-4">
                 {{ $users->appends(['search' => request('search')])->links() }}
             </div>

@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script> <!-- Corrected JS Path -->
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script> 
     <style>
         body {
             background-color: #6b7699;
