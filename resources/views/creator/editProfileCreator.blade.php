@@ -20,12 +20,12 @@
                     <form action="{{ route('postEditProfileCreator', $user->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
                         @csrf
                         <label for="username" class="mt-3">Username</label>
-                        <input type="text" value="{{ $user->username }}" id="username" name="username" class="form-control" placeholder="Masukkan Username" required>
+                        <input type="text" value="{{ $user->username }}" id="username" name="username" class="form-control" placeholder="Enter Username" required>
 
                         <label for="email" class="mt-3">Email</label>
-                        <input type="email" id="email" value="{{ $user->email }}" name="email" class="form-control" placeholder="Masukkan Email" required>
+                        <input type="email" id="email" value="{{ $user->email }}" name="email" class="form-control" placeholder="Enter Email" required>
 
-                        <label for="profil" class="mt-3">Foto Profil (Opsional)</label>
+                        <label for="profil" class="mt-3">Profile picture (Opsional)</label>
                         <input type="file" id="profil" name="profil" accept="image/*" class="form-control">
 
                         <button type="submit" class="btn btn-login w-100 mt-3">Submit <i class="bi bi-box-arrow-in-right"></i></button>

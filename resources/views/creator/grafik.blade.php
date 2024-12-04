@@ -10,7 +10,7 @@
     <div class="container mt-4">
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">Grafik Penjualan Tiket Bulanan</h5>
+                <h5 class="card-title">Monthly Ticket Sales Chart</h5>
                 <canvas id="tiketChart"></canvas>
                 @if(isset($message))
                     <div class="alert alert-warning mt-3">{{ $message }}</div>

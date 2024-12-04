@@ -146,33 +146,33 @@
 
     <div class="container-tm">
         <div class="card">
-            <h2 class="text-center mt-3 gap-2">Edit Tiket</h2>
+            <h2 class="text-center mt-3 gap-2">Edit Ticket</h2>
             <form action="{{ route('postEditTiket', $tiket->id) }}" method="POST" class="form-group" enctype="multipart/form-data">
                 @csrf
                 <div class="form-tm">
                     <div class="mb-3 gap-2">
-                        <label for="kategori_tiket" class="form-label">Kategori Tiket</label>
+                        <label for="kategori_tiket" class="form-label">Ticket Category</label>
                         <input type="text" name="kategori_tiket" class="form-control" value="{{ $tiket->kategori_tiket }}" required>
                     </div>
 
                     <div class="mb-3 gap-2">
-                        <label for="harga_tiket" class="form-label flex">Harga</label>
+                        <label for="harga_tiket" class="form-label flex">Price</label>
                         <input type="text" name="harga_tiket" class="form-control" value="{{ $tiket->harga_tiket }}" required>
                     </div>
 
                     <div class="mb-3 gap-2">
-                        <label for="jumlah_tiket" class="form-label">Jumlah Tiket</label>
+                        <label for="jumlah_tiket" class="form-label">Number of Tickets</label>
                         <input type="text" name="jumlah_tiket" class="form-control" value="{{ $tiket->jumlah_tiket }}" required>
                     </div>
 
                     <div class="mb-3 gap-2">
-                        <label for="link_tiket" class="form-label">Link Acara (Opsional)</label>
+                        <label for="link_tiket" class="form-label">Event Link (Opsional)</label>
                         <input type="text" name="link_tiket" class="form-control"
                         value="{{ $tiket->link_tiket }}"
                         placeholder="Masukkan Link Zoom jika diperlukan">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success mt-3 border" style="padding: 10px; border-radius:5px;">Tambah</button>
+                <button type="submit" class="btn btn-success mt-3 border" style="padding: 10px; border-radius:5px;">Add</button>
             </form>
 
             @if($errors->any())

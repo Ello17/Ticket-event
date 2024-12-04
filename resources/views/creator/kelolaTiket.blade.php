@@ -17,12 +17,12 @@
                         <thead>
                             <tr class="bg-gray-100 text-gray-600">
                                 <th class="py-2 px-4 border">Poster</th>
-                                <th class="py-2 px-4 border">Nama Event</th>
+                                <th class="py-2 px-4 border">Event Name</th>
                                 <th class="py-2 px-4 border">Kategori Tiket</th>
-                                <th class="py-2 px-4 border">Harga</th>
-                                <th class="py-2 px-4 border">Tautan Event Offline</th>
-                                <th class="py-2 px-4 border">Jumlah Tiket</th>
-                                <th class="py-2 px-4 border">Aksi</th>
+                                <th class="py-2 px-4 border">Price</th>
+                                <th class="py-2 px-4 border">Offline Event Link</th>
+                                <th class="py-2 px-4 border">Number of Tickets</th>
+                                <th class="py-2 px-4 border">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-700">
@@ -37,7 +37,7 @@
                                         @if ($item->tiket && $item->tiket->isNotEmpty())
                                             {{ $item->tiket->first()->kategori_tiket }}
                                         @else
-                                            Tidak ada kategori
+                                            No categories
                                         @endif
                                     </td>
                                     <td class="border p-4">
@@ -66,7 +66,7 @@
                                         <div class="flex text-center justify-center space-x-2">
                                             @if ($item->tiket->isEmpty())
                                                 <a href="{{ route('tambahtiket', ['event_id' => $item->id]) }}"
-                                                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm">Tambah Tiket</a>
+                                                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm">Add Ticket</a>
                                             @else
                                                 <a href="{{ route('editTiket', $item->tiket->first()->id) }}"
                                                     class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded text-sm">Edit</a>
@@ -76,7 +76,7 @@
                                                     @method('DELETE')
                                                     <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
                                                         onclick="return confirm('Apakah Anda yakin ingin menghapus tiket ini?');">
-                                                        Hapus
+                                                        Delete
                                                     </button>
                                                 </form>
                                             @endif
