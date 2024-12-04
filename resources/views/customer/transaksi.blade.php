@@ -15,7 +15,7 @@
             @csrf
             <div class="box-detail">
                 <div class="title">
-                    <h2>Detail Pemesanan</h2>
+                    <h2>Order Details</h2>
                 </div>
                 <div class="border">
                     <div class="box">
@@ -25,22 +25,22 @@
                             <small><i class="fa-solid fa-calendar-days"></i> {{ $event->tanggal_event }}</small><br>
                             <small><i class="fa-regular fa-clock"></i> {{ $event->waktu_event }}</small><br>
                             <small><i class="fa-solid fa-location-dot"></i> {{ $event->lokasi_event }}</small><br>
-                            <small>Tersedia : {{ $tiket->jumlah_tiket }} Tiket</small>
+                            <small>Available : {{ $tiket->jumlah_tiket }} Tickets</small>
                         </div>
                     </div>
 
                     <div class="container-detail">
                         <div class="jenis-tiket">
-                            <h3>Jenis Tiket</h3>
+                            <h3>Ticket Type</h3>
                             <h3><img src="{{ asset('components/asset/img/ticket.png') }}" alt=""> {{ $tiket->kategori_tiket }}</h3>
                         </div>
                         <div class="jumlah-harga">
                             <div class="harga-tiket">
-                                <h3>Harga</h3>
+                                <h3>Price</h3>
                                 <h3 class="harga">Rp{{ $tiket->harga_tiket }}</h3>
                             </div>
                             <div class="jumlah-tiket">
-                                <h3>Jumlah</h3>
+                                <h3>Amount</h3>
                                 <h3>x{{ $tiket_dibeli }}</h3>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
 
             <div class="box-detail box-pemesan">
                 <div class="title">
-                    <h2>Detail Pemesan</h2>
+                    <h2>Orderer Details</h2>
                 </div>
                 @if ($tiket)
                 <div class="form-group">
@@ -61,12 +61,12 @@
                     <input class="form-control" type="hidden" id="status" value="{{ $status }}" name="status" required>                    
                 </div>
                 @else
-                <p>Tiket Tidak ditemukan</p>
+                <p>Tickets Not found</p>
                 @endif
 
                 <div class="border column">
                     <div class="group">
-                        <label for="name">Nama Lengkap :</label>
+                        <label for="name">Full Name :</label>
                         <input class="form-control input-transaksi" type="text" id="name" value="{{ $user->username }}" name="nama_lengkap" required>
                     </div>
                     <div class="form-group">
@@ -76,17 +76,17 @@
                     <div class="form-group">
                         <label for="name">No. KTP :</label>
                         <input class="input-transaksi" type="text" id="no_ktp" name="no_ktp" required>
-                        <small>Harus 16 digit.</small>
+                        <small>Must be 16 digits.</small>
                     </div>
                     <div class="form-group">
-                        <label for="name">No. Ponsel :</label>
+                        <label for="name">Phone Number :</label>
                         <input class="form-control input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" required>
-                        <small>Harus antara 10-15 digit.</small>
+                        <small>Must be between 10-15 digits.</small>
                     </div>
                 </div>
 
                 <div class="box-btn">
-                    <button class="btn" id="pay-button">BAYAR SEKARANG</button>
+                    <button class="btn" id="pay-button">PAY NOW</button>
                 </div>
             </div>
 
