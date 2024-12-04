@@ -5,7 +5,7 @@
                 <i class="ri-checkbox-circle-line"></i>
             </div>
             <div class="ml-3">
-                <p class="text-sm font-medium text-black">Berhasil</p>
+                <p class="text-sm font-medium text-black">Succeed</p>
                 <p class="mt-1 text-sm text-gray-600">{{ session('pesan-berhasil') }}</p>
             </div>
         </div>
@@ -18,7 +18,7 @@
                 <i class="ri-close-circle-line"></i>
             </div>
             <div class="ml-3">
-                <p class="text-sm font-medium text-black">Gagal</p>
+                <p class="text-sm font-medium text-black">Fail</p>
                 <p class="mt-1 text-sm text-gray-600">{{ session('pesan-gagal') }}</p>
             </div>
         </div>

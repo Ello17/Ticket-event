@@ -22,24 +22,24 @@
 
                     <div class="lg:w-full w-full">
                         <div class="bg-gray-800 rounded-lg shadow-lg p-6">
-                            <h3 class="text-lg font-semibold mb-4">Detail Event</h3>
+                            <h3 class="text-lg font-semibold mb-4">Event Details</h3>
                             <div class="text-sm space-y-4">
                                 <div>
-                                    <h5 class="text-sm font-medium text-gray-400">Tanggal</h5>
+                                    <h5 class="text-sm font-medium text-gray-400">Date</h5>
                                     <p class="flex items-center text-gray-200">
                                         <i class="fa-solid fa-calendar-days mr-2"></i>
                                         {{ $event->tanggal_event }}
                                     </p>
                                 </div>
                                 <div>
-                                    <h5 class="text-sm font-medium text-gray-400">Waktu</h5>
+                                    <h5 class="text-sm font-medium text-gray-400">Time</h5>
                                     <p class="flex items-center text-gray-200">
                                         <i class="fa-solid fa-clock mr-2"></i>
                                         {{ $event->waktu_event }}
                                     </p>
                                 </div>
                                 <div>
-                                    <h5 class="text-sm font-medium text-gray-400">Lokasi</h5>
+                                    <h5 class="text-sm font-medium text-gray-400">Location</h5>
                                     <p class="flex items-center text-gray-200">
                                         <i class="fa-solid fa-location-dot mr-2"></i>
                                         {{ $event->lokasi_event }}
@@ -50,14 +50,14 @@
 
                         @if ($tiket)
                             <div class="mt-8">
-                                <h3 class="text-2xl font-semibold mb-4">Tiket</h3>
+                                <h3 class="text-2xl font-semibold mb-4">Tickets</h3>
                                 @foreach ($tiket as $item)
                                     <form action="{{ route('transaksi.tiket', ['tiket' => $item->id, 'id' => $event->id]) }}" method="GET">
                                         <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
                                             <div class="mb-4">
                                                 <h5 class="text-white font-semibold">{{ $item->kategori_tiket }}</h5>
-                                                <p class="text-white">Harga: Rp {{ number_format($item->harga_tiket, 0, ',', '.') }}</p>
-                                                <p class="text-gray-400">Ketersediaan: ({{ $item->jumlah_tiket }} tiket tersedia)</p>
+                                                <p class="text-white">Price: Rp {{ number_format($item->harga_tiket, 0, ',', '.') }}</p>
+                                                <p class="text-gray-400">Availability: ({{ $item->jumlah_tiket }} tickets available)</p>
                                             </div>
                                             <div class="tiket-input">
                                                 <div>
@@ -67,11 +67,11 @@
                                                     @else
                                                         <input type="number" class="form-control text-black"
                                                             name="tiket_dibeli" min="1" max="{{ $item->jumlah_tiket }}"
-                                                            placeholder="Masukkan jumlah tiket" style="width: 200px;" inputmode="numeric">
+                                                            placeholder="Enter the number of tickets" style="width: 200px;" inputmode="numeric">
                                                     @endif
                                                 </div>
                                                 <div>
-                                                    <button type="submit" class="btn btn-warning w-full lg:w-auto">Beli Tiket</button>
+                                                    <button type="submit" class="btn btn-warning w-full lg:w-auto">Buy Tickets</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -79,20 +79,20 @@
                                 @endforeach
                             </div>
                         @else
-                            <p class="text-center text-red-500">Tiket tidak tersedia</p>
+                            <p class="text-center text-red-500">Tickets not available</p>
                         @endif
                     </div>
                 </div>
 
                 <div class="my-10">
-                    <h3 class="text-2xl font-semibold mb-4">Deskripsi Event</h3>
+                    <h3 class="text-2xl font-semibold mb-4">Event Description</h3>
                     <p class="leading-relaxed text-gray-300 text-sm">{{ $event->deskripsi_event }}</p>
                 </div>
 
                 <div class="my-10">
-                    <h3 class="text-2xl font-semibold mb-2">Lokasi Event</h3>
+                    <h3 class="text-2xl font-semibold mb-2">Event Location</h3>
                     <p class="mb-4">
-                        <strong>Alamat: </strong>
+                        <strong>Address: </strong>
                         <a href="{{ $event->maps }}" class="text-white hover:text-blue-500">{{ $event->lokasi_event }}</a>
                     </p>
                     <div id="map-{{ $event->id }}" style="width: 100%; height: 200px;"></div>
@@ -116,7 +116,7 @@
                 </div>
             </div>
         @else
-            <p class="text-center text-red-500">Event tidak ditemukan</p>
+            <p class="text-center text-red-500">Event not found</p>
         @endif
 
         @if ($errors->any())

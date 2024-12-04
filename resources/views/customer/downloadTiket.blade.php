@@ -31,7 +31,7 @@
         .receipt .qrcode {
             margin-top: 15px;
             display: flex;
-            justify-content: center !important; /* Memusatkan QR code */
+            justify-content: center !important; 
             align-items: center;
             margin: auto !important;
         }
@@ -51,18 +51,18 @@
 <body>
     @foreach ($qrcodes as $index => $qrcode)
         <div class="receipt">
-            <h2>Struk Tiket Event</h2>
-            <p>Nama Lengkap: {{ $transaksi->nama_lengkap }}</p>
+            <h2>Event Ticket Receipt</h2>
+            <p>Full Name: {{ $transaksi->nama_lengkap }}</p>
             <p>Email: {{ $transaksi->email }}</p>
             <p>No. KTP: {{ $transaksi->no_ktp }}</p>
-            <p>No. Telepon: {{ $transaksi->no_telepon }}</p>
-            <p>Kode Tiket: {{ $qrcode['kode_tiket'] }}</p>
+            <p>Phone number: {{ $transaksi->no_telepon }}</p>
+            <p>Ticket Code: {{ $qrcode['kode_tiket'] }}</p>
 
             @if ($transaksi->tiket->kategori_tiket !== 'online')
                 <div class="divider"></div>
 
                 <div class="qrcode">
-                    <p>Scan QR Code Anda:</p>
+                    <p>Scan your QR Code:</p>
                     <div class="center">
                     {!! $qrcode['qrcode'] !!}
                 </div>

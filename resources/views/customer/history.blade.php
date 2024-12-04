@@ -20,16 +20,16 @@
                     <thead>
                         <tr>
                             <th scope="col" style="text-align: center">No</th>
-                            <th scope="col">Tiket Dibeli</th>
-                            <th scope="col">Kategori Tiket</th>
-                            <th scope="col">Tanggal Transaksi</th>
-                            <th scope="col">Total Transaksi</th>
-                            <th scope="col">Nama Lengkap</th>
+                            <th scope="col">Ticket Purchased</th>
+                            <th scope="col">Ticket Category</th>
+                            <th scope="col">Transaction Date</th>
+                            <th scope="col">Total Transactions</th>
+                            <th scope="col">Full name</th>
                             <th scope="col">No-KTP</th>
-                            <th scope="col">No-Telepon</th>
+                            <th scope="col">Phone number</th>
                             <th scope="col">Email</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Aksi</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
 
@@ -66,7 +66,7 @@
                         @empty
                         <tr>
                             <td colspan="10" class="text-center py-3">
-                                <strong>Belum ada Tiket dibeli</strong>
+                                <strong>No tickets purchased yet</strong>
                             </td>
                         </tr>
                         @endforelse
