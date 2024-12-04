@@ -196,7 +196,7 @@
                 </div>
                 @if ($events->cover_event)
                     <div class="mt-2">
-                        <img src="{{ asset('storage/' . $events->cover_event) }}" alt="Current Cover" class="img-thumbnail" style="width:90%;">
+                        <img src="{{ asset( $events->cover_event) }}" alt="Current Cover" class="img-thumbnail" style="width:90%;">
                         <p>Cover saat ini</p>
                     </div>
                 @endif
@@ -212,3 +212,4 @@
 @push('js')
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 @endpush
+

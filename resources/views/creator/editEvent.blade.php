@@ -74,14 +74,14 @@
 
                     <label for="deskripsi_event">Deskripsi Event</label>
                     <textarea name="deskripsi_event" class="form-control" rows="3" required>{{ $event->deskripsi_event }}</textarea>
-                    
+
                     <label for="cover_event">Poster Event</label>
                     <input type="file" name="cover_event" class="form-control">
                     <small class="form-text text-muted">Biarkan kosong jika tidak ingin mengganti poster.</small>
-                    
+
                     @if ($event->cover_event)
                         <div class="mt-2">
-                            <img src="{{ asset('storage/' . $event->cover_event) }}" alt="Cover Event" style="max-width: 100%; height: auto;">
+                            <img src="{{ asset($event->cover_event) }}" alt="Cover Event" style="max-width: 100%; height: auto;">
                         </div>
                     @endif
 
