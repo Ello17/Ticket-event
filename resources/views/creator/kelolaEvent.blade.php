@@ -5,7 +5,7 @@
     <div class="content p-8">
         <div class="card bg-white shadow-lg rounded-lg">
             <div class="card-header p-4">
-                <h5 class="text-lg font-semibold">Tabel List Event</h5>
+                <h5 class="text-lg font-semibold">Event List Table</h5>
             </div>
             <div class="card-body p-4">
                 <form action="{{ route('kelolaEvent') }}" method="GET" class="mb-3">
@@ -19,13 +19,13 @@
                         <thead>
                             <tr class="bg-gray-100 text-gray-600">
                                 <th class="py-2 px-4 border">Poster</th>
-                                <th class="py-2 px-4 border">Nama Event</th>
-                                <th class="py-2 px-4 border">Nama Penyelenggara</th>
-                                <th class="py-2 px-4 border">Lokasi Event</th>
-                                <th class="py-2 px-4 border">Tanggal Event</th>
-                                <th class="py-2 px-4 border">Waktu Event</th>
-                                <th class="py-2 px-4 border">Deskripsi Event</th>
-                                <th class="py-2 px-4 border">Aksi</th>
+                                <th class="py-2 px-4 border">Event Name</th>
+                                <th class="py-2 px-4 border">Organizer Name</th>
+                                <th class="py-2 px-4 border">Event Location</th>
+                                <th class="py-2 px-4 border">Event Date</th>
+                                <th class="py-2 px-4 border">Event Time</th>
+                                <th class="py-2 px-4 border">Event Description</th>
+                                <th class="py-2 px-4 border">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-700">
@@ -48,7 +48,7 @@
                                                 class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded text-sm">Edit</a>
                                             <a href="{{ route('hapusEvent', $item->id) }}"
                                                 class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
-                                                onclick="return confirm('Are you sure?')">Hapus</a>
+                                                onclick="return confirm('Are you sure?')">Delete</a>
                                         </div>
                                         {{-- <a href="{{ route('hapusEvent', $item->id) }}" class="text-red-500 hover:underline">Delete</a>
                                     <a href="{{ route('editEvent', $item->id) }}" class="text-blue-500 hover:underline">Edit</a> --}}

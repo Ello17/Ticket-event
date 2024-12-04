@@ -66,9 +66,9 @@
                     </button>
                     <ul id="dropdown-user-menu" class="hidden bg-gray-700 mt-1 text-white">
                         <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('kelolaEvent') ? 'bg-blue-500 text-white' : '' }}"
-                                href="{{ route('kelolaEvent') }}"><i class="ri-list-unordered"></i> Kelola Event</a></li>
+                                href="{{ route('kelolaEvent') }}"><i class="ri-list-unordered"></i> Manage Events</a></li>
                         <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('tambahEvent') ? 'bg-blue-500 text-white' : '' }}"
-                                href="{{ route('tambahEvent') }}"><i class="ri-calendar-event-fill"></i> Tambah Event</a></li>
+                                href="{{ route('tambahEvent') }}"><i class="ri-calendar-event-fill"></i> Add Event</a></li>
                     </ul>
                 </div>
                 <div class="relative py-3 px-5">
@@ -80,13 +80,13 @@
                     </button>
                     <ul id="dropdown-event-menu" class="hidden bg-gray-700 mt-1 text-white">
                         <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('kelolaTiket') ? 'bg-blue-500 text-white' : '' }}"
-                                href="{{ route('kelolaTiket') }}"><i class="ri-ticket-2-line"></i> Kelola Tickets</a></li>
+                                href="{{ route('kelolaTiket') }}"><i class="ri-ticket-2-line"></i> Manage Tickets</a></li>
                     </ul>
                 </div>
                 <li class="py-3 px-5">
                     <a class="flex items-center text-gray-400 hover:bg-blue-700 hover:text-white rounded-lg py-2 px-4 {{ request()->routeIs('grafik') ? 'bg-blue-500 text-white' : '' }}"
                         href="{{ route('grafik', ['user_id' => $user->id]) }}">
-                        <i class="ri-bar-chart-grouped-line mr-2"></i>Grafik
+                        <i class="ri-bar-chart-grouped-line mr-2"></i>Income Chart
                     </a>
                 </li>
                 <li class="py-3 px-5">
@@ -108,8 +108,6 @@
             </ul>
         </nav>
     </div>
-
-    <!-- Main Content -->
 </div>
 <div class="flex-1 p-4 md:p-6 md:ml-64 max-w-full">
     @yield('content')

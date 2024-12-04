@@ -11,10 +11,10 @@
 <div class="container mt-5 py-5">
     <div class="profile-container">
         <div class="profile-header">
-            <img src="{{ asset($user->profil ?? 'components/asset/logo/user.png') }}" alt="Foto Profil {{ $user->username }}">
+            <img src="{{ asset($user->profil ) }}" alt="Foto Profil {{ $user->username }}">
             <div style="gap: 10px; display:grid;">
                 <h1>Hello, {{ $user->username }}</h1>
-                <a href="{{ route('editProfileAdmin', $user->id) }}" class="btn-edit"><i class="ri-settings-line"></i> Edit Profil</a>
+                <a href="{{ route('editProfileAdmin', $user->id) }}" class="btn-edit"><i class="ri-settings-line"></i> Edit Profile</a>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
                 <a href="{{ route('ChangePassMin') }}">
                 <div class="col-md-4">
                     <i class="fas fa-lock"></i>
-                    <span class="text-white"><i class="ri-lock-password-fill"></i> Ubah Password</span>
+                    <span class="text-white"><i class="ri-lock-password-fill"></i> Change Password</span>
                 </a>
             </div>
                 </div>

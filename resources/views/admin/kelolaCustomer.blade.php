@@ -1,14 +1,13 @@
 @extends('layouts.appAdmin')
 @section('title', 'Kelola Customer - Tiket Mudah')
 @section('content')
-    <h2 class="text-2xl font-bold mb-4">Customer Manage</h2>
     {{-- <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, magnam amet magni sapiente, quo alias repellendus,
         maiores esse eius ratione dolorum aspernatur voluptatibus veritatis molestias id. Doloribus eos cupiditate tempore.
     </p> --}}
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-4 border-b">
-            <h5 class="text-lg font-semibold">Tabel List Customer</h5>
+            <h5 class="text-lg font-semibold">Customer List Table</h5>
         </div>
         <div class="p-4">
             <form method="GET" action="{{ route('kelolaCustomer') }}" class="mb-4">
@@ -24,7 +23,7 @@
                             <th class="border px-4 py-2 text-left">Username</th>
                             <th class="border px-4 py-2 text-left">Email</th>
                             <th class="border px-4 py-2 text-left">Role</th>
-                            <th class="border px-4 py-2 text-left">Aksi</th>
+                            <th class="border px-4 py-2 text-left">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +44,6 @@
                 </table>
             </div>
 
-            <!-- Pagination Links -->
             <div class="mt-4">
                 {{ $users->appends(['search' => request('search')])->links() }}
             </div>

@@ -13,7 +13,7 @@
             <img src="{{ asset($user->profil ?? 'components/asset/logo/user.png') }}" alt="Foto Profil {{ $user->username }}">
             <div>
                 <h1>Hello, {{ $user->username }}</h1>
-                <a href="{{ route('editProfileCreator', $user->id) }}" class="btn btn-sm">Edit Profil</a>
+                <a href="{{ route('editProfileCreator', $user->id) }}" class="btn btn-sm">Edit Profile</a>
                 {{-- <a href="{{ route('homeCreator') }}" class="btn btn-sm">Back</a> --}}
             </div>
         </div>
@@ -31,7 +31,7 @@
                 <a href="{{ route('ubahpass') }}"
                 <div class="col-md-4">
                     <i class="fas fa-lock"></i> 
-                    <span class="text-white"> Ubah Password</span>
+                    <span class="text-white">Change Password</span>
                 </div>
                 </a>
             </div>

@@ -73,7 +73,7 @@ class PaymentController extends Controller
 
             $transaction = [
                 'transaction_details' => [
-                    'order_id' => $transaksi->id . '-' . time(), // Order ID unik
+                    'order_id' => $transaksi->id . '-' . time(), 
                     'gross_amount' => $transaksi->total_transaksi,
                 ],
                 'item_details' => [

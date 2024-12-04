@@ -6,7 +6,6 @@
             <h5 class="text-lg font-semibold">Tabel List Event</h5>
         </div>
         <div class="card-body p-4">
-            <!-- Search Form -->
             <form method="GET" action="{{ route('listEventAdm') }}" class="mb-4">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..." class="border rounded px-2 py-1">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded"><i class="ri-search-2-line"></i></button>
@@ -17,14 +16,14 @@
                         <tr class="bg-gray-100">
                             <th class="border p-2">No</th>
                             <th class="border p-2">Cover</th>
-                            <th class="border p-2">Nama Event</th>
-                            <th class="border p-2">Waktu</th>
-                            <th class="border p-2">Lokasi Event</th>
-                            <th class="border p-2">Deskripsi Event</th>
-                            <th class="border p-2">Harga</th>
-                            <th class="border p-2">Kategori</th>
-                            <th class="border p-2">Tiket</th>
-                            <th class="border p-2">Aksi</th>
+                            <th class="border p-2">Event Name</th>
+                            <th class="border p-2">Time</th>
+                            <th class="border p-2">Event Location</th>
+                            <th class="border p-2">Event Description</th>
+                            <th class="border p-2">Price</th>
+                            <th class="border p-2">Category</th>
+                            <th class="border p-2">Ticket</th>
+                            <th class="border p-2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,7 +62,6 @@
                     </tbody>
                 </table>
             </div>
-            <!-- Pagination Links -->
             <div class="mt-4">
                 {{ $events->appends(['search' => request('search')])->links() }}
             </div>

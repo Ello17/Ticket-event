@@ -41,7 +41,7 @@
                             class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none"
                             type="button">
                             <i class="ri-arrow-down-s-line mr-2"></i>
-                            Kelola User
+                            Manage Users
                         </button>
                         <ul id="dropdown-user-menu" class="hidden bg-gray-700 mt-1 text-white">
                             <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('kelolaCustomer') ? 'bg-blue-500 text-white' : '' }}"
@@ -57,7 +57,7 @@
                             class="w-full text-left text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg py-2 px-4 focus:outline-none"
                             type="button">
                             <i class="ri-arrow-down-s-line mr-2"></i>
-                            Kelola Event
+                            Manage Events
                         </button>
                         <ul id="dropdown-event-menu" class="hidden bg-gray-700 mt-1 text-white">
                             <li><a class="block px-4 py-2 hover:bg-blue-600 {{ request()->routeIs('listEventAdm') ? 'bg-blue-500 text-white' : '' }}"

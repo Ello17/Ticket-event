@@ -35,6 +35,6 @@ class Event extends Model
 
     public function tiket()
     {
-        return $this->hasMany(Tiket::class, 'event_id', 'id'); // Pastikan kolom 'event_id' dan 'id' sesuai dengan struktur tabel
+        return $this->hasMany(Tiket::class, 'event_id', 'id');
     }
 }

@@ -1,9 +1,8 @@
-@extends('layouts.appCreator')
+@extends('layouts.appAdmin')
 
 @push('css')
     {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
     <style>
-  <style>
         body {
             background-color: #ffffff;
         }
@@ -22,7 +21,7 @@
             padding: 20px;
             border-radius: 10px;
         }
-        .form-group{
+        .form-group {
             display: grid;
             place-items: center;
             width: 100%;
@@ -36,12 +35,12 @@
         }
         @media (min-width: 1024px) {
             .form-tm {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
-            .textarea{
+            .textarea {
                 width: 305%;
             }
-            .none{
+            .none {
                 display: flex;
                 padding-right: 5px;
             }
@@ -49,15 +48,15 @@
                 height: 6em;
             }
         }
-        @media (max-width: 768px){
-            .none{
+        @media (max-width: 768px) {
+            .none {
                 display: none;
             }
         textarea{
          height: 6em;
         }
         }
-        .textarea{
+        .textarea {
             padding: 10px;
             color: white;
             border-radius: 10px;
@@ -85,30 +84,30 @@
             background: rgba(45, 45, 45, 0.18);
             width: 100%;
         }
-        .textarea::-webkit-scrollbar{
+        .textarea::-webkit-scrollbar {
             display: none;
         }
         .form-tm input,
-                .label-image {
+        .label-image {
             background: rgba(255, 255, 255, 0.18);
             border-radius: 16px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: .3s ease-in-out ;
+            transition: .3s ease-in-out;
             outline: none;
             padding: 10px;
         }
-        input{
-        width: 100%;
-        cursor: pointer;
+        input {
+            width: 100%;
+            cursor: pointer;
         }
-    .box-input > label{
-        padding: 12px;
-        min-width: 200px;
-    }
-        .label-image{
+        .box-input > label {
+            padding: 12px;
+            min-width: 200px;
+        }
+        .label-image {
             cursor: pointer;
         }
         .form-tm input:focus,
@@ -125,7 +124,7 @@
         input[type="file"]{
             display: none;
         }
-        .mb-3{
+        .mb-3 {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -207,36 +206,36 @@
                         <input type="text" id="nama_penyelenggara" required value="{{ old('nama_penyelenggara', $events->nama_penyelenggara) }}" name="nama_penyelenggara" class="form-control">
                     </div>
 
-                    <div class="mb-3 gap-2">
-                        <label for="cover_event">Cover</label>
-                        <input type="file" accept="image/*" name="cover_event" class="form-control" id="uploadimage">
-                        <label for="uploadimage" class="label-image justify-center flex">Upload File</label>
-                    </div>
+                <div class="mb-3 gap-2">
+                    <label for="cover_event">Cover</label>
+                    <input type="file" accept="image/*" name="cover_event" class="form-control" id="uploadimage">
+                    <label for="uploadimage" class="label-image justify-center flex">Upload File</label>
+                </div>
 
-                    <div class="mb-3 gap-2">
-                        <label for="nama_penyelenggara" class="form-label">Nama Penyelenggara</label>
-                        <input type="text" id="nama_penyelenggara" required value="{{ old('nama_penyelenggara', $events->nama_penyelenggara) }}" name="nama_penyelenggara" class="form-control">
-                    </div>
+                <div class="mb-3 gap-2">
+                    <label for="nama_penyelenggara" class="form-label">Organizer Name</label>
+                    <input type="text" id="nama_penyelenggara" required value="{{ old('nama_penyelenggara', $events->nama_penyelenggara) }}" name="nama_penyelenggara" class="form-control">
+                </div>
 
-                    <div class="mb-3 gap-2">
-                        <label for="nama_event">Nama Event</label>
-                        <input type="text" id="nama_event" required value="{{ old('nama_event', $events->nama_event) }}" name="nama_event" class="form-control">
-                    </div>
+                <div class="mb-3 gap-2">
+                    <label for="nama_event">Event Name</label>
+                    <input type="text" id="nama_event" required value="{{ old('nama_event', $events->nama_event) }}" name="nama_event" class="form-control">
+                </div>
 
-                    <div class="mb-3 gap-2">
-                        <label for="tanggal_event">Tanggal Event</label>
-                        <input type="date" id="tanggal_event" required value="{{ old('tanggal_event', $events->tanggal_event) }}" name="tanggal_event" class="form-control">
-                    </div>
+                <div class="mb-3 gap-2">
+                    <label for="tanggal_event">Event Date</label>
+                    <input type="date" id="tanggal_event" required value="{{ old('tanggal_event', $events->tanggal_event) }}" name="tanggal_event" class="form-control">
+                </div>
 
-                    <div class="mb-3 gap-2">
-                        <label for="waktu_event">Waktu Event</label>
-                        <input type="time" id="waktu_event" required value="{{ old('waktu_event', $events->waktu_event) }}" name="waktu_event" class="form-control">
-                    </div>
+                <div class="mb-3 gap-2">
+                    <label for="waktu_event">Event Time</label>
+                    <input type="time" id="waktu_event" required value="{{ old('waktu_event', $events->waktu_event) }}" name="waktu_event" class="form-control">
+                </div>
 
-                    <div class="mb-3 gap-2">
-                        <label for="lokasi_event">Lokasi Event</label>
-                        <input type="text" id="lokasi_event" required value="{{ old('lokasi_event', $events->lokasi_event) }}" name="lokasi_event" class="form-control">
-                    </div>
+                <div class="mb-3 gap-2">
+                    <label for="lokasi_event">Event Location</label>
+                    <input type="text" id="lokasi_event" required value="{{ old('lokasi_event', $events->lokasi_event) }}" name="lokasi_event" class="form-control">
+                </div>
 
                 </div>
                 @if ($events->cover_event)
@@ -261,4 +260,3 @@
 @push('js')
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 @endpush
-
