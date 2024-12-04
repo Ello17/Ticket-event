@@ -42,18 +42,9 @@
         .page-break {
             page-break-after: always;
         }
-<<<<<<< HEAD
-        @media print {
-            .qrcode {
-                display: flex !important;
-                justify-content: center !important; /* Memusatkan QR code saat dicetak */
-                page-break-inside: avoid !important; /* Menghindari pemisahan QR code saat dicetak */
-            }
-=======
         .center{
             display: flex;
             padding-left: 21%;
->>>>>>> e42040f8385d8c2081e4b0199fe903a0a215684b
         }
     </style>
 </head>
@@ -65,7 +56,7 @@
             <p>Email: {{ $transaksi->email }}</p>
             <p>No. KTP: {{ $transaksi->no_ktp }}</p>
             <p>No. Telepon: {{ $transaksi->no_telepon }}</p>
-            <p>Kode Tiket: {{ $qrcode['kode_tiket'] }}</p> 
+            <p>Kode Tiket: {{ $qrcode['kode_tiket'] }}</p>
 
             @if ($transaksi->tiket->kategori_tiket !== 'online')
                 <div class="divider"></div>

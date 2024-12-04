@@ -2,10 +2,10 @@
 @section('title', 'Kelola Customer - Tiket Mudah')
 @section('content')
     <h2 class="text-2xl font-bold mb-4">Customer Manage</h2>
-    <p>
+    {{-- <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, magnam amet magni sapiente, quo alias repellendus,
         maiores esse eius ratione dolorum aspernatur voluptatibus veritatis molestias id. Doloribus eos cupiditate tempore.
-    </p>
+    </p> --}}
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-4 border-b">
             <h5 class="text-lg font-semibold">Tabel List Customer</h5>

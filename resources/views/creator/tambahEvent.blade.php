@@ -40,6 +40,15 @@
             .textarea{
                 width: 305%;
             }
+            .none{
+                display: flex;
+                padding-right: 5px;
+            }
+        }
+        @media (max-width: 768px){
+            .none{
+                display: none;
+            }
         }
         .textarea{
             padding: 10px;
@@ -148,7 +157,7 @@
                     </div>
 
                     <div class="mb-3 gap-2">
-                        <label for="nama_penyelenggara" class="form-label">Nama Penyelenggara</label>
+                        <label for="nama_penyelenggara" class="form-label flex"><span class="none">Nama</span>Penyelenggara</label>
                         <input type="text" name="nama_penyelenggara" class="form-control"
                             placeholder="Masukkan nama penyelenggara" required>
                     </div>
