@@ -1,7 +1,8 @@
 @extends('layouts.appCreator')
 
 @push('css')
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 @endpush
 
 @section('title', 'Profile Creator - Tiket Mudah')
@@ -58,13 +59,32 @@
 
 @push('js')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
-
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
+        $(document).ready(function () {
+            // Check if DataTable is already initialized
+            if (!$.fn.DataTable.isDataTable('#example')) {
+                $('#example').DataTable({
+                    language: {
+                        search: "Search:",
+                        lengthMenu: "Show _MENU_ entries per page",
+                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                        infoEmpty: "No entries available",
+                        zeroRecords: "No matching records found",
+                        paginate: {
+                            first: "First",
+                            last: "Last",
+                            next: "Next",
+                            previous: "Previous"
+                        }
+                    },
+                    pageLength: 10, // Default number of entries per page
+                    responsive: true, // Makes the table responsive
+                });
+            }
         });
     </script>
+
 @endpush
+
