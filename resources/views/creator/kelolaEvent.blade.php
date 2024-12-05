@@ -12,14 +12,8 @@
                 <h5 class="text-lg font-semibold">Event List Table</h5>
             </div>
             <div class="card-body p-4">
-                <form action="{{ route('kelolaEvent') }}" method="GET" class="mb-3">
-                    {{-- <input type="text" name="search" placeholder="Cari event..." value="{{ $search ?? '' }}"
-                        class="form-control border rounded px-2 py-1">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded"><i
-                            class="ri-search-2-line"></i></button> --}}
-                </form>
                 <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-200 " id="example">
+                    <table class="min-w-full bg-white border border-gray-200">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600">
                                 <th class="py-2 px-4 border">Poster</th>
@@ -60,41 +54,10 @@
                         </tbody>
                     </table>
                     <div class="mt-4">
-                        {{ $events->appends(['search' => request('search')])->links() }}
+                        {{ $events->links() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-@push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            // Check if DataTable is already initialized
-            if (!$.fn.DataTable.isDataTable('#example')) {
-                $('#example').DataTable({
-                    language: {
-                        search: "Search:",
-                        lengthMenu: "Show _MENU_ entries per page",
-                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                        infoEmpty: "No entries available",
-                        zeroRecords: "No matching records found",
-                        paginate: {
-                            first: "First",
-                            last: "Last",
-                            next: "Next",
-                            previous: "Previous"
-                        }
-                    },
-                    pageLength: 10, // Default number of entries per page
-                    responsive: true, // Makes the table responsive
-                });
-            }
-        });
-    </script>
-
-@endpush
-

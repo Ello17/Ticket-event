@@ -1,11 +1,5 @@
 @extends('layouts.appCreator')
 
-@push('css')
-    <!-- Include DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.min.css">
-@endpush
-
 @section('title', 'List of Participants - Tiket Mudah')
 
 @section('content')
@@ -21,7 +15,7 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-200" id="participantsTable">
+            <table class="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr class="bg-gray-100 text-gray-600">
                         <th class="py-2 px-4 border">No</th>
@@ -59,24 +53,3 @@
     </div>
 </div>
 @endsection
-
-@push('js')
-    <!-- Include jQuery and DataTables JS -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#participantsTable').DataTable({
-                "paging": true,        // Enable pagination
-                "searching": true,     // Enable search box
-                "ordering": true,      // Enable sorting by columns
-                "info": true,          // Show table information
-                "lengthChange": false  // Disable changing the number of entries displayed
-            });
-        });
-    </script>
-
-@endpush
-
