@@ -65,24 +65,26 @@ section{
     }
 
 } */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
     .grid-card {
         grid-template-columns: repeat(1, minmax(0, 1fr));
         gap: 10px;
+        width: 95%;
     }
     .card{
         max-height: 420px;
-        width: 400px;
+        width: 100%;
         padding: 10px;
     }
     .card-section{
         margin-top: 10px;
+        width: 100%;
     }
 }
 
 @media (min-width: 1024px) {
     .grid-card {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 20px;
     }
     .card{
@@ -94,9 +96,9 @@ section{
         margin-top: 10px;
     }
 }
-@media (max-width: 1681px) {
+@media (min-width: 1681px) {
     .grid-card {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 20px;
     }
 }

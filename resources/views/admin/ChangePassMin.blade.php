@@ -51,15 +51,12 @@
                     <h3 class="text-center mb-4">Change Password</h3>
                     <form action="{{ route('postChangePassMin') }}" method="POST" class="form-group">
                         @csrf
-                        <!-- Old Password Input -->
                         <label for="password" class="mt-3">Old Password</label>
                         <input type="password" id="password" name="password" class="form-control" placeholder="Input Your Old Password" required>
 
-                        <!-- New Password Input -->
                         <label for="new_password" class="mt-3">New Password</label>
                         <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Input Your New Password" required>
 
-                        <!-- Confirmation Password Input -->
                         <label for="confirmation_password" class="mt-3">Confirm New Password</label>
                         <input type="password" id="confirmation_password" name="confirmation_password" class="form-control" placeholder="Confirm New Password" required>
 

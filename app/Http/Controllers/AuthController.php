@@ -79,28 +79,7 @@ class AuthController extends Controller
         return view('template.register');
     }
 
-    // public function postRegisterCustomer(Request $request)
-    // {
-
-    //     $this->validate($request, [
-    //         'username' => 'required|string|max:255',
-    //         'email' => 'required|string|email|max:255|unique:users',
-    //         'password' => 'required|string|min:8|confirmed',
-    //     ]);
-
-    //     $user = User::create([
-    //         'username' => $request->name,
-    //         'email' => $request->email,
-    //         'password' => Hash::make($request->password),
-    //         'role' => 'customer', // Set role sebagai customer
-    //         'profil' => $request->profil,
-    //         'is_approved' => true, // Customer tidak perlu persetujuan
-    //     ]);
-
-    //     Auth::login($user);
-
-    //     return redirect()->route('homeCustomer'); // Redirect setelah login
-    // }
+   
 
 
     public function postRegisterCustomer(Request $request)

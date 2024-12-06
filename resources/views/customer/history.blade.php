@@ -15,7 +15,6 @@
 <div class="container py-2">
     <div class="row">
         <div class="col-lg-9 mx-auto bg-[#1f2937] rounded shadow">
-            <!-- Fixed header table -->
             <div class="table-responsive">
                 <table class="table text-white">
                     <thead>
@@ -50,14 +49,11 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     @if($transaksi->tiket->kategori_tiket === 'online' && $transaksi->status === 'paid')
-                                        <!-- Tombol untuk tiket online yang sudah dibayar -->
                                         <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
                                         <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
                                     @elseif($transaksi->status === 'paid')
-                                        <!-- Tombol untuk tiket offline yang sudah dibayar -->
                                         <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
                                     @else
-                                        <!-- Tombol untuk transaksi yang belum dibayar -->
                                         <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')

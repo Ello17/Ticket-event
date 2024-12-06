@@ -38,6 +38,10 @@
         .page-break {
             page-break-after: always;
         }
+        .center{
+            display: flex;
+            padding-left: 21%;
+        }
     </style>
 </head>
 <body>
@@ -48,14 +52,16 @@
             <p>Email: {{ $transaksi->email }}</p>
             <p>No. KTP: {{ $transaksi->no_ktp }}</p>
             <p>No. Telepon: {{ $transaksi->no_telepon }}</p>
-            <p>Kode Tiket: {{ $qrcode['kode_tiket'] }}</p> <!-- Gunakan kode tiket langsung dari participant -->
+            <p>Kode Tiket: {{ $qrcode['kode_tiket'] }}</p> 
 
             @if ($transaksi->tiket->kategori_tiket !== 'online')
                 <div class="divider"></div>
 
                 <div class="qrcode">
                     <p>Scan QR Code Anda:</p>
+                    <div class="center">
                     {!! $qrcode['qrcode'] !!}
+                </div>
                 </div>
             @endif
         </div>

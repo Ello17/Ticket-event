@@ -43,7 +43,7 @@ class emailController extends Controller
 
     // public function showConfirmation(Request $request)
     // {
-    //     // Ambil transaksi yang berdasarkan order_id yang mungkin dikirimkan sebagai parameter
+    //     
     //     $transaksi = Transaksi::with('event')->where('order_id', $request->query('order_id'))->first();
 
     //     if (!$transaksi) {
