@@ -26,8 +26,9 @@
                         @foreach ($events as $e)
                             <tr>
                                 <td class="border p-2">{{ $loop->iteration + ($events->currentPage() - 1) * $events->perPage() }}</td>
-                                <td class="border p-2"><img src="{{ asset($e->cover_event) }}" alt="Cover Event"
-                                        class="w-24" style="max-height: 40px; object-fit:cover"></td>
+                                <td class="border p-2">
+                                    <img src="{{ asset($e->cover_event) }}" alt="Cover Event" class="w-24" style="max-height: 40px; object-fit:cover">
+                                </td>
                                 <td class="border p-2">{{ $e->nama_event }}</td>
                                 <td class="border p-2">
                                     <span>{{ $e->tanggal_event }}</span>
@@ -35,22 +36,22 @@
                                 </td>
                                 <td class="border p-2">{{ $e->lokasi_event }}</td>
                                 <td class="border p-2" title="{{ $e->deskripsi_event }}">
-                                    {{ \Illuminate\Support\Str::limit($e->deskripsi_event, 50) }}</td>
-
-                                @if ($e->tiket->isNotEmpty())
-                                    <td class="border p-2">{{ $e->tiket->first()->harga_tiket }}</td>
-                                    <td class="border p-2">{{ $e->tiket->first()->kategori_tiket }}</td>
-                                    <td class="border p-2">{{ $e->tiket->first()->jumlah_tiket }}</td>
-                                @else
-                                    <td class="border p-2" colspan="3">Tidak ada tiket</td>
-                                @endif
+                                    {{ \Illuminate\Support\Str::limit($e->deskripsi_event, 50) }}
+                                </td>
+                                <td class="border p-2">{{ $e->tiket->first()->harga_tiket ?? '-' }}</td>
+                                <td class="border p-2">{{ $e->tiket->first()->kategori_tiket ?? '-' }}</td>
+                                <td class="border p-2">{{ $e->tiket->first()->jumlah_tiket ?? '-' }}</td>
                                 <td class="border p-2">
                                     <div class="flex text-center space-x-2">
                                         <a href="{{ route('admin.editList', $e->id) }}"
-                                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded text-sm"><i class="ri-edit-fill"></i></a>
+                                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded text-sm">
+                                            <i class="ri-edit-fill"></i>
+                                        </a>
                                         <a href="{{ route('hapusList', $e->id) }}"
                                             class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
-                                            onclick="return confirm('Are you sure?')"><i class="ri-delete-bin-line"></i></a>
+                                            onclick="return confirm('Are you sure?')">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -67,7 +68,9 @@
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#eventTable').DataTable({
+            $('#eventTable').on('error.dt', function (e, settings, techNote, message) {
+                console.log('DataTables error:', message);
+            }).DataTable({
                 "language": {
                     "search": "Search:",
                     "lengthMenu": "Show _MENU_ entries per page",
@@ -81,7 +84,7 @@
                         "previous": "Previous"
                     }
                 },
-                "pageLength": 10, // Number of entries per page
+                "pageLength": 10 // Number of entries per page
             });
         });
     </script>

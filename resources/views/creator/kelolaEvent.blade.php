@@ -13,7 +13,7 @@
             </div>
             <div class="card-body p-4">
                 <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-200">
+                    <table class="min-w-full bg-white border border-gray-200" id="example">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600">
                                 <th class="py-2 px-4 border">Poster</th>
@@ -61,3 +61,33 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Check if DataTable is already initialized
+            if (!$.fn.DataTable.isDataTable('#example')) {
+                $('#example').DataTable({
+                    language: {
+                        search: "Search:",
+                        lengthMenu: "Show _MENU_ entries per page",
+                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                        infoEmpty: "No entries available",
+                        zeroRecords: "No matching records found",
+                        paginate: {
+                            first: "First",
+                            last: "Last",
+                            next: "Next",
+                            previous: "Previous"
+                        }
+                    },
+                    pageLength: 10, // Default number of entries per page
+                    responsive: true, // Makes the table responsive
+                });
+            }
+        });
+    </script>
+
+@endpush
