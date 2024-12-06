@@ -61,12 +61,12 @@ class AuthController extends Controller
             if ($user->role !== 'creator') {
                 Log::info('Login ditolak karena peran bukan creator.');
                 Auth::logout();
-                return redirect()->route('loginCreator')->with('pesan-gagal', 'Hanya akun creator yang diizinkan login.');
+                return redirect()->route('login')->with('pesan-gagal', 'Hanya akun creator yang diizinkan login.');
             }
             if ($user->is_approved == false) {
                 Log::info('User belum diapprove, logout.');
                 Auth::logout();
-                return redirect()->route('loginCreator')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
+                return redirect()->route('login')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
             }
             return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang ' . $user->username);
         } else {
