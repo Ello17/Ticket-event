@@ -140,7 +140,7 @@
     </style>
 @endpush
 
-@section('title', 'Tambah Event')
+@section('title', 'Add Ticket')
 
 @section('content')
 
