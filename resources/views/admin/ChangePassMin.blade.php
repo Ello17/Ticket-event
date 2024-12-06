@@ -68,6 +68,6 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script> <!-- Corrected JS Path -->
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script> 
 </body>
 </html>

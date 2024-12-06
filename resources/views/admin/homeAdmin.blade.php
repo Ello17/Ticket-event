@@ -3,8 +3,8 @@
 @section('content')
 <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
 <p>
-    Ini adalah konten utama halaman admin. Sidebar bisa dibuka/ditutup
-    pada tampilan mobile.
+    This is the main content of the admin page. Sidebar can be opened/closed
+    on mobile display.
 </p>
 <div class="grid grid-cols-1 gap-6 md:grid-cols-3 mt-6">
     <div

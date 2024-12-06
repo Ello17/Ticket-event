@@ -1,30 +1,25 @@
 @extends('layouts.appAdmin')
 @section('title', 'Kelola Customer - Tiket Mudah')
 @section('content')
-    <h2 class="text-2xl font-bold mb-4">Creator Manage</h2>
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, magnam amet magni sapiente, quo alias repellendus,
-        maiores esse eius ratione dolorum aspernatur voluptatibus veritatis molestias id. Doloribus eos cupiditate tempore.
-    </p>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-4 border-b">
-            <h5 class="text-lg font-semibold">Tabel List Customer</h5>
+            <h5 class="text-lg font-semibold">Creator List Table</h5>
         </div>
         <div class="p-4">
-            <form method="GET" action="{{ route('kelolaKreator') }}" class="mb-4">
+            {{-- <form method="GET" action="{{ route('kelolaKreator') }}" class="mb-4">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by username or email" class="border rounded px-2 py-1">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded"><i class="ri-search-2-line"></i></button>
-            </form>
+            </form> --}}
 
             <div class="overflow-x-auto">
-                <table class="table-auto w-full border-collapse border border-gray-300">
+                <table id="creatorTable" class="min-w-full bg-white table-auto border-collapse border border-gray-200">
                     <thead>
                         <tr>
                             <th class="border px-4 py-2 text-center">No</th>
                             <th class="border px-4 py-2 text-center">Username</th>
                             <th class="border px-4 py-2 text-center">Email</th>
                             <th class="border px-4 py-2 text-center">Role</th>
-                            <th class="border px-4 py-2 text-center">Aksi</th>
+                            <th class="border px-4 py-2 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,9 +30,9 @@
                                 <td class="border px-4 py-2">{{ $user->email }}</td>
                                 <td class="border px-4 py-2">{{ $user->role }}</td>
                                 <td class="border px-4 py-2 text-center">
-                                <a href="{{ route('hapusKreator', $user->id) }}"
-                                        class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
-                                        onclick="return confirm('Are you sure?')"><i class="ri-delete-bin-line"></i></a>
+                                    <a href="{{ route('hapusKreator', $user->id) }}"
+                                       class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
+                                       onclick="return confirm('Are you sure?')"><i class="ri-delete-bin-line"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -45,9 +40,34 @@
                 </table>
             </div>
 
-            <div class="mt-4">
-                {{ $users->appends(['search' => request('search')])->links() }}
+            {{-- <div class="mt-4">
+                {{ $users->appends(['search' => request('search')])->links() }} --}}
             </div>
         </div>
     </div>
+
+    {{-- DataTables Scripts --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#creatorTable').DataTable({
+                "language": {
+                    "search": "Search:",
+                    "lengthMenu": "Show _MENU_ entries per page",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "infoEmpty": "No entries available",
+                    "zeroRecords": "No matching records found",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Previous"
+                    }
+                },
+                "pageLength": 10, // Number of entries per page
+            });
+        });
+    </script>
 @endsection

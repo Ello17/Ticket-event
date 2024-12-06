@@ -407,9 +407,25 @@ public function postScanQr(Request $request)
 }
 
 
-public function participants()
+public function participants(Request $request)
 {
-    $participants = Participant::with(['user', 'event'])->get();
-    return view('creator.participants', compact('participants'));
+    $search = $request->input('search');
+
+    $participants = Participant::with(['user', 'event'])
+        ->when($search, function ($query, $search) {
+            return $query->whereHas('user', function ($query) use ($search) {
+                $query->where('username', 'like', "%{$search}%");
+            })
+            ->orWhereHas('event', function ($query) use ($search) {
+                $query->where('nama_event', 'like', "%{$search}%");
+            });
+        })
+        ->paginate(10); // Use pagination here
+
+    // Append search query to pagination links
+    $participants->appends(['search' => $search]);
+
+    return view('creator.participants', compact('participants', 'search'));
 }
+
 }

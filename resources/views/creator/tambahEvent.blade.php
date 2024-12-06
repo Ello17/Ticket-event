@@ -17,7 +17,7 @@
 
         .card {
             background: #1f2937;
-            width: fit-content;
+            width: 90%;
             padding: 20px;
             border-radius: 10px;
         }
@@ -28,10 +28,27 @@
         }
         .form-tm {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
             margin-top: 20px;
             width: 100%;
+        }
+        @media (min-width: 1024px) {
+            .form-tm {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .textarea{
+                width: 305%;
+            }
+            .none{
+                display: flex;
+                padding-right: 5px;
+            }
+        }
+        @media (max-width: 768px){
+            .none{
+                display: none;
+            }
         }
         .textarea{
             padding: 10px;
@@ -45,6 +62,8 @@
             transition: .3s ease-in-out ;
             outline: none;
             resize: none;
+            width: 100%;
+
         }
         .textarea::-webkit-scrollbar{
             display: none;
@@ -62,7 +81,7 @@
             padding: 10px;
         }
         input{
-        width: 200px;
+        width: 100%;
         cursor: pointer;
         }
     .box-input > label{
@@ -121,85 +140,73 @@
     </style>
 @endpush
 
-@section('title', 'Tambah Event')
+@section('title', 'Add Event')
 
 @section('content')
 
     <div class="container-tm">
         <div class="card">
-            <h2 class="text-center mt-3">Tambah Event</h2>
+            <h2 class="text-center mt-3 gap-2">Add Event</h2>
             <form action="{{ route('postTambahEvent') }}" method="POST" class="form-group " enctype="multipart/form-data">
                 @csrf
                 <div class="form-tm">
-                    <div class="mb-3">
-                        <label for="nama_event" class="form-label">Nama Event</label>
-                        <br>
-                        <input type="text" name="nama_event" class="form-control" placeholder="Masukkan nama event"
+                    <div class="mb-3 gap-2">
+                        <label for="nama_event" class="form-label">Event Name</label>
+                        <input type="text" name="nama_event" class="form-control" placeholder="Enter the event name"
                             required>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="nama_penyelenggara" class="form-label">Nama Penyelenggara</label>
-                        <br>
+                    <div class="mb-3 gap-2">
+                        <label for="nama_penyelenggara" class="form-label flex"><span class="none">Name</span>Organizer</label>
                         <input type="text" name="nama_penyelenggara" class="form-control"
-                            placeholder="Masukkan nama penyelenggara" required>
+                            placeholder="Enter the organizer's name" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="tanggal_event" class="form-label">Tanggal Event</label>
-                        <br>
+                    <div class="mb-3 gap-2">
+                        <label for="tanggal_event" class="form-label">Event Date</label>
                         <input type="date" name="tanggal_event" class="form-control" required min="{{ date('Y-m-d') }}">
                     </div>
 
-                    <div class="mb-3">
-                        <label for="waktu_event" class="form-label">Waktu Event</label>
-                        <br>
+                    <div class="mb-3 gap-2">
+                        <label for="waktu_event" class="form-label">Event Time</label>
                         <input type="time" name="waktu_event" class="form-control" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="lokasi_event" class="form-label">Lokasi</label>
-                        <br>
-                        <input type="text" name="lokasi_event" class="form-control" placeholder="Masukkan lokasi event"
+                    <div class="mb-3 gap-2">
+                        <label for="lokasi_event" class="form-label">Location</label>
+                        <input type="text" name="lokasi_event" class="form-control" placeholder="Enter the event location"
                             required>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-3 gap-2">
                         <label for="maps" class="form-label">Maps URL</label>
-                        <br>
-                        <input type="url" name="maps" class="form-control" placeholder="Masukkan URL Maps" required>
+                        <input type="url" name="maps" class="form-control" placeholder="Enter the Maps URL" required>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-3 gap-2">
                         <label for="longitude" class="form-label">Longitude</label>
-                        <br>
                         <input type="text" inputmode="numeric" name="longitude" class="form-control" step="any"
-                            placeholder="Masukkan longitude" required>
+                            placeholder="Enter longitude" required>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-3 gap-2">
                         <label for="latitude" class="form-label">Latitude</label>
-                        <br>
                         <input type="text" inputmode="numeric" name="latitude" class="form-control" step="any"
-                            placeholder="Masukkan latitude" required>
+                            placeholder="Enter latitude" required>
                     </div>
 
-                    <div class="mb-3 image">
-                        <label for="cover_event" class="form-label">Poster Event</label>
-                        <br>
-                        <div class="box-input">
+                    <div class="mb-3 image gap-2">
+                        <label for="cover_event" class="form-label">Event Posters</label>
                             <input type="file" accept="image/*" name="cover_event" class="form-control" id="uploadimage" required>
-                            <label for="uploadimage" class="label-image">Upload File</label>
-                        </div>
+                            <label for="uploadimage" class="label-image justify-center flex">Upload File</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="deskripsi_event" class="form-label">Deskripsi</label>
-                        <br>
-                        <textarea name="deskripsi_event" class="form-control textarea" rows="3" placeholder="Masukkan deskripsi event" required></textarea>
+                    <div class="mb-3 gap-2">
+                        <label for="deskripsi_event" class="form-label">Description</label>
+                        <textarea name="deskripsi_event" class="form-control textarea" rows="3" placeholder="Enter an event description" required></textarea>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success mt-3 border" style="padding: 10px; border-radius:5px;">Tambah</button>
+                <button type="submit" class="btn btn-success mt-3 border" style="padding: 10px; border-radius:5px;">Add</button>
             </form>
 
             @if ($errors->any())

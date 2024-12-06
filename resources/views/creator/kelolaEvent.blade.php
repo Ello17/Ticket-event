@@ -1,31 +1,29 @@
 @extends('layouts.appCreator')
-@section('title', 'Home Creator - Tiket Mudah')
+@push('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+@endpush
+@section('title', 'Manage Events - Tiket Mudah')
 
 @section('content')
     <div class="content p-8">
         <div class="card bg-white shadow-lg rounded-lg">
             <div class="card-header p-4">
-                <h5 class="text-lg font-semibold">Tabel List Event</h5>
+                <h5 class="text-lg font-semibold">Event List Table</h5>
             </div>
             <div class="card-body p-4">
-                <form action="{{ route('kelolaEvent') }}" method="GET" class="mb-3">
-                    <input type="text" name="search" placeholder="Cari event..." value="{{ $search ?? '' }}"
-                        class="form-control border rounded px-2 py-1">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded"><i
-                            class="ri-search-2-line"></i></button>
-                </form>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-gray-200" id="example">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600">
                                 <th class="py-2 px-4 border">Poster</th>
-                                <th class="py-2 px-4 border">Nama Event</th>
-                                <th class="py-2 px-4 border">Nama Penyelenggara</th>
-                                <th class="py-2 px-4 border">Lokasi Event</th>
-                                <th class="py-2 px-4 border">Tanggal Event</th>
-                                <th class="py-2 px-4 border">Waktu Event</th>
-                                <th class="py-2 px-4 border">Deskripsi Event</th>
-                                <th class="py-2 px-4 border">Aksi</th>
+                                <th class="py-2 px-4 border">Event Name</th>
+                                <th class="py-2 px-4 border">Organizer Name</th>
+                                <th class="py-2 px-4 border">Event Location</th>
+                                <th class="py-2 px-4 border">Event Date</th>
+                                <th class="py-2 px-4 border">Event Time</th>
+                                <th class="py-2 px-4 border">Event Description</th>
+                                <th class="py-2 px-4 border">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-700">
@@ -48,20 +46,50 @@
                                                 class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded text-sm">Edit</a>
                                             <a href="{{ route('hapusEvent', $item->id) }}"
                                                 class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
-                                                onclick="return confirm('Are you sure?')">Hapus</a>
+                                                onclick="return confirm('Are you sure?')">Delete</a>
                                         </div>
-                                        {{-- <a href="{{ route('hapusEvent', $item->id) }}" class="text-red-500 hover:underline">Delete</a>
-                                    <a href="{{ route('editEvent', $item->id) }}" class="text-blue-500 hover:underline">Edit</a> --}}
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-            <div class="mt-4">
-                {{ $events->appends(['search' => request('search')])->links() }}
-            </div>
+                    <div class="mt-4">
+                        {{ $events->links() }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Check if DataTable is already initialized
+            if (!$.fn.DataTable.isDataTable('#example')) {
+                $('#example').DataTable({
+                    language: {
+                        search: "Search:",
+                        lengthMenu: "Show _MENU_ entries per page",
+                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                        infoEmpty: "No entries available",
+                        zeroRecords: "No matching records found",
+                        paginate: {
+                            first: "First",
+                            last: "Last",
+                            next: "Next",
+                            previous: "Previous"
+                        }
+                    },
+                    pageLength: 10, // Default number of entries per page
+                    responsive: true, // Makes the table responsive
+                });
+            }
+        });
+    </script>
+
+@endpush
+
