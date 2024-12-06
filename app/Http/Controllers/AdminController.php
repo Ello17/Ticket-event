@@ -82,11 +82,20 @@ class AdminController extends Controller
 
     public function hapusList(Event $event, Request $request)
     {
+        try {
+            // Hapus data terkait di tabel anak (participants)
+            $event->participants()->delete();
 
-        $event->delete();
+            // Hapus event dari tabel events
+            $event->delete();
 
-        return redirect()->route('listEventAdm')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+            return redirect()->route('listEventAdm')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+        } catch (\Exception $e) {
+            // Tangani error dan tampilkan pesan kepada pengguna
+            return redirect()->route('listEventAdm')->with('pesan-gagal', 'Gagal menghapus event: ' . $e->getMessage());
+        }
     }
+
 
     public function hapusCustomer(User $user, Request $request)
     {
@@ -163,40 +172,40 @@ class AdminController extends Controller
     public function approveUser($id)
     {
         $user = User::findOrFail($id);
-    
+
         if ($user->is_approved) {
             return back()->with('error', 'Akun sudah disetujui.');
         }
-    
+
         $user->is_approved = true;
         $user->save();
-    
+
         event(new \App\Events\AccountApproved($user));
-    
+
         return back()->with('success', 'Akun berhasil disetujui.');
     }
-    
+
 
     public function rejectUser($id)
     {
         $user = User::findOrFail($id);
-    
+
         if ($user->is_approved) {
             return back()->with('error', 'Akun tidak dapat ditolak setelah disetujui.');
         }
-    
+
         event(new \App\Events\AccountRejected($user));
         $user->delete();
-    
+
         return back()->with('success', 'Akun berhasil ditolak.');
     }
-    
+
 
     public function profileAdmin()
 {
     $user = Auth::user();
 
-   
+
     if ($user->role !== 'admin') {
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }

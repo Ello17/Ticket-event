@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 @endpush
 
-@section('title', 'Kelola Tiket - Tiket Mudah')
+@section('title', 'Manage Tickets - Tiket Mudah')
 
 @section('content')
     <div class="content p-8">
