@@ -361,22 +361,6 @@ class CreatorController extends Controller
         ]);
     }
 
-<<<<<<< HEAD
-    public function scanQr()
-    {
-        return view('creator.scanqr');
-    }
-
-    public function participants(){
-       
-    $participants = participant::all();
-        
-        return view('creator.participants', compact('participants'));
-    }
-    public function postScanQr(Request $request)
-    {
-        
-=======
 
     public function ScanQr($eventId)
 {
@@ -385,7 +369,6 @@ class CreatorController extends Controller
 
     if (!$event) {
         return redirect()->back()->with('error', 'Event tidak ditemukan.');
->>>>>>> e42040f8385d8c2081e4b0199fe903a0a215684b
     }
     return view('creator.scanqr', compact('event'));
 }
