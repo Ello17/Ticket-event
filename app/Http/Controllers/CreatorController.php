@@ -421,9 +421,13 @@ public function participants(Request $request)
         ->whereHas('event', function ($query) use ($user) {
             $query->where('user_id', $user->id); // Filter by user's events
         })
+        ->whereHas('transaksi', function ($query) {
+            $query->where('status', 'paid'); // Filter by paid status
+        })
         ->paginate(10); // Use pagination here
 
     return view('creator.participants', compact('participants'));
 }
+
 
 }
