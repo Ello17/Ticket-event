@@ -220,7 +220,12 @@ class CreatorController extends Controller
         $tiket = Tiket::find($id);
 
         if ($tiket) {
+            // Hapus data transaksi terkait
+            $tiket->transaksis()->delete();
+
+            // Hapus tiket
             $tiket->delete();
+
             return redirect()->back()->with('pesan-berhasil', 'Tiket berhasil dihapus!');
         } else {
             return redirect()->back()->with('pesan-gagal', 'Tiket tidak ditemukan!');
@@ -228,7 +233,8 @@ class CreatorController extends Controller
     }
 
 
-    
+
+
     public function editProfileCreator($id)
     {
         $user = Auth::user();
@@ -266,7 +272,7 @@ class CreatorController extends Controller
                 Log::info('Deleting old file: ' . public_path($user->profil));
                 File::delete(public_path($user->profil));
             }
-            
+
             $file->move(public_path('img'), $fileName);
             $user->profil = $filePath;
         }
@@ -362,15 +368,15 @@ class CreatorController extends Controller
     }
 
 
-    public function ScanQr($eventId)
+    public function ScanQr()
 {
-    $event = Event::find($eventId);
+    // $event = Event::find($eventId);
 
 
-    if (!$event) {
-        return redirect()->back()->with('error', 'Event tidak ditemukan.');
-    }
-    return view('creator.scanqr', compact('event'));
+    // if (!$event) {
+    //     return redirect()->back()->with('error', 'Event tidak ditemukan.');
+    // }
+    return view('creator.scanqr');
 }
 
 
@@ -409,24 +415,15 @@ public function postScanQr(Request $request)
 
 public function participants(Request $request)
 {
-    $search = $request->input('search');
+    $user = auth()->user(); // Get the authenticated user
 
     $participants = Participant::with(['user', 'event'])
-        ->when($search, function ($query, $search) {
-            return $query->whereHas('user', function ($query) use ($search) {
-                $query->where('username', 'like', "%{$search}%");
-            })
-            ->orWhereHas('event', function ($query) use ($search) {
-                $query->where('nama_event', 'like', "%{$search}%");
-            });
+        ->whereHas('event', function ($query) use ($user) {
+            $query->where('user_id', $user->id); // Filter by user's events
         })
         ->paginate(10); // Use pagination here
 
-    // Append search query to pagination links
-    $participants->appends(['search' => $search]);
-
-    return view('creator.participants', compact('participants', 'search'));
+    return view('creator.participants', compact('participants'));
 }
-
 
 }

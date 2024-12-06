@@ -185,9 +185,9 @@ class CustomerController extends Controller
         \Midtrans\Config::$is3ds = true;
 
         $order_id = 'ORDER-' . uniqid();
-        $status = 'pending'; 
+        $status = 'pending';
         if ($tiket_dibeli > 0) {
-            $status = 'confirmed'; 
+            $status = 'confirmed';
         }
 
         $params = [
