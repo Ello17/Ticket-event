@@ -8,11 +8,11 @@
         <div class="p-4">
             <div class="overflow-x-auto">
                 <form method="GET" action="{{ route('pending.users') }}" class="mb-4">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by username or email"
+                    {{-- <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by username or email"
                         class="border rounded px-2 py-1">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded">
                         <i class="ri-search-2-line"></i>
-                    </button>
+                    </button> --}}
                 </form>
 
                 @if ($pendingUsers->isEmpty())

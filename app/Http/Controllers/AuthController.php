@@ -24,33 +24,6 @@ class AuthController extends Controller
 
     public function postLogin(Request $request)
     {
-    $data = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
-
-    if (Auth::attempt($data)) {
-        $user = Auth::user();
-
-        if ($user->role === 'admin') {
-            return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang' . $user->username);
-        } else if ($user->role === 'customer') {
-            return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang ' . $user->username);
-        } else if ($user->role === 'creator') {
-            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang' . $user->username);
-        }
-    } else {
-        return redirect()->route('login')->with('pesan-gagal', 'Email atau password salah');
-    }
-    }
-
-    public function loginCreator(){
-        return view('template.loginCreator');
-    }
-
-
-    public function postLoginCreator(Request $request)
-    {
         $data = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -58,21 +31,58 @@ class AuthController extends Controller
     
         if (Auth::attempt($data)) {
             $user = Auth::user();
-            if ($user->role !== 'creator') {
-                Log::info('Login ditolak karena peran bukan creator.');
+    
+            if ($user->role === 'admin') {
+                return redirect()->route('homeAdmin')->with('pesan-berhasil', 'Selamat datang ' . $user->username);
+            } elseif ($user->role === 'customer') {
+                return redirect()->intended(route('homeCustomer'))->with('pesan-berhasil', 'Selamat datang ' . $user->username);
+            } elseif ($user->role === 'creator') {
+                // Tambahan logika untuk role creator
+                if ($user->is_approved == false) {
+                    Log::info('Login gagal: Akun creator belum diapprove.');
+                    Auth::logout();
+                    return redirect()->route('login')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
+                }
+                return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang ' . $user->username);
+            } else {
+                Log::info('Login ditolak: Role tidak dikenal.');
                 Auth::logout();
-                return redirect()->route('login')->with('pesan-gagal', 'Hanya akun creator yang diizinkan login.');
+                return redirect()->route('login')->with('pesan-gagal', 'Peran Anda tidak diizinkan untuk login.');
             }
-            if ($user->is_approved == false) {
-                Log::info('User belum diapprove, logout.');
-                Auth::logout();
-                return redirect()->route('login')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
-            }
-            return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang ' . $user->username);
         } else {
-            return redirect()->route('loginCreator')->with('pesan-gagal', 'Email atau password salah.');
+            return redirect()->route('login')->with('pesan-gagal', 'Email atau password salah.');
         }
     }
+    
+    // public function loginCreator(){
+    //     return view('template.loginCreator');
+    // }
+
+
+    // public function postLoginCreator(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'email' => ['required', 'email'],
+    //         'password' => ['required'],
+    //     ]);
+    
+    //     if (Auth::attempt($data)) {
+    //         $user = Auth::user();
+    //         if ($user->role !== 'creator') {
+    //             Log::info('Login ditolak karena peran bukan creator.');
+    //             Auth::logout();
+    //             return redirect()->route('login')->with('pesan-gagal', 'Hanya akun creator yang diizinkan login.');
+    //         }
+    //         if ($user->is_approved == false) {
+    //             Log::info('User belum diapprove, logout.');
+    //             Auth::logout();
+    //             return redirect()->route('login')->with('pesan-gagal', 'Akun Anda belum diverifikasi oleh admin.');
+    //         }
+    //         return redirect()->route('homeCreator')->with('pesan-berhasil', 'Selamat datang ' . $user->username);
+    //     } else {
+    //         return redirect()->route('loginCreator')->with('pesan-gagal', 'Email atau password salah.');
+    //     }
+    // }
     
 
     public function registerCustomer() {
@@ -128,7 +138,7 @@ class AuthController extends Controller
                 'is_approved' => false,
             ]);
     
-            return redirect()->route('loginCreator')->with('pesan-berhasil', 'Akun Anda telah dibuat. Silakan tunggu 2-3 hari untuk disetujui admin.');
+            return redirect()->route('login')->with('pesan-berhasil', 'Akun Anda telah dibuat. Silakan tunggu 2-3 hari untuk disetujui admin.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             $errors = $e->validator->errors();
     
