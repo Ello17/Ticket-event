@@ -16,21 +16,21 @@
                 <table id="customerTable" class="min-w-full bg-white table-auto border-collapse border border-gray-200">
                     <thead>
                         <tr class="bg-gray-100">
-                            <th class="border p-2">No</th>
-                            <th class="border p-2">Username</th>
-                            <th class="border p-2">Email</th>
-                            <th class="border p-2">Role</th>
-                            <th class="border p-2">Action</th>
+                            <th class="border p-2 ">No</th>
+                            <th class="border p-2 ">Username</th>
+                            <th class="border p-2 ">Email</th>
+                            <th class="border p-2 ">Role</th>
+                            <th class="border p-2 ">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td class="border p-2">{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
-                                <td class="border p-2">{{ $user->username }}</td>
-                                <td class="border p-2">{{ $user->email }}</td>
-                                <td class="border p-2">{{ $user->role }}</td>
-                                <td class="border p-2">
+                                <td class="border p-2 text-center">{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
+                                <td class="border p-2 text-center">{{ $user->username }}</td>
+                                <td class="border p-2 text-center">{{ $user->email }}</td>
+                                <td class="border p-2 text-center">{{ $user->role }}</td>
+                                <td class="border p-2 text-center">
                                     <div class="flex text-center space-x-2">
                                         <a href="{{ route('hapusCustomer', $user->id) }}"
                                             class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"

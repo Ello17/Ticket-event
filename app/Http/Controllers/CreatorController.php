@@ -357,7 +357,7 @@ class CreatorController extends Controller
                 'transaksis' => $transaksis,
                 'labels' => [],
                 'jumlahTiket' => [],
-                'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
+                'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
             ]);
         }
         return view('creator.grafik', [
