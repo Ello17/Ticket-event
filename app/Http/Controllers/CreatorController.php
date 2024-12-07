@@ -415,16 +415,16 @@ public function postScanQr(Request $request)
 
 public function participants(Request $request)
 {
-    $user = auth()->user(); // Get the authenticated user
+    $user = auth()->user();
 
     $participants = Participant::with(['user', 'event'])
         ->whereHas('event', function ($query) use ($user) {
-            $query->where('user_id', $user->id); // Filter by user's events
+            $query->where('user_id', $user->id);
         })
         ->whereHas('transaksi', function ($query) {
-            $query->where('status', 'paid'); // Filter by paid status
+            $query->where('status', 'paid');
         })
-        ->paginate(10); // Use pagination here
+        ->paginate(10);
 
     return view('creator.participants', compact('participants'));
 }
