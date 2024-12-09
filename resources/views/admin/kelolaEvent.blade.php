@@ -73,8 +73,8 @@
             }).DataTable({
                 "language": {
                     "search": "Search:",
-                    "lengthMenu": "Show _MENU_ entries per page",
-                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "lengthMenu": "Show MENU entries per page",
+                    "info": "Showing START to END of TOTAL entries",
                     "infoEmpty": "No entries available",
                     "zeroRecords": "No matching records found",
                     "paginate": {

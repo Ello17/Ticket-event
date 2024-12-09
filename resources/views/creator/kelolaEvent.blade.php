@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 @endpush
-@section('title', 'Home Creator - Tiket Mudah')
+@section('title', 'Manage Events - Tiket Mudah')
 
 @section('content')
     <div class="content p-8">
@@ -61,6 +61,7 @@
         </div>
     </div>
 @endsection
+
 @push('js')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
@@ -91,3 +92,4 @@
     </script>
 
 @endpush
+
