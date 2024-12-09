@@ -152,7 +152,7 @@
                 <div class="form-tm">
                     <div class="mb-3 gap-2">
                         <label for="kategori_tiket" class="form-label">Ticket Category</label>
-                        <input type="text" name="kategori_tiket" class="form-control" value="{{ $tiket->kategori_tiket }}" required>
+                        <input type="text" name="kategori_tiket" class="form-control" value="{{ $tiket->kategori_tiket }}" readonly>
                     </div>
 
                     <div class="mb-3 gap-2">

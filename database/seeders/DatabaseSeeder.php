@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
 
         Event::create([
             'nama_penyelenggara' => 'CroudSound',
-            'cover_event' => 'components/asset/offline1.jpeg',
+            'cover_event' => 'components/asset/toy.jpg',
             'nama_event' => 'Croud Sound',
             'tanggal_event' => '22 Februari 2025',
             'waktu_event' => '15.00 WIB',

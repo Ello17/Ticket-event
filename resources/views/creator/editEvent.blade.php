@@ -221,11 +221,6 @@
                         <label for="tanggal_event">Event Date</label>
                         <input type="date" name="tanggal_event" class="form-control" value="{{ $event->tanggal_event }}" required>
                     </div>
-
-                    <div class="mb-3 gap-2">
-                        <label for="waktu_event">Event Time</label>
-                        <input type="time" name="waktu_event" class="form-control" value="{{ $event->waktu_event }}" required>
-                    </div>
                     <div class="mb-3 gap-2">
                         <label for="waktu_event">Event Time</label>
                         <input type="time" name="waktu_event" class="form-control" value="{{ $event->waktu_event }}" required>

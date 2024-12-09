@@ -26,10 +26,11 @@ class Tiket extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function transaksi()
+    public function transaksis()
     {
-        return $this->hasMany(Transaksi::class);
+        return $this->hasMany(Transaksi::class, 'tiket_id');
     }
+
 
     public function getFormattedHargaAttribute()
     {
