@@ -129,17 +129,15 @@ class AdminController extends Controller
     public function kelolaKreator(Request $request)
     {
         $search = $request->input('search');
-
+    
         $users = User::query()
             ->where('role', 'creator')
-            ->when($search, function ($query, $search) {
-                return $query->where('username', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            })
+            ->where('is_approved', true)
             ->paginate(10);
-
+    
         return view('admin.kelolaKreator', compact('users', 'search'));
     }
+    
 
     public function hapusUser(user $user, Request $request)
     {
