@@ -37,7 +37,7 @@
             </div>
             <div class="row mt-3">
                 <a href="{{ route('ChangePass') }}" class="col-md-4 text-decoration-none">
-                    <i class="fas fa-lock me-2"></i> <span>Ubah Password</span>
+                    <i class="ri-lock-password-fill"></i> <span>Change Password</span>
                 </a>
             </div>
         </div>

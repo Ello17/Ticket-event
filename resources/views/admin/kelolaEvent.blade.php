@@ -81,10 +81,13 @@
                         "previous": "Previous"
                     }
                 },
-                "pageLength": 10, // Number of entries per page
-                "responsive": true, // Make table responsive
-                "order": [[0, 'asc']] // Default sorting by first column (No)
+                "pageLength": 10
             });
         });
     </script>
+        <style>
+            #eventTable_filter{
+                margin-bottom: 10px !important;
+            }
+        </style>
 @endsection

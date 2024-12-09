@@ -66,8 +66,13 @@
                         "previous": "Previous"
                     }
                 },
-                "pageLength": 10, // Number of entries per page
+                "pageLength": 10,
             });
         });
     </script>
+    <style>
+            #creatorTable_filter{
+            margin-bottom: 10px !important;
+        }
+    </style>
 @endsection

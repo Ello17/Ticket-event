@@ -11,7 +11,7 @@
 <div class="container mt-5 py-5">
     <div class="profile-container">
         <div class="profile-header">
-            <img src="{{ asset($user->profil ) }}" alt="Foto Profil {{ $user->username }}">
+            <img src="{{ asset($user->profil ?? 'components/asset/logo/user.png' ) }}" alt="Foto Profil {{ $user->username }}">
             <div style="gap: 10px; display:grid;">
                 <h1>Hello, {{ $user->username }}</h1>
                 <a href="{{ route('editProfileAdmin', $user->id) }}" class="btn-edit"><i class="ri-settings-line"></i> Edit Profile</a>
