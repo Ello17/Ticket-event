@@ -152,7 +152,7 @@ class PaymentController extends Controller
                     'is_present' => false,
                 ]);
             }
-            // Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
         } elseif ($transaction_status === 'pending') {
             $transaksi->status = 'pending';
         } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {

@@ -68,8 +68,7 @@ class CustomerController extends Controller
             try {
                 $transaksi->snap_token = \Midtrans\Snap::getSnapToken($params);
             } catch (\Exception $e) {
-                $transaksi->snap_token = null;  // Menangani jika terjadi error saat mendapatkan token
-                // Log error jika perlu
+                $transaksi->snap_token = null;  
             }
         }
 
