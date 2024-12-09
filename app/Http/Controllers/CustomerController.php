@@ -57,7 +57,7 @@ class CustomerController extends Controller
     public function listEvents()
     {
 
-        $events = Event::all();
+        $events =Event::orderBy('created_at', 'desc')->get();
         return view('customer.listEvent', compact('events'));
     }
 
