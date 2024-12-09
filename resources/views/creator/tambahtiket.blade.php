@@ -149,11 +149,18 @@
             <h2 class="text-center mt-3 gap-2">Add Tickets</h2>
             <form action="{{ route('tambahtiket.store') }}" method="POST" class="form-group" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="event_id" value="{{ $event_id }}" required>
                 <div class="form-tm">
                     <div class="mb-3 gap-2">
                         <label for="kategori_tiket">Ticket Category</label>
-                        <input type="text" required name="kategori_tiket" class="form-control"
-                            placeholder="Enter Ticket Category">
+                        <select id="kategori_tiket" name="kategori_tiket" class="form-control" required
+                        style="background: rgba(255, 255, 255, 0.18); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); padding: 10px; transition: .3s ease-in-out; outline: none; color: white;">
+                        <option value="">-- Pilih Kategori Tiket --</option>
+                        <option value="online" style="color: black;">Online</option>
+                        <option value="offline" style="color: black;">Offline</option>
+                    </select>
+
+
                     </div>
 
                     <div class="mb-3 gap-2">
@@ -169,8 +176,8 @@
                     </div>
 
                     <div class="mb-3 gap-2">
-                        <label for="link_tiket">Event Link (Opsional)</label>
-                        <input type="text" name="link_tiket" class="form-control"
+                        <label for="link_tiket">Event Link (Optional)</label>
+                        <input type="text" id="link_tiket" name="link_tiket" class="form-control"
                             placeholder="Enter the event link if there is one">
                     </div>
                 </div>
@@ -191,4 +198,16 @@
 
 @push('js')
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script>
+        document.getElementById('kategori_tiket').addEventListener('change', function () {
+            const linkField = document.getElementById('link_tiket');
+            if (this.value === 'online') {
+                linkField.required = true;
+                linkField.placeholder = "Enter the event link (Required for Online)";
+            } else {
+                linkField.required = false;
+                linkField.placeholder = "Enter the event link (Optional)";
+            }
+        });
+    </script>
 @endpush

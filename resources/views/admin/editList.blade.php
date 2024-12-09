@@ -202,8 +202,8 @@
                 @csrf
                 <div class="form-tm">
                     <div class="mb-3 gap-2">
-                        <label for="nama_penyelenggara" class="form-label">Nama Penyelenggara</label>
-                        <input type="text" id="nama_penyelenggara" required value="{{ old('nama_penyelenggara', $events->nama_penyelenggara) }}" name="nama_penyelenggara" class="form-control">
+                        <label for="nama_event">Event Name</label>
+                        <input type="text" id="nama_event" required value="{{ old('nama_event', $events->nama_event) }}" name="nama_event" class="form-control">
                     </div>
 
                 <div class="mb-3 gap-2">
@@ -217,10 +217,6 @@
                     <input type="text" id="nama_penyelenggara" required value="{{ old('nama_penyelenggara', $events->nama_penyelenggara) }}" name="nama_penyelenggara" class="form-control">
                 </div>
 
-                <div class="mb-3 gap-2">
-                    <label for="nama_event">Event Name</label>
-                    <input type="text" id="nama_event" required value="{{ old('nama_event', $events->nama_event) }}" name="nama_event" class="form-control">
-                </div>
 
                 <div class="mb-3 gap-2">
                     <label for="tanggal_event">Event Date</label>
@@ -235,6 +231,18 @@
                 <div class="mb-3 gap-2">
                     <label for="lokasi_event">Event Location</label>
                     <input type="text" id="lokasi_event" required value="{{ old('lokasi_event', $events->lokasi_event) }}" name="lokasi_event" class="form-control">
+                </div>
+                <div class="mb-3 gap-2">
+                    <label for="longitude">Longtitude</label>
+                    <input type="number" step="any" class="form-control" id="longitude" name="longitude" value="{{ $events ->longitude }}" required>
+                </div>
+                <div class="mb-3 gap-2">
+                    <label for="latitude">Lattitude</label>
+                    <input type="number" step="any" class="form-control" id="latitude" name="latitude" value="{{ $events->latitude }}" required>
+                </div>
+                <div class="mb-3 gap-2">
+                    <label for="maps">Lattitude</label>
+                    <input type="url" class="form-control" id="maps" name="maps" value="{{ $events->maps }}" required>
                 </div>
 
                 </div>

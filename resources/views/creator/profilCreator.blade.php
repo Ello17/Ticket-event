@@ -11,9 +11,9 @@
     <div class="profile-container">
         <div class="profile-header">
             <img src="{{ asset($user->profil ?? 'components/asset/logo/user.png') }}" alt="Foto Profil {{ $user->username }}">
-            <div>
+            <div style="display: grid; gap:10px;">
                 <h1>Hello, {{ $user->username }}</h1>
-                <a href="{{ route('editProfileCreator', $user->id) }}" class="btn btn-primary btn-sm">Edit Profile</a>
+                <a href="{{ route('editProfileCreator', $user->id) }}"class="btn-edit"><i class="ri-settings-line"></i> Edit Profile</a>
                 {{-- <a href="{{ route('homeCreator') }}" class="btn btn-sm">Back</a> --}}
             </div>
         </div>
@@ -36,7 +36,6 @@
             </a>
         </div>
     </div>
-
 
 
 

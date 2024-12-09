@@ -1,4 +1,8 @@
 @extends('layouts.appCreator')
+@push('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+@endpush
 
 @section('title', 'List of Participants - Tiket Mudah')
 
@@ -8,14 +12,10 @@
         <h5 class="text-lg font-semibold">Participant List Table</h5>
     </div>
     <div class="p-4">
-        <form method="GET" action="{{ route('participants') }}" class="mb-4">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by username or email" class="border rounded px-2 py-1">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded"><i class="ri-search-2-line"></i></button>
-        </form>
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-200">
+            <table class="min-w-full bg-white border border-gray-200" id="example">
                 <thead>
                     <tr class="bg-gray-100 text-gray-600">
                         <th class="py-2 px-4 border">No</th>
@@ -48,8 +48,45 @@
                         </tr>
                     @endforeach
                 </tbody>
+
             </table>
+
         </div>
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Check if DataTable is already initialized
+            if (!$.fn.DataTable.isDataTable('#example')) {
+                $('#example').DataTable({
+                    language: {
+                        search: "Search:",
+                        lengthMenu: "Show _MENU_ entries per page",
+                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                        infoEmpty: "No entries available",
+                        zeroRecords: "No matching records found",
+                        paginate: {
+                            first: "First",
+                            last: "Last",
+                            next: "Next",
+                            previous: "Previous"
+                        }
+                    },
+                    pageLength: 10, // Default number of entries per page
+                    responsive: true, // Makes the table responsive
+                });
+            }
+        });
+    </script>
+    <style>
+        #example_filter{
+            margin-bottom: 10px !important;
+        }
+    </style>
+@endpush

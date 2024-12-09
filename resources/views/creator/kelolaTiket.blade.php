@@ -18,6 +18,7 @@
                     <table class="min-w-full bg-white border border-gray-200" id="example">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600">
+                                <th class="py-2 px-4 border">No</th>
                                 <th class="py-2 px-4 border">Poster</th>
                                 <th class="py-2 px-4 border">Event Name</th>
                                 <th class="py-2 px-4 border">Kategori Tiket</th>
@@ -30,10 +31,12 @@
                         <tbody class="text-gray-700">
                             @foreach ($events as $item)
                                 <tr class="border-b" id="row-{{ $item->tiket->first()->id ?? '' }}">
-                                    <td class="p-2">
+                                    <td class="p-2 border text-center">{{ $loop->iteration }}</td>
+
+                                    <td class="p-2 border">
                                         <img src="{{ asset($item->cover_event) }}" alt="Poster Event" class="w-20 h-auto">
                                     </td>
-                                    <td class="p-2">{{ $item->nama_event }}</td>
+                                    <td class="p-2 border">{{ $item->nama_event }}</td>
                                     <td class="border p-4">
                                         {{ $item->tiket->first()->kategori_tiket ?? 'No categories' }}
                                     </td>
@@ -46,7 +49,7 @@
                                     <td class="border p-4">
                                         {{ $item->tiket->first()->jumlah_tiket ?? 'N/A' }}
                                     </td>
-                                    <td class="p-2">
+                                    <td class="p-2 border">
                                         <div class="flex text-center justify-center space-x-2">
                                             @if ($item->tiket->isEmpty())
                                                 <a href="{{ route('tambahtiket', ['event_id' => $item->id]) }}"
@@ -105,5 +108,9 @@
             }
         });
     </script>
-
+    <style>
+        #example_filter{
+            margin-bottom: 10px !important;
+        }
+    </style>
 @endpush
