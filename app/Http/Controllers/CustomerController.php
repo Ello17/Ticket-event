@@ -22,9 +22,10 @@ class CustomerController extends Controller
 
     function homeCustomer()
     {
-        $data = Event::all();
+        $data = Event::orderBy('created_at', 'desc')->take(6)->get(); // Ambil 6 event terbaru
         return view('customer.homeCustomer', compact('data'));
     }
+
 
     public function search(Request $request)
     {

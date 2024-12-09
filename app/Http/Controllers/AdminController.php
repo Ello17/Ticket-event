@@ -81,20 +81,31 @@ class AdminController extends Controller
 
 
     public function hapusList(Event $event, Request $request)
-    {
-        try {
-            // Hapus data terkait di tabel anak (participants)
-            $event->participants()->delete();
+{
+    try {
+        // Cek apakah ada tiket terkait dengan transaksi
+        $hasTransaksi = $event->tiket()->whereHas('transaksis')->exists();
+        $hasParticipants = $event->participants()->exists();
 
-            // Hapus event dari tabel events
-            $event->delete();
-
-            return redirect()->route('listEventAdm')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
-        } catch (\Exception $e) {
-            // Tangani error dan tampilkan pesan kepada pengguna
-            return redirect()->route('listEventAdm')->with('pesan-gagal', 'Gagal menghapus event: ' . $e->getMessage());
+        if ($hasTransaksi) {
+            return redirect()->route('listEventAdm')->with('pesan-gagal', 'Event tidak dapat dihapus karena sudah ada transaksi terkait tiket.');
         }
+
+        if ($hasParticipants) {
+            return redirect()->route('listEventAdm')->with('pesan-gagal', 'Event tidak dapat dihapus karena ada peserta yang terdaftar.');
+        }
+
+        // Hapus data peserta
+        $event->participants()->delete();
+
+        // Hapus event
+        $event->delete();
+
+        return redirect()->route('listEventAdm')->with('pesan-berhasil', 'Event dan data terkait berhasil dihapus');
+    } catch (\Exception $e) {
+        return redirect()->route('listEventAdm')->with('pesan-gagal', 'Gagal menghapus event: ' . $e->getMessage());
     }
+}
 
 
     public function hapusCustomer(User $user, Request $request)
@@ -129,15 +140,15 @@ class AdminController extends Controller
     public function kelolaKreator(Request $request)
     {
         $search = $request->input('search');
-    
+
         $users = User::query()
             ->where('role', 'creator')
             ->where('is_approved', true)
             ->paginate(10);
-    
+
         return view('admin.kelolaKreator', compact('users', 'search'));
     }
-    
+
 
     public function hapusUser(user $user, Request $request)
     {
