@@ -131,10 +131,24 @@ class CreatorController extends Controller
     public function hapusEvent($id)
     {
         $event = Event::findOrFail($id);
+
+        // Periksa apakah ada tiket dengan transaksi
+        $hasTransaksi = $event->tiket()->whereHas('transaksis')->exists();
+
+        if ($hasTransaksi) {
+            return redirect()->route('kelolaEvent')->with('pesan-gagal', 'Event tidak dapat dihapus karena sudah ada transaksi terkait.');
+        }
+
+        // Hapus semua tiket terkait
+        $event->tikets()->delete();
+
+        // Hapus event
         $event->delete();
 
-        return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+        return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Event berhasil dihapus.');
     }
+
+
 
     public function kelolaTiket()
     {
@@ -357,7 +371,7 @@ class CreatorController extends Controller
                 'transaksis' => $transaksis,
                 'labels' => [],
                 'jumlahTiket' => [],
-                'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
+                'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
             ]);
         }
         return view('creator.grafik', [

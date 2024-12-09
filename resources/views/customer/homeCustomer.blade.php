@@ -71,8 +71,8 @@
         <p class="text-white">No events found.</p>
         @endforelse
     </div>
-
 </section>
+
 <section>
     <div class="see-all">
         <a href="{{ route('listEvent') }}" class="text-blue-500 hover:underline">See All Events</a>
