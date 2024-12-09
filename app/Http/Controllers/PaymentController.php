@@ -54,7 +54,7 @@ class PaymentController extends Controller
                 ->first();
 
             if ($existingTransaction) {
-                $existingTransaction->delete(); 
+                $existingTransaction->delete();
             }
 
             $transaksi = Transaksi::create([
@@ -73,7 +73,7 @@ class PaymentController extends Controller
 
             $transaction = [
                 'transaction_details' => [
-                    'order_id' => $transaksi->id . '-' . time(), 
+                    'order_id' => $transaksi->id . '-' . time(),
                     'gross_amount' => $transaksi->total_transaksi,
                 ],
                 'item_details' => [
@@ -116,7 +116,7 @@ class PaymentController extends Controller
     }
 
     $transaction_status = $payload['transaction_status'];
-    $order_id = explode('-', $payload['order_id'])[0]; 
+    $order_id = explode('-', $payload['order_id'])[0];
 
     $transaksi = Transaksi::find($order_id);
     if (!$transaksi) {
@@ -144,7 +144,7 @@ class PaymentController extends Controller
                     'is_present' => false,
                 ]);
             }
-            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+            // Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
         } elseif ($transaction_status === 'pending') {
             $transaksi->status = 'pending';
         } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {

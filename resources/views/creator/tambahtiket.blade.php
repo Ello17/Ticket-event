@@ -149,6 +149,7 @@
             <h2 class="text-center mt-3 gap-2">Add Tickets</h2>
             <form action="{{ route('tambahtiket.store') }}" method="POST" class="form-group" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="event_id" value="{{ $event_id }}">
                 <div class="form-tm">
                     <div class="mb-3 gap-2">
                         <label for="kategori_tiket">Ticket Category</label>
