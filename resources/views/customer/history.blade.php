@@ -3,6 +3,7 @@
 @push('css')
 <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('components/css/history.css') }}">
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 @endpush
 
 @section('title', 'History')
@@ -24,9 +25,9 @@
                             <th scope="col">Ticket Category</th>
                             <th scope="col">Transaction Date</th>
                             <th scope="col">Total Transactions</th>
-                            <th scope="col">Full name</th>
+                            <th scope="col">Full Name</th>
                             <th scope="col">No-KTP</th>
-                            <th scope="col">Phone number</th>
+                            <th scope="col">Phone Number</th>
                             <th scope="col">Email</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
@@ -34,7 +35,7 @@
                     </thead>
 
                     <tbody>
-                        @forelse($transaksiList as $index => $transaksi)
+                        @foreach($transaksiList as $index => $transaksi)
                         <tr>
                             <th scope="row" style="text-align: center;">{{ $index + 1 }}</th>
                             <td>{{ $transaksi->tiket_dibeli }}</td>
@@ -48,9 +49,12 @@
                             <td>{{ $transaksi->status }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    @if($transaksi->tiket->kategori_tiket === 'online' && $transaksi->status === 'paid')
-                                        <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
-                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                    @if($transaksi->status === 'pending' && $transaksi->snap_token)
+                                        <button 
+                                            class="btn btn-warning btn-sm pay-button" 
+                                            data-snap-token="{{ $transaksi->snap_token }}">
+                                            Pay
+                                        </button>
                                     @elseif($transaksi->status === 'paid')
                                         <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
                                     @else
@@ -62,24 +66,45 @@
                                     @endif
                                 </div>
                             </td>
-                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="10" class="text-center py-3">
-                                <strong>No tickets purchased yet</strong>
-                            </td>
                         </tr>
-                        @endforelse
+                    @endforeach                    
                     </tbody>
-
                 </table>
             </div>
-
         </div>
     </div>
 </div>
 @endsection
 
 @push('js')
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script type="text/javascript">
+    // Seleksi semua tombol dengan class 'pay-button'
+    document.querySelectorAll('.pay-button').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const snapToken = button.dataset.snapToken; // Ambil token dari data attribute
+            if (!snapToken) {
+                alert('Snap Token tidak tersedia');
+                return;
+            }
+            window.snap.pay(snapToken, {
+                onSuccess: function(result) {
+                    alert("Payment successful!");
+                    console.log(result);
+                    location.reload(); // Reload halaman setelah sukses
+                },
+                onPending: function(result) {
+                    alert("Waiting for payment!");
+                    console.log(result);
+                },
+                onError: function(result) {
+                    alert("Payment failed!");
+                    console.log(result);
+                },
+                onClose: function() {
+                    alert("You closed the popup without finishing the payment.");
+                }
+            });
+        });
+    });
+</script>
 @endpush

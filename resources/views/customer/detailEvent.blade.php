@@ -52,7 +52,7 @@
                             <div class="mt-8">
                                 <h3 class="text-2xl font-semibold mb-4">Tickets</h3>
                                 @foreach ($tiket as $item)
-                                    <form action="{{ route('transaksi.tiket', ['tiket' => $item->id, 'id' => $event->id]) }}" method="GET">
+                                    <form action="{{ route('transaksi.tiket', [ 'id' => $event->id, 'tiket' => $item->id]) }}" method="GET">
                                         <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
                                             <div class="mb-4">
                                                 <h5 class="text-white font-semibold">{{ $item->kategori_tiket }}</h5>

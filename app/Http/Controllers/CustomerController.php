@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Midtrans\Snap;
+use PSpell\Config;
 
 class CustomerController extends Controller
 {
@@ -37,14 +39,45 @@ class CustomerController extends Controller
         return view('customer.listEvent', compact('events'));
     }
 
-    public function history()
-    {
-        $transaksiList = Transaksi::with('tiket')
-            ->where('user_id', auth()->id())
-            ->get();
+    public function history(Request $request)
+{
+    $user = Auth::user();
+    $transaksiList = Transaksi::where('user_id', $user->id)->get();
 
-        return view('customer.history', compact('transaksiList'));
-    }
+    \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+    \Midtrans\Config::$isProduction = false;
+    \Midtrans\Config::$isSanitized = true;
+    \Midtrans\Config::$is3ds = true;
+
+
+    $transaksiWithSnapTokens = $transaksiList->map(function ($transaksi) use ($user) {
+        if ($transaksi->status === 'pending') {
+            $params = [
+                'transaction_details' => [
+                    'order_id' => 'ORDER-' . $transaksi->id,
+                    'gross_amount' => $transaksi->total_transaksi,
+                ],
+                'customer_details' => [
+                    'first_name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                ],
+            ];
+
+            try {
+                $transaksi->snap_token = \Midtrans\Snap::getSnapToken($params);
+            } catch (\Exception $e) {
+                $transaksi->snap_token = null;  // Menangani jika terjadi error saat mendapatkan token
+                // Log error jika perlu
+            }
+        }
+
+        return $transaksi;
+    });
+
+    return view('customer.history', ['transaksiList' => $transaksiWithSnapTokens]);
+}
+ 
 
     public function detailEvent($id)
     {
@@ -208,7 +241,20 @@ class CustomerController extends Controller
             return redirect()->back()->withErrors('Terjadi kesalahan dalam proses transaksi: ' . $e->getMessage());
         }
 
+        $expire_time = now()->addHour(1);
+
         $formatted_total_harga = number_format($total_harga, 0, ',', '.');
-        return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'order_id', 'user', 'status'));
+        return view('customer.transaksi', compact(
+            'event',
+            'tiket',
+            'formatted_total_harga',
+            'tiket_dibeli',
+            'snapToken',
+            'order_id',
+            'user',
+            'status',
+            'expire_time'
+        ));
+        
     }
 }

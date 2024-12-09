@@ -24,6 +24,8 @@ class Transaksi extends Model
         'event_id',
         'user_id',
         'status',
+        'expire_time',
+        'snapToken'
     ];
 
     public function event(){

@@ -144,6 +144,12 @@ Route::get('/scan-qr', [CreatorController::class, 'ScanQr'])->name('scanQr');
 Route::post('/post-scan-qr', [CreatorController::class, 'postScanQr'])->name('postScanQr');
 
 
+Route::get('/transaksi/snap/{snap_token}', function ($snap_token) {
+     return view('customer.snap', compact('snap_token'));
+ })->name('transaksi.snap');
+ 
+
+
 
 });
 
