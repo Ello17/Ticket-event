@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
-use Midtrans\Snap;
-use PSpell\Config;
 
 class CustomerController extends Controller
 {
@@ -24,10 +22,9 @@ class CustomerController extends Controller
 
     function homeCustomer()
     {
-        $data = Event::orderBy('created_at', 'desc')->take(6)->get(); // Ambil 6 event terbaru
+        $data = Event::all();
         return view('customer.homeCustomer', compact('data'));
     }
-
 
     public function search(Request $request)
     {
@@ -40,44 +37,14 @@ class CustomerController extends Controller
         return view('customer.listEvent', compact('events'));
     }
 
-    public function history(Request $request)
-{
-    $user = Auth::user();
-    $transaksiList = Transaksi::where('user_id', $user->id)->get();
+    public function history()
+    {
+        $transaksiList = Transaksi::with('tiket')
+            ->where('user_id', auth()->id())
+            ->get();
 
-    \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-    \Midtrans\Config::$isProduction = false;
-    \Midtrans\Config::$isSanitized = true;
-    \Midtrans\Config::$is3ds = true;
-
-
-    $transaksiWithSnapTokens = $transaksiList->map(function ($transaksi) use ($user) {
-        if ($transaksi->status === 'pending') {
-            $params = [
-                'transaction_details' => [
-                    'order_id' => 'ORDER-' . $transaksi->id,
-                    'gross_amount' => $transaksi->total_transaksi,
-                ],
-                'customer_details' => [
-                    'first_name' => $user->name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                ],
-            ];
-
-            try {
-                $transaksi->snap_token = \Midtrans\Snap::getSnapToken($params);
-            } catch (\Exception $e) {
-                $transaksi->snap_token = null;  
-            }
-        }
-
-        return $transaksi;
-    });
-
-    return view('customer.history', ['transaksiList' => $transaksiWithSnapTokens]);
-}
- 
+        return view('customer.history', compact('transaksiList'));
+    }
 
     public function detailEvent($id)
     {
@@ -89,7 +56,7 @@ class CustomerController extends Controller
     public function listEvents()
     {
 
-        $events =Event::orderBy('created_at', 'desc')->get();
+        $events = Event::all();
         return view('customer.listEvent', compact('events'));
     }
 
@@ -241,20 +208,7 @@ class CustomerController extends Controller
             return redirect()->back()->withErrors('Terjadi kesalahan dalam proses transaksi: ' . $e->getMessage());
         }
 
-        $expire_time = now()->addHour(1);
-
         $formatted_total_harga = number_format($total_harga, 0, ',', '.');
-        return view('customer.transaksi', compact(
-            'event',
-            'tiket',
-            'formatted_total_harga',
-            'tiket_dibeli',
-            'snapToken',
-            'order_id',
-            'user',
-            'status',
-            'expire_time'
-        ));
-        
+        return view('customer.transaksi', compact('event', 'tiket', 'formatted_total_harga', 'tiket_dibeli', 'snapToken', 'order_id', 'user', 'status'));
     }
 }

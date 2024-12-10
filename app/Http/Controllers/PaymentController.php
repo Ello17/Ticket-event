@@ -13,7 +13,6 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
@@ -39,27 +38,25 @@ class PaymentController extends Controller
             'no_telepon' => 'required|regex:/^\d{10,15}$/',
             'email' => 'required|email|max:255',
         ]);
-    
+
         try {
             DB::beginTransaction();
-    
+
             $tiket = Tiket::findOrFail($validated['tiket_id']);
-    
+
             if ($tiket->jumlah_tiket < $validated['tiket_dibeli']) {
                 return back()->withErrors(['error' => 'Stok tiket tidak mencukupi.']);
             }
-    
-            // Hapus transaksi pending sebelumnya
+
             $existingTransaction = Transaksi::where('user_id', auth()->id())
                 ->where('tiket_id', $validated['tiket_id'])
                 ->where('status', 'pending')
                 ->first();
-    
+
             if ($existingTransaction) {
                 $existingTransaction->delete();
             }
-    
-            // Buat transaksi baru
+
             $transaksi = Transaksi::create([
                 'tiket_id' => $validated['tiket_id'],
                 'tiket_dibeli' => $validated['tiket_dibeli'],
@@ -71,11 +68,9 @@ class PaymentController extends Controller
                 'email' => $validated['email'],
                 'event_id' => $tiket->event_id,
                 'status' => 'pending',
-                'expire_time' => now()->addHour(1),
                 'user_id' => auth()->id(),
             ]);
-    
-            // Buat transaksi Midtrans
+
             $transaction = [
                 'transaction_details' => [
                     'order_id' => $transaksi->id . '-' . time(),
@@ -100,21 +95,19 @@ class PaymentController extends Controller
                     'error' => route('transaksi.create'),
                 ],
             ];
-    
-            // Simpan Snap Token
-            $snapToken = Snap::getSnapToken($transaction);
-            $transaksi->update(['snap_token' => $snapToken]);
-    
+
+            $url = Snap::createTransaction($transaction)->redirect_url;
+
             DB::commit();
-    
-            // Redirect ke halaman Snap Midtrans
-            return redirect()->route('transaksi.snap', ['snap_token' => $snapToken]);
+
+            return redirect($url);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal membuat transaksi: ' . $e->getMessage()]);
         }
     }
-      
+
+
     public function midtransCallback(Request $request)
 {
     $payload = $request->all();
