@@ -38,25 +38,25 @@ class PaymentController extends Controller
             'no_telepon' => 'required|regex:/^\d{10,15}$/',
             'email' => 'required|email|max:255',
         ]);
-
+    
         try {
             DB::beginTransaction();
-
+    
             $tiket = Tiket::findOrFail($validated['tiket_id']);
-
+    
             if ($tiket->jumlah_tiket < $validated['tiket_dibeli']) {
                 return back()->withErrors(['error' => 'Stok tiket tidak mencukupi.']);
             }
-
+    
             $existingTransaction = Transaksi::where('user_id', auth()->id())
                 ->where('tiket_id', $validated['tiket_id'])
                 ->where('status', 'pending')
                 ->first();
-
+    
             if ($existingTransaction) {
                 $existingTransaction->delete();
             }
-
+    
             $transaksi = Transaksi::create([
                 'tiket_id' => $validated['tiket_id'],
                 'tiket_dibeli' => $validated['tiket_dibeli'],
@@ -70,7 +70,7 @@ class PaymentController extends Controller
                 'status' => 'pending',
                 'user_id' => auth()->id(),
             ]);
-
+    
             $transaction = [
                 'transaction_details' => [
                     'order_id' => $transaksi->id . '-' . time(),
@@ -95,18 +95,21 @@ class PaymentController extends Controller
                     'error' => route('transaksi.create'),
                 ],
             ];
-
-            $url = Snap::createTransaction($transaction)->redirect_url;
-
+    
+            $snapToken = Snap::createTransaction($transaction)->token;
+            $transaksi->snap_token = $snapToken;
+            $transaksi->save();
+    
             DB::commit();
-
-            return redirect($url);
+    
+            return redirect(Snap::createTransaction($transaction)->redirect_url);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Transaksi gagal', ['error' => $e->getMessage()]);
             return back()->withErrors(['error' => 'Gagal membuat transaksi: ' . $e->getMessage()]);
         }
     }
-
+    
 
     public function midtransCallback(Request $request)
 {

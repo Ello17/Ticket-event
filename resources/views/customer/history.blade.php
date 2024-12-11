@@ -50,29 +50,21 @@
                                 <div class="d-flex justify-content-center gap-2">
                                     @if($transaksi->status === 'paid')
                                         @if($transaksi->tiket->kategori_tiket === 'online')
-                                            <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
+                                            <a href="{{ $transaksi->tiket->link_tiket }}" 
+                                               class="btn btn-success btn-sm" 
+                                               target="_blank" 
+                                               rel="noopener noreferrer">Join Zoom</a>
                                         @endif
-                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" 
+                                           class="btn btn-primary btn-sm">Download</a>
                                     @elseif($transaksi->status === 'pending')
-                                        <form action="{{ route('transaksi.create') }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            <input type="hidden" name="transaksi_id" value="{{ $transaksi->id }}">
-                                            <button type="submit" class="btn btn-warning btn-sm">Pay</button>
-                                        </form>
-                                        <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                        </form>
+                                        <a href="https://app.sandbox.midtrans.com/snap/v4/redirection/{{ $transaksi->snap_token }}" 
+                                           class="btn btn-warning btn-sm">Lanjutkan Pembayaran</a>
                                     @else
-                                        <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                        </form>
+                                        <span class="text-danger">Status transaksi tidak valid.</span>
                                     @endif
-                                </div>
-                            </td>                            
+                                </div>                                
+                            </td>
                          </tr>
                         @empty
                         <tr>
