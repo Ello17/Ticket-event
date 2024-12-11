@@ -48,11 +48,22 @@
                             <td>{{ $transaksi->status }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    @if($transaksi->tiket->kategori_tiket === 'online' && $transaksi->status === 'paid')
-                                        <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
+                                    @if($transaksi->status === 'paid')
+                                        @if($transaksi->tiket->kategori_tiket === 'online')
+                                            <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
+                                        @endif
                                         <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
-                                    @elseif($transaksi->status === 'paid')
-                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
+                                    @elseif($transaksi->status === 'pending')
+                                        <form action="{{ route('transaksi.create') }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <input type="hidden" name="transaksi_id" value="{{ $transaksi->id }}">
+                                            <button type="submit" class="btn btn-warning btn-sm">Pay</button>
+                                        </form>
+                                        <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
                                     @else
                                         <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
                                             @csrf
@@ -61,7 +72,7 @@
                                         </form>
                                     @endif
                                 </div>
-                            </td>
+                            </td>                            
                          </tr>
                         @empty
                         <tr>
@@ -82,4 +93,26 @@
 
 @push('js')
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+<script>
+    @if(session('snap_token'))
+        window.snap.pay("{{ session('snap_token') }}", {
+            onSuccess: function(result) {
+                alert('Payment success!');
+                window.location.reload(); // Refresh page
+            },
+            onPending: function(result) {
+                alert('Payment is pending!');
+            },
+            onError: function(result) {
+                alert('Payment failed!');
+            },
+            onClose: function() {
+                alert('You closed the payment popup!');
+            }
+        });
+    @endif
+</script>
 @endpush
+
+
