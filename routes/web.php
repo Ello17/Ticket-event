@@ -60,7 +60,11 @@ Route::middleware('auth')->group(function () {
 //MIDTRANS
 Route::get('/transaksi{detail}', [PaymentController::class, 'createTransaction'])->name('transaksi.detail');
 Route::post('/transaksi/create', [PaymentController::class, 'createTransaction'])->name('transaksi.create');
-Route::post('/midtrans-notification', [PaymentController::class, 'handleNotification']);
+Route::post('/midtrans-notification', [PaymentController::class, 'notificationHandler']);
+Route::post('/transaksi/{id}/pay', [PaymentController::class, 'payTransaction'])->name('transaksi.pay');
+
+
+
 
 Route::get('/transaksi/{kode_tiket}', [PaymentController::class, 'show'])->name('transaksi.show');
 Route::get('/download/tiket/{id}', [PaymentController::class, 'downloadTiket'])->name('downloadTiket');

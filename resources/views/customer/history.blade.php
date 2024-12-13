@@ -34,7 +34,7 @@
                     </thead>
 
                     <tbody>
-                        @forelse($transaksiList as $index => $transaksi)
+                        @foreach($transaksiList as $index => $transaksi)
                         <tr>
                             <th scope="row" style="text-align: center;">{{ $index + 1 }}</th>
                             <td>{{ $transaksi->tiket_dibeli }}</td>
@@ -58,22 +58,37 @@
                                         <a href="{{ route('downloadTiket', $transaksi->id) }}" 
                                            class="btn btn-primary btn-sm">Download</a>
                                     @elseif($transaksi->status === 'pending')
-                                        <a href="https://app.sandbox.midtrans.com/snap/v4/redirection/{{ $transaksi->snap_token }}" 
-                                           class="btn btn-warning btn-sm">Lanjutkan Pembayaran</a>
+                                        @if(now()->gt($transaksi->exp))
+                                            <!-- Expired, show delete button -->
+                                            <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        @else
+                                        @if ($transaksi->status === 'pending')
+                                        <form action="{{ route('transaksi.pay', $transaksi->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary">Bayar Ulang</button>
+                                        </form>
+                                    @endif
+                                        @endif
                                     @else
                                         <span class="text-danger">Status transaksi tidak valid.</span>
                                     @endif
-                                </div>                                
-                            </td>
-                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="10" class="text-center py-3">
-                                <strong>No tickets purchased yet</strong>
+                                </div>
                             </td>
                         </tr>
-                        @endforelse
+                        @endforeach
+                         
                     </tbody>
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-3" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+          @endif
 
                 </table>
             </div>

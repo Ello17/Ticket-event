@@ -28,8 +28,6 @@ class CreateTransaksisTable extends Migration
             $table->foreignId('tiket_id')->constrained();
             $table->foreignId('event_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->dateTime('expire_time');
-            $table->string('snap_token')->nullable();
 
             $table->timestamps();
         });
