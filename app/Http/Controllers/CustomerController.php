@@ -22,7 +22,7 @@ class CustomerController extends Controller
 
     function homeCustomer()
     {
-        $data = Event::all();
+        $data = Event::orderBy('created_at', 'desc')->take(6)->get(); 
         return view('customer.homeCustomer', compact('data'));
     }
 

@@ -9,8 +9,6 @@
     <title>EMAIL</title>
 </head>
 <body>
-
-
     <div style="font-family: Arial, sans-serif; color: #333;">
         <h2 style="color: #4CAF50;">Transaksi Berhasil!</h2>
         <p>Terima kasih, {{ $transaksi->nama_lengkap }}! Pembayaran Anda untuk event "{{ $transaksi->event->nama_event }}" telah berhasil.</p>

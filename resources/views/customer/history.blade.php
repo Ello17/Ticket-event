@@ -34,7 +34,7 @@
                     </thead>
 
                     <tbody>
-                        @forelse($transaksiList as $index => $transaksi)
+                        @foreach($transaksiList as $index => $transaksi)
                         <tr>
                             <th scope="row" style="text-align: center;">{{ $index + 1 }}</th>
                             <td>{{ $transaksi->tiket_dibeli }}</td>
@@ -48,29 +48,47 @@
                             <td>{{ $transaksi->status }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    @if($transaksi->tiket->kategori_tiket === 'online' && $transaksi->status === 'paid')
-                                        <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank">Join Zoom</a>
-                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
-                                    @elseif($transaksi->status === 'paid')
-                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm">Download</a>
-                                    @else
-                                        <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" style="display: inline;">
+                                    @if($transaksi->status === 'paid')
+                                        @if($transaksi->tiket->kategori_tiket === 'online')
+                                            <a href="{{ $transaksi->tiket->link_tiket }}" 
+                                               class="btn btn-success btn-sm" 
+                                               target="_blank" 
+                                               rel="noopener noreferrer">Join Zoom</a>
+                                        @endif
+                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" 
+                                           class="btn btn-primary btn-sm">Download</a>
+                                    @elseif($transaksi->status === 'pending')
+                                        @if(now()->gt($transaksi->exp))
+                                            <!-- Expired, show delete button -->
+                                            <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        @else
+                                        @if ($transaksi->status === 'pending')
+                                        <form action="{{ route('transaksi.pay', $transaksi->id) }}" method="POST">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            <button type="submit" class="btn btn-primary">Bayar Ulang</button>
                                         </form>
+                                    @endif
+                                        @endif
+                                    @else
+                                        <span class="text-danger">Status transaksi tidak valid.</span>
                                     @endif
                                 </div>
                             </td>
-                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="10" class="text-center py-3">
-                                <strong>No tickets purchased yet</strong>
-                            </td>
                         </tr>
-                        @endforelse
+                        @endforeach
+                         
                     </tbody>
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-3" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+          @endif
 
                 </table>
             </div>
@@ -82,4 +100,26 @@
 
 @push('js')
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+<script>
+    @if(session('snap_token'))
+        window.snap.pay("{{ session('snap_token') }}", {
+            onSuccess: function(result) {
+                alert('Payment success!');
+                window.location.reload(); // Refresh page
+            },
+            onPending: function(result) {
+                alert('Payment is pending!');
+            },
+            onError: function(result) {
+                alert('Payment failed!');
+            },
+            onClose: function() {
+                alert('You closed the payment popup!');
+            }
+        });
+    @endif
+</script>
 @endpush
+
+
