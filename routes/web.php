@@ -146,6 +146,8 @@ Route::get('/grafik/{user_id}', [CreatorController::class, 'grafik'])->name('gra
 Route::get('/sendTickets', [CreatorController::class, 'sendTickets'])->name('sendTickets');
 Route::get('/scan-qr', [CreatorController::class, 'ScanQr'])->name('scanQr');
 Route::post('/post-scan-qr', [CreatorController::class, 'postScanQr'])->name('postScanQr');
+Route::get('/events/{id}/partic', [CreatorController::class, 'partic'])->name('partic');
+
 
 
 Route::get('/transaksi/snap/{snap_token}', function ($snap_token) {

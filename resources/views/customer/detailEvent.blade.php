@@ -84,49 +84,49 @@
                     </div>
                 </div>
 
-                <div class="my-10">
-                    <h3 class="text-2xl font-semibold mb-4">Event Description</h3>
-                    <p class="leading-relaxed text-gray-300 text-sm">{{ $event->deskripsi_event }}</p>
-                </div>
-
-                <div class="my-10">
-                    <h3 class="text-2xl font-semibold mb-2">Event Location</h3>
-                    <p class="mb-4">
-                        <strong>Address: </strong>
-                        <a href="{{ $event->maps }}" class="text-white hover:text-blue-500">{{ $event->lokasi_event }}</a>
-                    </p>
-                    <div id="map-{{ $event->id }}" style="width: 100%; height: 200px;"></div>
-                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function() {
-                            var latitude = @json($event->latitude);
-                            var longitude = @json($event->longitude);
-
-                            var map = L.map('map-{{ $event->id }}').setView([latitude, longitude], 14);
-
-                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                maxZoom: 19,
-                            }).addTo(map);
-
-                            L.marker([latitude, longitude]).addTo(map)
-                                .bindPopup("{{ $event->nama_event }}")
-                                .openPopup();
-                        });
-                    </script>
-                </div>
+            <div class="my-10">
+                <h3 class="text-2xl font-semibold mb-4">Event Description</h3>
+                <p class="leading-relaxed text-gray-300 text-sm">{{ $event->deskripsi_event }}</p>
             </div>
-        @else
-            <p class="text-center text-red-500">Event not found</p>
-        @endif
 
-        @if ($errors->any())
-            <div class="alert alert-danger mt-3" role="alert">
-                @foreach ($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
+            <div class="my-10">
+                <h3 class="text-2xl font-semibold mb-2">Event Location</h3>
+                <p class="mb-4">
+                    <strong>Address: </strong>
+                    <a href="{{ $event->maps }}" class="text-white hover:text-blue-500">{{ $event->lokasi_event }}</a>
+                </p>
+                <div id="map-{{ $event->id }}" style="width: 100%; height: 200px;"></div>
+                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var latitude = @json($event->latitude);
+                        var longitude = @json($event->longitude);
+
+                        var map = L.map('map-{{ $event->id }}').setView([latitude, longitude], 14);
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                        }).addTo(map);
+
+                        L.marker([latitude, longitude]).addTo(map)
+                            .bindPopup("{{ $event->nama_event }}")
+                            .openPopup();
+                    });
+                </script>
             </div>
-        @endif
-    </body>
+        </div>
+    @else
+        <p class="text-center text-red-500">Event not found</p>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger mt-3" role="alert">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
+</body>
 @endsection
 
 @push('js')
