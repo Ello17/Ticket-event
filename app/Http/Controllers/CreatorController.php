@@ -24,36 +24,13 @@ class CreatorController extends Controller
     //
 
     public function homeCreator()
-{
-    $user = Auth::user();
-    $now = Carbon::now();
-    $currentYear = $now->year;
+    {
+        $user = Auth::user();
+        $event = Event::where('user_id', $user->id)->first();
+        $eventCount = Event::where('user_id', $user->id)->count();
 
-    $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
-        return Carbon::create($currentYear, $month, 1)->format('F Y');
-    });
-
-    $transaksis = Transaksi::with(['tiket.event'])
-        ->whereYear('tanggal_transaksi', $currentYear)
-        ->whereHas('tiket.event', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })
-        ->get();
-
-    $grouped = $transaksis->groupBy(function ($item) {
-        return Carbon::parse($item->tanggal_transaksi)->format('F Y');
-    });
-
-    $labels = $months->toArray();
-    $jumlahTiket = $months->map(function ($month) use ($grouped) {
-        return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
-    })->toArray();
-
-    $eventCount = Event::where('user_id', $user->id)->count();
-
-    return view('creator.homeCreator', compact('eventCount', 'labels', 'jumlahTiket'));
-}
-
+        return view('creator.homeCreator', compact('event', 'eventCount'));
+    }
 
 
     public function kelolaEvent(Request $request)
@@ -365,11 +342,11 @@ class CreatorController extends Controller
         return redirect()->route('profilCreator')->with('status', 'Password berhasil diperbarui.');
     }
 
-    // public function grafik($user_id = null)
-    // {
-    //     if (!$user_id) {
-    //         return redirect()->route('some.default.route');
-    //     }
+    public function grafik($user_id = null)
+    {
+        if (!$user_id) {
+            return redirect()->route('some.default.route');
+        }
 
         $now = Carbon::now();
         $currentYear = $now->year;
@@ -479,4 +456,8 @@ public function partic($id)
     $participants = Participant::where('event_id', $id)->get(); // Ambil peserta terkait event
 
     return view('creator.partic', compact('event', 'participants'));
+}
+
+
+
 }
