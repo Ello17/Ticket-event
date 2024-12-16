@@ -29,11 +29,6 @@
         </a>
         @endforeach
     </div>
-
-    <!-- Tambahkan pagination di bawah daftar event -->
-    <div class="pagination mt-4">
-        {{ $events->links('pagination::bootstrap-4') }}
-    </div>
     @endif
 </section>
 
