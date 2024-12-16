@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @push('css')
-<link rel="stylesheet" href="{{ asset('components/css/list-event.css') }}">
-<link rel="stylesheet" href="{{ asset('components/css/homeCustomer.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('components/css/list-event.css') }}?v=1.0">
+<link rel="stylesheet" href="{{ asset('components/css/homeCustomer.css') }}?v=1.0">
 @endpush
 
 @section('title', 'Tiket Mudah hanya di Tiket Mudah')
@@ -35,6 +36,14 @@
     </div>
     @endif
 </section>
+
+<!-- Pagination pindah ke bawah -->
+@if (!$events->isEmpty())
+<div class="pagination-wrapper mt-4">
+    {{ $events->links('pagination::bootstrap-4') }}
+</div>
+@endif
+
 @endsection
 
 @push('js')

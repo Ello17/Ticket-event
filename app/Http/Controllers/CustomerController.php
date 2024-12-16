@@ -30,7 +30,10 @@ class CustomerController extends Controller
 
 public function listEvents()
 {
-    $events = Event::orderBy('created_at', 'desc')->paginate(10); // Pagination 10 event per halaman
+    $events = Event::select('id', 'nama_event', 'tanggal_event', 'lokasi_event', 'waktu_event', 'cover_event')
+    ->orderBy('created_at', 'desc')
+    ->paginate(9);
+
     return view('customer.listEvent', compact('events'));
 }
 

@@ -74,10 +74,13 @@
                         <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="name">No. KTP :</label>
+                        <label for="no_ktp">No. KTP :</label>
                         <input class="input-transaksi" type="text" id="no_ktp" name="no_ktp" required>
-                        <small>Must be 16 digits.</small>
+                        @error('no_ktp')
+                            <small>{{ $message }}</small>
+                        @enderror
                     </div>
+                    
                     <div class="form-group">
                         <label for="name">Phone Number :</label>
                         <input class="form-control input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" required>
