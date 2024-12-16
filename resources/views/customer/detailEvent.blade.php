@@ -8,81 +8,84 @@
 @section('title', 'Detail Event')
 
 @section('content')
-    <body class="bg-[#111827] text-white" style="width: 100%;">
-        @if ($event)
-            <div class="container mx-auto p-5 mt-10">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="col-span-2">
-                        <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                            <img src="{{ asset($event->cover_event) }}"
-                                alt="poster-{{ $event->nama_event }}"
-                                class="img-max w-full lg:h-[498px] h-auto object-cover">
-                        </div>
-                    </div>
-
-                    <div class="container mx-auto">
-                        <div class="bg-gray-800 rounded-lg shadow-lg p-6 w-[110%] lg:w-[100%]">
-                            <h3 class="text-lg font-semibold mb-4">Event Details</h3>
-                            <div class="text-sm space-y-4">
-                                <div>
-                                    <h5 class="text-sm font-medium text-gray-400">Date</h5>
-                                    <p class="flex items-center text-gray-200">
-                                        <i class="fa-solid fa-calendar-days mr-2"></i>
-                                        {{ $event->tanggal_event }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <h5 class="text-sm font-medium text-gray-400">Time</h5>
-                                    <p class="flex items-center text-gray-200">
-                                        <i class="fa-solid fa-clock mr-2"></i>
-                                        {{ $event->waktu_event }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <h5 class="text-sm font-medium text-gray-400">Location</h5>
-                                    <p class="flex items-center text-gray-200">
-                                        <i class="fa-solid fa-location-dot mr-2"></i>
-                                        {{ $event->lokasi_event }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        @if ($tiket)
-                            <div class="mt-8">
-                                <h3 class="text-2xl font-semibold mb-4">Tickets</h3>
-                                @foreach ($tiket as $item)
-                                    <form action="{{ route('transaksi.tiket', [ 'id' => $event->id, 'tiket' => $item->id ]) }}" method="GET">
-                                        <div class="bg-gray-800 rounded-lg shadow-lg p-6 w-[110%] lg:w-[100%]">
-                                            <div class="mb-4">
-                                                <h5 class="text-white font-semibold">{{ $item->kategori_tiket }}</h5>
-                                                <p class="text-white">Price: Rp {{ number_format($item->harga_tiket, 0, ',', '.') }}</p>
-                                                <p class="text-gray-400">Availability: ({{ $item->jumlah_tiket }} tickets available)</p>
-                                            </div>
-                                            <div class="tiket-input">
-                                                <div>
-                                                    @if (strtolower($item->kategori_tiket) === 'online')
-                                                        <input type="number" class="form-control text-black"
-                                                            name="tiket_dibeli" value="1" readonly style="width: 200px;">
-                                                    @else
-                                                        <input type="number" class="form-control text-black"
-                                                            name="tiket_dibeli" min="1" max="{{ $item->jumlah_tiket }}"
-                                                            placeholder="Enter the number of tickets" style="width: 200px;" inputmode="numeric">
-                                                    @endif
-                                                </div>
-                                                <div>
-                                                    <button type="submit" class="btn btn-warning w-full lg:w-auto">Buy Tickets</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                @endforeach
-                            </div>
-                        @else
-                            <p class="text-center text-red-500">Tickets not available</p>
-                        @endif
+<body class="bg-[#111827] text-white" style="width: 100%;">
+    @if ($event)
+        <div class="container mx-auto px-5 mt-10">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="col-span-2">
+                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                        <img src="{{ asset($event->cover_event) }}"
+                            alt="poster-{{ $event->nama_event }}"
+                            class="img-max w-full lg:h-[498px] h-auto object-cover">
                     </div>
                 </div>
+
+                <div class="lg:w-full w-full">
+                    <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Event Details</h3>
+                        <div class="text-sm space-y-4">
+                            <div>
+                                <h5 class="text-sm font-medium text-gray-400">Date</h5>
+                                <p class="flex items-center text-gray-200">
+                                    <i class="fa-solid fa-calendar-days mr-2"></i>
+                                    {{ $event->tanggal_event }}
+                                </p>
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-medium text-gray-400">Time</h5>
+                                <p class="flex items-center text-gray-200">
+                                    <i class="fa-solid fa-clock mr-2"></i>
+                                    {{ $event->waktu_event }}
+                                </p>
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-medium text-gray-400">Location</h5>
+                                <p class="flex items-center text-gray-200">
+                                    <i class="fa-solid fa-location-dot mr-2"></i>
+                                    {{ $event->lokasi_event }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Tampilkan tiket jika event belum berakhir --}}
+                    @if ($isEventExpired)
+                        <p class="text-center text-red-500 mt-4">Event has ended. Tickets are no longer available.</p>
+                    @elseif ($tiket)
+                        <div class="mt-8">
+                            <h3 class="text-2xl font-semibold mb-4">Tickets</h3>
+                            @foreach ($tiket as $item)
+                                <form action="{{ route('transaksi.tiket', [ 'id' => $event->id, 'tiket' => $item->id ]) }}" method="GET">
+                                    <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                                        <div class="mb-4">
+                                            <h5 class="text-white font-semibold">{{ $item->kategori_tiket }}</h5>
+                                            <p class="text-white">Price: Rp {{ number_format($item->harga_tiket, 0, ',', '.') }}</p>
+                                            <p class="text-gray-400">Availability: ({{ $item->jumlah_tiket }} tickets available)</p>
+                                        </div>
+                                        <div class="tiket-input">
+                                            <div>
+                                                @if (strtolower($item->kategori_tiket) === 'online')
+                                                    <input type="number" class="form-control text-black"
+                                                        name="tiket_dibeli" value="1" readonly style="width: 200px;">
+                                                @else
+                                                    <input type="number" class="form-control text-black"
+                                                        name="tiket_dibeli" min="1" max="{{ $item->jumlah_tiket }}"
+                                                        placeholder="Enter the number of tickets" style="width: 200px;" inputmode="numeric">
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <button type="submit" class="btn btn-warning w-full lg:w-auto">Buy Tickets</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-center text-red-500">Tickets not available</p>
+                    @endif
+                </div>
+            </div>
 
             <div class="my-10">
                 <h3 class="text-2xl font-semibold mb-4">Event Description</h3>
