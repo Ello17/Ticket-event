@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @push('css')
-<link rel="stylesheet" href="{{asset('components/css/list-event.css')}}">
+<link rel="stylesheet" href="{{ asset('components/css/list-event.css') }}">
 <link rel="stylesheet" href="{{ asset('components/css/homeCustomer.css') }}">
 @endpush
 
@@ -19,7 +19,7 @@
                     <img src="{{ asset($event->cover_event) }}" alt="Poster {{ $event->nama_event }}">
                 </div>
                 <div class="text-card-detail">
-                    <h2 class="text-card text-white">{{ $event->nama_event }}</h4>
+                    <h2 class="text-card text-white">{{ $event->nama_event }}</h2>
                     <p class="text-white text-card">{{ $event->tanggal_event }}</p>
                     <p class="text-white text-card">{{ \Illuminate\Support\Str::limit($event->lokasi_event, 40) }}</p>
                     <p class="text-white text-card">{{ $event->waktu_event }}</p>
@@ -28,10 +28,13 @@
         </a>
         @endforeach
     </div>
+
+    <!-- Tambahkan pagination di bawah daftar event -->
+    <div class="pagination mt-4">
+        {{ $events->links('pagination::bootstrap-4') }}
+    </div>
     @endif
-
-    </section>
-
+</section>
 @endsection
 
 @push('js')

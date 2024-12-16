@@ -24,7 +24,7 @@ class CustomerController extends Controller
 
     public function homeCustomer()
 {
-    $data = Event::orderBy('created_at', 'desc')->take(6)->get(); // Ambil 6 event terbaru
+    $data = Event::orderBy('created_at', 'desc')->take(6)->get();
     return view('customer.homeCustomer', compact('data'));
 }
 
@@ -82,15 +82,15 @@ public function listEvents()
         return view('customer.profil', compact('user'));
     }
 
-    public function editProfileCust($id)
-    {
-        $user = Auth::user();
-        if ($user->role !== 'customer' || $user->id != $id) {
-            return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
-        }
+        public function editProfileCust($id)
+        {
+            $user = Auth::user();
+            if ($user->role !== 'customer' || $user->id != $id) {
+                return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
+            }
 
-        return view('customer.editProfileCust', compact('user'));
-    }
+            return view('customer.editProfileCust', compact('user'));
+        }
 
     public function postEditProfileCust(Request $request)
     {
