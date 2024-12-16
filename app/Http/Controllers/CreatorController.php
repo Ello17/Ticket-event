@@ -429,15 +429,15 @@ public function postScanQr(Request $request)
 
 public function participants(Request $request)
 {
-    $user = auth()->user(); // Get the authenticated user
+    $user = auth()->user();
 
     $participants = Participant::query()
         ->with(['user', 'event'])
         ->whereHas('event', function ($query) use ($user) {
-            $query->where('user_id', $user->id); // Filter by user's events
+            $query->where('user_id', $user->id);
         })
         ->whereHas('transaksi', function ($query) {
-            $query->where('status', 'paid'); // Filter by paid status
+            $query->where('status', 'paid');
         })
         ->join('events', 'participants.event_id', '=', 'events.id') // Join events table
         ->orderBy('participants.is_present', 'desc') // Sort by presence

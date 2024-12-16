@@ -58,7 +58,9 @@
                     <input class="form-control" type="hidden" id="user_id" value="{{ auth()->user()->id }}" name="user_id" required>
                     <input class="form-control" type="hidden" id="kategori_tiket" value="{{ $tiket->kategori_tiket }}" name="kategori_tiket" required>
                     <input class="form-control" type="hidden" id="tiket_dibeli" value="{{ $tiket_dibeli }}" name="tiket_dibeli" required>
-                    <input class="form-control" type="hidden" id="status" value="{{ $status }}" name="status" required>                    
+                    <input class="form-control" type="hidden" id="status" value="{{ $status }}" name="status" required>
+                    <input type="hidden" name="expire_time" value="{{ now()->addHour(1) }}" id="exprire_time" required>
+
                 </div>
                 @else
                 <p>Tickets Not found</p>
@@ -69,18 +71,17 @@
                         <label for="name">Full Name :</label>
                         <input class="form-control input-transaksi" type="text" id="name" value="{{ $user->username }}" name="nama_lengkap" required>
                     </div>
-                    <div class="form-group">
+                    <div class="group form-group">
                         <label for="name">Email :</label>
                         <input class="input-transaksi" type="email" id="email" value="{{ $user->email }}" name="email" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="no_ktp">No. KTP :</label>
+                        <label for="name">No. KTP :</label>
                         <input class="input-transaksi" type="text" id="no_ktp" name="no_ktp" required>
                         @error('no_ktp')
                             <small>{{ $message }}</small>
                         @enderror
                     </div>
-                    
                     <div class="form-group">
                         <label for="name">Phone Number :</label>
                         <input class="form-control input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" required>
@@ -88,20 +89,20 @@
                     </div>
                 </div>
 
-                <div class="box-btn">
+                <div class="box-btn" style="margin-bottom:10px;">
                     <button class="btn" id="pay-button">PAY NOW</button>
                 </div>
+                @if ($errors->any())
+                    <div style="color:red;" style="margin-bottom:10px;">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
         </form>
     </div>
 @endsection
