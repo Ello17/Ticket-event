@@ -24,13 +24,36 @@ class CreatorController extends Controller
     //
 
     public function homeCreator()
-    {
-        $user = Auth::user();
-        $event = Event::where('user_id', $user->id)->first();
-        $eventCount = Event::where('user_id', $user->id)->count();
+{
+    $user = Auth::user();
+    $now = Carbon::now();
+    $currentYear = $now->year;
 
-        return view('creator.homeCreator', compact('event', 'eventCount'));
-    }
+    $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
+        return Carbon::create($currentYear, $month, 1)->format('F Y');
+    });
+
+    $transaksis = Transaksi::with(['tiket.event'])
+        ->whereYear('tanggal_transaksi', $currentYear)
+        ->whereHas('tiket.event', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->get();
+
+    $grouped = $transaksis->groupBy(function ($item) {
+        return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+    });
+
+    $labels = $months->toArray();
+    $jumlahTiket = $months->map(function ($month) use ($grouped) {
+        return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
+    })->toArray();
+
+    $eventCount = Event::where('user_id', $user->id)->count();
+
+    return view('creator.homeCreator', compact('eventCount', 'labels', 'jumlahTiket'));
+}
+
 
 
     public function kelolaEvent(Request $request)
@@ -328,44 +351,44 @@ class CreatorController extends Controller
         return redirect()->route('profilCreator')->with('status', 'Password berhasil diperbarui.');
     }
 
-    public function grafik($user_id = null)
-    {
-        if (!$user_id) {
-            return redirect()->route('some.default.route');
-        }
+    // public function grafik($user_id = null)
+    // {
+    //     if (!$user_id) {
+    //         return redirect()->route('some.default.route');
+    //     }
 
-        $now = Carbon::now();
-        $currentYear = $now->year;
-        $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
-            return Carbon::create($currentYear, $month, 1)->format('F Y');
-        });
-        $transaksis = Transaksi::with(['tiket.event'])
-            ->whereYear('tanggal_transaksi', $currentYear)
-            ->whereHas('tiket.event', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id);
-            })
-            ->get();
-        $grouped = $transaksis->groupBy(function ($item) {
-            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
-        });
-        $labels = $months->toArray();
-        $jumlahTiket = $months->map(function ($month) use ($grouped) {
-            return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
-        })->toArray();
-        if ($transaksis->isEmpty()) {
-            return view('creator.grafik', [
-                'transaksis' => $transaksis,
-                'labels' => [],
-                'jumlahTiket' => [],
-                'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
-            ]);
-        }
-        return view('creator.grafik', [
-            'transaksis' => $transaksis,
-            'labels' => $labels,
-            'jumlahTiket' => $jumlahTiket,
-        ]);
-    }
+    //     $now = Carbon::now();
+    //     $currentYear = $now->year;
+    //     $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
+    //         return Carbon::create($currentYear, $month, 1)->format('F Y');
+    //     });
+    //     $transaksis = Transaksi::with(['tiket.event'])
+    //         ->whereYear('tanggal_transaksi', $currentYear)
+    //         ->whereHas('tiket.event', function ($query) use ($user_id) {
+    //             $query->where('user_id', $user_id);
+    //         })
+    //         ->get();
+    //     $grouped = $transaksis->groupBy(function ($item) {
+    //         return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+    //     });
+    //     $labels = $months->toArray();
+    //     $jumlahTiket = $months->map(function ($month) use ($grouped) {
+    //         return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
+    //     })->toArray();
+    //     if ($transaksis->isEmpty()) {
+    //         return view('creator.grafik', [
+    //             'transaksis' => $transaksis,
+    //             'labels' => [],
+    //             'jumlahTiket' => [],
+    //             'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
+    //         ]);
+    //     }
+    //     return view('creator.grafik', [
+    //         'transaksis' => $transaksis,
+    //         'labels' => $labels,
+    //         'jumlahTiket' => $jumlahTiket,
+    //     ]);
+    // }
 
 
     public function ScanQr()
