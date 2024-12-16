@@ -39,22 +39,33 @@ class PaymentController extends Controller
             'email' => 'required|email|max:255',
         ]);
 
+        $tiket = Tiket::findOrFail($validated['tiket_id']);
+
+        // Validasi: Pastikan no_ktp belum digunakan untuk event ini
+        $existingTransaction = Transaksi::where('no_ktp', $validated['no_ktp'])
+            ->where('event_id', $tiket->event_id)
+            ->whereIn('status', ['pending', 'paid'])
+            ->first();
+
+        if ($existingTransaction) {
+            return redirect()->back()->withErrors('No KTP sudah digunakan untuk event ini');
+        }
+
         try {
             DB::beginTransaction();
-
-            $tiket = Tiket::findOrFail($validated['tiket_id']);
 
             if ($tiket->jumlah_tiket < $validated['tiket_dibeli']) {
                 return back()->withErrors(['error' => 'Stok tiket tidak mencukupi.']);
             }
 
-            $existingTransaction = Transaksi::where('user_id', auth()->id())
+            // Hapus transaksi lama jika ada (hanya jika status pending)
+            $oldTransaction = Transaksi::where('user_id', auth()->id())
                 ->where('tiket_id', $validated['tiket_id'])
                 ->where('status', 'pending')
                 ->first();
 
-            if ($existingTransaction) {
-                $existingTransaction->delete();
+            if ($oldTransaction) {
+                $oldTransaction->delete();
             }
 
             $transaksi = Transaksi::create([
@@ -89,11 +100,6 @@ class PaymentController extends Controller
                     'email' => $validated['email'],
                     'phone' => $validated['no_telepon'],
                 ],
-                'callbacks' => [
-                    'finish' => route('midtransCallback'),
-                    'unfinish' => route('history'),
-                    'error' => route('transaksi.create'),
-                ],
             ];
 
             $url = Snap::createTransaction($transaction)->redirect_url;
@@ -106,7 +112,6 @@ class PaymentController extends Controller
             return back()->withErrors(['error' => 'Gagal membuat transaksi: ' . $e->getMessage()]);
         }
     }
-
 
     public function midtransCallback(Request $request)
 {
@@ -145,7 +150,7 @@ class PaymentController extends Controller
                     'is_present' => false,
                 ]);
             }
-            // Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
         } elseif ($transaction_status === 'pending') {
             $transaksi->status = 'pending';
         } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
