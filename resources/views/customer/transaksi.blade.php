@@ -59,8 +59,6 @@
                     <input class="form-control" type="hidden" id="kategori_tiket" value="{{ $tiket->kategori_tiket }}" name="kategori_tiket" required>
                     <input class="form-control" type="hidden" id="tiket_dibeli" value="{{ $tiket_dibeli }}" name="tiket_dibeli" required>
                     <input class="form-control" type="hidden" id="status" value="{{ $status }}" name="status" required>                    
-                    <input type="hidden" name="expire_time" value="{{ now()->addHour(1) }}" id="exprire_time" required>
-
                 </div>
                 @else
                 <p>Tickets Not found</p>

@@ -28,6 +28,7 @@ class CreateTransaksisTable extends Migration
             $table->foreignId('tiket_id')->constrained();
             $table->foreignId('event_id')->constrained();
             $table->foreignId('user_id')->constrained();
+            $table->string('order_id')->nullable()->change();
 
             $table->timestamps();
         });
@@ -40,6 +41,8 @@ class CreateTransaksisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaksis');
+        Schema::table('transaksis', function (Blueprint $table) {
+            $table->string('order_id')->nullable(false)->change();
+        });
     }
 }

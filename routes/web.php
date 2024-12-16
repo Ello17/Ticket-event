@@ -64,6 +64,7 @@ Route::post('/midtrans-notification', [PaymentController::class, 'notificationHa
 Route::post('/transaksi/{id}/pay', [PaymentController::class, 'payTransaction'])->name('transaksi.pay');
 
 
+Route::post('/webhook/midtrans', [PaymentController::class, 'handleMidtransWebhook'])->name('webhook.midtrans');
 
 
 Route::get('/transaksi/{kode_tiket}', [PaymentController::class, 'show'])->name('transaksi.show');
