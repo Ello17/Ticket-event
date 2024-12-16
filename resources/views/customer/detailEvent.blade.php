@@ -10,7 +10,7 @@
 @section('content')
     <body class="bg-[#111827] text-white" style="width: 100%;">
         @if ($event)
-            <div class="container mx-auto px-5 mt-10">
+            <div class="container mx-auto p-5 mt-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="col-span-2">
                         <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
@@ -20,8 +20,8 @@
                         </div>
                     </div>
 
-                    <div class="lg:w-full w-full">
-                        <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="container mx-auto">
+                        <div class="bg-gray-800 rounded-lg shadow-lg p-6 w-[110%] lg:w-[100%]">
                             <h3 class="text-lg font-semibold mb-4">Event Details</h3>
                             <div class="text-sm space-y-4">
                                 <div>
@@ -53,7 +53,7 @@
                                 <h3 class="text-2xl font-semibold mb-4">Tickets</h3>
                                 @foreach ($tiket as $item)
                                     <form action="{{ route('transaksi.tiket', [ 'id' => $event->id, 'tiket' => $item->id ]) }}" method="GET">
-                                        <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                                        <div class="bg-gray-800 rounded-lg shadow-lg p-6 w-[110%] lg:w-[100%]">
                                             <div class="mb-4">
                                                 <h5 class="text-white font-semibold">{{ $item->kategori_tiket }}</h5>
                                                 <p class="text-white">Price: Rp {{ number_format($item->harga_tiket, 0, ',', '.') }}</p>
