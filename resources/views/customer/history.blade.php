@@ -58,7 +58,7 @@
                                         <a href="{{ route('downloadTiket', $transaksi->id) }}" 
                                            class="btn btn-primary btn-sm">Download</a>
                                     @elseif($transaksi->status === 'pending')
-                                        <a href="https://app.sandbox.midtrans.com/snap/v4/redirection/{{ $transaksi->snap_token }}" 
+                                        <a href="" 
                                            class="btn btn-warning btn-sm">Lanjutkan Pembayaran</a>
                                     @else
                                         <span class="text-danger">Status transaksi tidak valid.</span>

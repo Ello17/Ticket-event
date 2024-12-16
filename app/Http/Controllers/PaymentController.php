@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
+use Midtrans\Notification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
@@ -38,25 +40,27 @@ class PaymentController extends Controller
             'no_telepon' => 'required|regex:/^\d{10,15}$/',
             'email' => 'required|email|max:255',
         ]);
-    
+
         try {
             DB::beginTransaction();
-    
+
             $tiket = Tiket::findOrFail($validated['tiket_id']);
-    
+
             if ($tiket->jumlah_tiket < $validated['tiket_dibeli']) {
                 return back()->withErrors(['error' => 'Stok tiket tidak mencukupi.']);
             }
-    
+
             $existingTransaction = Transaksi::where('user_id', auth()->id())
                 ->where('tiket_id', $validated['tiket_id'])
                 ->where('status', 'pending')
                 ->first();
-    
+
             if ($existingTransaction) {
                 $existingTransaction->delete();
             }
-    
+
+            $order_id = Auth::id().time();
+
             $transaksi = Transaksi::create([
                 'tiket_id' => $validated['tiket_id'],
                 'tiket_dibeli' => $validated['tiket_dibeli'],
@@ -69,11 +73,12 @@ class PaymentController extends Controller
                 'event_id' => $tiket->event_id,
                 'status' => 'pending',
                 'user_id' => auth()->id(),
+                'order_id' => $order_id,
             ]);
-    
+
             $transaction = [
                 'transaction_details' => [
-                    'order_id' => $transaksi->id . '-' . time(),
+                    'order_id' => $order_id,
                     'gross_amount' => $transaksi->total_transaksi,
                 ],
                 'item_details' => [
@@ -90,18 +95,18 @@ class PaymentController extends Controller
                     'phone' => $validated['no_telepon'],
                 ],
                 'callbacks' => [
-                    'finish' => route('midtransCallback'),
+                    'finish' => route('midtrans.notification'),
                     'unfinish' => route('history'),
                     'error' => route('transaksi.create'),
                 ],
             ];
-    
+
             $snapToken = Snap::createTransaction($transaction)->token;
             $transaksi->snap_token = $snapToken;
             $transaksi->save();
-    
+
             DB::commit();
-    
+
             return redirect(Snap::createTransaction($transaction)->redirect_url);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -109,59 +114,115 @@ class PaymentController extends Controller
             return back()->withErrors(['error' => 'Gagal membuat transaksi: ' . $e->getMessage()]);
         }
     }
-    
+
 
     public function midtransCallback(Request $request)
-{
-    $payload = $request->all();
+    {
+        $payload = $request->all();
 
-    if (!isset($payload['transaction_status']) || !isset($payload['order_id'])) {
-        return response()->json(['status' => 'error', 'message' => 'Invalid payload.'], 400);
-    }
-
-    $transaction_status = $payload['transaction_status'];
-    $order_id = explode('-', $payload['order_id'])[0];
-
-    $transaksi = Transaksi::find($order_id);
-    if (!$transaksi) {
-        return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
-    }
-
-    if ($transaksi->status === 'paid') {
-        return redirect()->route('history')->with('success', 'Transaction already processed.');
-    }
-
-    try {
-        if (in_array($transaction_status, ['settlement', 'capture'])) {
-            $transaksi->status = 'paid';
-
-            $tiket = Tiket::findOrFail($transaksi->tiket_id);
-            $tiket->decrement('jumlah_tiket', $transaksi->tiket_dibeli);
-            foreach (range(1, $transaksi->tiket_dibeli) as $i) {
-                Participant::create([
-                    'transaksi_id' => $transaksi->id,
-                    'kode_tiket' => $transaksi->id . '-' . Str::random(8),
-                    'user_id' => $transaksi->user_id,
-                    'event_id' => $transaksi->event_id,
-                    'tiket_id' => $transaksi->tiket_id,
-                    'scan_time' => null,
-                    'is_present' => false,
-                ]);
-            }
-            Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
-        } elseif ($transaction_status === 'pending') {
-            $transaksi->status = 'pending';
-        } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
-            $transaksi->status = 'failed';
+        if (!isset($payload['transaction_status']) || !isset($payload['order_id'])) {
+            return response()->json(['status' => 'error', 'message' => 'Invalid payload.'], 400);
         }
 
-        $transaksi->save();
+        $transaction_status = $payload['transaction_status'];
+        $order_id = $payload['order_id'];
 
-        return redirect()->route('history')->with('success', 'Transaction updated successfully.');
-    } catch (\Exception $e) {
-        return response()->json(['status' => 'error', 'message' => 'Failed to update transaction.'], 500);
+        $transaksi = Transaksi::find($order_id);
+        if (!$transaksi) {
+            return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
+        }
+
+        if ($transaksi->status === 'paid') {
+            return redirect()->route('history')->with('success', 'Transaction already processed.');
+        }
+
+        try {
+            if (in_array($transaction_status, ['settlement', 'capture'])) {
+                $transaksi->status = 'paid';
+
+                $tiket = Tiket::findOrFail($transaksi->tiket_id);
+                $tiket->decrement('jumlah_tiket', $transaksi->tiket_dibeli);
+                foreach (range(1, $transaksi->tiket_dibeli) as $i) {
+                    Participant::create([
+                        'transaksi_id' => $transaksi->id,
+                        'kode_tiket' => $transaksi->id . '-' . Str::random(8),
+                        'user_id' => $transaksi->user_id,
+                        'event_id' => $transaksi->event_id,
+                        'tiket_id' => $transaksi->tiket_id,
+                        'scan_time' => null,
+                        'is_present' => false,
+                    ]);
+                }
+                Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+            } elseif ($transaction_status === 'pending') {
+                $transaksi->status = 'pending';
+            } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
+                $transaksi->status = 'failed';
+            }
+
+            $transaksi->save();
+
+            return redirect()->route('history')->with('success', 'Transaction updated successfully.');
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Failed to update transaction.'], 500);
+        }
     }
-}
+
+    public function handleNotification(Request $request)
+    {
+        try {
+            $payload = $request->all();
+            $notification = new \Midtrans\Notification();
+
+            $transaction_status = $notification->transaction_status;
+            $order_id = $notification->order_id;
+
+            $transaksi = Transaksi::find($order_id);
+            if (!$transaksi) {
+                return response()->json(['status' => 'error', 'message' => 'Transaction not found.'], 404);
+            }
+
+            if ($transaksi->status === 'paid') {
+                return response()->json(['status' => 'success', 'message' => 'Transaction already processed.'], 200);
+            }
+
+            DB::beginTransaction();
+
+            if (in_array($transaction_status, ['settlement', 'capture'])) {
+                $transaksi->status = 'paid';
+
+                $tiket = Tiket::findOrFail($transaksi->tiket_id);
+                $tiket->decrement('jumlah_tiket', $transaksi->tiket_dibeli);
+
+                foreach (range(1, $transaksi->tiket_dibeli) as $i) {
+                    Participant::create([
+                        'transaksi_id' => $transaksi->id,
+                        'kode_tiket' => $transaksi->id . '-' . Str::random(8),
+                        'user_id' => $transaksi->user_id,
+                        'event_id' => $transaksi->event_id,
+                        'tiket_id' => $transaksi->tiket_id,
+                        'scan_time' => null,
+                        'is_present' => false,
+                    ]);
+                }
+
+                Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
+            } elseif ($transaction_status === 'pending') {
+                $transaksi->status = 'pending';
+            } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
+                $transaksi->status = 'failed';
+            }
+
+            $transaksi->save();
+            DB::commit();
+
+            return response()->json(['status' => 'success', 'message' => 'Transaction updated successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Notification handling failed', ['error' => $e->getMessage()]);
+            return response()->json(['status' => 'error', 'message' => 'Failed to handle notification.'], 500);
+        }
+    }
 
 
     public function show($kode_tiket)
@@ -193,19 +254,17 @@ class PaymentController extends Controller
         }
 
         $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes'))
-                  ->setPaper('a4');
+            ->setPaper('a4');
 
         return $pdf->download('tiket-transaksi-' . $transaksi->id . '.pdf');
     }
 
-public function destroy($id)
-{
-    $transaksi = Transaksi::findOrFail($id);
+    public function destroy($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
 
-    $transaksi->delete();
+        $transaksi->delete();
 
-    return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
-}
-
-
+        return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
+    }
 }
