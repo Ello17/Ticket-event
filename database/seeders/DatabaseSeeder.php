@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
             'nama_penyelenggara' => 'CroudSound',
             'cover_event' => 'components/asset/toy.jpg',
             'nama_event' => 'Croud Sound',
-            'tanggal_event' => '22 Februari 2025',
+            'tanggal_event' => '22 Februari 2024',
             'waktu_event' => '15.00 WIB',
             'lokasi_event' => 'Jatim explo, Surabaya',
             'latitude' => '-6.981755',

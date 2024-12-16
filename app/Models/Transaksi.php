@@ -36,7 +36,7 @@ class Transaksi extends Model
 
     public function tiket()
     {
-        return $this->belongsTo(Tiket::class, 'tiket_id'); 
+        return $this->belongsTo(Tiket::class, 'tiket_id');
     }
     public function participants(){
         return $this->hasMany(Participant::class);

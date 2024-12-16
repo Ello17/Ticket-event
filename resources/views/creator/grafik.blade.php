@@ -51,14 +51,14 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Date' // Changed to English
+                            text: 'Date' 
                         },
                         beginAtZero: true
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Number of Tickets' // Changed to English
+                            text: 'Number of Tickets' 
                         },
                         beginAtZero: true
                     }

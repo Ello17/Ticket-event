@@ -154,10 +154,24 @@ class CreatorController extends Controller
     public function hapusEvent($id)
     {
         $event = Event::findOrFail($id);
+
+        // Periksa apakah ada tiket dengan transaksi
+        $hasTransaksi = $event->tiket()->whereHas('transaksis')->exists();
+
+        if ($hasTransaksi) {
+            return redirect()->route('kelolaEvent')->with('pesan-gagal', 'Event tidak dapat dihapus karena sudah ada transaksi terkait.');
+        }
+
+        // Hapus semua tiket terkait
+        $event->tikets()->delete();
+
+        // Hapus event
         $event->delete();
 
-        return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Event dan tiket terkait berhasil dihapus');
+        return redirect()->route('kelolaEvent')->with('pesan-berhasil', 'Event berhasil dihapus.');
     }
+
+
 
     public function kelolaTiket()
     {
@@ -357,38 +371,38 @@ class CreatorController extends Controller
     //         return redirect()->route('some.default.route');
     //     }
 
-    //     $now = Carbon::now();
-    //     $currentYear = $now->year;
-    //     $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
-    //         return Carbon::create($currentYear, $month, 1)->format('F Y');
-    //     });
-    //     $transaksis = Transaksi::with(['tiket.event'])
-    //         ->whereYear('tanggal_transaksi', $currentYear)
-    //         ->whereHas('tiket.event', function ($query) use ($user_id) {
-    //             $query->where('user_id', $user_id);
-    //         })
-    //         ->get();
-    //     $grouped = $transaksis->groupBy(function ($item) {
-    //         return Carbon::parse($item->tanggal_transaksi)->format('F Y');
-    //     });
-    //     $labels = $months->toArray();
-    //     $jumlahTiket = $months->map(function ($month) use ($grouped) {
-    //         return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
-    //     })->toArray();
-    //     if ($transaksis->isEmpty()) {
-    //         return view('creator.grafik', [
-    //             'transaksis' => $transaksis,
-    //             'labels' => [],
-    //             'jumlahTiket' => [],
-    //             'message' => "Tidak ada transaksi yang cocok untuk tahun ini dan user_id ini."
-    //         ]);
-    //     }
-    //     return view('creator.grafik', [
-    //         'transaksis' => $transaksis,
-    //         'labels' => $labels,
-    //         'jumlahTiket' => $jumlahTiket,
-    //     ]);
-    // }
+        $now = Carbon::now();
+        $currentYear = $now->year;
+        $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
+            return Carbon::create($currentYear, $month, 1)->format('F Y');
+        });
+        $transaksis = Transaksi::with(['tiket.event'])
+            ->whereYear('tanggal_transaksi', $currentYear)
+            ->whereHas('tiket.event', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })
+            ->get();
+        $grouped = $transaksis->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+        });
+        $labels = $months->toArray();
+        $jumlahTiket = $months->map(function ($month) use ($grouped) {
+            return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
+        })->toArray();
+        if ($transaksis->isEmpty()) {
+            return view('creator.grafik', [
+                'transaksis' => $transaksis,
+                'labels' => [],
+                'jumlahTiket' => [],
+                'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
+            ]);
+        }
+        return view('creator.grafik', [
+            'transaksis' => $transaksis,
+            'labels' => $labels,
+            'jumlahTiket' => $jumlahTiket,
+        ]);
+    }
 
 
     public function ScanQr()
@@ -440,17 +454,29 @@ public function participants(Request $request)
 {
     $user = auth()->user(); // Get the authenticated user
 
-    $participants = Participant::with(['user', 'event'])
+    $participants = Participant::query()
+        ->with(['user', 'event'])
         ->whereHas('event', function ($query) use ($user) {
             $query->where('user_id', $user->id); // Filter by user's events
         })
         ->whereHas('transaksi', function ($query) {
             $query->where('status', 'paid'); // Filter by paid status
         })
+        ->join('events', 'participants.event_id', '=', 'events.id') // Join events table
+        ->orderBy('participants.is_present', 'desc') // Sort by presence
+        ->orderBy('events.nama_event', 'asc') // Sort by event name
+        ->select('participants.*') // Select only participant columns
         ->paginate(10); // Use pagination here
 
     return view('creator.participants', compact('participants'));
 }
 
 
+
+public function partic($id)
+{
+    $event = Event::findOrFail($id); // Ambil data event berdasarkan ID
+    $participants = Participant::where('event_id', $id)->get(); // Ambil peserta terkait event
+
+    return view('creator.partic', compact('event', 'participants'));
 }

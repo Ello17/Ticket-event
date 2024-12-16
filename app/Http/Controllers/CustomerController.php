@@ -15,16 +15,27 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
+
 
 class CustomerController extends Controller
 {
     //
 
-    function homeCustomer()
-    {
-        $data = Event::all();
-        return view('customer.homeCustomer', compact('data'));
-    }
+    public function homeCustomer()
+{
+    $data = Event::orderBy('created_at', 'desc')->take(6)->get(); // Ambil 6 event terbaru
+    return view('customer.homeCustomer', compact('data'));
+}
+
+public function listEvents()
+{
+    $events = Event::orderBy('created_at', 'desc')->paginate(10); // Pagination 10 event per halaman
+    return view('customer.listEvent', compact('events'));
+}
+
+
+
 
     public function search(Request $request)
     {
@@ -49,15 +60,16 @@ class CustomerController extends Controller
     public function detailEvent($id)
     {
         $event = Event::find($id);
-        $tiket = Tiket::where('event_id', $id)->get();
-        return view('customer.detailEvent', compact('event', 'tiket'));
-    }
 
-    public function listEvents()
-    {
+        if (!$event) {
+            return redirect()->route('home')->withErrors(['Event not found.']);
+        }
 
-        $events = Event::all();
-        return view('customer.listEvent', compact('events'));
+        $isEventExpired = Carbon::parse($event->tanggal_event)->isPast();
+
+        $tiket = !$isEventExpired ? Tiket::where('event_id', $id)->get() : null;
+
+        return view('customer.detailEvent', compact('event', 'tiket', 'isEventExpired'));
     }
 
     public function profil()

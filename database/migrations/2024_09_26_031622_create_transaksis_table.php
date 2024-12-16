@@ -27,6 +27,7 @@ class CreateTransaksisTable extends Migration
             $table->foreignId('event_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
+            $table->unique(['user_id', 'tiket_id', 'status']);
         });
     }
 

@@ -49,6 +49,8 @@
                                             <a href="{{ route('hapusEvent', $item->id) }}"
                                                 class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm"
                                                 onclick="return confirm('Are you sure?')">Delete</a>
+                                            <a href="{{ route('partic', $item->id) }}"
+                                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-sm">Participant</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -97,4 +99,3 @@
         }
     </style>
 @endpush
-
