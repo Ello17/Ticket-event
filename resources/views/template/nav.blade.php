@@ -19,7 +19,7 @@
                     </form>
                 </li>
                 <li>
-                    <a href="{{ route('registerCreator') }}" class="a-navbar text-white">Create Event</a>
+                    <a href="{{ route('registerCreator') }}" class="a-navbar text-white">Create Event?</a>
                 </li>
             </ul>
         </div>
@@ -61,9 +61,9 @@
     const navLinks = document.querySelector(".nav-links");
 
     function onToggleMenu(icon) {
-        const isMenuOpen = navLinks.classList.toggle('left-0'); 
+        const isMenuOpen = navLinks.classList.toggle('left-0');
         icon.name = isMenuOpen ? 'close' : 'menu';
-        document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto'; 
+        document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
     }
 </script>
 
@@ -72,10 +72,10 @@
 
 
         .input-nav {
-            width: 100%; 
+            width: 100%;
         }
 
-        
+
         .input {
             width: 100%;
         }
@@ -89,7 +89,7 @@
         }
 
         ion-icon[name="menu"] {
-            display: none; 
+            display: none;
         }
     }
 </style>

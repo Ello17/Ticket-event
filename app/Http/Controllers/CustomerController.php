@@ -15,16 +15,38 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
+
 
 class CustomerController extends Controller
 {
     //
 
+<<<<<<< HEAD
     function homeCustomer()
     {
         $data = Event::all();
         return view('customer.homeCustomer', compact('data'));
     }
+=======
+    public function homeCustomer()
+{
+    $data = Event::orderBy('created_at', 'desc')->take(6)->get();
+    return view('customer.homeCustomer', compact('data'));
+}
+
+public function listEvents()
+{
+    $events = Event::select('id', 'nama_event', 'tanggal_event', 'lokasi_event', 'waktu_event', 'cover_event')
+    ->orderBy('created_at', 'desc')
+    ->paginate(9);
+
+    return view('customer.listEvent', compact('events'));
+}
+
+
+
+>>>>>>> 2186ff64559aae7254002ca5ab8dcb4de3023df8
 
     public function search(Request $request)
     {
@@ -49,15 +71,16 @@ class CustomerController extends Controller
     public function detailEvent($id)
     {
         $event = Event::find($id);
-        $tiket = Tiket::where('event_id', $id)->get();
-        return view('customer.detailEvent', compact('event', 'tiket'));
-    }
 
-    public function listEvents()
-    {
+        if (!$event) {
+            return redirect()->route('home')->withErrors(['Event not found.']);
+        }
 
-        $events = Event::all();
-        return view('customer.listEvent', compact('events'));
+        $isEventExpired = Carbon::parse($event->tanggal_event)->isPast();
+
+        $tiket = !$isEventExpired ? Tiket::where('event_id', $id)->get() : null;
+
+        return view('customer.detailEvent', compact('event', 'tiket', 'isEventExpired'));
     }
 
     public function profil()
@@ -70,15 +93,15 @@ class CustomerController extends Controller
         return view('customer.profil', compact('user'));
     }
 
-    public function editProfileCust($id)
-    {
-        $user = Auth::user();
-        if ($user->role !== 'customer' || $user->id != $id) {
-            return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
-        }
+        public function editProfileCust($id)
+        {
+            $user = Auth::user();
+            if ($user->role !== 'customer' || $user->id != $id) {
+                return redirect('/')->with('error', 'Anda tidak diizinkan mengakses halaman ini.');
+            }
 
-        return view('customer.editProfileCust', compact('user'));
-    }
+            return view('customer.editProfileCust', compact('user'));
+        }
 
     public function postEditProfileCust(Request $request)
     {
