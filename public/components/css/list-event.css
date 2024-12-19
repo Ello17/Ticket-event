@@ -3,3 +3,8 @@
     margin-top: 20px;
 }
 
+.pagination-wrapper {
+    display: flex;
+    justify-content: center; /* Center pagination */
+    margin-top: 20px;
+}

@@ -79,19 +79,6 @@
     </div>
 </section>
 
-<!-- Event Cards -->
-{{-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 px-5">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img src="{{ asset($item->cover_event) }}" alt="Event Image" class="w-full h-48 object-cover">
-        <div class="p-4">
-            <h5 class="text-xl font-semibold">{{ $item->nama_event }}</h5>
-            <p class="text-gray-600">{{ $item->tanggal_event }}</p>
-            <p class="text-gray-600">{{ $item->lokasi_event }}</p>
-            <p class="text-gray-600">{{ $item->waktu_event }}</p>
-            <a href="{{ route('detailEvent', $item->id) }}" class="inline-block bg-blue-500 text-white py-2 px-4 rounded mt-4">Detail</a>
-        </div>
-    </div>
-</div> --}}
 
 @endsection
 

@@ -34,7 +34,7 @@
                     </thead>
 
                     <tbody>
-                        @forelse($transaksiList as $index => $transaksi)
+                        @foreach($transaksiList as $index => $transaksi)
                         <tr>
                             <th scope="row" style="text-align: center;">{{ $index + 1 }}</th>
                             <td>{{ $transaksi->tiket_dibeli }}</td>
@@ -63,17 +63,19 @@
                                     @else
                                         <span class="text-danger">Status transaksi tidak valid.</span>
                                     @endif
-                                </div>                                
-                            </td>
-                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="10" class="text-center py-3">
-                                <strong>No tickets purchased yet</strong>
+                                </div>
                             </td>
                         </tr>
-                        @endforelse
+                        @endforeach
+                         
                     </tbody>
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-3" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+          @endif
 
                 </table>
             </div>
@@ -85,4 +87,26 @@
 
 @push('js')
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+<script>
+    @if(session('snap_token'))
+        window.snap.pay("{{ session('snap_token') }}", {
+            onSuccess: function(result) {
+                alert('Payment success!');
+                window.location.reload(); // Refresh page
+            },
+            onPending: function(result) {
+                alert('Payment is pending!');
+            },
+            onError: function(result) {
+                alert('Payment failed!');
+            },
+            onClose: function() {
+                alert('You closed the payment popup!');
+            }
+        });
+    @endif
+</script>
 @endpush
+
+

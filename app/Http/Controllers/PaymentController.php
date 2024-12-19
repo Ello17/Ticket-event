@@ -76,6 +76,7 @@ class PaymentController extends Controller
                 'order_id' => $order_id,
             ]);
 
+
             $transaction = [
                 'transaction_details' => [
                     'order_id' => $order_id,
@@ -101,6 +102,7 @@ class PaymentController extends Controller
             $transaksi->save();
 
             DB::commit();
+
 
             return redirect(Snap::createTransaction($transaction)->redirect_url);
         } catch (\Exception $e) {
@@ -183,6 +185,7 @@ class PaymentController extends Controller
             $transaksi->status = 'paid';
             $tiket = Tiket::findOrFail($transaksi->tiket_id);
             $tiket->decrement('jumlah_tiket', $transaksi->tiket_dibeli);
+
             foreach (range(1, $transaksi->tiket_dibeli) as $i) {
                 Participant::create([
                     'transaksi_id' => $transaksi->id,
@@ -200,6 +203,8 @@ class PaymentController extends Controller
             $transaksi->status = 'pending';
         } elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
             $transaksi->status = 'failed';
+        } elseif ($transaction_status == 'pending') {
+            $transaksi->status = 'pending';
         }
     
         return response()->json(['status' => 'success', 'message' => 'Notification handled.']);
@@ -218,9 +223,9 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
         }
     }
+
     public function downloadTiket($id)
     {
-
         $transaksi = Transaksi::with('participants')->findOrFail($id);
         if ($transaksi->user_id !== auth()->id()) {
             abort(403, 'Anda tidak diizinkan untuk mengakses tiket ini.');
