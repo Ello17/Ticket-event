@@ -54,6 +54,7 @@ Route::get('/search', [CustomerController::class, 'search'])->name('search');
 
 
 
+
 //ROUTE ADMIN SAMA KREATOR ITU SIMPENNYA DI DALAM MIDDLEWARE
 Route::middleware('auth')->group(function () {
 
@@ -63,13 +64,16 @@ Route::post('/transaksi/create', [PaymentController::class, 'createTransaction']
 Route::post('/midtrans-notification', [PaymentController::class, 'notificationHandler']);
 Route::post('/transaksi/{id}/pay', [PaymentController::class, 'payTransaction'])->name('transaksi.pay');
 
-
-Route::post('/webhook/midtrans', [PaymentController::class, 'handleMidtransWebhook'])->name('webhook.midtrans');
+Route::post('/midtrans-callback', [PaymentController::class, 'midtransCallback'])->name('midtrans-callback');
+// Route::post('/webhook/midtrans', [PaymentController::class, 'handleMidtransWebhook'])->name('webhook.midtrans');
 
 
 Route::get('/transaksi/{kode_tiket}', [PaymentController::class, 'show'])->name('transaksi.show');
 Route::get('/download/tiket/{id}', [PaymentController::class, 'downloadTiket'])->name('downloadTiket');
-Route::get('/midtrans/callback', [PaymentController::class, 'midtransCallback']);
+
+
+
+
 Route::delete('/transaksi/{id}', [PaymentController::class, 'destroy'])->name('destroyTransaksi');
 
 
@@ -84,8 +88,7 @@ Route::get('/transaksi/{event}', [CustomerController::class, 'transaksi'])->name
 
 
 // //EMAIL
-// Route::get('/konfirmasi', [emailController::class, 'konfirmasi'])->name('konfirmasi');
-// Route::post('/midtrans/callback', [emailController::class, 'callbackMidtrans'])->name('callbackMidtrans');
+
 Route::get('/transaksi/konfirmasi', [emailController::class, 'showConfirmation'])->middleware('auth')->name('transaksi.konfirmasi');
 
 //admin

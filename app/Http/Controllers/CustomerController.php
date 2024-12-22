@@ -22,13 +22,6 @@ class CustomerController extends Controller
 {
     //
 
-<<<<<<< HEAD
-    function homeCustomer()
-    {
-        $data = Event::all();
-        return view('customer.homeCustomer', compact('data'));
-    }
-=======
     public function homeCustomer()
 {
     $data = Event::orderBy('created_at', 'desc')->take(6)->get();
@@ -46,7 +39,6 @@ public function listEvents()
 
 
 
->>>>>>> 2186ff64559aae7254002ca5ab8dcb4de3023df8
 
     public function search(Request $request)
     {
