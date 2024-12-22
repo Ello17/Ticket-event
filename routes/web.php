@@ -64,7 +64,7 @@ Route::post('/transaksi/create', [PaymentController::class, 'createTransaction']
 Route::post('/midtrans-notification', [PaymentController::class, 'notificationHandler']);
 Route::post('/transaksi/{id}/pay', [PaymentController::class, 'payTransaction'])->name('transaksi.pay');
 
-Route::post('/midtrans-callback', [PaymentController::class, 'midtransCallback'])->name('midtrans-callback');
+Route::get('/midtrans-callback', [PaymentController::class, 'midtransCallback'])->name('midtrans-callback');
 // Route::post('/webhook/midtrans', [PaymentController::class, 'handleMidtransWebhook'])->name('webhook.midtrans');
 
 
