@@ -18,6 +18,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/midtrans/callback', [PaymentController::class, 'midtransCallback'])->middleware('api');
 Route::post('/midtrans/notification', [PaymentController::class, 'handleNotification'])->name('midtrans.notification');
 
