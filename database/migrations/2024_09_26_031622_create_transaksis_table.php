@@ -25,6 +25,7 @@ class CreateTransaksisTable extends Migration
             $table->enum('status', ['pending', 'paid', 'failed']);
             $table->string('snap_token')->nullable();
             $table->dateTime('exp')->nullable();
+            $table->string('order_id')->nullable();
             $table->foreignId('tiket_id')->constrained();
             $table->foreignId('event_id')->constrained();
             $table->foreignId('user_id')->constrained();

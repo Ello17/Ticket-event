@@ -12,8 +12,10 @@ use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
 use Midtrans\Notification;
+use Midtrans\Notification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
@@ -71,6 +73,8 @@ class PaymentController extends Controller
 
             $order_id = Auth::id().'-'.time();
 
+            $order_id = Auth::id().'-'.time();
+
             $transaksi = Transaksi::create([
                 'tiket_id' => $validated['tiket_id'],
                 'tiket_dibeli' => $validated['tiket_dibeli'],
@@ -87,8 +91,10 @@ class PaymentController extends Controller
                 'exp' => now()->addHours(1),
             ]);
 
+
             $transaction = [
                 'transaction_details' => [
+                    'order_id' => $order_id,
                     'order_id' => $order_id,
                     'gross_amount' => $transaksi->total_transaksi,
                 ],
@@ -115,8 +121,12 @@ class PaymentController extends Controller
             $snapToken = Snap::createTransaction($transaction)->token;
             $transaksi->snap_token = $snapToken;
             $transaksi->save();
+            $snapToken = Snap::createTransaction($transaction)->token;
+            $transaksi->snap_token = $snapToken;
+            $transaksi->save();
 
             DB::commit();
+
 
             return redirect(Snap::createTransaction($transaction)->redirect_url);
         } catch (\Exception $e) {
@@ -196,6 +206,7 @@ public function midtransCallback(Request $request)
         $transaksi = Transaksi::where('order_id', $order_id)->first();
         if (!$transaksi) {
             return response()->json(['status' => 'error', 'message' => 'Transaction not found.'.$order_id], 404);
+            return response()->json(['status' => 'error', 'message' => 'Transaction not found.'.$order_id], 404);
         }
 
         if ($transaction_status === 'settlement') {
@@ -214,6 +225,7 @@ public function midtransCallback(Request $request)
                     'is_present' => false,
                 ]);
             }
+            $transaksi->save();
             $transaksi->save();
             Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
         } elseif ($transaction_status === 'pending') {
@@ -259,6 +271,7 @@ public function midtransCallback(Request $request)
 
         $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes'))
             ->setPaper('a4');
+            ->setPaper('a4');
 
         return $pdf->download('tiket-transaksi-' . $transaksi->id . '.pdf');
     }
@@ -267,8 +280,10 @@ public function midtransCallback(Request $request)
     {
         $transaksi = Transaksi::findOrFail($id);
 
+
         $transaksi->delete();
 
+        return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
         return redirect()->route('history')->with('success', 'Transaction deleted successfully.');
     }
 }
