@@ -82,7 +82,8 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-center text-red-500">Tickets not available</p>
+                        <p class="text-center text-red-500"
+                        >Tickets not available</p>
                     @endif
                 </div>
             </div>

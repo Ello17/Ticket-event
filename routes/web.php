@@ -68,12 +68,15 @@ Route::post('/transaksi/{id}/pay', [PaymentController::class, 'payTransaction'])
 
 Route::get('/transaksi/{kode_tiket}', [PaymentController::class, 'show'])->name('transaksi.show');
 Route::get('/download/tiket/{id}', [PaymentController::class, 'downloadTiket'])->name('downloadTiket');
-Route::get('/midtrans/callback', [PaymentController::class, 'midtransCallback']);
+Route::get('/midtrans/callback', [PaymentController::class, 'midtransCallback'])->name('midtrans-callback');
 Route::delete('/transaksi/{id}', [PaymentController::class, 'destroy'])->name('destroyTransaksi');
 
+Route::get('/lanjutkan-pembayaran/{id}', [PaymentController::class, 'lanjutkanPembayaran'])->name('lanjutkanPembayaran');
 
 
 
+
+// Route::post('/api/midtrans-callback', [PaymentController::class, 'midtransCallback']);
 
 Route::get('/history', [CustomerController::class, 'history'])->name('history');
 Route::get('/transaksi/{id}', [CustomerController::class, 'transaksi'])->name('transaksi');
@@ -153,7 +156,7 @@ Route::get('/events/{id}/partic', [CreatorController::class, 'partic'])->name('p
 Route::get('/transaksi/snap/{snap_token}', function ($snap_token) {
      return view('customer.snap', compact('snap_token'));
  })->name('transaksi.snap');
- 
+
 
 
 
