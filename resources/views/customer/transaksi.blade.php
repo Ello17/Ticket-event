@@ -69,7 +69,7 @@
                 <div class="border column">
                     <div class="group">
                         <label for="name">Full Name :</label>
-                        <input class="form-control input-transaksi" type="text" id="name" value="{{ $user->username }}" name="nama_lengkap" required>
+                        <input class="form-control input-transaksi" type="text" id="name" value="{{ $user->username }}" name="nama_lengkap" readonly>
                     </div>
                     <div class="group form-group">
                         <label for="name">Email :</label>
@@ -77,20 +77,20 @@
                     </div>
                     <div class="form-group">
                         <label for="name">No. KTP :</label>
-                        <input class="input-transaksi" type="text" id="no_ktp" name="no_ktp" required>
+                        <input class="input-transaksi" type="text" id="no_ktp" name="no_ktp" placeholder="123xxxxxxxxxxxxx" required>
                         @error('no_ktp')
                             <small>{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="name">Phone Number :</label>
-                        <input class="form-control input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" required>
+                        <input class="form-control input-transaksi" type="tel" id="phone" value="{{ $user->no_telepon }}" name="no_telepon" pattern="\d{10,15}" placeholder="123xxxxxxxx" required>
                         <small>Must be between 10-15 digits.</small>
                     </div>
                 </div>
 
                 <div class="box-btn" style="margin-bottom:10px;">
-                    <button class="btn" id="pay-button">PAY NOW</button>
+                    <button type="submit" class="btn" id="pay-button">PAY NOW</button>
                 </div>
                 @if ($errors->any())
                     <div style="color:red;" style="margin-bottom:10px;">
