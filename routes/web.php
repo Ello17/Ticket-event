@@ -156,7 +156,7 @@ Route::get('/events/{id}/partic', [CreatorController::class, 'partic'])->name('p
 Route::get('/transaksi/snap/{snap_token}', function ($snap_token) {
      return view('customer.snap', compact('snap_token'));
  })->name('transaksi.snap');
-
+ 
 
 
 

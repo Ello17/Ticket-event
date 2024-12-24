@@ -13,7 +13,6 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use Midtrans\Notification;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -105,13 +104,13 @@ class PaymentController extends Controller
             ],
         ];
 
-        $snapToken = Snap::createTransaction($transaction)->token;
-        $transaksi->snap_token = $snapToken;
+        $snapToken = Snap::createTransaction($transaction);
+        $transaksi->snap_token = $snapToken->token;
         $transaksi->save();
 
         DB::commit();
 
-        return redirect(Snap::createTransaction($transaction)->redirect_url);
+        return redirect($snapToken->redirect_url);
     } catch (\Exception $e) {
         DB::rollBack();
         Log::error('Transaksi gagal', ['error' => $e->getMessage()]);
@@ -122,7 +121,7 @@ public function midtransCallback(Request $request)
     {
           $payload = $request->all();
 
-
+   
     if (!isset($payload['transaction_status']) || !isset($payload['order_id'])) {
         return redirect()->route('transaksi.create')->withErrors(['error' => 'Invalid payload structure.']);
     }
@@ -180,15 +179,15 @@ public function midtransCallback(Request $request)
         if(!$payload) {
             return response()->json(['status' => 'error', 'message' => 'Payload is empty.'], 400);
         }
-
+    
         $transaction_status = $payload['transaction_status'];
         $order_id = $payload['order_id'];
-
+    
         $transaksi = Transaksi::where('order_id', $order_id)->first();
         if (!$transaksi) {
             return response()->json(['status' => 'error', 'message' => 'Transaction not found.'.$order_id], 404);
         }
-
+    
         if ($transaction_status === 'settlement') {
             $transaksi->status = 'paid';
             $tiket = Tiket::findOrFail($transaksi->tiket_id);
@@ -214,10 +213,10 @@ public function midtransCallback(Request $request)
         } elseif ($transaction_status == 'pending') {
             $transaksi->status = 'pending';
         }
-
+    
         return response()->json(['status' => 'success', 'message' => 'Notification handled.']);
     }
-
+    
 
 
     public function show($kode_tiket)

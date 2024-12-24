@@ -56,11 +56,14 @@
                     <button type="submit" class="btn btn-danger btn-sm" style="width:100%;">Delete</button>
                 </form>
             @else
-               <a href="{{ 'https://app.sandbox.midtrans.com/snap/v4/redirection/' . $transaksi->snap_token }}"
-   class="btn btn-warning btn-sm"
+              {{-- <a href="{{ 'https://app.sandbox.midtrans.com/snap/v4/redirection/' . $transaksi->snap_token }}"
+            
+   class="btn btn-warning btn-sm" 
    target="_blank">
    Lanjutkan Pembayaran
-</a>
+</a> --}}
+
+  <button onclick="payWithSnap('{{ $transaksi->snap_token }}')">Bayar woi</button>
 
             @endif
         @elseif($transaksi->status === 'paid')
@@ -78,7 +81,7 @@
 
                         </tr>
                         @endforeach
-
+                         
                     </tbody>
                     @if ($errors->any())
                         <div class="alert alert-danger mt-3" role="alert">
@@ -99,6 +102,8 @@
 @push('js')
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+
+
 
 <script>
     function payWithSnap(snapToken) {

@@ -219,7 +219,7 @@ class AdminController extends Controller
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
 
-    return view('admin.ProfileAdmin', compact('user'));
+    return view('admin.profileAdmin', compact('user'));
 }
 
 public function editProfileAdmin($id)

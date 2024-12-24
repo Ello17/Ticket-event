@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendTicketMail;
 use App\Models\Event;
-use App\Models\participant;
+use App\Models\Participant;
 use App\Models\Tiket;
 use App\Models\Transaksi;
 use App\Models\User;

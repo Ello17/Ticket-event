@@ -26,7 +26,7 @@
 
         <div class="flex items-center gap-6">
             @guest
-                <button class="px-5 py-2 rounded-full b-navbar">
+                <button class="px-5 py-2 rounded-full b-navbar" style="background-color: #358e9d;">
                     <a href="{{ route('login') }}">Sign In</a>
                 </button>
             @endguest
