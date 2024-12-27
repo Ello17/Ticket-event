@@ -16,12 +16,9 @@
             <div>
                 <h1>Hello, {{ $user->username }}</h1>
                 <div class="d-flex gap-2 mt-2">
-                    <a href="{{ route('editProfileCust', $user->id) }}" class="btn btn-primary btn-sm">Edit Profil</a>
-                    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Logout</button>
-                    </form>
-                    <a href="{{ route('homeCustomer') }}" class="btn btn-secondary btn-sm">Back</a>
+                    <a href="{{ route('history') }}" class="btn btn-outline-primary"><i class="ri-history-line me-1"></i> History</a>
+                    <a href="{{ route('editProfileCust', $user->id) }}" class="btn btn-outline-primary">Edit Profil</a>
+                    <a href="{{ route('homeCustomer') }}" class="btn btn-outline-primary">Back</a>
                 </div>
             </div>
         </div>
@@ -43,9 +40,10 @@
         </div>
 
         <div class="btn-history mt-4">
-            <a href="{{ route('history') }}" class="btn btn-outline-primary">
-                <i class="ri-history-line me-1"></i> History
-            </a>
+            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                    </form>
         </div>
     </div>
 </div>
