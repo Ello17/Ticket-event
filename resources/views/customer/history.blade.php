@@ -63,7 +63,7 @@
    Lanjutkan Pembayaran
 </a> --}}
 
-  <button onclick="payWithSnap('{{ $transaksi->snap_token }}')">Bayar woi</button>
+  <button onclick="payWithSnap('{{ $transaksi->snap_token }}')" class="btn btn-warning btn-sm" style="width:100%;">Lanjutkan Pembayaran</button>
 
             @endif
         @elseif($transaksi->status === 'paid')
