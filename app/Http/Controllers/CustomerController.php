@@ -44,16 +44,16 @@ public function listEvents()
 
 
 
-    public function search(Request $request)
-    {
-        $keyword = $request->input('search');
+public function search(Request $request)
+{
+    $keyword = $request->input('search');
 
-        $events = Event::where('nama_event', 'LIKE', "%{$keyword}%")
-            ->orWhere('lokasi_event', 'LIKE', "%{$keyword}%")
-            ->get();
+    $events = Event::where('nama_event', 'LIKE', "%{$keyword}%")
+        ->orWhere('lokasi_event', 'LIKE', "%{$keyword}%")
+        ->paginate(10); // 10 adalah jumlah item per halaman
 
-        return view('customer.listEvent', compact('events'));
-    }
+    return view('customer.listEvent', compact('events'));
+}
 
     public function history()
     {
