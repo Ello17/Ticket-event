@@ -26,7 +26,7 @@ public function homeCustomer()
     {
         
         $data = Event::whereDate('tanggal_event', '>=', Carbon::today())
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('tanggal_event', 'asc')
                     ->take(6)
                     ->get();
         return view('customer.homeCustomer', compact('data'));
@@ -50,7 +50,7 @@ public function search(Request $request)
 
     $events = Event::where('nama_event', 'LIKE', "%{$keyword}%")
         ->orWhere('lokasi_event', 'LIKE', "%{$keyword}%")
-        ->paginate(10); // 10 adalah jumlah item per halaman
+        ->paginate(10); 
 
     return view('customer.listEvent', compact('events'));
 }
