@@ -35,7 +35,7 @@ public function homeCustomer()
 public function listEvents()
 {
     $events = Event::select('id', 'nama_event', 'tanggal_event', 'lokasi_event', 'waktu_event', 'cover_event')
-    ->orderBy('created_at', 'desc')
+    ->orderBy('tanggal_event', 'asc')
     ->paginate(9);
 
     return view('customer.listEvent', compact('events'));
