@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendTicketMail;
 use App\Models\Event;
-use App\Models\participant;
+use App\Models\Participant;
 use App\Models\Tiket;
 use App\Models\Transaksi;
 use App\Models\User;
@@ -26,10 +26,54 @@ class CreatorController extends Controller
     public function homeCreator()
     {
         $user = Auth::user();
+
+        // Ambil data event dan jumlah event untuk creator
         $event = Event::where('user_id', $user->id)->first();
         $eventCount = Event::where('user_id', $user->id)->count();
 
-        return view('creator.homeCreator', compact('event', 'eventCount'));
+        // Logika untuk grafik transaksi
+        $now = Carbon::now();
+        $currentYear = $now->year;
+        $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
+            return Carbon::create($currentYear, $month, 1)->format('F Y');
+        });
+
+        $transaksis = Transaksi::with(['tiket.event'])
+            ->whereYear('tanggal_transaksi', $currentYear)
+            ->whereHas('tiket.event', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->get();
+
+        $grouped = $transaksis->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+        });
+
+        $labels = $months->toArray();
+        $jumlahTiket = $months->map(function ($month) use ($grouped) {
+            return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
+        })->toArray();
+
+        // Jika tidak ada transaksi, tambahkan pesan khusus
+        if ($transaksis->isEmpty()) {
+            return view('creator.homeCreator', [
+                'event' => $event,
+                'eventCount' => $eventCount,
+                'transaksis' => $transaksis,
+                'labels' => [],
+                'jumlahTiket' => [],
+                'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
+            ]);
+        }
+
+        // Return view dengan data lengkap
+        return view('creator.homeCreator', [
+            'event' => $event,
+            'eventCount' => $eventCount,
+            'transaksis' => $transaksis,
+            'labels' => $labels,
+            'jumlahTiket' => $jumlahTiket,
+        ]);
     }
 
 
@@ -367,14 +411,14 @@ class CreatorController extends Controller
             return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
         })->toArray();
         if ($transaksis->isEmpty()) {
-            return view('creator.grafik', [
+            return view('creator.homeCreator', [
                 'transaksis' => $transaksis,
                 'labels' => [],
                 'jumlahTiket' => [],
                 'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
             ]);
         }
-        return view('creator.grafik', [
+        return view('creator.homeCreator', [
             'transaksis' => $transaksis,
             'labels' => $labels,
             'jumlahTiket' => $jumlahTiket,

@@ -23,10 +23,15 @@ class CustomerController extends Controller
     //
 
     public function homeCustomer()
-{
-    $data = Event::orderBy('created_at', 'desc')->take(6)->get();
-    return view('customer.homeCustomer', compact('data'));
-}
+    {
+        // Ambil event yang tanggalnya lebih besar atau sama dengan hari ini, tanpa memperhitungkan waktu
+        $data = Event::whereDate('tanggal_event', '>=', Carbon::today())
+                    ->orderBy('created_at', 'desc')
+                    ->take(6)
+                    ->get();
+        return view('customer.homeCustomer', compact('data'));
+    }
+
 
 public function listEvents()
 {

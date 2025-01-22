@@ -17,7 +17,7 @@
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-200" id="example">
                 <thead>
-                    <tr class="bg-gray-100 text-gray-600">
+                    <tr  class="bg-gray-100 text-gray-600">
                         <th class="py-2 px-4 border">No</th>
                         <th class="py-2 px-4 border">Customer Name</th>
                         <th class="py-2 px-4 border">Event Name</th>

@@ -12,7 +12,7 @@
                 </a>
         </div>
         <div class="box-form">
-            <h2>Register</h2>
+            <h2>Register-Creator</h2>
             <form action="{{ route('postRegisterCreator') }}" enctype="multipart/form-data" method="POST" class="register_form">
                 @csrf
                 <div class="register-group">
