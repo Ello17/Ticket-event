@@ -22,21 +22,20 @@ class CustomerController extends Controller
 {
     //
 
-    public function homeCustomer()
+public function homeCustomer()
     {
-        // Ambil event yang tanggalnya lebih besar atau sama dengan hari ini, tanpa memperhitungkan waktu
+
         $data = Event::whereDate('tanggal_event', '>=', Carbon::today())
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('tanggal_event', 'asc')
                     ->take(6)
                     ->get();
         return view('customer.homeCustomer', compact('data'));
-    }
-
+}
 
 public function listEvents()
 {
     $events = Event::select('id', 'nama_event', 'tanggal_event', 'lokasi_event', 'waktu_event', 'cover_event')
-    ->orderBy('created_at', 'desc')
+    ->orderBy('tanggal_event', 'asc')
     ->paginate(9);
 
     return view('customer.listEvent', compact('events'));
@@ -45,16 +44,16 @@ public function listEvents()
 
 
 
-    public function search(Request $request)
-    {
-        $keyword = $request->input('search');
+public function search(Request $request)
+{
+    $keyword = $request->input('search');
 
-        $events = Event::where('nama_event', 'LIKE', "%{$keyword}%")
-            ->orWhere('lokasi_event', 'LIKE', "%{$keyword}%")
-            ->get();
+    $events = Event::where('nama_event', 'LIKE', "%{$keyword}%")
+        ->orWhere('lokasi_event', 'LIKE', "%{$keyword}%")
+        ->paginate(10);
 
-        return view('customer.listEvent', compact('events'));
-    }
+    return view('customer.listEvent', compact('events'));
+}
 
     public function history()
     {

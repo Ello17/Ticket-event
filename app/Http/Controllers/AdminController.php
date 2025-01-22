@@ -107,13 +107,20 @@ class AdminController extends Controller
     }
 }
 
+public function hapusCustomer(User $user, Request $request)
+{
 
-    public function hapusCustomer(User $user, Request $request)
-    {
-        $user->delete();
+    $hasTransactions = DB ::table('transaksis')->where('user_id', $user->id)->exists();
 
-        return redirect()->route('kelolaCustomer')->with('pesan-berhasil', 'Data berhasil dihapus');
+    if ($hasTransactions) {
+        return redirect()->route('kelolaCustomer')->with('pesan-gagal', 'User ini memiliki transaksi dan tidak dapat dihapus.');
     }
+
+
+    $user->delete();
+
+    return redirect()->route('kelolaCustomer')->with('pesan-berhasil', 'Data berhasil dihapus');
+}
 
     public function hapusKreator(User $user, Request $request)
     {

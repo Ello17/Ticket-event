@@ -20,3 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/midtrans/notification', [PaymentController::class, 'handleNotification'])->name('midtrans.notification');
 
+Route::post('/midtrans-callback', [PaymentController::class, 'midtransCallback'])
+    ->withoutMiddleware(['auth:api'])
+    ->name('midtrans-callback');

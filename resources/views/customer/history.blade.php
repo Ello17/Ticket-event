@@ -34,7 +34,7 @@
                     </thead>
 
                     <tbody>
-                        @foreach($transaksiList as $index => $transaksi)
+                        @forelse($transaksiList as $index => $transaksi)
                         <tr>
                             <th scope="row" style="text-align: center;">{{ $index + 1 }}</th>
                             <td>{{ $transaksi->tiket_dibeli }}</td>
@@ -63,7 +63,7 @@
    Lanjutkan Pembayaran
 </a> --}}
 
-  <button onclick="payWithSnap('{{ $transaksi->snap_token }}')">Bayar woi</button>
+  <button onclick="payWithSnap('{{ $transaksi->snap_token }}')" class="btn btn-warning btn-sm" style="width:100%;">Lanjutkan Pembayaran</button>
 
             @endif
         @elseif($transaksi->status === 'paid')
@@ -80,16 +80,8 @@
 
 
                         </tr>
-                        @endforeach
-                         
+                        @endforelse
                     </tbody>
-                    @if ($errors->any())
-                        <div class="alert alert-danger mt-3" role="alert">
-                            @foreach ($errors->all() as $error)
-                                <p>{{ $error }}</p>
-                            @endforeach
-                        </div>
-          @endif
 
                 </table>
             </div>

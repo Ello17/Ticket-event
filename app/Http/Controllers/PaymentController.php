@@ -169,7 +169,8 @@ public function midtransCallback(Request $request)
             return response()->json(['status' => 'error', 'message' => 'Failed to update transaction.'], 500);
         }
     }
-
+    
+    
     public function handleNotification(Request $request)
     {
         $payload = $request->all();

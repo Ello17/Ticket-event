@@ -23,58 +23,58 @@ class CreatorController extends Controller
 {
     //
 
-    public function homeCreator()
-    {
-        $user = Auth::user();
+   public function homeCreator()
+{
+    $user = Auth::user();
 
-        // Ambil data event dan jumlah event untuk creator
-        $event = Event::where('user_id', $user->id)->first();
-        $eventCount = Event::where('user_id', $user->id)->count();
+    // Ambil data event dan jumlah event untuk creator
+    $event = Event::where('user_id', $user->id)->first();
+    $eventCount = Event::where('user_id', $user->id)->count();
 
-        // Logika untuk grafik transaksi
-        $now = Carbon::now();
-        $currentYear = $now->year;
-        $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
-            return Carbon::create($currentYear, $month, 1)->format('F Y');
-        });
+    // Logika untuk grafik transaksi
+    $now = Carbon::now();
+    $currentYear = $now->year;
+    $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
+        return Carbon::create($currentYear, $month, 1)->format('F Y');
+    });
 
-        $transaksis = Transaksi::with(['tiket.event'])
-            ->whereYear('tanggal_transaksi', $currentYear)
-            ->whereHas('tiket.event', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
-            ->get();
+    $transaksis = Transaksi::with(['tiket.event'])
+        ->whereYear('tanggal_transaksi', $currentYear)
+        ->whereHas('tiket.event', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->get();
 
-        $grouped = $transaksis->groupBy(function ($item) {
-            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
-        });
+    $grouped = $transaksis->groupBy(function ($item) {
+        return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+    });
 
-        $labels = $months->toArray();
-        $jumlahTiket = $months->map(function ($month) use ($grouped) {
-            return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
-        })->toArray();
+    $labels = $months->toArray();
+    $jumlahTiket = $months->map(function ($month) use ($grouped) {
+        return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
+    })->toArray();
 
-        // Jika tidak ada transaksi, tambahkan pesan khusus
-        if ($transaksis->isEmpty()) {
-            return view('creator.homeCreator', [
-                'event' => $event,
-                'eventCount' => $eventCount,
-                'transaksis' => $transaksis,
-                'labels' => [],
-                'jumlahTiket' => [],
-                'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
-            ]);
-        }
-
-        // Return view dengan data lengkap
+    // Jika tidak ada transaksi, tambahkan pesan khusus
+    if ($transaksis->isEmpty()) {
         return view('creator.homeCreator', [
             'event' => $event,
             'eventCount' => $eventCount,
             'transaksis' => $transaksis,
-            'labels' => $labels,
-            'jumlahTiket' => $jumlahTiket,
+            'labels' => [],
+            'jumlahTiket' => [],
+            'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
         ]);
     }
+
+    // Return view dengan data lengkap
+    return view('creator.homeCreator', [
+        'event' => $event,
+        'eventCount' => $eventCount,
+        'transaksis' => $transaksis,
+        'labels' => $labels,
+        'jumlahTiket' => $jumlahTiket,
+        ]);
+}
 
 
     public function kelolaEvent(Request $request)
@@ -386,44 +386,44 @@ class CreatorController extends Controller
         return redirect()->route('profilCreator')->with('status', 'Password berhasil diperbarui.');
     }
 
-    public function grafik($user_id = null)
-    {
-        if (!$user_id) {
-            return redirect()->route('some.default.route');
-        }
+//   public function grafik($user_id = null)
+//     {
+//         if (!$user_id) {
+//             return redirect()->route('some.default.route');
+//         }
 
-        $now = Carbon::now();
-        $currentYear = $now->year;
-        $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
-            return Carbon::create($currentYear, $month, 1)->format('F Y');
-        });
-        $transaksis = Transaksi::with(['tiket.event'])
-            ->whereYear('tanggal_transaksi', $currentYear)
-            ->whereHas('tiket.event', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id);
-            })
-            ->get();
-        $grouped = $transaksis->groupBy(function ($item) {
-            return Carbon::parse($item->tanggal_transaksi)->format('F Y');
-        });
-        $labels = $months->toArray();
-        $jumlahTiket = $months->map(function ($month) use ($grouped) {
-            return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
-        })->toArray();
-        if ($transaksis->isEmpty()) {
-            return view('creator.homeCreator', [
-                'transaksis' => $transaksis,
-                'labels' => [],
-                'jumlahTiket' => [],
-                'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
-            ]);
-        }
-        return view('creator.homeCreator', [
-            'transaksis' => $transaksis,
-            'labels' => $labels,
-            'jumlahTiket' => $jumlahTiket,
-        ]);
-    }
+//         $now = Carbon::now();
+//         $currentYear = $now->year;
+//         $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
+//             return Carbon::create($currentYear, $month, 1)->format('F Y');
+//         });
+//         $transaksis = Transaksi::with(['tiket.event'])
+//             ->whereYear('tanggal_transaksi', $currentYear)
+//             ->whereHas('tiket.event', function ($query) use ($user_id) {
+//                 $query->where('user_id', $user_id);
+//             })
+//             ->get();
+//         $grouped = $transaksis->groupBy(function ($item) {
+//             return Carbon::parse($item->tanggal_transaksi)->format('F Y');
+//         });
+//         $labels = $months->toArray();
+//         $jumlahTiket = $months->map(function ($month) use ($grouped) {
+//             return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
+//         })->toArray();
+//         if ($transaksis->isEmpty()) {
+//             return view('creator.homeCreator', [
+//                 'transaksis' => $transaksis,
+//                 'labels' => [],
+//                 'jumlahTiket' => [],
+//                 'message' => "Tidak ada transaksi yang cocok untuk tahun ini."
+//             ]);
+//         }
+//         return view('creator.homeCreator', [
+//             'transaksis' => $transaksis,
+//             'labels' => $labels,
+//             'jumlahTiket' => $jumlahTiket,
+//             ]);
+//     }
 
 
     public function ScanQr()
@@ -483,13 +483,20 @@ public function participants(Request $request)
         ->whereHas('transaksi', function ($query) {
             $query->where('status', 'paid');
         })
-        ->join('events', 'participants.event_id', '=', 'events.id') // Join events table
-        ->orderBy('participants.is_present', 'desc') // Sort by presence
-        ->orderBy('events.nama_event', 'asc') // Sort by event name
-        ->select('participants.*') // Select only participant columns
-        ->paginate(10); // Use pagination here
+        ->join('events', 'participants.event_id', '=', 'events.id')
+        ->orderBy('participants.is_present', 'desc')
+        ->orderBy('events.nama_event', 'asc')
+        ->select('participants.*')
+        ->paginate(10);
 
-    return view('creator.participants', compact('participants'));
+    $eventSales = Event::where('user_id', $user->id)
+        ->with(['transaksi' => function ($query) {
+            $query->selectRaw('event_id, SUM(tiket_dibeli) as total_tiket')
+                  ->groupBy('event_id');
+        }])
+        ->get();
+
+    return view('creator.participants', compact('participants', 'eventSales'));
 }
 
 
