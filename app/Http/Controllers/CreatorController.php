@@ -27,11 +27,10 @@ class CreatorController extends Controller
 {
     $user = Auth::user();
 
-    // Ambil data event dan jumlah event untuk creator
+
     $event = Event::where('user_id', $user->id)->first();
     $eventCount = Event::where('user_id', $user->id)->count();
 
-    // Logika untuk grafik transaksi
     $now = Carbon::now();
     $currentYear = $now->year;
     $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
@@ -54,7 +53,7 @@ class CreatorController extends Controller
         return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
     })->toArray();
 
-    // Jika tidak ada transaksi, tambahkan pesan khusus
+
     if ($transaksis->isEmpty()) {
         return view('creator.homeCreator', [
             'event' => $event,
@@ -66,7 +65,7 @@ class CreatorController extends Controller
         ]);
     }
 
-    // Return view dengan data lengkap
+
     return view('creator.homeCreator', [
         'event' => $event,
         'eventCount' => $eventCount,
@@ -75,6 +74,10 @@ class CreatorController extends Controller
         'jumlahTiket' => $jumlahTiket,
         ]);
 }
+
+
+
+
 
 
     public function kelolaEvent(Request $request)
@@ -474,7 +477,10 @@ public function postScanQr(Request $request)
 public function participants(Request $request)
 {
     $user = auth()->user();
+    $event_id = $request->input('event_id'); // Nilai bisa null jika tidak dipilih
+    $events = Event::where('user_id', $user->id)->get();
 
+    // Fetch participants
     $participants = Participant::query()
         ->with(['user', 'event'])
         ->whereHas('event', function ($query) use ($user) {
@@ -483,28 +489,86 @@ public function participants(Request $request)
         ->whereHas('transaksi', function ($query) {
             $query->where('status', 'paid');
         })
+        ->when($event_id, function ($query, $event_id) {
+            $query->where('event_id', $event_id);
+        })
         ->join('events', 'participants.event_id', '=', 'events.id')
         ->orderBy('participants.is_present', 'desc')
         ->orderBy('events.nama_event', 'asc')
         ->select('participants.*')
         ->paginate(10);
 
+    // Fetch sales data for Chart.js
     $eventSales = Event::where('user_id', $user->id)
         ->with(['transaksi' => function ($query) {
             $query->selectRaw('event_id, SUM(tiket_dibeli) as total_tiket')
                   ->groupBy('event_id');
         }])
+        ->when($event_id, function ($query, $event_id) {
+            $query->where('id', $event_id);
+        })
         ->get();
 
-    return view('creator.participants', compact('participants', 'eventSales'));
+    // Kirim data ke view
+    return view('creator.participants', compact('events', 'participants', 'event_id', 'eventSales', 'presentSales', 'notPresentSales'));
+
 }
+
+
+
+public function filterEvents(Request $request)
+{
+    $event_id = $request->input('event_id'); // Event yang dipilih dari filter
+    $user = auth()->user();
+    $events = Event::where('user_id', $user->id)->get();
+
+    // Fetch participants sesuai event yang dipilih
+    $participants = Participant::when($event_id, function ($query, $event_id) {
+        return $query->where('event_id', $event_id);
+    })->with('user', 'event')->paginate(10);
+
+    // Fetch sales data untuk Chart.js sesuai filter
+    $eventSales = Event::where('user_id', $user->id)
+        ->with(['transaksi' => function ($query) {
+            $query->selectRaw('event_id, SUM(tiket_dibeli) as total_tiket')
+                  ->groupBy('event_id');
+        }])
+        ->when($event_id, function ($query, $event_id) {
+            $query->where('id', $event_id);
+        })
+        ->get();
+
+    // Tambahkan data berdasarkan is_present
+    $presentSales = [];
+    $notPresentSales = [];
+
+    foreach ($eventSales as $event) {
+        // Cek apakah transaksi ada untuk event ini
+        if ($event->transaksi) {
+            // Menghitung tiket yang terjual untuk peserta yang hadir
+            $presentSales[$event->id] = $event->transaksi->where('is_present', true)
+                ->sum('total_tiket');
+
+            // Menghitung tiket yang terjual untuk peserta yang tidak hadir
+            $notPresentSales[$event->id] = $event->transaksi->where('is_present', false)
+                ->sum('total_tiket');
+        } else {
+            // Jika transaksi tidak ada, set nilai default 0
+            $presentSales[$event->id] = 0;
+            $notPresentSales[$event->id] = 0;
+        }
+    }
+
+    return view('creator.participants', compact('events', 'participants', 'event_id', 'eventSales', 'presentSales', 'notPresentSales'));
+}
+
 
 
 
 public function partic($id)
 {
-    $event = Event::findOrFail($id); // Ambil data event berdasarkan ID
-    $participants = Participant::where('event_id', $id)->get(); // Ambil peserta terkait event
+    $event = Event::findOrFail($id);
+    $participants = Participant::where('event_id', $id)->get();
 
     return view('creator.partic', compact('event', 'participants'));
 }

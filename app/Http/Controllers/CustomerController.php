@@ -55,14 +55,15 @@ public function search(Request $request)
     return view('customer.listEvent', compact('events'));
 }
 
-    public function history()
-    {
-        $transaksiList = Transaksi::with('tiket')
-            ->where('user_id', auth()->id())
-            ->get();
+public function history()
+{
+    $transaksiList = Transaksi::with('tiket')
+        ->where('user_id', auth()->id())
+        ->orderBy('tanggal_transaksi', 'desc')
+        ->get();
 
-        return view('customer.history', compact('transaksiList'));
-    }
+    return view('customer.history', compact('transaksiList'));
+}
 
     public function detailEvent($id)
     {

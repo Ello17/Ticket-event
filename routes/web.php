@@ -154,6 +154,9 @@ Route::post('/post-scan-qr', [CreatorController::class, 'postScanQr'])->name('po
 Route::get('/events/{id}/partic', [CreatorController::class, 'partic'])->name('partic');
 
 
+Route::get('/filterEvents', [CreatorController::class, 'filterEvents'])->name('filterEvents');
+
+
 
 Route::get('/transaksi/snap/{snap_token}', function ($snap_token) {
      return view('customer.snap', compact('snap_token'));
