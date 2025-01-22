@@ -26,25 +26,25 @@ class Event extends Model
     protected $table = 'events';
     protected $guarded = ['id'];
 
-    // Relasi ke User
+   
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relasi ke Transaksi
+   
     public function transaksi()
     {
         return $this->belongsTo(Transaksi::class);
     }
 
-    // Relasi ke Tiket
+    
     public function tiket()
     {
         return $this->hasMany(Tiket::class, 'event_id', 'id');
     }
 
-    // Relasi ke Participant
+    
     public function participants()
     {
         return $this->hasMany(Participant::class, 'event_id', 'id');

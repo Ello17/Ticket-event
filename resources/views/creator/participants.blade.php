@@ -1,4 +1,5 @@
 @extends('layouts.appCreator')
+
 @push('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
@@ -10,10 +11,22 @@
 <div class="bg-white shadow-lg rounded-lg overflow-hidden">
     <div class="p-4 border-b">
         <h5 class="text-lg font-semibold">Participant List Table</h5>
+        <div class="mb-4">
+            <form action="{{ route('filterEvents') }}" method="GET">
+                <label for="eventFilter">Filter by Event:</label>
+                <select id="eventFilter" name="event_id" onchange="this.form.submit()">
+                    <option value="">All Events</option>
+                    @foreach ($events as $event)
+                        <option value="{{ $event->id }}" {{ isset($event_id) && $event_id == $event->id ? 'selected' : '' }}>
+                            {{ $event->nama_event }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>            
+        </div>
     </div>
+    
     <div class="p-4">
-
-        <!-- Table -->
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-200" id="example">
                 <thead>
@@ -48,10 +61,14 @@
                         </tr>
                     @endforeach
                 </tbody>
-
             </table>
-
         </div>
+
+        
+        <div class="mt-4">
+            {{ $participants->links() }}
+        </div>
+        
     </div>
 </div>
 @endsection
@@ -60,33 +77,4 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            // Check if DataTable is already initialized
-            if (!$.fn.DataTable.isDataTable('#example')) {
-                $('#example').DataTable({
-                    language: {
-                        search: "Search:",
-                        lengthMenu: "Show _MENU_ entries per page",
-                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                        infoEmpty: "No entries available",
-                        zeroRecords: "No matching records found",
-                        paginate: {
-                            first: "First",
-                            last: "Last",
-                            next: "Next",
-                            previous: "Previous"
-                        }
-                    },
-                    pageLength: 10, // Default number of entries per page
-                    responsive: true, // Makes the table responsive
-                });
-            }
-        });
-    </script>
-    <style>
-        #example_filter{
-            margin-bottom: 10px !important;
-        }
-    </style>
 @endpush

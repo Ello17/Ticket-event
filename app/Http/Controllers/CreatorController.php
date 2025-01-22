@@ -27,11 +27,10 @@ class CreatorController extends Controller
 {
     $user = Auth::user();
 
-    // Ambil data event dan jumlah event untuk creator
+   
     $event = Event::where('user_id', $user->id)->first();
     $eventCount = Event::where('user_id', $user->id)->count();
 
-    // Logika untuk grafik transaksi
     $now = Carbon::now();
     $currentYear = $now->year;
     $months = collect(range(1, 12))->map(function ($month) use ($currentYear) {
@@ -54,7 +53,7 @@ class CreatorController extends Controller
         return isset($grouped[$month]) ? $grouped[$month]->sum('tiket_dibeli') : 0;
     })->toArray();
 
-    // Jika tidak ada transaksi, tambahkan pesan khusus
+   
     if ($transaksis->isEmpty()) {
         return view('creator.homeCreator', [
             'event' => $event,
@@ -66,7 +65,7 @@ class CreatorController extends Controller
         ]);
     }
 
-    // Return view dengan data lengkap
+    
     return view('creator.homeCreator', [
         'event' => $event,
         'eventCount' => $eventCount,
@@ -75,6 +74,10 @@ class CreatorController extends Controller
         'jumlahTiket' => $jumlahTiket,
         ]);
 }
+
+
+
+
 
 
     public function kelolaEvent(Request $request)
@@ -474,7 +477,10 @@ public function postScanQr(Request $request)
 public function participants(Request $request)
 {
     $user = auth()->user();
+    $event_id = $request->input('event_id'); 
+    $events = Event::where('user_id', $user->id)->get(); 
 
+   
     $participants = Participant::query()
         ->with(['user', 'event'])
         ->whereHas('event', function ($query) use ($user) {
@@ -483,21 +489,36 @@ public function participants(Request $request)
         ->whereHas('transaksi', function ($query) {
             $query->where('status', 'paid');
         })
-        ->join('events', 'participants.event_id', '=', 'events.id') // Join events table
-        ->orderBy('participants.is_present', 'desc') // Sort by presence
-        ->orderBy('events.nama_event', 'asc') // Sort by event name
-        ->select('participants.*') // Select only participant columns
-        ->paginate(10); // Use pagination here
+        ->when($event_id, function ($query, $event_id) {
+            $query->where('event_id', $event_id);
+        })
+        ->join('events', 'participants.event_id', '=', 'events.id')
+        ->orderBy('participants.is_present', 'desc')
+        ->orderBy('events.nama_event', 'asc')
+        ->select('participants.*')
+        ->paginate(10);
 
-    return view('creator.participants', compact('participants'));
+    return view('creator.participants', compact('participants', 'events', 'event_id'));
 }
 
+
+public function filterEvents(Request $request)
+{
+    $event_id = $request->input('event_id');
+    $events = Event::all(); 
+
+    $participants = Participant::when($event_id, function ($query, $event_id) {
+        return $query->where('event_id', $event_id);
+    })->with('user', 'event')->paginate(10);
+
+    return view('creator.participants', compact('events', 'participants', 'event_id'));
+}
 
 
 public function partic($id)
 {
-    $event = Event::findOrFail($id); // Ambil data event berdasarkan ID
-    $participants = Participant::where('event_id', $id)->get(); // Ambil peserta terkait event
+    $event = Event::findOrFail($id); 
+    $participants = Participant::where('event_id', $id)->get(); 
 
     return view('creator.partic', compact('event', 'participants'));
 }
