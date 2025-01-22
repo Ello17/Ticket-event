@@ -474,13 +474,14 @@ public function postScanQr(Request $request)
 }
 
 
+
 public function participants(Request $request)
 {
     $user = auth()->user();
-    $event_id = $request->input('event_id'); 
-    $events = Event::where('user_id', $user->id)->get(); 
+    $event_id = $request->input('event_id'); // Nilai bisa null jika tidak dipilih
+    $events = Event::where('user_id', $user->id)->get();
 
-   
+    // Fetch participants
     $participants = Participant::query()
         ->with(['user', 'event'])
         ->whereHas('event', function ($query) use ($user) {
@@ -498,22 +499,47 @@ public function participants(Request $request)
         ->select('participants.*')
         ->paginate(10);
 
-    return view('creator.participants', compact('participants', 'events', 'event_id'));
+    // Fetch sales data for Chart.js
+    $eventSales = Event::where('user_id', $user->id)
+        ->with(['transaksi' => function ($query) {
+            $query->selectRaw('event_id, SUM(tiket_dibeli) as total_tiket')
+                  ->groupBy('event_id');
+        }])
+        ->when($event_id, function ($query, $event_id) {
+            $query->where('id', $event_id);
+        })
+        ->get();
+
+    // Kirim data ke view
+    return view('creator.participants', compact('participants', 'events', 'eventSales', 'event_id'));
 }
+
 
 
 public function filterEvents(Request $request)
 {
     $event_id = $request->input('event_id');
-    $events = Event::all(); 
+    $user = auth()->user();
+    $events = Event::where('user_id', $user->id)->get();
 
+    // Fetch participants
     $participants = Participant::when($event_id, function ($query, $event_id) {
         return $query->where('event_id', $event_id);
     })->with('user', 'event')->paginate(10);
 
-    return view('creator.participants', compact('events', 'participants', 'event_id'));
-}
+    // Fetch sales data for Chart.js
+    $eventSales = Event::where('user_id', $user->id)
+        ->with(['transaksi' => function ($query) {
+            $query->selectRaw('event_id, SUM(tiket_dibeli) as total_tiket')
+                  ->groupBy('event_id');
+        }])
+        ->when($event_id, function ($query, $event_id) {
+            $query->where('id', $event_id);
+        })
+        ->get();
 
+    return view('creator.participants', compact('events', 'participants', 'event_id', 'eventSales'));
+}
 
 public function partic($id)
 {

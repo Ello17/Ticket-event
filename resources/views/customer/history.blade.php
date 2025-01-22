@@ -46,46 +46,38 @@
                             <td>{{ $transaksi->no_telepon }}</td>
                             <td>{{ $transaksi->email }}</td>
                             <td>{{ $transaksi->status }}</td>
-                       <td>
-    <div class="d-flex justify-content-center gap-2" style="width:100%;">
-        @if($transaksi->status === 'pending')
-            @if($transaksi->exp && \Carbon\Carbon::now()->greaterThan($transaksi->exp))
-                <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this transaction?');" style="width:100%;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm" style="width:100%;">Delete</button>
-                </form>
-            @else
-              {{-- <a href="{{ 'https://app.sandbox.midtrans.com/snap/v4/redirection/' . $transaksi->snap_token }}"
-            
-   class="btn btn-warning btn-sm" 
-   target="_blank">
-   Lanjutkan Pembayaran
-</a> --}}
-
-  <button onclick="payWithSnap('{{ $transaksi->snap_token }}')" class="btn btn-warning btn-sm" style="width:100%;">Lanjutkan Pembayaran</button>
-
-            @endif
-        @elseif($transaksi->status === 'paid')
-            @if($transaksi->tiket->kategori_tiket === 'online')
-                <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank" rel="noopener noreferrer" style="width:100%;">Join Zoom</a>
-            @endif
-            <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm" style="width:100%;">Download</a>
-        @else
-            <span class="text-danger">Status transaksi tidak valid.</span>
-        @endif
-    </div>
-</td>
-
-
-
+                            <td>
+                                <div class="d-flex justify-content-center gap-2" style="width:100%;">
+                                    @if($transaksi->status === 'pending')
+                                        @if($transaksi->exp && \Carbon\Carbon::now()->greaterThan($transaksi->exp))
+                                            <form action="{{ route('destroyTransaksi', $transaksi->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this transaction?');" style="width:100%;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" style="width:100%;">Delete</button>
+                                            </form>
+                                        @else
+                                            <button onclick="payWithSnap('{{ $transaksi->snap_token }}')" class="btn btn-warning btn-sm" style="width:100%;">Lanjutkan Pembayaran</button>
+                                        @endif
+                                    @elseif($transaksi->status === 'paid')
+                                        @if($transaksi->tiket->kategori_tiket === 'online')
+                                            <a href="{{ $transaksi->tiket->link_tiket }}" class="btn btn-success btn-sm" target="_blank" rel="noopener noreferrer" style="width:100%;">Join Zoom</a>
+                                        @endif
+                                        <a href="{{ route('downloadTiket', $transaksi->id) }}" class="btn btn-primary btn-sm" style="width:100%;">Download</a>
+                                    @else
+                                        <span class="text-danger">Status transaksi tidak valid.</span>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
+                        @empty
+                            <tr>
+                                <td colspan="11" class="text-center">No transactions found.</td>
+                            </tr>
                         @endforelse
                     </tbody>
 
                 </table>
             </div>
-
         </div>
     </div>
 </div>
@@ -94,8 +86,6 @@
 @push('js')
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
-
-
 
 <script>
     function payWithSnap(snapToken) {
@@ -121,8 +111,4 @@
         payWithSnap('{{ $snapToken }}');
     @endif
 </script>
-
-
-
-
 @endpush

@@ -59,6 +59,7 @@ public function search(Request $request)
     {
         $transaksiList = Transaksi::with('tiket')
             ->where('user_id', auth()->id())
+            ->orderBy('tanggal_transaksi', 'desc')
             ->get();
 
         return view('customer.history', compact('transaksiList'));
