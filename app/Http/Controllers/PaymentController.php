@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Snap;
 use Midtrans\Config;
-use Midtrans\Notification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
@@ -122,7 +121,7 @@ public function midtransCallback(Request $request)
     {
           $payload = $request->all();
 
-   
+
     if (!isset($payload['transaction_status']) || !isset($payload['order_id'])) {
         return redirect()->route('transaksi.create')->withErrors(['error' => 'Invalid payload structure.']);
     }
@@ -181,15 +180,15 @@ public function midtransCallback(Request $request)
         if(!$payload) {
             return response()->json(['status' => 'error', 'message' => 'Payload is empty.'], 400);
         }
-    
+
         $transaction_status = $payload['transaction_status'];
         $order_id = $payload['order_id'];
-    
+
         $transaksi = Transaksi::where('order_id', $order_id)->first();
         if (!$transaksi) {
             return response()->json(['status' => 'error', 'message' => 'Transaction not found.'.$order_id], 404);
         }
-    
+
         if ($transaction_status === 'settlement') {
             $transaksi->status = 'paid';
             $tiket = Tiket::findOrFail($transaksi->tiket_id);
@@ -206,7 +205,6 @@ public function midtransCallback(Request $request)
                     'is_present' => false,
                 ]);
             }
-            $transaksi->save();
             Mail::to($transaksi->email)->send(new kirimTiket($transaksi));
         } elseif ($transaction_status === 'pending') {
             $transaksi->status = 'pending';
@@ -215,11 +213,11 @@ public function midtransCallback(Request $request)
         } elseif ($transaction_status == 'pending') {
             $transaksi->status = 'pending';
         }
-    
-        return response()->json(['status' => 'success', 'message' => 'Notification handled.']);
-    }
-    
 
+        $transaksi->save();
+
+        return response()->json(['status' => 'success', 'message' => 'Notification processed successfully.']);
+    }
 
     public function show($kode_tiket)
     {
@@ -250,7 +248,7 @@ public function midtransCallback(Request $request)
         }
 
         $pdf = Pdf::loadView('customer.downloadTiket', compact('transaksi', 'qrcodes'))
-            ->setPaper('a4');
+                  ->setPaper('a4');
 
         return $pdf->download('tiket-transaksi-' . $transaksi->id . '.pdf');
     }
@@ -258,7 +256,6 @@ public function midtransCallback(Request $request)
     public function destroy($id)
     {
         $transaksi = Transaksi::findOrFail($id);
-
         $transaksi->delete();
 
         return redirect()->route('history')->with('success', 'Transaction deleted successfully.');

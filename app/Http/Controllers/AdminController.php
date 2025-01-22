@@ -110,7 +110,7 @@ class AdminController extends Controller
 public function hapusCustomer(User $user, Request $request)
 {
 
-    $hasTransactions = \DB::table('transaksis')->where('user_id', $user->id)->exists();
+    $hasTransactions = DB ::table('transaksis')->where('user_id', $user->id)->exists();
 
     if ($hasTransactions) {
         return redirect()->route('kelolaCustomer')->with('pesan-gagal', 'User ini memiliki transaksi dan tidak dapat dihapus.');

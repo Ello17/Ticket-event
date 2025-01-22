@@ -24,7 +24,7 @@ class CustomerController extends Controller
 
 public function homeCustomer()
     {
-        
+
         $data = Event::whereDate('tanggal_event', '>=', Carbon::today())
                     ->orderBy('tanggal_event', 'asc')
                     ->take(6)
@@ -50,20 +50,20 @@ public function search(Request $request)
 
     $events = Event::where('nama_event', 'LIKE', "%{$keyword}%")
         ->orWhere('lokasi_event', 'LIKE', "%{$keyword}%")
-        ->paginate(10); 
+        ->paginate(10);
 
     return view('customer.listEvent', compact('events'));
 }
 
-    public function history()
-    {
-        $transaksiList = Transaksi::with('tiket')
-            ->where('user_id', auth()->id())
-            ->orderBy('tanggal_transaksi', 'desc')
-            ->get();
+public function history()
+{
+    $transaksiList = Transaksi::with('tiket')
+        ->where('user_id', auth()->id())
+        ->orderBy('tanggal_transaksi', 'desc')
+        ->get();
 
-        return view('customer.history', compact('transaksiList'));
-    }
+    return view('customer.history', compact('transaksiList'));
+}
 
     public function detailEvent($id)
     {

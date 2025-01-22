@@ -143,7 +143,8 @@ Route::post('/tambahtiket', [CreatorController::class, 'storeTicket'])->name('ta
 
 Route::get('/profilCreator', [CreatorController::class, 'profilCreator'])->name('profilCreator');
 Route::get('/editProfileCreator/{id}',[CreatorController::class,'editProfileCreator'])->name('editProfileCreator');
-Route::post('postEditProfileCreator{id}',[CreatorController::class,'postEditProfileCreator'])->name('postEditProfileCreator');
+Route::post('postEditProfileCreator{id}',[CreatorController::class,'postEditProfileCr
+eator'])->name('postEditProfileCreator');
 Route::get('/ubahpass',[CreatorController::class, 'ubahpass'])->name('ubahpass');
 Route::post('/postubahpass', [CreatorController::class, 'postubahpass'])->middleware('auth')->name('postubahpass');;
 Route::get('/grafik/{user_id}', [CreatorController::class, 'grafik'])->name('grafik');
@@ -160,7 +161,7 @@ Route::get('/filterEvents', [CreatorController::class, 'filterEvents'])->name('f
 Route::get('/transaksi/snap/{snap_token}', function ($snap_token) {
      return view('customer.snap', compact('snap_token'));
  })->name('transaksi.snap');
- 
+
 
 
 

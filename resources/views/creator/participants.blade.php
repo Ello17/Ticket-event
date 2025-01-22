@@ -21,7 +21,7 @@
             </select>
         </form>
 
-        <!-- Table -->
+        <!-- Participant Table -->
         <div class="overflow-x-auto mt-4">
             <table class="min-w-full bg-white border border-gray-200" id="participantsTable">
                 <thead>
@@ -43,9 +43,9 @@
                             <td class="p-2">{{ $participant->kode_tiket }}</td>
                             <td class="p-2 text-center">
                                 @if ($participant->is_present)
-                                    <span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700">Presence</span>
+                                    <span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700">Present</span>
                                 @else
-                                    <span class="inline-block px-3 py-1 rounded-full bg-red-100 text-red-700">Not present</span>
+                                    <span class="inline-block px-3 py-1 rounded-full bg-red-100 text-red-700">Not Present</span>
                                 @endif
                             </td>
                             <td class="p-2">{{ $participant->scan_time }}</td>
@@ -65,7 +65,6 @@
 @endsection
 
 @push('css')
-<!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 @endpush
@@ -75,18 +74,16 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+
 <script>
     $(document).ready(function() {
-        // Log the eventSales data to check its format
-        console.log('Event Sales Data:', @json($eventSales));
-
         // Initialize DataTable
         $('#participantsTable').DataTable({
             responsive: true,
             language: {
                 search: "Search:",
-                lengthMenu: "Show MENU entries",
-                info: "Showing START to END of TOTAL entries",
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
                 paginate: {
                     previous: "Previous",
                     next: "Next"
@@ -94,32 +91,32 @@
             }
         });
 
-        // Initialize Chart.js
-        const eventSales = @json($eventSales);
+        // Data for Chart.js
+        const labels = {!! json_encode($labels) !!};
+        const presentTickets = {!! json_encode($presentTickets) !!};
+        const notPresentTickets = {!! json_encode($notPresentTickets) !!};
+
         const ctx = document.getElementById('salesChart').getContext('2d');
-
-        // Check if the canvas context is correctly obtained
-        if (!ctx) {
-            console.error('Failed to get canvas context!');
-            return;
-        }
-
-        // Prepare the data for the chart
-        const labels = eventSales.map(event => event.nama_event);
-        const data = eventSales.map(event => event.transaksi.reduce((sum, trx) => sum + trx.total_tiket, 0));
-
-        // Create the chart
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: labels,
-                datasets: [{
-                    label: 'Total Tickets Sold',
-                    data: data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
+                datasets: [
+                    {
+                        label: 'Present Tickets',
+                        data: presentTickets,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Not Present Tickets',
+                        data: notPresentTickets,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
             },
             options: {
                 responsive: true,
@@ -132,5 +129,4 @@
         });
     });
 </script>
-
 @endpush

@@ -1,4 +1,4 @@
-@extends('layouts.appCreator')
+{{-- @extends('layouts.appCreator')
 
 @push('css')
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"> --}}
@@ -51,14 +51,14 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Date' 
+                            text: 'Date'
                         },
                         beginAtZero: true
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Number of Tickets' 
+                            text: 'Number of Tickets'
                         },
                         beginAtZero: true
                     }
@@ -67,4 +67,4 @@
         });
     });
 </script>
-@endpush
+@endpush --}}
