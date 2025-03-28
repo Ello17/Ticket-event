@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/midtrans/notification', [PaymentController::class, 'handleNotification'])->name('midtrans.notification');
+
+Route::post('/midtrans-callback', [PaymentController::class, 'midtransCallback'])
+    ->withoutMiddleware(['auth:api'])
+    ->name('midtrans-callback');

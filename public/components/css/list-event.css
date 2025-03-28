@@ -1,0 +1,10 @@
+.grid-card{
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center; /* Center pagination */
+    margin-top: 20px;
+}
